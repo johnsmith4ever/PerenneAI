@@ -1,26 +1,161 @@
 @import "tailwindcss";
 
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background:           #fdfcf1;   /* Claude-like warm off-white */
+  --foreground:           #1c1917;   /* Sharp dark text */
+
+  --card:                 #ffffff;
+  --card-foreground:      #1c1917;
+
+  --muted:                #f5f5f4;   /* Very light gray for panels */
+  --muted-foreground:     #78716c;
+
+  --border:               #e7e5e4;   /* Crisp, subtle borders */
+
+  --primary:              #d97757;   /* Claude signature accent orange */
+  --primary-foreground:   #ffffff;
+
+  --secondary:            #f5f5f4;
+  --secondary-foreground: #1c1917;
+
+  --accent:               #d97757;
+  --accent-foreground:    #ffffff;
 }
 
+.dark {
+  --background:           #121212;   /* Deep charcoal/black */
+  --foreground:           #ececec;   /* Off-white text */
+
+  --card:                 #18181b;   /* Slightly lighter than background */
+  --card-foreground:      #ececec;
+
+  --muted:                #27272a;   /* Subtle zinc dark for panels */
+  --muted-foreground:     #a1a1aa;
+
+  --border:               #3f3f46;   /* Subtle visible border */
+
+  --primary:              #d97757;   /* Keep Claude signature accent */
+  --primary-foreground:   #ffffff;
+
+  --secondary:            #27272a;
+  --secondary-foreground: #ececec;
+
+  --accent:               #d97757;
+  --accent-foreground:    #ffffff;
+}
+
+.dark .logo-img {
+  filter: invert(1);
+}
+
+/* ── Tailwind v4 theme ─────────────────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+
+  --color-border:               var(--border);
+
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+
+  --color-secondary:            var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+
+  --font-sans:  var(--font-inter);
+  --font-serif: var(--font-merriweather);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+*,
+::before,
+::after {
+  border-color: var(--border);
+}
+
+html {
+  background: var(--background);
+  color: var(--foreground);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typography scale ─────────────────────────────────────────────────────── */
+/* page-title:   24px serif bold     — main heading on each route             */
+/* section-title: 17px serif semibold — sub-sections                           */
+/* label-title:  11px sans caps      — overlines + form labels                */
+
+.page-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.375rem;    /* 22px */
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+.section-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.0625rem;   /* 17px */
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--foreground);
+}
+
+.label-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.6875rem;   /* 11px */
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* ── Flashcard flip animation ─────────────────────────────────────────────── */
+.flashcard-container {
+  perspective: 1200px;
+}
+
+.flashcard-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flashcard-flipped {
+  transform: rotateY(180deg);
+}
+
+/* ── Smooth entrance for study mode ───────────────────────────────────────── */
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: slide-up-fade 0.35s ease-out;
+}
+
+/* kbd styling */
+kbd {
+  font-size: 10px;
+  line-height: 1;
 }
