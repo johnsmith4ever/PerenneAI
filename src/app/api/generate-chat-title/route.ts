@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       model: groq.chat("llama-3.1-8b-instant"),
       system: "You are an expert summarizer. Your task is to generate a short, concise title (maximum 5 words) for a chat based on the user's first message. You must respond ONLY with the raw title. Do not include quotes, punctuation, prefixes like 'Title:' or any conversational filler.",
       prompt: text,
-      maxTokens: 10,
+      maxOutputTokens: 10,
       temperature: 0.2,
     });
 
