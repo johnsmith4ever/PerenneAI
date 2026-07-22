@@ -19,6 +19,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 export const metadata: Metadata = {
   title: "Perenne",
   description: "UK-focused AI study app",
+  verification: {
+    google: "Q4TDzE3G5_scwK2g96A50ooFKe2T1soFPCZP77_2Ja0",
+  },
 };
 
 export default function RootLayout({
