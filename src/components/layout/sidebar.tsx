@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { BookOpen, PenLine, FileText, LayoutDashboard, MessageSquare, Clock, CreditCard } from "lucide-react";
+import { BookOpen, PenLine, FileText, LayoutDashboard, MessageSquare, Clock, CreditCard, PanelLeftClose } from "lucide-react";
 import { useSubscription } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -18,7 +18,7 @@ const navItems = [
   { href: "/history", label: "History", icon: Clock },
 ];
 
-export function Sidebar() {
+export function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const { creditsUsed, dailyLimit, isLoaded } = useSubscription();
   const rawPercent = isLoaded ? Math.min(100, (creditsUsed / dailyLimit) * 100) : 0;
@@ -28,11 +28,18 @@ export function Sidebar() {
     <aside className="w-56 shrink-0 border-r border-border flex flex-col h-full bg-[#faf9f5] dark:bg-card/50">
       {/* Logo */}
       <div className="px-5 py-5 border-b border-border">
-        <div className="flex items-center gap-2 mb-0.5">
-          <Image src="/logo.svg" alt="Logo" width={28} height={28} className="shrink-0 logo-img" />
-          <span className="font-serif text-2xl font-bold text-foreground tracking-tight leading-none">
-            Perenne
-          </span>
+        <div className="flex items-center justify-between gap-2 mb-0.5">
+          <div className="flex items-center gap-2">
+            <Image src="/logo.svg" alt="Logo" width={28} height={28} className="shrink-0 logo-img" />
+            <span className="font-serif text-2xl font-bold text-foreground tracking-tight leading-none">
+              Perenne
+            </span>
+          </div>
+          {onClose && (
+            <button onClick={onClose} className="p-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-muted-foreground hover:text-foreground transition-colors" title="Close Sidebar">
+              <PanelLeftClose className="w-4 h-4" />
+            </button>
+          )}
         </div>
         <p className="text-xs text-muted-foreground mt-0.5">Study smarter</p>
       </div>
