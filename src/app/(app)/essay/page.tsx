@@ -976,12 +976,12 @@ ${finalSubmissionText}`;
           ) : (
             <>
               {/* Source Passage */}
-              <div className="bg-[#FAF9F6] border border-border rounded-xl p-8 md:p-10 shadow-sm relative overflow-hidden">
+              <div className="bg-[#FAF9F6] dark:bg-muted/20 border border-border rounded-xl p-8 md:p-10 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/40 rounded-l-xl"></div>
                 <h3 className="text-lg font-serif font-medium text-foreground mb-4">
                   {sourceType === "ai" ? `${config.style} Passage` : "Source Material"}
                 </h3>
-                <div className="prose prose-sm md:prose-base prose-stone max-w-none text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                <div className="prose prose-sm md:prose-base prose-stone dark:prose-invert max-w-none text-muted-foreground leading-relaxed whitespace-pre-wrap">
                   {generatedPassage}
                 </div>
               </div>
