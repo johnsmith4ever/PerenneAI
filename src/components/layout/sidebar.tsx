@@ -18,14 +18,20 @@ const navItems = [
   { href: "/history", label: "History", icon: Clock },
 ];
 
-export function Sidebar({ onClose }: { onClose?: () => void }) {
+export function Sidebar({ isOpen = true, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
   const { creditsUsed, dailyLimit, isLoaded } = useSubscription();
   const rawPercent = isLoaded ? Math.min(100, (creditsUsed / dailyLimit) * 100) : 0;
   const displayPercent = rawPercent > 0 && rawPercent < 0.1 ? "<0.1" : rawPercent.toFixed(1);
 
   return (
-    <aside className="w-56 shrink-0 border-r border-border flex flex-col h-full bg-[#faf9f5] dark:bg-card/50">
+    <aside
+      className={cn(
+        "shrink-0 border-border flex flex-col h-full bg-card overflow-hidden transition-all duration-300 ease-in-out",
+        isOpen ? "w-56 border-r" : "w-0 border-r-0"
+      )}
+    >
+      <div className="w-56 flex flex-col h-full">
       {/* Logo */}
       <div className="px-5 py-5 border-b border-border">
         <div className="flex items-center justify-between gap-2 mb-0.5">
@@ -56,7 +62,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
                 "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors",
                 active
                   ? "bg-primary text-white font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-[#ede8df] dark:hover:bg-muted"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >
               <Icon className="w-4 h-4 shrink-0" />
@@ -68,11 +74,11 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
 
       {/* Subscriptions & Usage */}
       <div className="px-3 mb-3">
-        <Link href="/subscriptions" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-2", pathname === "/subscriptions" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-[#ede8df] dark:hover:bg-muted")}>
+        <Link href="/subscriptions" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-2", pathname === "/subscriptions" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
           <CreditCard className="w-4 h-4 shrink-0" />
           Subscriptions
         </Link>
-        <div className="p-3 rounded-xl bg-white dark:bg-card border border-border shadow-sm">
+        <div className="p-3 rounded-xl bg-background border border-border shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <p className="text-[11px] font-semibold tracking-wider uppercase text-muted-foreground">Usage</p>
             <Link href="/subscriptions" className="text-[10px] font-medium text-primary hover:underline bg-primary/10 px-2 py-0.5 rounded">Top up</Link>
@@ -94,6 +100,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
           </div>
         </div>
         <ThemeToggle />
+      </div>
       </div>
     </aside>
   );
