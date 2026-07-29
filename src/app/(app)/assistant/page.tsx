@@ -119,8 +119,17 @@ export default function AssistantPage() {
               messages: d.messages,
               updatedAt: new Date(d.updated_at).getTime()
             }));
-            // Supabase is the source of truth, so we overwrite local state
-            setChats(loadedChats);
+            
+            // Merge local and remote so we don't wipe out offline chats
+            setChats(prev => {
+              const map = new Map<string, ChatSession>();
+              // Add local chats first
+              prev.forEach(c => map.set(c.id, c));
+              // Overwrite with remote chats (since remote is more permanent)
+              loadedChats.forEach(c => map.set(c.id, c));
+              // Sort by updated time
+              return Array.from(map.values()).sort((a, b) => b.updatedAt - a.updatedAt);
+            });
           }
         });
         return () => { isMounted = false; };
