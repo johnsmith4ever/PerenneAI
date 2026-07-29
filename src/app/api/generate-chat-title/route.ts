@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
+import { auth } from "@clerk/nextjs/server";
+import { trackUsage } from "@/lib/usage";
 
 const groq = createOpenAI({
   baseURL: "https://api.groq.com/openai/v1",
@@ -9,6 +11,11 @@ const groq = createOpenAI({
 
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
+    }
+
     const { text } = await req.json();
     if (!text) return NextResponse.json({ title: "New Chat" });
 
@@ -19,6 +26,8 @@ export async function POST(req: Request) {
       maxOutputTokens: 10,
       temperature: 0.2,
     });
+
+    trackUsage(userId, "generate-chat-title").catch(console.error);
 
     return NextResponse.json({ title: title.trim().replace(/^["']|["']$/g, "") });
   } catch (error) {

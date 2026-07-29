@@ -3,6 +3,8 @@ import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createAnthropic } from "@ai-sdk/anthropic";
+import { auth } from "@clerk/nextjs/server";
+import { trackUsage } from "@/lib/usage";
 
 const anthropic = createAnthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -48,6 +50,11 @@ function getModel(displayName: string) {
 
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
+    }
+
     const { messages, systemPrompt, model: modelName, maxTokens } = await req.json();
 
     const model = getModel(modelName);
@@ -63,6 +70,9 @@ export async function POST(req: Request) {
     });
 
     console.log("Chat generation complete. Usage:", usage);
+
+    // Track usage asynchronously without awaiting to avoid delaying response
+    trackUsage(userId, "chat").catch(console.error);
 
     return NextResponse.json({ status: "success", text, usage });
   } catch (error: any) {

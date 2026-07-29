@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { auth } from "@clerk/nextjs/server";
+import { trackUsage } from "@/lib/usage";
 
 const groq = createOpenAI({
   baseURL: "https://api.groq.com/openai/v1",
@@ -19,6 +21,11 @@ const deepseek = createOpenAI({
 
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
+    }
+
     const { topic, text, imageBase64, tierRank = 0 } = await req.json();
 
     let extractedText = text || "";
@@ -83,6 +90,8 @@ Respond with ONLY a JSON object, no markdown, no explanation:
     if (!cards || !Array.isArray(cards) || cards.length === 0) {
       return NextResponse.json({ status: "error", message: "No flashcards generated. Try providing more content." }, { status: 500 });
     }
+
+    trackUsage(userId, "generate-flashcards").catch(console.error);
 
     return NextResponse.json({ status: "success", data: cards, title, textUsage, imageUsage });
   } catch (error: any) {

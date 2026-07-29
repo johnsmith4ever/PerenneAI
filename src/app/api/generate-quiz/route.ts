@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
+import { auth } from "@clerk/nextjs/server";
+import { trackUsage } from "@/lib/usage";
 
 // Initialize DeepSeek (always V4 Flash for quiz generation)
 const deepseek = createOpenAI({
@@ -10,6 +12,11 @@ const deepseek = createOpenAI({
 
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
+    }
+    
     const body = await req.json();
     const {
       academicYear,
@@ -94,6 +101,8 @@ You MUST respond with ONLY a valid JSON array (no wrapping object, no markdown f
     if (!questions || !Array.isArray(questions) || questions.length === 0) {
       return NextResponse.json({ status: "error", message: "AI returned empty results. Please try again." }, { status: 500 });
     }
+
+    trackUsage(userId, "generate-quiz").catch(console.error);
 
     return NextResponse.json({ status: "success", data: questions, usage });
 

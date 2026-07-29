@@ -6,6 +6,8 @@ import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription"
 import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Zap, BrainCircuit, Eye, EyeOff, MessageSquare, MoreHorizontal, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/lib/supabase";
+import { useUser } from "@clerk/nextjs";
 
 type ChatMode = "Normal" | "Understand" | "Quick Answer";
 
@@ -38,6 +40,7 @@ type ChatSession = {
 };
 
 export default function AssistantPage() {
+  const { user } = useUser();
   const { tier, canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
 
@@ -66,6 +69,22 @@ export default function AssistantPage() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const saveChatToSupabase = async (chatId: string, title: string, msgs: Message[]) => {
+    if (!user) return;
+    try {
+      const { error } = await supabase.from("chat_history").upsert({
+        id: chatId,
+        user_id: user.id,
+        title: title,
+        messages: msgs,
+        updated_at: new Date().toISOString()
+      }, { onConflict: "id" });
+      if (error) console.error("Supabase chat save error:", error);
+    } catch (e) {
+      console.error("Failed to save chat to supabase", e);
+    }
+  };
+
   // Ensure active model is always valid for tier
   useEffect(() => {
     if (subLoaded && !availableModels.find(m => m.displayName === activeModel.displayName)) {
@@ -83,6 +102,32 @@ export default function AssistantPage() {
     }
   }, [chatsLoaded, activeIdLoaded, activeChatId]); // Only runs effectively on first load since messages will then be > 0
 
+  // Fetch from Supabase on mount to sync recent chats across devices/incognito
+  useEffect(() => {
+    if (user?.id && chatsLoaded) {
+      let isMounted = true;
+      supabase.from("chat_history")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("updated_at", { ascending: false })
+        .limit(30)
+        .then(({ data, error }) => {
+          if (!error && data && isMounted) {
+            const loadedChats = data.map(d => ({
+              id: d.id,
+              title: d.title,
+              messages: d.messages,
+              updatedAt: new Date(d.updated_at).getTime()
+            }));
+            // Supabase is the source of truth, so we overwrite local state
+            setChats(loadedChats);
+          }
+        });
+        return () => { isMounted = false; };
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, chatsLoaded]);
+
   const handleNewChat = () => {
     setActiveChatId(null);
     setMessages([]);
@@ -99,7 +144,12 @@ export default function AssistantPage() {
 
   const handleSaveTitle = (id: string) => {
     if (editChatTitle.trim()) {
-      setChats(prev => prev.map(c => c.id === id ? { ...c, title: editChatTitle.trim() } : c));
+      const newTitle = editChatTitle.trim();
+      setChats(prev => prev.map(c => c.id === id ? { ...c, title: newTitle } : c));
+      const chatToSave = chats.find(c => c.id === id);
+      if (chatToSave) {
+        saveChatToSupabase(id, newTitle, chatToSave.messages);
+      }
     }
     setEditingChatId(null);
   };
@@ -140,9 +190,10 @@ export default function AssistantPage() {
 
     let currentId = activeChatId;
     if (!currentId) {
-      currentId = Date.now().toString();
+      currentId = crypto.randomUUID();
       setActiveChatId(currentId);
       setChats(prev => [{ id: currentId!, title: "Generating title...", messages: newMessages, updatedAt: Date.now() }, ...prev]);
+      saveChatToSupabase(currentId, "Generating title...", newMessages);
       
       // Async title generation
       fetch("/api/generate-chat-title", {
@@ -154,6 +205,7 @@ export default function AssistantPage() {
       .then(d => {
         if (d.title) {
           setChats(prev => prev.map(c => c.id === currentId ? { ...c, title: d.title } : c));
+          saveChatToSupabase(currentId!, d.title, newMessages);
         }
       })
       .catch(() => {});
@@ -170,11 +222,14 @@ export default function AssistantPage() {
         .then(d => {
           if (d.title) {
             setChats(prev => prev.map(c => c.id === currentId ? { ...c, title: d.title } : c));
+            saveChatToSupabase(currentId!, d.title, newMessages);
           }
         })
         .catch(() => {});
       } else {
         setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: newMessages, updatedAt: Date.now() } : c));
+        const active = chats.find(c => c.id === currentId);
+        if (active) saveChatToSupabase(currentId, active.title, newMessages);
       }
     }
 
@@ -214,6 +269,9 @@ export default function AssistantPage() {
         const finalMessages = [...newMessages, assistantMessage];
         setMessages(finalMessages);
         setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c));
+        
+        const active = chats.find(c => c.id === currentId);
+        saveChatToSupabase(currentId!, active?.title || "Chat", finalMessages);
       } else {
         const finalMessages = [...newMessages, { role: "assistant" as const, content: "Sorry, an error occurred: " + (data.message || "Unknown error") }];
         setMessages(finalMessages);

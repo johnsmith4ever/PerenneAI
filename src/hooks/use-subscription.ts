@@ -45,6 +45,7 @@ type SubscriptionState = {
 };
 
 import { useUser } from "@clerk/nextjs";
+import { supabase } from "@/lib/supabase";
 
 export function useSubscription() {
   const { user, isLoaded: clerkLoaded } = useUser();
@@ -74,15 +75,52 @@ export function useSubscription() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.lastReset, isLoaded, setState]);
 
-  // Sync tier from Clerk public metadata
+  // Sync tier from Clerk public metadata AND sync credits from Supabase
   useEffect(() => {
     if (clerkLoaded && user) {
       const dbTier = (user.publicMetadata.tier as Tier) || "Free";
-      if (dbTier !== state.tier) {
-        setState({ ...state, tier: dbTier });
-      }
+      const today = new Date().toISOString().split("T")[0];
+
+      let isMounted = true;
+      supabase.from("user_usage")
+        .select("credits_used, last_reset")
+        .eq("user_id", user.id)
+        .single()
+        .then(({ data, error }) => {
+          if (!isMounted) return;
+          
+          let remoteCredits = 0;
+          let remoteReset = today;
+
+          if (!error && data) {
+            remoteCredits = data.credits_used || 0;
+            remoteReset = data.last_reset || today;
+          }
+
+          // Reset if it's a new day
+          if (remoteReset !== today) {
+            remoteCredits = 0;
+            remoteReset = today;
+            // Optionally we can push the reset to supabase right away
+            supabase.from("user_usage").upsert({ 
+              user_id: user.id, 
+              credits_used: 0, 
+              last_reset: today 
+            }, { onConflict: "user_id" }).then();
+          }
+
+          setState((prev) => {
+            // Keep higher of local vs remote if same day, to prevent overwriting with stale remote data
+            const finalCredits = (prev.lastReset === today && prev.creditsUsed > remoteCredits) 
+                                  ? prev.creditsUsed 
+                                  : remoteCredits;
+            return { tier: dbTier, creditsUsed: finalCredits, lastReset: today };
+          });
+        });
+
+      return () => { isMounted = false; };
     }
-  }, [clerkLoaded, user, state.tier, setState]);
+  }, [clerkLoaded, user?.id]);
 
   const safeCreditsUsed = state.creditsUsed && !isNaN(state.creditsUsed) ? state.creditsUsed : 0;
   const dailyLimit = TIER_ALLOWANCES[state.tier];
@@ -108,9 +146,24 @@ export function useSubscription() {
     
     setState((prev) => {
       const currentCredits = prev.creditsUsed && !isNaN(prev.creditsUsed) ? prev.creditsUsed : 0;
+      const newCredits = currentCredits + cost;
+      
+      // Update Supabase directly so stats carry over to other devices/browsers
+      if (user) {
+         supabase.from("user_usage")
+           .upsert({ 
+             user_id: user.id, 
+             credits_used: newCredits, 
+             last_reset: prev.lastReset 
+           }, { onConflict: "user_id" })
+           .then(({error}) => {
+             if (error) console.error("Failed to sync usage to supabase:", error);
+           });
+      }
+
       return {
         ...prev,
-        creditsUsed: currentCredits + cost,
+        creditsUsed: newCredits,
       };
     });
   };
