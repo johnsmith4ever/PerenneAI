@@ -201,7 +201,9 @@ export default function AssistantPage() {
     if (!currentId) {
       currentId = crypto.randomUUID();
       setActiveChatId(currentId);
-      setChats(prev => [{ id: currentId!, title: "Generating title...", messages: newMessages, updatedAt: Date.now() }, ...prev]);
+      
+      const newChatSession: ChatSession = { id: currentId, title: "Generating title...", messages: newMessages, updatedAt: Date.now() };
+      setChats(prev => [newChatSession, ...prev]);
       saveChatToSupabase(currentId, "Generating title...", newMessages);
       
       // Async title generation
@@ -213,15 +215,23 @@ export default function AssistantPage() {
       .then(r => r.json())
       .then(d => {
         if (d.title) {
-          setChats(prev => prev.map(c => c.id === currentId ? { ...c, title: d.title } : c));
-          saveChatToSupabase(currentId!, d.title, newMessages);
+          setChats(prev => {
+            const updated = prev.map(c => c.id === currentId ? { ...c, title: d.title } : c);
+            const active = updated.find(c => c.id === currentId);
+            if (active) saveChatToSupabase(currentId!, active.title, active.messages);
+            return updated;
+          });
         }
       })
       .catch(() => {});
     } else {
       if (messages.length === 0) {
         // Chat was created from "New Chat" button, so generate a real title for the first message
-        setChats(prev => prev.map(c => c.id === currentId ? { ...c, title: "Generating title...", messages: newMessages, updatedAt: Date.now() } : c));
+        setChats(prev => {
+          const updated = prev.map(c => c.id === currentId ? { ...c, title: "Generating title...", messages: newMessages, updatedAt: Date.now() } : c);
+          return updated;
+        });
+        
         fetch("/api/generate-chat-title", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -230,15 +240,22 @@ export default function AssistantPage() {
         .then(r => r.json())
         .then(d => {
           if (d.title) {
-            setChats(prev => prev.map(c => c.id === currentId ? { ...c, title: d.title } : c));
-            saveChatToSupabase(currentId!, d.title, newMessages);
+            setChats(prev => {
+              const updated = prev.map(c => c.id === currentId ? { ...c, title: d.title } : c);
+              const active = updated.find(c => c.id === currentId);
+              if (active) saveChatToSupabase(currentId!, active.title, active.messages);
+              return updated;
+            });
           }
         })
         .catch(() => {});
       } else {
-        setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: newMessages, updatedAt: Date.now() } : c));
-        const active = chats.find(c => c.id === currentId);
-        if (active) saveChatToSupabase(currentId, active.title, newMessages);
+        setChats(prev => {
+          const updated = prev.map(c => c.id === currentId ? { ...c, messages: newMessages, updatedAt: Date.now() } : c);
+          const active = updated.find(c => c.id === currentId);
+          if (active) saveChatToSupabase(currentId!, active.title, active.messages);
+          return updated;
+        });
       }
     }
 
@@ -277,19 +294,27 @@ export default function AssistantPage() {
         };
         const finalMessages = [...newMessages, assistantMessage];
         setMessages(finalMessages);
-        setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c));
-        
-        const active = chats.find(c => c.id === currentId);
-        saveChatToSupabase(currentId!, active?.title || "Chat", finalMessages);
+        setChats(prev => {
+          const updated = prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c);
+          const active = updated.find(c => c.id === currentId);
+          if (active) saveChatToSupabase(currentId!, active.title, active.messages);
+          return updated;
+        });
       } else {
         const finalMessages = [...newMessages, { role: "assistant" as const, content: "Sorry, an error occurred: " + (data.message || "Unknown error") }];
         setMessages(finalMessages);
-        setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c));
+        setChats(prev => {
+          const updated = prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c);
+          return updated;
+        });
       }
     } catch (e: any) {
       const finalMessages = [...newMessages, { role: "assistant" as const, content: "Failed to reach the server. Please check your connection." }];
       setMessages(finalMessages);
-      setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c));
+      setChats(prev => {
+        const updated = prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c);
+        return updated;
+      });
     } finally {
       setIsLoading(false);
     }
