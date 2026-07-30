@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { deepseek } from "@ai-sdk/deepseek";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
-
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
 
 export async function POST(req: Request) {
   try {
@@ -31,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     const { text } = await generateText({
-      model: google("gemini-1.5-flash"),
+      model: deepseek("deepseek-chat"),
       prompt: `Create a ${slideCount}-slide presentation outline on the topic: "${topic}".
       ${promptContext}
       You MUST respond with ONLY a raw JSON array and nothing else. Do not use markdown formatting like \`\`\`json.
@@ -55,7 +51,7 @@ export async function POST(req: Request) {
     }
 
     // Deduct credits
-    await trackUsage(userId, slideCount * 10, "Presentation Generation");
+    await trackUsage(userId, "generate-presentation");
 
     return NextResponse.json({ status: "success", data: slides });
   } catch (error: any) {

@@ -15,7 +15,7 @@ type AdminUser = {
 };
 
 export default function AdminDashboardPage() {
-  const [authLevel, setAuthLevel] = useState<0 | 1 | 2>(0);
+  const [authLevel, setAuthLevel] = useState<0 | 1 | 2 | 3 | 4>(0);
   const [pwdInput, setPwdInput] = useState("");
   const [error, setError] = useState(false);
   
@@ -23,9 +23,8 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(false);
   const [upgrading, setUpgrading] = useState<string | null>(null);
 
-  // Fetch users when fully authed
   useEffect(() => {
-    if (authLevel === 2) {
+    if (authLevel === 4) {
       fetchUsers();
     }
   }, [authLevel]);
@@ -48,7 +47,7 @@ export default function AdminDashboardPage() {
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
     if (authLevel === 0) {
-      if (pwdInput === "abcdjohnsmith01") {
+      if (pwdInput === "613124") {
         setAuthLevel(1);
         setPwdInput("");
         setError(false);
@@ -56,8 +55,24 @@ export default function AdminDashboardPage() {
         setError(true);
       }
     } else if (authLevel === 1) {
-      if (pwdInput === "Kyrus2013!") {
+      if (pwdInput === "abcdjohnsmith01") {
         setAuthLevel(2);
+        setPwdInput("");
+        setError(false);
+      } else {
+        setError(true);
+      }
+    } else if (authLevel === 2) {
+      if (pwdInput === "Kyrus2013!") {
+        setAuthLevel(3);
+        setPwdInput("");
+        setError(false);
+      } else {
+        setError(true);
+      }
+    } else if (authLevel === 3) {
+      if (pwdInput === "johnsmith4ever") {
+        setAuthLevel(4);
         setPwdInput("");
         setError(false);
       } else {
@@ -96,7 +111,7 @@ export default function AdminDashboardPage() {
     }
   };
 
-  if (authLevel < 2) {
+  if (authLevel < 4) {
     return (
       <div className="min-h-[600px] flex items-center justify-center animate-in fade-in zoom-in duration-500">
         <div className="max-w-md w-full bg-card border border-border p-8 rounded-3xl shadow-2xl text-center">
@@ -105,32 +120,70 @@ export default function AdminDashboardPage() {
           </div>
           
           <h1 className="text-2xl font-bold font-serif mb-2" style={{ fontFamily: "Anthropic Serif, var(--font-merriweather), serif" }}>
-            {authLevel === 0 ? "Admin Access" : "Secondary Authentication"}
+            {authLevel === 0 && "Admin Access"}
+            {authLevel === 1 && "Secondary Authentication"}
+            {authLevel === 2 && "Tertiary Clearance"}
+            {authLevel === 3 && "Final Override"}
           </h1>
           <p className="text-sm text-muted-foreground mb-8">
-            {authLevel === 0 
-              ? "Please enter the primary clearance code." 
-              : "Clearance Level 1 Accepted. Please enter the master override password."}
+            {authLevel === 0 && "Please enter the primary clearance code."}
+            {authLevel === 1 && "Clearance Level 1 Accepted. Please enter the secondary code."}
+            {authLevel === 2 && "Clearance Level 2 Accepted. Please enter the tertiary code."}
+            {authLevel === 3 && "Clearance Level 3 Accepted. Please enter the final master override password."}
           </p>
 
           <form onSubmit={handleAuth} className="space-y-4">
-            <div>
-              <input 
-                type="password"
-                value={pwdInput}
-                onChange={(e) => { setPwdInput(e.target.value); setError(false); }}
-                className={cn(
-                  "w-full bg-background border px-4 py-3 rounded-xl text-center font-mono tracking-widest focus:outline-none focus:ring-2 transition-all",
-                  error ? "border-red-500 focus:ring-red-500/50" : "border-border focus:ring-primary/50"
-                )}
-                placeholder="••••••••••••"
-                autoFocus
-              />
-              {error && <p className="text-xs text-red-500 mt-2 font-bold uppercase tracking-wider">Invalid credentials</p>}
+            <div className="relative">
+              {authLevel === 0 ? (
+                <div className="flex gap-3 justify-center relative mt-4 mb-4">
+                  {[0, 1, 2, 3, 4, 5].map((i) => (
+                    <div 
+                      key={i} 
+                      className={cn(
+                        "w-12 h-16 border-2 rounded-lg flex items-center justify-center text-3xl font-mono bg-background transition-all",
+                        error ? "border-red-500 text-red-500 bg-red-500/10" : 
+                        pwdInput.length === i ? "border-primary ring-4 ring-primary/20" : 
+                        pwdInput[i] ? "border-primary text-primary" :
+                        "border-border text-foreground"
+                      )}
+                    >
+                      {pwdInput[i] ? "•" : ""}
+                    </div>
+                  ))}
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={pwdInput}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^0-9]/g, "").slice(0, 6);
+                      setPwdInput(val);
+                      setError(false);
+                    }}
+                    className="absolute inset-0 opacity-0 w-full h-full cursor-text z-10"
+                    autoFocus
+                  />
+                </div>
+              ) : (
+                <input 
+                  type="password"
+                  value={pwdInput}
+                  onChange={(e) => { setPwdInput(e.target.value); setError(false); }}
+                  className={cn(
+                    "w-full bg-background border px-4 py-3 rounded-xl text-center font-mono tracking-widest focus:outline-none focus:ring-2 transition-all",
+                    error ? "border-red-500 focus:ring-red-500/50" : "border-border focus:ring-primary/50"
+                  )}
+                  placeholder="••••••••••••"
+                  autoFocus
+                />
+              )}
+              {error && <p className="text-xs text-red-500 mt-4 font-bold uppercase tracking-wider text-center">Invalid credentials</p>}
             </div>
             
             <Button type="submit" className="w-full h-12 rounded-xl text-md font-bold">
-              {authLevel === 0 ? "Verify Primary" : "Authenticate Master"} <ArrowRight className="w-4 h-4 ml-2" />
+              {authLevel === 0 && "Verify Primary"}
+              {authLevel === 1 && "Authenticate Secondary"}
+              {authLevel === 2 && "Verify Tertiary"}
+              {authLevel === 3 && "Unlock Master Dashboard"} <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </form>
         </div>
@@ -138,7 +191,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  // Auth Level 2 (Fully Authenticated)
+  // Auth Level 4 (Fully Authenticated)
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-12 animate-in fade-in">
       <div className="flex items-center justify-between">

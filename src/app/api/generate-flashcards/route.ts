@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
 
@@ -10,9 +10,6 @@ const groq = createOpenAI({
   apiKey: process.env.GROQ_API_KEY,
 });
 
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
 
 const deepseek = createOpenAI({
   baseURL: "https://api.deepseek.com/v1",
@@ -42,7 +39,7 @@ export async function POST(req: Request) {
     if (imageBase64) {
       console.log("Extracting text from image via Gemini...");
       const { text: imageText, usage: u1 } = await generateText({
-        model: google("gemini-3.1-flash-lite"),
+        model: deepseek.chat("deepseek-chat"),
         messages: [
           {
             role: "user",

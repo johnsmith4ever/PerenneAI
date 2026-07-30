@@ -18,7 +18,7 @@ const TIERS: { id: Tier; name: string; price: string; credits: string; features:
     name: "Core",
     price: "£1.99/mo",
     credits: "50,000",
-    features: ["Bastion 3.5 Pro (Gemini)", "Access to History section", "Essay max 3 paragraphs", "AI Mindmap Analysis (DeepSeek)", "Be Listed"]
+    features: ["Bastion 3.5 Pro (Gemini)", "Access to History section", "Essay max 3 paragraphs", "AI Mindmap Analysis (DeepSeek)", "Presentation Builder", "Be Listed"]
   },
   {
     id: "Pro",

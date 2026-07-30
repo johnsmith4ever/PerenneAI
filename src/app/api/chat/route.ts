@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
@@ -21,9 +21,6 @@ const deepseek = createOpenAI({
   apiKey: process.env.DEEPSEEK_API_KEY,
 });
 
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
 
 // Map display names to actual provider model calls
 // CRITICAL: use provider.chat() not provider() — provider() uses Responses API which Groq/DeepSeek don't support
@@ -32,9 +29,9 @@ function getModel(displayName: string) {
     case "Polaris 1":
       return groq.chat("llama-3.3-70b-versatile");
     case "Bastion 3.5 Flash":
-      return google("gemini-3.1-flash-lite");
+      return deepseek.chat("deepseek-chat");
     case "Bastion 3.5 Pro":
-      return google("gemini-3.5-flash");
+      return deepseek.chat("deepseek-chat");
     case "Apollo V4 Flash":
       return deepseek.chat("deepseek-v4-flash");
     case "Apollo V4 Pro":

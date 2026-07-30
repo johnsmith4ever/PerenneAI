@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { deepseek } from "@ai-sdk/deepseek";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
-
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
 
 export async function POST(req: Request) {
   try {
@@ -27,7 +23,7 @@ export async function POST(req: Request) {
     }
 
     const { text } = await generateText({
-      model: google("gemini-1.5-flash"),
+      model: deepseek("deepseek-chat"),
       prompt: `Generate a comprehensive Pros and Cons list for the following topic/dilemma: "${topic}".
       ${promptContext}
       You MUST respond with ONLY a raw JSON object and nothing else. Do not use markdown formatting like \`\`\`json.
@@ -53,7 +49,7 @@ export async function POST(req: Request) {
     }
 
     // Deduct credits
-    await trackUsage(userId, 50, "Pro/Con Table Generation");
+    await trackUsage(userId, "pro-con");
 
     return NextResponse.json({ status: "success", data: object });
   } catch (error: any) {

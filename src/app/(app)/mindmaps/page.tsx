@@ -128,7 +128,7 @@ function palette(depth: number) {
 
   export default function MindmapsPage() {
   const { deductCredits, creditsUsed, dailyLimit, canAfford, tier, isLoaded: subLoaded } = useSubscription();
-  const { openProfile } = useClerk();
+  const { openUserProfile } = useClerk();
 
   const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_root_v4", DEFAULT_ROOT);
   const [zoom, setZoom] = useState(0.65);
@@ -202,7 +202,7 @@ function palette(depth: number) {
     if (!analysisInput.trim()) return;
     if (TIER_RANK[tier] < TIER_RANK["Core"]) {
       alert("DeepSeek analysis requires the Core plan or higher.");
-      openProfile();
+      openUserProfile();
       return;
     }
     const model: ModelType = "Apollo V4 Flash";
@@ -235,7 +235,7 @@ function palette(depth: number) {
     if (!analysis) return;
     if (TIER_RANK[tier] < TIER_RANK["Pro"]) {
       alert("Auto-build with Gemini requires the Pro plan or higher.");
-      openProfile();
+      openUserProfile();
       return;
     }
     const model: ModelType = "Bastion 3.5 Flash";

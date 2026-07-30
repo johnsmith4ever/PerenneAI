@@ -352,7 +352,7 @@ export default function BlackjackPage() {
               </div>
               
               <div className="flex flex-col gap-2 w-32">
-                <Button variant="destructive" size="sm" onClick={clearBet} disabled={bet === 0} className="w-full text-xs font-bold uppercase tracking-wider">
+                <Button variant="secondary" size="sm" onClick={clearBet} disabled={bet === 0} className="w-full text-xs font-bold uppercase tracking-wider">
                   Clear
                 </Button>
                 <Button size="lg" className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase tracking-widest text-lg shadow-[0_0_20px_rgba(16,185,129,0.4)]" disabled={bet === 0} onClick={startDeal}>
@@ -366,7 +366,7 @@ export default function BlackjackPage() {
             <Button size="lg" className="w-32 h-16 rounded-2xl bg-white text-black hover:bg-gray-200 font-black uppercase text-xl shadow-xl transition-transform active:scale-95" onClick={hit}>
               Hit
             </Button>
-            <Button size="lg" className="w-32 h-16 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-black uppercase text-xl shadow-xl transition-transform active:scale-95" onClick={stand}>
+            <Button size="lg" className="w-32 h-16 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-black uppercase text-xl shadow-xl transition-transform active:scale-95" onClick={() => stand()}>
               Stand
             </Button>
             {playerHand.length === 2 && balance >= bet && (

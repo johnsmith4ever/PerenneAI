@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSubscription } from "@/hooks/use-subscription";
+import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import pptxgen from "pptxgenjs";
 
 type Slide = {
@@ -24,7 +24,8 @@ export default function PresentationBuilderPage() {
   const [error, setError] = useState<string | null>(null);
   
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const { tierRank, isLoaded } = useSubscription();
+  const { tier, isLoaded, deductCredits } = useSubscription();
+  const tierRank = TIER_RANK[tier] || 0;
 
   const generatePresentation = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +43,7 @@ export default function PresentationBuilderPage() {
       if (data.status === "success") {
         setSlides(data.data);
         setCurrentSlideIndex(0);
+        deductCredits(100, slideCount * 100, "Apollo V4 Flash", "other");
       } else {
         setError(data.message || "Failed to generate.");
       }

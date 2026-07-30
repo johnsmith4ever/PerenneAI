@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { deepseek } from "@ai-sdk/deepseek";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
-
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
 
 export async function POST(req: Request) {
   try {
@@ -55,7 +51,7 @@ You must respond with EXACTLY and ONLY a valid JSON object matching this schema:
 Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object. Ensure the JSON is perfectly formatted and deeply nested (at least 2-3 levels deep).`;
 
     const { text: rawJson, usage } = await generateText({
-      model: google("gemini-3.1-flash-lite"),
+      model: deepseek.chat("deepseek-chat"),
       system: "You are an AI mindmap architect. You always output valid, raw JSON.",
       prompt,
     });

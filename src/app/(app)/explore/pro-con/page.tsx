@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useSubscription } from "@/hooks/use-subscription";
 
 type Item = {
   point: string;
@@ -24,6 +25,7 @@ export default function ProConPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ProConData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { deductCredits } = useSubscription();
 
   const generateTable = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +42,7 @@ export default function ProConPage() {
       const data = await res.json();
       if (data.status === "success") {
         setResult(data.data);
+        deductCredits(100, 300, "Apollo V4 Flash", "other");
       } else {
         setError(data.message || "Failed to generate.");
       }

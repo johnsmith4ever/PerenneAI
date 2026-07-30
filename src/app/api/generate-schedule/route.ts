@@ -91,7 +91,7 @@ Requirements:
     }
 
     // Track usage
-    await trackUsage(userId, 50, "Schedule Generation");
+    await trackUsage(userId, "generate-schedule");
 
     return NextResponse.json({
       status: "success",
