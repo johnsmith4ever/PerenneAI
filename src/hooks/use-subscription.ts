@@ -4,7 +4,7 @@ import { usePersistentState } from "./use-persistent-state";
 export type Tier = "Free" | "Core" | "Pro" | "Premium" | "Maximum";
 
 export const TIER_ALLOWANCES: Record<Tier, number> = {
-  Free: 17_000,
+  Free: 15_000,
   Core: 50_000,
   Pro: 100_000,
   Premium: 180_000,

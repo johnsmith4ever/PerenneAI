@@ -26,7 +26,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
     }
 
-    const { topic, text, imageBase64, tierRank = 0 } = await req.json();
+    const { topic, text, imageBase64, tierRank = 0, cardCount = "Auto" } = await req.json();
+
+    let countInstruction = 'Create between 8 and 20 flashcards depending on how much content there is.';
+    if (cardCount !== "Auto") {
+      countInstruction = `Create EXACTLY ${cardCount} flashcards.`;
+    }
 
     let extractedText = text || "";
 
@@ -63,7 +68,7 @@ export async function POST(req: Request) {
 Topic: ${topic || "General"}
 Content: ${extractedText}
 
-Create between 8 and 20 flashcards depending on how much content there is. Each flashcard has a "term" (the front — a word, phrase, or short question) and a "definition" (the back — the answer or explanation).
+${countInstruction} Each flashcard has a "term" (the front — a word, phrase, or short question) and a "definition" (the back — the answer or explanation).
 
 Also generate a short, descriptive title for this deck (3-6 words, like "Cell Biology Essentials" or "French Revolution Key Events").
 

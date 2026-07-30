@@ -17,8 +17,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Perenne",
-  description: "UK-focused AI study app",
+  title: "PerenneAI",
+  description: "Your intelligent, all-in-one productivity and AI companion.",
   verification: {
     google: "Q4TDzE3G5_scwK2g96A50ooFKe2T1soFPCZP77_2Ja0",
   },

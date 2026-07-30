@@ -10,7 +10,7 @@ const TIERS: { id: Tier; name: string; price: string; credits: string; features:
     id: "Free",
     name: "Free",
     price: "£0.00",
-    credits: "17,000",
+    credits: "15,000",
     features: ["Polaris 1 (Llama)", "Bastion 3.5 Flash (Gemini)", "Apollo V4 Flash (Deepseek)"]
   },
   {
@@ -18,14 +18,14 @@ const TIERS: { id: Tier; name: string; price: string; credits: string; features:
     name: "Core",
     price: "£1.99/mo",
     credits: "50,000",
-    features: ["Bastion 3.5 Pro (Gemini)", "Access to History section", "Essay max 3 paragraphs"]
+    features: ["Bastion 3.5 Pro (Gemini)", "Access to History section", "Essay max 3 paragraphs", "AI Mindmap Analysis (DeepSeek)", "Be Listed"]
   },
   {
     id: "Pro",
     name: "Pro",
     price: "£3.99/mo",
     credits: "100,000",
-    features: ["Apollo V4 Pro (Deepseek)", "Essay medium passage length", "Essay max 5 paragraphs", "Unlocks writing styles", "Relaxed token control"]
+    features: ["Apollo V4 Pro (Deepseek)", "Essay medium passage length", "Essay max 5 paragraphs", "Unlocks writing styles", "Relaxed token control", "AI Mindmap Auto-Build (Gemini)"]
   },
   {
     id: "Premium",

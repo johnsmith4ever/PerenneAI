@@ -18,6 +18,7 @@ import {
   Eye,
   EyeOff,
   CheckCircle2,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
@@ -35,6 +36,7 @@ export default function FlashcardsPage() {
   const [topic, setTopic] = usePersistentState("flashcards_topic", "");
   const [textContent, setTextContent] = usePersistentState("flashcards_text", "");
   const [imageBase64, setImageBase64] = usePersistentState<string | null>("flashcards_image", null);
+  const [cardCount, setCardCount] = usePersistentState<string>("flashcards_count", "Auto");
   const [isGenerating, setIsGenerating] = useState(false);
 
   const { user } = useUser();
@@ -90,7 +92,7 @@ export default function FlashcardsPage() {
       const res = await fetch("/api/generate-flashcards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic, text: textContent, imageBase64, tierRank }),
+        body: JSON.stringify({ topic, text: textContent, imageBase64, tierRank, cardCount }),
       });
       const data = await res.json();
       if (data.status === "success") {
@@ -313,6 +315,29 @@ export default function FlashcardsPage() {
                   <CheckCircle2 className="w-3.5 h-3.5" /> Attached
                 </span>
               )}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Number of Cards
+            </label>
+            <div className="relative">
+              <select
+                value={cardCount}
+                onChange={(e) => setCardCount(e.target.value)}
+                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none"
+              >
+                <option value="Auto">Auto (Let AI decide)</option>
+                {Array.from({ length: 16 }, (_, i) => i + 5).map((num) => (
+                  <option key={num} value={num.toString()}>
+                    {num} Cards
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
+                <ChevronDown className="w-4 h-4" />
+              </div>
             </div>
           </div>
 

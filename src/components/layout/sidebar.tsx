@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { BookOpen, PenLine, FileText, LayoutDashboard, MessageSquare, Clock, CreditCard, PanelLeftClose } from "lucide-react";
+import { BookOpen, PenLine, FileText, LayoutDashboard, MessageSquare, Clock, CreditCard, PanelLeftClose, Globe, Network, FerrisWheel } from "lucide-react";
 import { useSubscription } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -15,6 +15,7 @@ const navItems = [
   { href: "/flashcards", label: "Flashcards", icon: BookOpen },
   { href: "/quiz", label: "Quiz Maker", icon: PenLine },
   { href: "/essay", label: "Essay", icon: FileText },
+  { href: "/mindmaps", label: "Mindmaps", icon: Network },
   { href: "/history", label: "History", icon: Clock },
 ];
 
@@ -72,8 +73,28 @@ export function Sidebar({ isOpen = true, onClose }: { isOpen?: boolean; onClose?
         })}
       </nav>
 
-      {/* Subscriptions & Usage */}
+      {/* Explore, Subscriptions & Usage */}
       <div className="px-3 mb-3">
+        <Link href="/daily-poll" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-1", pathname === "/daily-poll" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
+          <svg className="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+          Daily Poll
+        </Link>
+        <Link href="/admin" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-1", pathname === "/admin" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
+          <svg className="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          Admin
+        </Link>
+        <Link href="/terms" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-1", pathname === "/terms" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
+          <FileText className="w-4 h-4 shrink-0" />
+          Terms & Conditions
+        </Link>
+        <Link href="/explore" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-1", pathname === "/explore" || pathname.startsWith("/explore/") ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
+          <Globe className="w-4 h-4 shrink-0" />
+          Explore
+        </Link>
+        <Link href="/fun" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-1", pathname === "/fun" || pathname.startsWith("/fun/") ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
+          <FerrisWheel className="w-4 h-4 shrink-0" />
+          Fun
+        </Link>
         <Link href="/subscriptions" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-2", pathname === "/subscriptions" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
           <CreditCard className="w-4 h-4 shrink-0" />
           Subscriptions

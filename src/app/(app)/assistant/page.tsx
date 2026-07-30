@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
-import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Zap, BrainCircuit, Eye, EyeOff, MessageSquare, MoreHorizontal, Lock } from "lucide-react";
+import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Zap, BrainCircuit, Eye, EyeOff, MessageSquare, MoreHorizontal, Lock, PanelLeft, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -58,6 +58,7 @@ export default function AssistantPage() {
   const [chatMode, setChatMode] = useState<ChatMode>("Normal");
   const [activeModel, setActiveModel] = useState<ModelDefinition>(MODELS[0]);
   const [isModelSelectorOpen, setIsModelSelectorOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = usePersistentState<boolean>("assistant_sidebar_open", true);
   const [hoveredModel, setHoveredModel] = useState<string | null>(null);
   const [inputText, setInputText] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -161,6 +162,22 @@ export default function AssistantPage() {
       }
     }
     setEditingChatId(null);
+  };
+
+  const handleDeleteChat = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this chat?")) return;
+    setChats(prev => prev.filter(c => c.id !== id));
+    if (activeChatId === id) {
+      setActiveChatId(null);
+      setMessages([]);
+    }
+    if (user) {
+      try {
+        await supabase.from("chat_history").delete().eq("id", id).eq("user_id", user.id);
+      } catch (e) {
+        console.error("Failed to delete chat", e);
+      }
+    }
   };
 
   // Close dropdown on outside click
@@ -372,11 +389,21 @@ export default function AssistantPage() {
   return (
     <div className="flex gap-3 h-[calc(100vh-4rem)]">
       {/* Assistant sidebar: Recent chats */}
-      <div className="w-72 shrink-0 flex flex-col gap-3 pr-1 hidden md:flex">
-          <Button onClick={handleNewChat} className="w-full gap-2 justify-start shadow-none border border-border bg-card hover:bg-muted text-sm font-normal tracking-normal" variant="outline">
-            <Plus className="w-4 h-4" />
-            New Chat
-          </Button>
+      {isSidebarOpen ? (
+        <div className="w-72 shrink-0 flex flex-col gap-3 pr-1 hidden md:flex">
+          <div className="flex items-center gap-2">
+            <Button onClick={handleNewChat} className="flex-1 gap-2 justify-start shadow-none border border-border bg-card hover:bg-muted text-sm font-normal tracking-normal" variant="outline">
+              <Plus className="w-4 h-4" />
+              New Chat
+            </Button>
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="flex shrink-0 items-center justify-center w-9 h-9 rounded-lg border border-border bg-card shadow-sm hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+              title="Close Sidebar"
+            >
+              <PanelLeft className="w-4 h-4" />
+            </button>
+          </div>
           
           <div className="flex-1 flex flex-col overflow-hidden rounded-xl bg-card border border-border shadow-sm">
             <div className="px-4 py-3 border-b border-border bg-muted/30">
@@ -426,20 +453,32 @@ export default function AssistantPage() {
                     )}
                     
                     {editingChatId !== c.id && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEditingChatId(c.id);
-                          setEditChatTitle(c.title);
-                        }}
-                        className={cn(
-                          "absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md hover:bg-background/80 text-muted-foreground hover:text-foreground transition-all",
-                          activeChatId === c.id ? "opacity-100" : "opacity-0 group-hover/chat:opacity-100"
-                        )}
-                        title="Rename chat"
-                      >
-                        <MoreHorizontal className="w-3.5 h-3.5" />
-                      </button>
+                      <div className={cn(
+                        "absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5 transition-all",
+                        activeChatId === c.id ? "opacity-100" : "opacity-0 group-hover/chat:opacity-100"
+                      )}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingChatId(c.id);
+                            setEditChatTitle(c.title);
+                          }}
+                          className="p-1.5 rounded-md hover:bg-background/80 text-muted-foreground hover:text-foreground"
+                          title="Rename chat"
+                        >
+                          <MoreHorizontal className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteChat(c.id);
+                          }}
+                          className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
+                          title="Delete chat"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     )}
                   </div>
                 ))}
@@ -448,6 +487,17 @@ export default function AssistantPage() {
           </div>
         </div>
       </div>
+      ) : (
+        <div className="shrink-0 flex flex-col gap-3 pr-1 hidden md:flex">
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="flex items-center justify-center w-9 h-9 rounded-lg border border-border bg-card shadow-sm hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+            title="Open Sidebar"
+          >
+            <PanelLeft className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* Main chat area */}
       <div className="flex-1 flex flex-col relative min-w-0">

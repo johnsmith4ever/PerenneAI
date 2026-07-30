@@ -103,7 +103,7 @@ export default function HistoryPage() {
 
   return (
     <div className="max-w-4xl mx-auto pb-12 animate-in fade-in relative">
-      {subLoaded && tierRank < TIER_RANK.Core && (
+      {false && subLoaded && tierRank < TIER_RANK.Core && (
         <div className="absolute inset-0 z-50 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center rounded-2xl">
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
             <Lock className="w-8 h-8 text-primary" />
@@ -114,7 +114,7 @@ export default function HistoryPage() {
         </div>
       )}
       
-      <div className={cn("mb-8", tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
+      <div className={cn("mb-8", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
         <p className="label-title mb-1.5 flex items-center gap-2">
           Account
         </p>
@@ -127,7 +127,7 @@ export default function HistoryPage() {
         </p>
       </div>
 
-      <div className={cn("flex items-center gap-6 border-b border-border mb-8", tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
+      <div className={cn("flex items-center gap-6 border-b border-border mb-8", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
         <button
           onClick={() => setActiveTab("quizzes")}
           className={cn(
@@ -166,7 +166,7 @@ export default function HistoryPage() {
         </button>
       </div>
 
-      <div className={cn("mt-8", tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
+      <div className={cn("mt-8", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
