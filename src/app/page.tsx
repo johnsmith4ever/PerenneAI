@@ -8,11 +8,6 @@ import { MouseTrackingBackground } from "@/components/ui/mouse-tracking-bg";
 export default async function RootPage() {
   const { userId } = await auth();
 
-  // ONLY redirect signed in users automatically if in production!
-  // This allows local testing of the landing page flow.
-  if (userId && process.env.NODE_ENV === "production") {
-    redirect("/dashboard");
-  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col font-sans selection:bg-amber-500/20 overflow-hidden relative">
