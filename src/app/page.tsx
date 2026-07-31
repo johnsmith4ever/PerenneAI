@@ -25,7 +25,7 @@ export default async function RootPage() {
         </div>
         <div className="flex items-center gap-4">
           {userId ? (
-            <Link href="/dashboard">
+            <Link href="/welcome">
               <Button className="rounded-full px-6 bg-white text-black hover:bg-slate-200 font-bold shadow-[0_0_20px_rgba(245,158,11,0.2)]">Welcome Back</Button>
             </Link>
           ) : (
