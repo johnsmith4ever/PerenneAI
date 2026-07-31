@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MousePointerClick, ArrowRight, Loader2, Plus, ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSubscription } from "@/hooks/use-subscription";
+import { useUser } from "@clerk/nextjs";
+import { supabase } from "@/lib/supabase";
 
 type Item = {
   point: string;
@@ -26,6 +28,18 @@ export default function ProConPage() {
   const [result, setResult] = useState<ProConData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { deductCredits } = useSubscription();
+  const { user } = useUser();
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("explore_procon_data");
+    const savedTopic = localStorage.getItem("explore_procon_topic");
+    if (savedData && savedTopic) {
+      setResult(JSON.parse(savedData));
+      setTopic(savedTopic);
+      localStorage.removeItem("explore_procon_data");
+      localStorage.removeItem("explore_procon_topic");
+    }
+  }, []);
 
   const generateTable = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +57,15 @@ export default function ProConPage() {
       if (data.status === "success") {
         setResult(data.data);
         deductCredits(100, 300, "Apollo V4 Flash", "other");
+        
+        if (user) {
+          await supabase.from("explore_history").insert({
+            user_id: user.id,
+            topic: topic,
+            type: "pro_con",
+            data: data.data
+          });
+        }
       } else {
         setError(data.message || "Failed to generate.");
       }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { BookOpen, PenLine, FileText, LayoutDashboard, MessageSquare, Clock, CreditCard, PanelLeftClose, Globe, Network, FerrisWheel, Banknote } from "lucide-react";
+import { BookOpen, PenLine, FileText, LayoutDashboard, MessageSquare, Clock, CreditCard, PanelLeftClose, Globe, Network, FerrisWheel, Banknote, Calendar, MonitorPlay, Scale, AlignLeft } from "lucide-react";
 import { useSubscription } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -16,6 +16,10 @@ const navItems = [
   { href: "/quiz", label: "Quiz Maker", icon: PenLine },
   { href: "/essay", label: "Essay", icon: FileText },
   { href: "/mindmaps", label: "Mindmaps", icon: Network },
+  { href: "/explore/schedule-maker", label: "Schedules", icon: Calendar },
+  { href: "/explore/presentation", label: "Presentations", icon: MonitorPlay },
+  { href: "/explore/pro-con", label: "Pro / Con", icon: Scale },
+  { href: "/explore/note-summarizer", label: "Note Summarizer", icon: AlignLeft },
   { href: "/explore", label: "Explore", icon: Globe },
   { href: "/fun", label: "Fun", icon: FerrisWheel },
   { href: "/history", label: "History", icon: Clock },
@@ -55,21 +59,30 @@ export function Sidebar({ isOpen = true, onClose }: { isOpen?: boolean; onClose?
 
       {/* Nav */}
       <nav className="flex-1 p-3 space-y-0.5">
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + "/");
+        {navItems.map((item) => {
+          const { href, label, icon: Icon } = item;
+          const comingSoon = 'comingSoon' in item ? item.comingSoon : false;
+          
+          const active = href === "/explore" 
+            ? pathname === "/explore" 
+            : pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors",
+                "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors relative group",
                 active
                   ? "bg-primary text-white font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                comingSoon && "opacity-60 cursor-not-allowed pointer-events-none"
               )}
             >
               <Icon className="w-4 h-4 shrink-0" />
               {label}
+              {comingSoon && (
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] uppercase tracking-wider font-bold bg-muted-foreground/20 px-1.5 py-0.5 rounded text-muted-foreground">Soon</span>
+              )}
             </Link>
           );
         })}
@@ -77,9 +90,9 @@ export function Sidebar({ isOpen = true, onClose }: { isOpen?: boolean; onClose?
 
       {/* Explore, Subscriptions & Usage */}
       <div className="px-3 mb-3">
-        <Link href="/daily-poll" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-1", pathname === "/daily-poll" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
-          <Banknote className="w-4 h-4 shrink-0" />
-          Donations
+        <Link href="/community" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-1", pathname === "/community" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
+          <svg className="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          Community
         </Link>
         <Link href="/admin" className={cn("flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors mb-1", pathname === "/admin" ? "bg-primary text-white font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
           <svg className="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>

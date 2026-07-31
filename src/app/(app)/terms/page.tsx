@@ -12,8 +12,8 @@ export default function TermsPage() {
       <section className="space-y-6">
         <div className="p-8 border border-border rounded-2xl bg-card text-left max-w-4xl mx-auto shadow-sm">
           <div className="prose prose-sm dark:prose-invert max-w-none space-y-6">
-            <p className="font-bold text-foreground">
-              I, Cius Unc, the fully and rightful owner of Perenne, has drafted a list of conditions to our product.
+            <p className="font-bold text-foreground font-serif text-xl border-l-4 border-primary pl-5 py-2 bg-muted/30 rounded-r-lg">
+              Cius Unc, the fully and rightful owner of Perenne, hereby establishes this legally binding declaration of Terms and Conditions. By continuing to access or use the services provided by Perenne, you expressly acknowledge and irrevocably consent to be bound by the stipulations contained herein.
             </p>
             
             <h2 className="text-lg font-bold mt-6 text-foreground">1. Acceptance of Terms</h2>

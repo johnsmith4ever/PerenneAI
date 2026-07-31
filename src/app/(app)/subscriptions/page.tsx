@@ -10,35 +10,35 @@ const TIERS: { id: Tier; name: string; price: string; credits: string; features:
     id: "Free",
     name: "Free",
     price: "£0.00",
-    credits: "15,000",
+    credits: "5,000",
     features: ["Polaris 1 (Llama)", "Bastion 3.5 Flash (Gemini)", "Apollo V4 Flash (Deepseek)"]
   },
   {
     id: "Core",
     name: "Core",
     price: "£1.99/mo",
-    credits: "50,000",
+    credits: "20,000",
     features: ["Bastion 3.5 Pro (Gemini)", "Access to History section", "Essay max 3 paragraphs", "AI Mindmap Analysis (DeepSeek)", "Presentation Builder", "Be Listed"]
   },
   {
     id: "Pro",
     name: "Pro",
     price: "£3.99/mo",
-    credits: "100,000",
+    credits: "60,000",
     features: ["Apollo V4 Pro (Deepseek)", "Essay medium passage length", "Essay max 5 paragraphs", "Unlocks writing styles", "Relaxed token control", "AI Mindmap Auto-Build (Gemini)"]
   },
   {
     id: "Premium",
     name: "Premium",
     price: "£6.99/mo",
-    credits: "180,000",
-    features: ["Atlas 4.5 Flash (Claude Haiku)", "Essay max 8 paragraphs", "Deepseek Flashcard generation", "Essay long passage length", "Happy developer"]
+    credits: "100,000",
+    features: ["Atlas 4.5 Flash (Claude Haiku)", "Essay max 8 paragraphs", "Essay long passage length", "Happy developer"]
   },
   {
     id: "Maximum",
     name: "Maximum",
     price: "£10.99/mo",
-    credits: "300,000",
+    credits: "150,000",
     features: ["Atlas 5 Pro (Claude Sonnet)", "Priority access", "Very happy developer"]
   }
 ];

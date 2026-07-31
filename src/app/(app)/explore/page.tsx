@@ -1,4 +1,4 @@
-import { CheckCircle2, Gamepad2, Brain, Sparkles, BookOpen, Clock, Bot, Palette, ArrowRight, Mail, Eye, MousePointerClick, MonitorPlay } from "lucide-react";
+import { CheckCircle2, Gamepad2, Brain, Sparkles, BookOpen, Clock, Bot, Palette, ArrowRight, Mail, Eye, MousePointerClick, MonitorPlay, Headphones, FileSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -39,33 +39,23 @@ export default function ExplorePage() {
             href="https://optex-ai.vercel.app"
           />
           <ToolCard 
-            title="Note Summarizer" 
-            description="Paste your messy lecture notes and get beautifully structured summaries in seconds." 
-            icon={<BookOpen className="w-6 h-6" />}
-            color="bg-amber-500/10 text-amber-500 border-amber-500/20"
-            href="/explore/note-summarizer"
+            title="AI Voice Tutor" 
+            description="Practice languages and have real-time vocal conversations with a responsive AI." 
+            icon={<Headphones className="w-6 h-6" />}
+            color="bg-purple-500/10 text-purple-500 border-purple-500/20"
           />
           <ToolCard 
-            title="Schedule Maker" 
-            description="Input your tasks and deadlines, and let AI build the perfect study timetable." 
-            icon={<Clock className="w-6 h-6" />}
-            color="bg-blue-500/10 text-blue-500 border-blue-500/20"
-            href="/explore/schedule-maker"
+            title="PDF Chat" 
+            description="Upload textbooks and papers, and chat directly with your documents to extract insights." 
+            icon={<FileSearch className="w-6 h-6" />}
+            color="bg-orange-500/10 text-orange-500 border-orange-500/20"
           />
-            <ToolCard 
-              title="Pro/Cons Table Maker" 
-              description="Instantly generate detailed pros and cons tables for any decision." 
-              icon={<MousePointerClick className="w-6 h-6" />}
-              color="bg-rose-500/10 text-rose-500 border-rose-500/20"
-              href="/explore/pro-con"
-            />
-            <ToolCard 
-              title="Presentation Builder" 
-              description="Transform text into beautiful, slide-ready presentation outlines." 
-              icon={<MonitorPlay className="w-6 h-6" />}
-              color="bg-cyan-500/10 text-cyan-500 border-cyan-500/20"
-              href="/explore/presentation"
-            />
+          <ToolCard 
+            title="Focus Timer" 
+            description="A smart Pomodoro timer that dynamically blocks distractions during deep study." 
+            icon={<Sparkles className="w-6 h-6" />}
+            color="bg-pink-500/10 text-pink-500 border-pink-500/20"
+          />
         </div>
       </section>
     </div>

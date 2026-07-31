@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, Clock, Sparkles, Loader2, BookOpen, Sunrise, Sunset, Flame, Calendar, Save } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, Clock, Sparkles, Loader2, BookOpen, Sunrise, Sunset, Flame, Calendar, Save, Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSubscription, ModelType } from "@/hooks/use-subscription";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useUser } from "@clerk/nextjs";
+import { supabase } from "@/lib/supabase";
 
 // ─── TYPES ───────────────────────────────────────────────────────────────────────
 
@@ -35,6 +37,8 @@ type Schedule = {
 export default function ScheduleMakerPage() {
   const { deductCredits, tier } = useSubscription();
   const [loading, setLoading] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const { user } = useUser();
   
   // Form State
   const [goal, setGoal] = useLocalStorage("sm_goal", "");
@@ -49,9 +53,21 @@ export default function ScheduleMakerPage() {
   const [selectedDay, setSelectedDay] = useLocalStorage("sm_selectedDay", 0);
   const [schedule, setSchedule] = useLocalStorage<Schedule | null>("sm_schedule", null);
 
+  useEffect(() => {
+    const savedData = localStorage.getItem("explore_schedule_data");
+    const savedTopic = localStorage.getItem("explore_schedule_topic");
+    if (savedData && savedTopic) {
+      setSchedule(JSON.parse(savedData));
+      setGoal(savedTopic);
+      localStorage.removeItem("explore_schedule_data");
+      localStorage.removeItem("explore_schedule_topic");
+    }
+  }, []);
+
   const generateSchedule = async () => {
     if (!goal || !subjects) return;
     setLoading(true);
+    setIsSaved(false);
     const model: ModelType = "Apollo V4 Flash";
     
     try {
@@ -63,11 +79,18 @@ export default function ScheduleMakerPage() {
       
       const data = await res.json();
       if (data.status === "success") {
-        if (data.usage) {
-          deductCredits(data.usage.promptTokens ?? 0, data.usage.completionTokens ?? 0, model, "other");
-        }
+        deductCredits(150, 400, model, "other");
         setSchedule(data.data);
         setSelectedDay(0);
+        
+        if (user) {
+          await supabase.from("explore_history").insert({
+            user_id: user.id,
+            topic: goal || "Untitled Schedule",
+            type: "schedule",
+            data: data.data
+          });
+        }
       } else {
         alert("Failed to generate schedule: " + data.message);
       }
@@ -277,9 +300,23 @@ export default function ScheduleMakerPage() {
                     <span>{hours} hrs/day</span>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" className="hidden sm:flex gap-2">
-                  <Save className="w-4 h-4" /> Save
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Link href="/calendar">
+                    <Button variant="secondary" size="sm" className="hidden sm:flex gap-2">
+                      <Calendar className="w-4 h-4" /> Open in Calendar
+                    </Button>
+                  </Link>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setIsSaved(true)}
+                    disabled={isSaved}
+                    className={cn("hidden sm:flex gap-2 transition-all", isSaved && "bg-emerald-500/10 text-emerald-500 border-emerald-500/20")}
+                  >
+                    {isSaved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />} 
+                    {isSaved ? "Saved" : "Save"}
+                  </Button>
+                </div>
               </div>
 
               {/* Tips */}

@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import { clerkClient } from "@clerk/nextjs/server";
 import { updateUserTierInSupabase } from "@/lib/usage";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   try {
+    const cookieStore = await cookies();
+    if (cookieStore.get("admin_token")?.value !== "granted_access_token_secure") {
+      return NextResponse.json({ status: "error", message: "Unauthorized Admin Access" }, { status: 401 });
+    }
+
     const { userId, newTier } = await req.json();
 
     if (!userId || !newTier) {

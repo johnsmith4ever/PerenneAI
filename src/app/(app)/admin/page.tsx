@@ -21,6 +21,7 @@ export default function AdminDashboardPage() {
   
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(false);
+  const [authenticating, setAuthenticating] = useState(false);
   const [upgrading, setUpgrading] = useState<string | null>(null);
 
   useEffect(() => {
@@ -44,50 +45,44 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleAuth = (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (authLevel === 0) {
-      if (pwdInput === "613124") {
-        setAuthLevel(1);
+    if (!pwdInput) return;
+    
+    setAuthenticating(true);
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ level: authLevel, code: pwdInput }),
+      });
+      const data = await res.json();
+      
+      if (data.status === "success") {
+        setAuthLevel((prev) => (prev + 1) as 1 | 2 | 3 | 4);
         setPwdInput("");
         setError(false);
       } else {
         setError(true);
       }
-    } else if (authLevel === 1) {
-      if (pwdInput === "abcdjohnsmith01") {
-        setAuthLevel(2);
-        setPwdInput("");
-        setError(false);
-      } else {
-        setError(true);
-      }
-    } else if (authLevel === 2) {
-      if (pwdInput === "Kyrus2013!") {
-        setAuthLevel(3);
-        setPwdInput("");
-        setError(false);
-      } else {
-        setError(true);
-      }
-    } else if (authLevel === 3) {
-      if (pwdInput === "johnsmith4ever") {
-        setAuthLevel(4);
-        setPwdInput("");
-        setError(false);
-      } else {
-        setError(true);
-      }
+    } catch (e) {
+      console.error(e);
+      setError(true);
+    } finally {
+      setAuthenticating(false);
     }
   };
 
-  const upgradeUser = async (userId: string, currentTier: string) => {
+  const changeTier = async (userId: string, currentTier: string, direction: "up" | "down") => {
     const tiers = ["Free", "Core", "Pro", "Maximum"];
     const currentIndex = tiers.indexOf(currentTier);
-    if (currentIndex >= tiers.length - 1) return; // Already max
     
-    const newTier = tiers[currentIndex + 1];
-    if (!confirm(`Are you sure you want to upgrade this user to ${newTier}?`)) return;
+    if (direction === "up" && currentIndex >= tiers.length - 1) return;
+    if (direction === "down" && currentIndex <= 0) return;
+    
+    const newTier = tiers[direction === "up" ? currentIndex + 1 : currentIndex - 1];
+    const actionText = direction === "up" ? "upgrade" : "downgrade";
+    if (!confirm(`Are you sure you want to ${actionText} this user to ${newTier}?`)) return;
 
     setUpgrading(userId);
     try {
@@ -98,14 +93,13 @@ export default function AdminDashboardPage() {
       });
       const data = await res.json();
       if (data.status === "success") {
-        // Optimistically update UI
         setUsers(users.map(u => u.id === userId ? { ...u, tier: newTier } : u));
       } else {
         alert(data.message);
       }
     } catch (e) {
       console.error(e);
-      alert("Failed to upgrade user");
+      alert(`Failed to ${actionText} user`);
     } finally {
       setUpgrading(null);
     }
@@ -179,11 +173,15 @@ export default function AdminDashboardPage() {
               {error && <p className="text-xs text-red-500 mt-4 font-bold uppercase tracking-wider text-center">Invalid credentials</p>}
             </div>
             
-            <Button type="submit" className="w-full h-12 rounded-xl text-md font-bold">
-              {authLevel === 0 && "Verify Primary"}
-              {authLevel === 1 && "Authenticate Secondary"}
-              {authLevel === 2 && "Verify Tertiary"}
-              {authLevel === 3 && "Unlock Master Dashboard"} <ArrowRight className="w-4 h-4 ml-2" />
+            <Button type="submit" disabled={authenticating || !pwdInput} className="w-full h-12 rounded-xl text-md font-bold">
+              {authenticating ? <Loader2 className="w-5 h-5 animate-spin" /> : (
+                <>
+                  {authLevel === 0 && "Verify Primary"}
+                  {authLevel === 1 && "Authenticate Secondary"}
+                  {authLevel === 2 && "Verify Tertiary"}
+                  {authLevel === 3 && "Unlock Master Dashboard"} <ArrowRight className="w-4 h-4 ml-2" />
+                </>
+              )}
             </Button>
           </form>
         </div>
@@ -246,9 +244,18 @@ export default function AdminDashboardPage() {
                         {user.tier}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-6 py-4 text-right space-x-2">
                       <Button 
-                        onClick={() => upgradeUser(user.id, user.tier)} 
+                        onClick={() => changeTier(user.id, user.tier, "down")} 
+                        disabled={user.tier === "Free" || upgrading === user.id}
+                        variant="ghost"
+                        size="sm"
+                        className={cn("rounded-lg font-bold text-xs text-red-500 hover:text-red-600 hover:bg-red-500/10", user.tier === "Free" && "opacity-50")}
+                      >
+                        Downgrade
+                      </Button>
+                      <Button 
+                        onClick={() => changeTier(user.id, user.tier, "up")} 
                         disabled={isMax || upgrading === user.id}
                         variant={isMax ? "ghost" : "default"}
                         size="sm"

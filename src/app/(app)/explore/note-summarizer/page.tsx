@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target } from "lucide-react";
+import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -64,9 +64,11 @@ export default function NoteSummarizerPage() {
 
   return (
     <div className="max-w-6xl mx-auto pb-12 animate-in fade-in">
-      <Link href="/explore" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground mb-8 transition-colors">
-        <ArrowLeft className="w-4 h-4" /> Back to Explore
-      </Link>
+      <div className="flex items-center justify-between mb-8">
+        <Link href="/explore" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back to Explore
+        </Link>
+      </div>
       
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -84,22 +86,21 @@ export default function NoteSummarizerPage() {
       <div className="grid lg:grid-cols-[1fr_1.2fr] gap-8 items-start">
         {/* INPUT */}
         <div className="space-y-4 sticky top-6">
-          <div className="flex flex-col gap-3">
-            <div className="flex p-1 bg-muted/50 rounded-xl border border-border">
-              <button 
-                className={cn("flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all", mode === "understand" ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")} 
-                onClick={() => setMode("understand")}
-              >
-                Understand Mode
-              </button>
-              <button 
-                className={cn("flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all", mode === "pure" ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")} 
-                onClick={() => setMode("pure")}
-              >
-                Pure Summary
-              </button>
-            </div>
-            
+            <div className="flex flex-col gap-3">
+              <div className="flex p-1 bg-muted/50 rounded-xl border border-border">
+                <button 
+                  className={cn("flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all", mode === "understand" ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")} 
+                  onClick={() => setMode("understand")}
+                >
+                  Understand Mode
+                </button>
+                <button 
+                  className={cn("flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all", mode === "pure" ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")} 
+                  onClick={() => setMode("pure")}
+                >
+                  Pure Summary
+                </button>
+              </div>
             {mode === "pure" && (
               <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2">
                 <select value={format} onChange={(e) => setFormat(e.target.value as any)} className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none font-sans font-medium text-foreground cursor-pointer">

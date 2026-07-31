@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Clock, BookOpen, PenLine, FileText, ChevronRight, Loader2, Trash2, X } from "lucide-react";
+import { Clock, BookOpen, PenLine, FileText, ChevronRight, Loader2, Trash2, X, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
@@ -10,7 +10,18 @@ import { useRouter } from "next/navigation";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { Lock } from "lucide-react";
 
-type Tab = "quizzes" | "flashcards" | "essays";
+type Tab = "quizzes" | "flashcards" | "essays" | "presentation" | "pro_con" | "mindmap" | "schedule" | "note_summary";
+
+const TABS: { id: Tab, label: string }[] = [
+  { id: "quizzes", label: "Quizzes" },
+  { id: "flashcards", label: "Flashcards" },
+  { id: "essays", label: "Essays" },
+  { id: "presentation", label: "Presentations" },
+  { id: "pro_con", label: "Pro/Cons" },
+  { id: "mindmap", label: "Mindmaps" },
+  { id: "schedule", label: "Schedules" },
+  { id: "note_summary", label: "Note Summaries" }
+];
 
 export default function HistoryPage() {
   const router = useRouter();
@@ -23,6 +34,8 @@ export default function HistoryPage() {
   const [quizzes, setQuizzes] = useState<any[]>([]);
   const [flashcards, setFlashcards] = useState<any[]>([]);
   const [essays, setEssays] = useState<any[]>([]);
+  const [explore, setExplore] = useState<any[]>([]);
+  const [exploreFilter, setExploreFilter] = useState<string>("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,15 +44,17 @@ export default function HistoryPage() {
     const fetchHistory = async () => {
       setLoading(true);
       
-      const [quizRes, flashRes, essayRes] = await Promise.all([
+      const [quizRes, flashRes, essayRes, exploreRes] = await Promise.all([
         supabase.from("quiz_history").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
         supabase.from("flashcards_history").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
         supabase.from("essay_history").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
+        supabase.from("explore_history").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
       ]);
       
       if (quizRes.data) setQuizzes(quizRes.data);
       if (flashRes.data) setFlashcards(flashRes.data);
       if (essayRes.data) setEssays(essayRes.data);
+      if (exploreRes.data) setExplore(exploreRes.data);
       
       setLoading(false);
     };
@@ -52,6 +67,7 @@ export default function HistoryPage() {
     if (table === "quiz_history") setQuizzes(prev => prev.filter(q => q.id !== id));
     if (table === "flashcards_history") setFlashcards(prev => prev.filter(f => f.id !== id));
     if (table === "essay_history") setEssays(prev => prev.filter(e => e.id !== id));
+    if (table === "explore_history") setExplore(prev => prev.filter(e => e.id !== id));
   };
 
   const formatDate = (dateString: string) => {
@@ -76,6 +92,25 @@ export default function HistoryPage() {
 
   const handleRetakeQuiz = (q: any) => {
     setSelectedQuizForRetake(q);
+  };
+
+  const handleRetakeExplore = (item: any) => {
+    if (item.type === "presentation") {
+      localStorage.setItem("explore_presentation_data", JSON.stringify(item.data));
+      localStorage.setItem("explore_presentation_topic", item.topic);
+      router.push("/explore/presentation");
+    } else if (item.type === "pro_con") {
+      localStorage.setItem("explore_procon_data", JSON.stringify(item.data));
+      localStorage.setItem("explore_procon_topic", item.topic);
+      router.push("/explore/pro-con");
+    } else if (item.type === "mindmap") {
+      localStorage.setItem("mindmaps_root_v4", JSON.stringify(item.data));
+      router.push("/mindmaps");
+    } else if (item.type === "schedule") {
+      localStorage.setItem("explore_schedule_data", JSON.stringify(item.data));
+      localStorage.setItem("explore_schedule_topic", item.topic);
+      router.push("/explore/schedule-maker");
+    }
   };
 
   const proceedWithQuizRetake = (mode: "exact" | "new") => {
@@ -127,43 +162,22 @@ export default function HistoryPage() {
         </p>
       </div>
 
-      <div className={cn("flex items-center gap-6 border-b border-border mb-8", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
-        <button
-          onClick={() => setActiveTab("quizzes")}
-          className={cn(
-            "pb-3 text-sm font-medium transition-colors relative",
-            activeTab === "quizzes" ? "text-primary" : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          Quizzes
-          {activeTab === "quizzes" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full" />
-          )}
-        </button>
-        <button
-          onClick={() => setActiveTab("flashcards")}
-          className={cn(
-            "pb-3 text-sm font-medium transition-colors relative",
-            activeTab === "flashcards" ? "text-primary" : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          Flashcards
-          {activeTab === "flashcards" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full" />
-          )}
-        </button>
-        <button
-          onClick={() => setActiveTab("essays")}
-          className={cn(
-            "pb-3 text-sm font-medium transition-colors relative",
-            activeTab === "essays" ? "text-primary" : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          Essays
-          {activeTab === "essays" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full" />
-          )}
-        </button>
+      <div className={cn("flex items-center gap-6 border-b border-border mb-8 overflow-x-auto scrollbar-hide", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "pb-3 text-sm font-medium transition-colors relative whitespace-nowrap",
+              activeTab === tab.id ? "text-primary" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {tab.label}
+            {activeTab === tab.id && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full" />
+            )}
+          </button>
+        ))}
       </div>
 
       <div className={cn("mt-8", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
@@ -293,6 +307,38 @@ export default function HistoryPage() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )
+          )}
+
+          {["presentation", "pro_con", "mindmap", "schedule", "note_summary"].includes(activeTab) && (
+            explore.filter(item => item.type === activeTab).length === 0 ? (
+              <div className="p-12 text-center rounded-xl border border-border bg-card">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 text-primary">
+                  <Globe className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground mb-1 capitalize">No {activeTab.replace("_", " ")} history</h3>
+                <p className="text-sm text-muted-foreground">Generations will appear here.</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <div className="grid gap-4">
+                  {explore.filter(item => item.type === activeTab).map((item) => (
+                    <div key={item.id} onClick={() => handleRetakeExplore(item)} className="bg-card border border-border rounded-xl p-5 flex items-start justify-between hover:shadow-md transition-shadow group cursor-pointer">
+                      <div>
+                        <h3 className="font-semibold text-foreground text-lg mb-1">{item.topic || "Untitled"}</h3>
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                          <span className="capitalize font-bold text-primary">{item.type.replace("_", " ")}</span>
+                          <span>•</span>
+                          <span>{formatDate(item.created_at)}</span>
+                        </div>
+                      </div>
+                      <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("explore_history", item.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
             )
           )}

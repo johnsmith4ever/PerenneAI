@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MonitorPlay, ArrowRight, Loader2, ChevronLeft, ChevronRight, LayoutTemplate } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
+import { useUser } from "@clerk/nextjs";
+import { supabase } from "@/lib/supabase";
 import pptxgen from "pptxgenjs";
 
 type Slide = {
@@ -26,6 +28,18 @@ export default function PresentationBuilderPage() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const { tier, isLoaded, deductCredits } = useSubscription();
   const tierRank = TIER_RANK[tier] || 0;
+  const { user } = useUser();
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("explore_presentation_data");
+    const savedTopic = localStorage.getItem("explore_presentation_topic");
+    if (savedData && savedTopic) {
+      setSlides(JSON.parse(savedData));
+      setTopic(savedTopic);
+      localStorage.removeItem("explore_presentation_data");
+      localStorage.removeItem("explore_presentation_topic");
+    }
+  }, []);
 
   const generatePresentation = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +58,15 @@ export default function PresentationBuilderPage() {
         setSlides(data.data);
         setCurrentSlideIndex(0);
         deductCredits(100, slideCount * 100, "Apollo V4 Flash", "other");
+        
+        if (user) {
+          await supabase.from("explore_history").insert({
+            user_id: user.id,
+            topic: topic,
+            type: "presentation",
+            data: data.data
+          });
+        }
       } else {
         setError(data.message || "Failed to generate.");
       }

@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
-import { useClerk } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
+import { supabase } from "@/lib/supabase";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -66,7 +67,7 @@ function computeLayout(root: MindmapNode): Map<string, { x: number; y: number; d
   map.set(root.id, { x: CANVAS_CX, y: CANVAS_CY, depth: 0 });
 
   function place(node: MindmapNode, px: number, py: number, startA: number, sweepA: number, depth: number) {
-    if (!node.children.length) return;
+    if (!node.children?.length) return;
     const n = node.children.length;
     const r = radiusAt(depth);
     node.children.forEach((child, i) => {
@@ -91,21 +92,21 @@ const DEFAULT_ROOT: MindmapNode = { id: "root_default", text: "Central Idea", ch
 function addChildTo(root: MindmapNode, parentId: string): MindmapNode {
   const newNode: MindmapNode = { id: genId(), text: "", children: [] };
   const ins = (n: MindmapNode): MindmapNode =>
-    n.id === parentId ? { ...n, children: [...n.children, newNode] } : { ...n, children: n.children.map(ins) };
+    n.id === parentId ? { ...n, children: [...(n.children || []), newNode] } : { ...n, children: (n.children || []).map(ins) };
   return ins(root);
 }
 
 function setText(root: MindmapNode, id: string, text: string): MindmapNode {
   if (root.id === id) return { ...root, text };
-  return { ...root, children: root.children.map(c => setText(c, id, text)) };
+  return { ...root, children: (root.children || []).map(c => setText(c, id, text)) };
 }
 
 function removeNode(root: MindmapNode, id: string): MindmapNode {
-  return { ...root, children: root.children.filter(c => c.id !== id).map(c => removeNode(c, id)) };
+  return { ...root, children: (root.children || []).filter(c => c.id !== id).map(c => removeNode(c, id)) };
 }
 
 function flattenNodes(node: MindmapNode): MindmapNode[] {
-  return [node, ...node.children.flatMap(flattenNodes)];
+  return [node, ...(node.children || []).flatMap(flattenNodes)];
 }
 
 // ─── Depth-based colour palette ───────────────────────────────────────────────
@@ -129,6 +130,7 @@ function palette(depth: number) {
   export default function MindmapsPage() {
   const { deductCredits, creditsUsed, dailyLimit, canAfford, tier, isLoaded: subLoaded } = useSubscription();
   const { openUserProfile } = useClerk();
+  const { user } = useUser();
 
   const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_root_v4", DEFAULT_ROOT);
   const [zoom, setZoom] = useState(0.65);
@@ -247,7 +249,17 @@ function palette(depth: number) {
       const data = await res.json();
       if (data.status === "success") {
         if (data.usage) deductCredits(data.usage.promptTokens ?? data.usage.inputTokens, data.usage.completionTokens ?? data.usage.outputTokens, model, "other");
-        if (data.data) setRoot(data.data);
+        if (data.data) {
+          setRoot(data.data);
+          if (user) {
+            await supabase.from("explore_history").insert({
+              user_id: user.id,
+              topic: analysis.title || "Untitled Mindmap",
+              type: "mindmap",
+              data: data.data
+            });
+          }
+        }
       } else { alert("Error: " + data.message); }
     } catch { alert("Failed to build with Gemini."); }
     finally { setIsBuilding(false); }
@@ -261,7 +273,7 @@ function palette(depth: number) {
       const pp = layout.get(node.id);
       if (!pp) return;
 
-      node.children.forEach(child => {
+      (node.children || []).forEach(child => {
         const cp = layout.get(child.id);
         if (!cp) return;
 

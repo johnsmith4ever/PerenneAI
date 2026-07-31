@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import { clerkClient } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
 
 export async function GET() {
   try {
+    const cookieStore = await cookies();
+    if (cookieStore.get("admin_token")?.value !== "granted_access_token_secure") {
+      return NextResponse.json({ status: "error", message: "Unauthorized Admin Access" }, { status: 401 });
+    }
+
     const client = await clerkClient();
     const usersResponse = await client.users.getUserList();
     const users = usersResponse.data.map((u: any) => ({
