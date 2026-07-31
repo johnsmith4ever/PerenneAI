@@ -107,8 +107,8 @@ export default function CalendarPage() {
     
     parsed.sort((a, b) => a.start - b.start || a.end - b.end);
 
-    const groups: typeof parsed[][] = [];
-    let currentGroup: typeof parsed[] = [];
+    const groups: Array<typeof parsed> = [];
+    let currentGroup: typeof parsed = [];
     let currentGroupEnd = -1;
 
     for (const b of parsed) {
@@ -126,7 +126,7 @@ export default function CalendarPage() {
     const layoutBlocks = [];
 
     for (const group of groups) {
-      const cols: typeof parsed[] = [];
+      const cols: Array<typeof parsed> = [];
       for (const b of group) {
         let placed = false;
         for (let i = 0; i < cols.length; i++) {
