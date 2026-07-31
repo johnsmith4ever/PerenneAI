@@ -342,8 +342,8 @@ export default function CalendarPage() {
                 setSelectedDayIndex(0);
               }
             }}
-            variant="destructive"
-            className="gap-2 hidden sm:flex"
+            variant="outline"
+            className="gap-2 hidden sm:flex text-red-500 border-red-500/20 hover:bg-red-500/10"
           >
             <Trash className="w-4 h-4" /> Clear Schedule
           </Button>
@@ -582,7 +582,7 @@ export default function CalendarPage() {
 
               <div className="flex gap-2 mt-4 pt-2">
                 {editBlockId && (
-                  <Button type="button" variant="destructive" onClick={handleDelete} className="flex-1 gap-2">
+                  <Button type="button" variant="outline" onClick={handleDelete} className="flex-1 gap-2 text-red-500 border-red-500/20 hover:bg-red-500/10">
                     <Trash className="w-4 h-4" /> Delete
                   </Button>
                 )}

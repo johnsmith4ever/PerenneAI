@@ -61,7 +61,7 @@ export function Sidebar({ isOpen = true, onClose }: { isOpen?: boolean; onClose?
       <nav className="flex-1 p-3 space-y-0.5">
         {navItems.map((item) => {
           const { href, label, icon: Icon } = item;
-          const comingSoon = 'comingSoon' in item ? item.comingSoon : false;
+          const comingSoon = ('comingSoon' in item ? item.comingSoon : false) as boolean;
           
           const active = href === "/explore" 
             ? pathname === "/explore" 
