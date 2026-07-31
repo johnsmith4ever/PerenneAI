@@ -196,7 +196,7 @@ export default function CalendarPage() {
       });
       const data = await res.json();
       if (data.status === "success") {
-        deductCredits(100, 300, "Bastion 3.5 Flash", "calendar");
+        deductCredits(100, 300, "Bastion 3.5 Flash", "other");
         setSchedule({ ...currentSchedule, days: data.data });
         setAgentPrompt("");
       } else {
