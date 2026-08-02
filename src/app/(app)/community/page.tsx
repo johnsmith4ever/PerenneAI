@@ -6,6 +6,8 @@ import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Leaderboard } from "@/components/leaderboard";
+import { GamificationWrapper } from "@/components/gamification-wrapper";
 
 type Post = {
   id: string;
@@ -130,52 +132,64 @@ export default function CommunityPage() {
         </Button>
       </div>
 
-      {errorMsg && (
-        <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
-          <p className="text-sm text-amber-600 font-medium">{errorMsg}</p>
-        </div>
-      )}
-
-      {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-          <Loader2 className="w-8 h-8 animate-spin mb-4 text-primary" />
-          <p>Loading community posts...</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {posts.map(post => (
-            <div key={post.id} className="bg-card border border-border rounded-xl p-5 hover:shadow-md transition-shadow">
-              <div className="flex gap-4">
-                <div className="flex flex-col items-center gap-1 min-w-[50px]">
-                  <button className="p-2 bg-muted/50 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors text-muted-foreground">
-                    <ThumbsUp className="w-4 h-4" />
-                  </button>
-                  <span className="font-bold text-sm">{post.upvotes}</span>
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={cn("text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border flex items-center gap-1", getTypeColor(post.type))}>
-                      {getTypeIcon(post.type)} {post.type}
-                    </span>
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                      <UserIcon className="w-3 h-3" /> {post.author_name}
-                    </span>
-                    <span className="text-xs text-muted-foreground ml-auto">
-                      {new Date(post.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-lg mb-2 font-serif">{post.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                    {post.content}
-                  </p>
-                </div>
-              </div>
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Main Content: Posts */}
+        <div className="flex-1 space-y-4">
+          {errorMsg && (
+            <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center gap-3">
+              <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
+              <p className="text-sm text-amber-600 font-medium">{errorMsg}</p>
             </div>
-          ))}
+          )}
+
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
+              <Loader2 className="w-8 h-8 animate-spin mb-4 text-primary" />
+              <p>Loading community posts...</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {posts.map(post => (
+                <div key={post.id} className="bg-card border border-border rounded-xl p-5 hover:shadow-md transition-shadow">
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center gap-1 min-w-[50px]">
+                      <button className="p-2 bg-muted/50 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors text-muted-foreground">
+                        <ThumbsUp className="w-4 h-4" />
+                      </button>
+                      <span className="font-bold text-sm">{post.upvotes}</span>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={cn("text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border flex items-center gap-1", getTypeColor(post.type))}>
+                          {getTypeIcon(post.type)} {post.type}
+                        </span>
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <UserIcon className="w-3 h-3" /> {post.author_name}
+                        </span>
+                        <span className="text-xs text-muted-foreground ml-auto">
+                          {new Date(post.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <h3 className="font-bold text-lg mb-2 font-serif">{post.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                        {post.content}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Sidebar: Leaderboard */}
+        <div className="w-full lg:w-80 shrink-0">
+          <GamificationWrapper>
+            <Leaderboard />
+          </GamificationWrapper>
+        </div>
+      </div>
 
       {showModal && (
         <div className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">

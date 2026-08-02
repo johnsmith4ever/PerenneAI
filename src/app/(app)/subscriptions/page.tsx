@@ -1,9 +1,10 @@
 "use client";
 
-import { CreditCard, CheckCircle2, Zap } from "lucide-react";
+import { CreditCard, CheckCircle2, Zap, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSubscription, Tier } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 const TIERS: { id: Tier; name: string; price: string; credits: string; features: string[] }[] = [
   {
@@ -43,8 +44,6 @@ const TIERS: { id: Tier; name: string; price: string; credits: string; features:
   }
 ];
 
-import { useState } from "react";
-
 export default function SubscriptionsPage() {
   const { tier, creditsUsed, dailyLimit, isLoaded } = useSubscription();
   const [isLoadingTier, setIsLoadingTier] = useState<string | null>(null);
@@ -55,7 +54,6 @@ export default function SubscriptionsPage() {
     setIsLoadingTier(tierId);
     try {
       let priceId = "";
-      // In a real app, these should come from an API or env variables injected into the frontend
       switch (tierId) {
         case "Core": priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_CORE || ""; break;
         case "Pro": priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO || ""; break;
@@ -95,111 +93,126 @@ export default function SubscriptionsPage() {
   const displayPercent = rawPercent > 0 && rawPercent < 0.1 ? "<0.1" : rawPercent.toFixed(1);
 
   return (
-    <div className="max-w-5xl mx-auto pb-12 animate-in fade-in">
-      <div className="mb-8">
-        <p className="label-title mb-1.5 flex items-center gap-2">
-          Account
-        </p>
-        <h1 className="page-title flex items-center gap-2 font-serif">
-          <CreditCard className="w-6 h-6 text-primary" />
-          Subscriptions & Usage
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Manage your plan and monitor your API usage limits.
-        </p>
+    <div className="max-w-6xl mx-auto pb-12 animate-in fade-in">
+      
+      {/* Header */}
+      <div className="mb-10 relative">
+        <div className="absolute w-[200px] h-[200px] bg-amber-500/10 rounded-full blur-[80px] top-0 left-0 pointer-events-none z-0"></div>
+        <div className="relative z-10">
+          <p className="text-amber-500 font-bold uppercase tracking-widest text-xs mb-2 flex items-center gap-2">
+            <Sparkles className="w-3 h-3" /> Upgrade
+          </p>
+          <h1 className="text-4xl font-serif font-black text-white tracking-tight flex items-center gap-3">
+            Subscriptions & Usage
+          </h1>
+          <p className="text-slate-400 mt-2 max-w-lg">
+            Manage your study plan and monitor your AI generation limits. Upgrade to unlock powerful models and unlimited features.
+          </p>
+        </div>
       </div>
       
-      {/* Usage Card */}
-      <div className="rounded-xl border border-border bg-card p-6 shadow-sm flex flex-col mb-12">
-        <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2 font-serif">
-          <Zap className="w-5 h-5 text-primary" /> Daily AI Usage
-        </h2>
+      {/* Cinematic Usage Card */}
+      <div className="rounded-3xl border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-xl p-8 shadow-2xl flex flex-col mb-12 relative overflow-hidden group">
+        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
         
-        <div className="mb-2">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-foreground">{creditsUsed.toLocaleString()} / {dailyLimit.toLocaleString()} Credits</span>
-            <span className="text-sm font-medium text-primary">{displayPercent}%</span>
+        <div className="relative z-10">
+          <h2 className="text-xl font-serif font-bold text-white mb-6 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center border border-amber-500/30">
+              <Zap className="w-5 h-5 text-amber-500" />
+            </div>
+            Daily AI Usage
+          </h2>
+          
+          <div className="mb-2">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-bold text-slate-300 tracking-wide">{creditsUsed.toLocaleString()} / {dailyLimit.toLocaleString()} Credits</span>
+              <span className={cn("text-lg font-black", rawPercent > 90 ? "text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]" : "text-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]")}>
+                {displayPercent}%
+              </span>
+            </div>
+            <div className="w-full bg-white/5 rounded-full h-4 mb-3 border border-white/10 overflow-hidden shadow-inner">
+              <div 
+                className={cn("h-full rounded-full transition-all duration-500 ease-out", rawPercent > 90 ? "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)]" : "bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.8)]")} 
+                style={{ width: `${rawPercent}%` }}
+              ></div>
+            </div>
+            <p className="text-xs text-slate-500 font-medium">Credits reset every 24 hours. Advanced reasoning models cost more credits per query.</p>
           </div>
-          <div className="w-full bg-muted rounded-full h-3 mb-2 overflow-hidden">
-            <div className={cn("h-3 rounded-full transition-all", rawPercent > 90 ? "bg-red-500" : "bg-primary")} style={{ width: `${rawPercent}%` }}></div>
-          </div>
-          <p className="text-xs text-muted-foreground">Credits reset every 24 hours. Complex models cost more credits per token.</p>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
+      {/* Tiers Grid */}
+      <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
         {TIERS.map(t => {
           const isActive = tier === t.id;
-          const isPro = t.id === "Pro" && !isActive;
-          const isCore = t.id === "Core" && !isActive;
-          const isMaximum = t.id === "Maximum" && !isActive;
+          const isPro = t.id === "Pro";
+          const isPremium = t.id === "Premium";
+          const isMaximum = t.id === "Maximum";
 
           return (
             <div 
               key={t.id} 
               className={cn(
-                "rounded-xl border p-5 flex flex-col relative transition-all", 
-                isActive ? "border-primary bg-primary/5 ring-1 ring-primary/20 shadow-sm text-foreground" : 
-                isPro ? "border-2 border-purple-500 bg-card dark:bg-purple-900/40 shadow-md shadow-purple-500/30 scale-[1.02] z-10 text-foreground" : 
-                isCore ? "border-2 border-emerald-500 bg-card dark:bg-emerald-900/40 shadow-md shadow-emerald-500/30 scale-[1.02] z-10 text-foreground" : 
-                isMaximum ? "border-2 border-yellow-500 bg-yellow-400 dark:bg-yellow-400 shadow-xl shadow-yellow-500/40 scale-[1.02] z-10 text-black" : 
-                "border-border bg-card shadow-sm hover:shadow-md text-foreground"
+                "rounded-3xl p-6 flex flex-col relative transition-all duration-300 hover:-translate-y-1 backdrop-blur-xl group", 
+                isActive ? "border border-amber-500/50 bg-amber-500/10 shadow-[0_0_30px_rgba(245,158,11,0.15)]" : 
+                isPro ? "border border-purple-500/40 bg-purple-900/20 shadow-[0_0_30px_rgba(168,85,247,0.15)]" : 
+                isPremium ? "border border-cyan-500/40 bg-cyan-900/20 shadow-[0_0_30px_rgba(6,182,212,0.15)]" :
+                isMaximum ? "border border-yellow-400 bg-gradient-to-b from-yellow-500/90 to-yellow-600/90 shadow-[0_0_40px_rgba(250,204,21,0.4)] text-yellow-950 scale-[1.05] z-10" : 
+                "border border-white/10 bg-white/5 hover:bg-white/10"
               )}
             >
               {isActive && (
-                <div className="absolute top-0 right-0 p-3">
-                  <span className="bg-primary text-primary-foreground text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
-                    Current
-                  </span>
-                </div>
-              )}
-              {isPro && (
-                <div className="absolute top-0 right-0 p-3">
-                  <span className="bg-purple-600 text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
-                    Best Value
-                  </span>
-                </div>
-              )}
-              {isCore && (
-                <div className="absolute top-0 right-0 p-3">
-                  <span className="bg-emerald-600 text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
-                    Saver
-                  </span>
-                </div>
-              )}
-              {isMaximum && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-yellow-500 text-yellow-950 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm whitespace-nowrap">
-                    Millionaire
+                  <span className="bg-amber-500 text-amber-950 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
+                    Active Plan
+                  </span>
+                </div>
+              )}
+              {isPro && !isActive && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="bg-purple-500 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg shadow-purple-500/40 whitespace-nowrap">
+                    Popular
+                  </span>
+                </div>
+              )}
+              {isMaximum && !isActive && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="bg-black text-yellow-400 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg shadow-yellow-500/40 whitespace-nowrap border border-yellow-400/50">
+                    Limitless
                   </span>
                 </div>
               )}
             
-            <h2 className={cn("text-base font-semibold mb-1 font-serif", isMaximum ? "text-black" : "text-foreground")}>{t.name}</h2>
-            <div className="mb-4">
-              <span className={cn("text-2xl font-bold", isMaximum ? "text-black" : "text-foreground")}>{t.price}</span>
+            <h2 className={cn("text-lg font-black tracking-wide mb-2 uppercase", isMaximum ? "text-yellow-950" : "text-white")}>{t.name}</h2>
+            <div className="mb-4 flex items-end gap-1">
+              <span className={cn("text-3xl font-black tracking-tight", isMaximum ? "text-black" : "text-white")}>{t.price}</span>
             </div>
             
-            <div className={cn("text-sm font-semibold mb-4 pb-4 border-b", isMaximum ? "text-black border-yellow-600/50" : "text-primary border-border")}>
-              {t.credits} <span className={cn("font-normal", isMaximum ? "text-black/70" : "text-muted-foreground")}>credits/day</span>
+            <div className={cn("text-xs font-bold mb-6 pb-6 border-b flex flex-col gap-1", isMaximum ? "text-yellow-900 border-yellow-900/20" : "text-slate-300 border-white/10")}>
+              <span className={cn("text-lg font-black", isMaximum ? "text-black" : "text-amber-500")}>{t.credits}</span>
+              <span className={cn("opacity-70", isMaximum ? "text-yellow-950" : "text-slate-400")}>credits / day</span>
             </div>
 
-            <ul className="space-y-3 mb-8 flex-1">
+            <ul className="space-y-4 mb-8 flex-1">
               {t.features.map((f, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <CheckCircle2 className={cn("w-3.5 h-3.5 mt-0.5 shrink-0", isMaximum ? "text-black" : "text-emerald-600")} />
-                  <span className={cn("text-xs leading-relaxed", isMaximum ? "text-black/80 font-medium" : "text-muted-foreground")}>{f}</span>
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className={cn("w-4 h-4 mt-0.5 shrink-0", isMaximum ? "text-black" : isPro ? "text-purple-400" : isPremium ? "text-cyan-400" : "text-amber-500")} />
+                  <span className={cn("text-sm leading-tight font-medium", isMaximum ? "text-yellow-950" : "text-slate-300")}>{f}</span>
                 </li>
               ))}
             </ul>
 
             <Button 
-              className="w-full text-xs shadow-sm" 
-              variant={t.id === "Free" ? "outline" : "default"}
+              className={cn("w-full text-sm font-bold shadow-lg h-12 transition-all", 
+                isMaximum ? "bg-black text-yellow-400 hover:bg-zinc-900 hover:scale-105" : 
+                isActive ? "bg-white/10 text-white hover:bg-white/20" : 
+                "bg-white text-black hover:bg-slate-200"
+              )} 
+              variant={t.id === "Free" || isActive ? "outline" : "default"}
               disabled={tier === t.id || isLoadingTier === t.id}
               onClick={() => handleUpgrade(t.id)}
             >
-              {isLoadingTier === t.id ? "Loading..." : tier === t.id ? "Active Plan" : "Upgrade"}
+              {isLoadingTier === t.id ? "Loading..." : tier === t.id ? "Current Plan" : "Upgrade"}
             </Button>
           </div>
           );

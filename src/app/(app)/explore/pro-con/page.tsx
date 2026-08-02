@@ -80,9 +80,7 @@ export default function ProConPage() {
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12">
       {/* Header */}
       <div>
-        <Link href="/explore" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
-          <ArrowRight className="w-4 h-4 mr-2 rotate-180" /> Back to Explore
-        </Link>
+
         <div className="flex items-center gap-4 mb-4">
           <div className="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
             <MousePointerClick className="w-6 h-6" />

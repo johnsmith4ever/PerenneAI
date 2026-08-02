@@ -23,7 +23,7 @@ export default function ExplorePage() {
           <h2 className="text-2xl font-bold font-serif" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>Productivity</h2>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
           <ToolCard 
             title="Ivresse" 
             description="Intelligent email drafting. Type your core message, and let AI craft the perfect professional email." 
@@ -37,24 +37,6 @@ export default function ExplorePage() {
             icon={<Eye className="w-6 h-6" />}
             color="bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
             href="https://optex-ai.vercel.app"
-          />
-          <ToolCard 
-            title="AI Voice Tutor" 
-            description="Practice languages and have real-time vocal conversations with a responsive AI." 
-            icon={<Headphones className="w-6 h-6" />}
-            color="bg-purple-500/10 text-purple-500 border-purple-500/20"
-          />
-          <ToolCard 
-            title="PDF Chat" 
-            description="Upload textbooks and papers, and chat directly with your documents to extract insights." 
-            icon={<FileSearch className="w-6 h-6" />}
-            color="bg-orange-500/10 text-orange-500 border-orange-500/20"
-          />
-          <ToolCard 
-            title="Focus Timer" 
-            description="A smart Pomodoro timer that dynamically blocks distractions during deep study." 
-            icon={<Sparkles className="w-6 h-6" />}
-            color="bg-pink-500/10 text-pink-500 border-pink-500/20"
           />
         </div>
       </section>

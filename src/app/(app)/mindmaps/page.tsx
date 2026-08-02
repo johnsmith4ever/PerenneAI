@@ -134,7 +134,7 @@ function palette(depth: number) {
 
   const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_root_v4", DEFAULT_ROOT);
   const [zoom, setZoom] = useState(0.65);
-  const [panelOpen, setPanelOpen] = useState(true);
+  const [panelOpen, setPanelOpen] = useState(false);
 
   // Analysis
   const [analysisInput, setAnalysisInput] = useState("");

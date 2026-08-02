@@ -64,11 +64,7 @@ export default function NoteSummarizerPage() {
 
   return (
     <div className="max-w-6xl mx-auto pb-12 animate-in fade-in">
-      <div className="flex items-center justify-between mb-8">
-        <Link href="/explore" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Explore
-        </Link>
-      </div>
+
       
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">

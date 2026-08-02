@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Clock, Sparkles, Loader2, BookOpen, Sunrise, Sunset, Flame, Calendar, Save, Check, ArrowRight } from "lucide-react";
+import { ArrowLeft, Clock, Sparkles, Loader2, BookOpen, Sunrise, Sunset, Flame, Calendar, Save, Check, ArrowRight, X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -122,10 +122,7 @@ export default function ScheduleMakerPage() {
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <Link href="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Explore
-          </Link>
+
           <p className="label-title mb-1.5 font-sans flex items-center gap-2">
             <Calendar className="w-4 h-4 text-blue-500" />
             Schedule Maker
@@ -141,9 +138,10 @@ export default function ScheduleMakerPage() {
         
         {/* SETUP PANEL (Left) */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <h2 className="text-lg font-bold font-serif mb-6 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" />
+          <div className="rounded-3xl border border-white/5 bg-black/40 backdrop-blur-xl p-6 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-bl-full -z-10 blur-2xl" />
+            <h2 className="text-lg font-bold font-serif mb-6 flex items-center gap-2 text-white">
+              <Sparkles className="w-5 h-5 text-amber-500" />
               Your Parameters
             </h2>
 
@@ -234,15 +232,15 @@ export default function ScheduleMakerPage() {
               </div>
 
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 block">Routine Style</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 block">Routine Style</label>
                 <div className="grid grid-cols-3 gap-2">
                   {["Early Bird", "Balanced", "Night Owl"].map(s => (
                     <button
                       key={s}
                       onClick={() => setStyle(s)}
                       className={cn(
-                        "py-2 px-1 text-[11px] font-bold uppercase tracking-wider rounded-lg border transition-all flex flex-col items-center gap-1",
-                        style === s ? getStyleColor(s) : "bg-background border-border text-muted-foreground hover:bg-muted"
+                        "py-2 px-1 text-[11px] font-bold uppercase tracking-wider rounded-xl border transition-all flex flex-col items-center gap-1",
+                        style === s ? getStyleColor(s) : "bg-white/5 border-white/10 text-slate-400 hover:bg-white/10"
                       )}
                     >
                       {s === "Early Bird" && <Sunrise className="w-4 h-4" />}
@@ -258,7 +256,7 @@ export default function ScheduleMakerPage() {
                 <Button 
                   onClick={generateSchedule} 
                   disabled={loading || !goal || !subjects}
-                  className="w-full py-6 text-sm font-bold shadow-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 border-0 text-white"
+                  className="w-full py-6 text-sm font-bold shadow-[0_0_15px_rgba(59,130,246,0.3)] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 border-0 text-white rounded-xl transition-all hover:scale-[1.02]"
                 >
                   {loading ? (
                     <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Crafting Routine...</>
@@ -266,7 +264,7 @@ export default function ScheduleMakerPage() {
                     <><Clock className="w-5 h-5 mr-2" /> Generate Schedule</>
                   )}
                 </Button>
-                <p className="text-center text-[10px] text-muted-foreground mt-3 font-medium uppercase tracking-widest">
+                <p className="text-center text-[10px] text-slate-500 mt-3 font-medium uppercase tracking-widest">
                   Uses DeepSeek Flash • Costs Credits
                 </p>
               </div>
@@ -277,12 +275,13 @@ export default function ScheduleMakerPage() {
         {/* SCHEDULE PANEL (Right) */}
         <div className="lg:col-span-8">
           {!schedule ? (
-            <div className="h-full min-h-[500px] border-2 border-dashed border-border rounded-3xl flex flex-col items-center justify-center text-center p-8 bg-card/30">
-              <div className="w-16 h-16 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center mb-4">
-                <Calendar className="w-8 h-8" />
+            <div className="h-full min-h-[500px] border border-white/10 rounded-3xl flex flex-col items-center justify-center text-center p-8 bg-black/20 backdrop-blur-xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent pointer-events-none" />
+              <div className="w-20 h-20 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                <Calendar className="w-10 h-10" />
               </div>
-              <h3 className="text-xl font-bold font-serif mb-2">Ready to plan?</h3>
-              <p className="text-muted-foreground text-sm max-w-sm">
+              <h3 className="text-2xl font-bold font-serif mb-3 text-white">Ready to plan?</h3>
+              <p className="text-slate-400 text-sm max-w-sm leading-relaxed">
                 Fill out your parameters on the left and our AI will build a comprehensive, realistic, and highly effective 7-day schedule for you.
               </p>
             </div>
@@ -290,20 +289,31 @@ export default function ScheduleMakerPage() {
             <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-700">
               
               {/* Output Header */}
-              <div className="flex items-start justify-between bg-card border border-border p-6 rounded-2xl shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-full -z-10 blur-2xl" />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-black/40 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl relative overflow-hidden gap-4">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full -z-10 blur-3xl" />
                 <div>
-                  <h2 className="text-2xl font-bold font-serif mb-2">{schedule.title}</h2>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
-                    <span className={cn("px-2 py-0.5 rounded-full border", getStyleColor(style))}>{style}</span>
+                  <h2 className="text-2xl font-bold font-serif mb-2 text-white">{schedule.title}</h2>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-400">
+                    <span className={cn("px-2.5 py-1 rounded-full border", getStyleColor(style))}>{style}</span>
                     <span>•</span>
                     <span>{hours} hrs/day</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Link href="/calendar">
-                    <Button variant="secondary" size="sm" className="hidden sm:flex gap-2">
-                      <Calendar className="w-4 h-4" /> Open in Calendar
+                <div className="flex flex-wrap items-center gap-2 sm:self-auto self-stretch">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => {
+                      setSchedule(null);
+                      setIsSaved(false);
+                    }}
+                    className="flex-1 sm:flex-none gap-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors"
+                  >
+                    <X className="w-4 h-4" /> Discard
+                  </Button>
+                  <Link href="/calendar" className="flex-1 sm:flex-none">
+                    <Button variant="secondary" size="sm" className="w-full gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border-0">
+                      <Calendar className="w-4 h-4" /> Open
                     </Button>
                   </Link>
                   <Button 
@@ -311,7 +321,7 @@ export default function ScheduleMakerPage() {
                     size="sm" 
                     onClick={() => setIsSaved(true)}
                     disabled={isSaved}
-                    className={cn("hidden sm:flex gap-2 transition-all", isSaved && "bg-emerald-500/10 text-emerald-500 border-emerald-500/20")}
+                    className={cn("flex-1 sm:flex-none gap-2 transition-all rounded-xl border-white/10 bg-black/50 text-white hover:bg-white/10", isSaved && "bg-emerald-500/20 text-emerald-400 border-emerald-500/30")}
                   >
                     {isSaved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />} 
                     {isSaved ? "Saved" : "Save"}
@@ -322,11 +332,11 @@ export default function ScheduleMakerPage() {
               {/* Tips */}
               <div className="grid sm:grid-cols-3 gap-3">
                 {schedule.tips.slice(0, 3).map((tip, i) => (
-                  <div key={i} className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold mb-2">
+                  <div key={i} className="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4 shadow-inner">
+                    <div className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold mb-3">
                       {i + 1}
                     </div>
-                    <p className="text-xs font-medium leading-relaxed">{tip}</p>
+                    <p className="text-xs font-medium leading-relaxed text-slate-300">{tip}</p>
                   </div>
                 ))}
               </div>
@@ -338,10 +348,10 @@ export default function ScheduleMakerPage() {
                     key={day.day}
                     onClick={() => setSelectedDay(i)}
                     className={cn(
-                      "px-4 py-2 rounded-xl text-sm font-bold transition-all shrink-0 border",
+                      "px-5 py-2.5 rounded-full text-sm font-bold transition-all shrink-0 border shadow-sm",
                       selectedDay === i 
-                        ? "bg-foreground text-background border-foreground shadow-md" 
-                        : "bg-card border-border text-muted-foreground hover:bg-muted"
+                        ? "bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]" 
+                        : "bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white"
                     )}
                   >
                     {day.day}
@@ -350,33 +360,33 @@ export default function ScheduleMakerPage() {
               </div>
 
               {/* Daily Timeline View */}
-              <div className="bg-card border border-border rounded-2xl p-6 shadow-sm relative">
+              <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl relative">
                 
                 {/* Timeline Line */}
-                <div className="absolute left-[88px] top-8 bottom-8 w-px bg-border hidden sm:block" />
+                <div className="absolute left-[88px] sm:left-[104px] top-8 bottom-8 w-px bg-white/10 hidden sm:block" />
 
                 <div className="space-y-6">
                   {schedule.days[selectedDay].blocks.map((block, i) => (
                     <div key={block.id} className="relative flex flex-col sm:flex-row gap-4 sm:gap-8 group animate-in fade-in slide-in-from-right-4" style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'both' }}>
                       
                       {/* Time */}
-                      <div className="sm:w-16 shrink-0 pt-1">
-                        <p className="text-sm font-bold text-foreground tabular-nums">{block.startTime}</p>
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase">{block.endTime}</p>
+                      <div className="sm:w-20 shrink-0 pt-1 text-left sm:text-right">
+                        <p className="text-sm font-bold text-white tabular-nums">{block.startTime}</p>
+                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{block.endTime}</p>
                       </div>
 
                       {/* Timeline Dot */}
-                      <div className="hidden sm:flex absolute left-[56px] top-2 w-2 h-2 rounded-full bg-background border-2 border-primary z-10 group-hover:scale-150 transition-transform" />
+                      <div className="hidden sm:flex absolute left-[72px] top-2 w-2 h-2 rounded-full bg-[#0a0a0a] border-2 border-blue-500 z-10 group-hover:scale-150 group-hover:bg-blue-500 group-hover:shadow-[0_0_10px_rgba(59,130,246,0.8)] transition-all duration-300" />
 
                       {/* Content Card */}
-                      <div className={cn("flex-1 p-4 rounded-xl border transition-all hover:shadow-md", getBlockColor(block.type))}>
-                        <div className="flex items-center justify-between mb-1">
-                          <h4 className="font-bold text-sm">{block.title}</h4>
-                          <span className="text-[10px] font-black uppercase tracking-widest opacity-60">
+                      <div className={cn("flex-1 p-5 rounded-2xl border transition-all duration-300 hover:shadow-lg hover:-translate-y-1", getBlockColor(block.type))}>
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-bold text-sm text-white">{block.title}</h4>
+                          <span className="text-[10px] font-black uppercase tracking-widest opacity-80 px-2 py-0.5 rounded-md bg-white/10">
                             {block.type}
                           </span>
                         </div>
-                        <p className="text-xs opacity-80 leading-relaxed font-medium">
+                        <p className="text-xs opacity-90 leading-relaxed font-medium">
                           {block.details}
                         </p>
                       </div>

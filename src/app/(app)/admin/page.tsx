@@ -74,7 +74,7 @@ export default function AdminDashboardPage() {
   };
 
   const changeTier = async (userId: string, currentTier: string, direction: "up" | "down") => {
-    const tiers = ["Free", "Core", "Pro", "Maximum"];
+    const tiers = ["Free", "Core", "Pro", "Premium", "Maximum"];
     const currentIndex = tiers.indexOf(currentTier);
     
     if (direction === "up" && currentIndex >= tiers.length - 1) return;
@@ -238,8 +238,9 @@ export default function AdminDashboardPage() {
                         "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
                         user.tier === "Free" ? "bg-slate-500/10 text-slate-500" :
                         user.tier === "Core" ? "bg-blue-500/10 text-blue-500" :
-                        user.tier === "Pro" ? "bg-amber-500/10 text-amber-500" :
-                        "bg-red-500/10 text-red-500 border border-red-500/20"
+                        user.tier === "Pro" ? "bg-purple-500/10 text-purple-500" :
+                        user.tier === "Premium" ? "bg-cyan-500/10 text-cyan-500" :
+                        "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"
                       )}>
                         {user.tier}
                       </span>

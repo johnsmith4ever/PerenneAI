@@ -2,32 +2,48 @@
 
 import { useState } from "react";
 import { Sidebar } from "./sidebar";
-import { Menu, Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { DeviceModal } from "@/components/device-modal";
+import { cn } from "@/lib/utils";
 
 export function AppLayoutClient({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [device, setDevice] = useState<"mobile" | "desktop">("desktop");
+  const [showDeviceModal, setShowDeviceModal] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="flex-1 min-w-0 overflow-y-auto relative flex flex-col break-words">
-        {!sidebarOpen && (
-          <div className="p-4 border-b border-border bg-card/50 flex items-center">
-            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(true)} className="shrink-0">
-              <Menu className="w-5 h-5" />
-            </Button>
-            <span className="ml-3 font-serif font-bold text-lg">Perenne</span>
-          </div>
+    <div className="flex h-screen overflow-hidden bg-slate-950 text-slate-200 relative">
+      {/* Global Ambient Background across the whole app */}
+      <div className="fixed inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+      
+      
+      <DeviceModal 
+        forceOpen={showDeviceModal}
+        onClose={() => setShowDeviceModal(false)}
+        onPreferenceSet={(d) => {
+          setDevice(d);
+          if (d === "mobile") setSidebarOpen(false);
+          else setSidebarOpen(true);
+        }} 
+      />
+
+      <div className="relative z-10 flex h-full w-full">
+        {device === "mobile" && sidebarOpen && (
+          <div 
+            className="absolute inset-0 bg-black/50 z-30 backdrop-blur-sm transition-opacity"
+            onClick={() => setSidebarOpen(false)}
+          />
         )}
-        <div className="flex-1 max-w-4xl w-full mx-auto px-8 py-8 relative">
-          <Link href="/calendar">
-            <Button size="icon" title="Global Calendar" className="absolute top-6 right-8 rounded-full shadow-lg z-50 hover:scale-105 transition-transform bg-primary text-primary-foreground border-2 border-background w-12 h-12 group">
-              <Calendar className="w-5 h-5 group-hover:animate-bounce" />
-            </Button>
-          </Link>
-          {children}
+        <Sidebar 
+          isOpen={sidebarOpen} 
+          onClose={() => setSidebarOpen(false)} 
+          onOpen={() => setSidebarOpen(true)}
+          isMobile={device === "mobile"} 
+          onOpenSettings={() => setShowDeviceModal(true)}
+        />
+        <div className={cn("flex-1 min-w-0 overflow-y-auto relative flex flex-col break-words", device === "mobile" && "ml-[80px]")}>
+          <div className="flex-1 max-w-4xl w-full mx-auto px-8 py-8 relative">
+            {children}
+          </div>
         </div>
       </div>
     </div>

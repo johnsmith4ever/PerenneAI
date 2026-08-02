@@ -8,6 +8,10 @@ import { MouseTrackingBackground } from "@/components/ui/mouse-tracking-bg";
 export default async function RootPage() {
   const { userId } = await auth();
 
+  // If a user is already signed in, bypass the landing page and take them to the welcome page
+  if (userId) {
+    redirect("/dashboard");
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col font-sans selection:bg-amber-500/20 overflow-hidden relative">
@@ -25,7 +29,7 @@ export default async function RootPage() {
         </div>
         <div className="flex items-center gap-4">
           {userId ? (
-            <Link href="/welcome">
+            <Link href="/dashboard">
               <Button className="rounded-full px-6 bg-white text-black hover:bg-slate-200 font-bold shadow-[0_0_20px_rgba(245,158,11,0.2)]">Welcome Back</Button>
             </Link>
           ) : (
