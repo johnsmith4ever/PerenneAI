@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
+import { PaywallOverlay } from "@/components/ui/paywall";
 
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -63,8 +64,15 @@ export default function NoteSummarizerPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto pb-12 animate-in fade-in">
-
+    <div className="max-w-6xl mx-auto pb-12 animate-in fade-in relative">
+      {subLoaded && tierRank < TIER_RANK.Pro && (
+        <PaywallOverlay 
+          tierRequired="Pro"
+          title="Note Summarizer Locked"
+          description="Upgrade to the Pro plan to access the AI Note Summarizer."
+        />
+      )}
+      <div className={cn(tierRank < TIER_RANK.Pro && "opacity-20 pointer-events-none blur-[2px]")}>
       
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -112,28 +120,33 @@ export default function NoteSummarizerPage() {
             )}
           </div>
 
-          <div className="p-1 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/5">
-            <div className="bg-card rounded-xl border border-amber-500/20 overflow-hidden">
-              <div className="px-4 py-3 border-b border-border bg-muted/50 flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Your Messy Notes</span>
-                <span className="text-xs text-muted-foreground">{input.length} chars</span>
+          <div className="relative">
+            <div className="p-1 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/5">
+              <div className="bg-card rounded-xl border border-amber-500/20 overflow-hidden">
+                <div className="px-4 py-3 border-b border-border bg-muted/50 flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Your Messy Notes</span>
+                  <span className="text-xs text-muted-foreground">{input.length} chars</span>
+                </div>
+                <textarea
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Paste your lecture notes, article text, or random thoughts here..."
+                  className="w-full h-[500px] bg-transparent border-none focus:ring-0 p-4 text-sm leading-relaxed resize-none focus:outline-none font-sans"
+                />
               </div>
-              <textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Paste your lecture notes, article text, or random thoughts here..."
-                className="w-full h-[500px] bg-transparent border-none focus:ring-0 p-4 text-sm leading-relaxed resize-none focus:outline-none font-sans"
-              />
             </div>
+            <Button className="w-full gap-2 py-6 text-base font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl mt-4" onClick={handleSummarize} disabled={loading || !input.trim()}>
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
+                {loading ? "Summarizing..." : "Summarize"}
+            </Button>
+            {mode === "understand" && subLoaded && tierRank < TIER_RANK.Premium && (
+              <div className="absolute inset-0 z-10 bg-background/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center text-center p-6 border border-border">
+                <Lock className="w-6 h-6 text-amber-500 mb-2" />
+                <h3 className="font-bold mb-1">Understand Mode Locked</h3>
+                <p className="text-xs text-muted-foreground mb-4">Upgrade to Premium for Deepseek analogies and ELI5 explanations.</p>
+              </div>
+            )}
           </div>
-          <Button 
-            className="w-full gap-2 h-14 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0 shadow-lg hover:shadow-xl transition-all rounded-xl font-bold" 
-            onClick={handleSummarize}
-            disabled={loading || input.trim().length < 10}
-          >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
-            {loading ? "Deepseek is analyzing..." : "Summarize & Clarify"}
-          </Button>
         </div>
 
         {/* OUTPUT */}
@@ -216,6 +229,7 @@ export default function NoteSummarizerPage() {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

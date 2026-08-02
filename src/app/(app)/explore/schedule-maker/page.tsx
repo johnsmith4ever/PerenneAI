@@ -5,10 +5,11 @@ import { ArrowLeft, Clock, Sparkles, Loader2, BookOpen, Sunrise, Sunset, Flame, 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useSubscription, ModelType } from "@/hooks/use-subscription";
+import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
+import { PaywallOverlay } from "@/components/ui/paywall";
 
 // ─── TYPES ───────────────────────────────────────────────────────────────────────
 
@@ -35,7 +36,8 @@ type Schedule = {
 // ─── COMPONENT ─────────────────────────────────────────────────────────────────
 
 export default function ScheduleMakerPage() {
-  const { deductCredits, tier } = useSubscription();
+  const { tier, canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
+  const tierRank = TIER_RANK[tier] ?? 0;
   const [loading, setLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { user } = useUser();
@@ -117,7 +119,15 @@ export default function ScheduleMakerPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto pb-12 animate-in fade-in">
+    <div className="max-w-6xl mx-auto pb-12 animate-in fade-in relative">
+      {subLoaded && tierRank < TIER_RANK.Core && (
+        <PaywallOverlay 
+          tierRequired="Core"
+          title="Schedule Maker Locked"
+          description="Upgrade to the Core plan to auto-generate personalized study schedules."
+        />
+      )}
+      <div className={cn(tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
       
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
@@ -399,7 +409,7 @@ export default function ScheduleMakerPage() {
             </div>
           )}
         </div>
-
+      </div>
       </div>
     </div>
   );

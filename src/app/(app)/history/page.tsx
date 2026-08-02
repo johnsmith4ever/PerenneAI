@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Clock, BookOpen, PenLine, FileText, ChevronRight, Loader2, Trash2, X, Globe } from "lucide-react";
+import { Clock, BookOpen, PenLine, FileText, ChevronRight, Loader2, Trash2, X, Globe, Lock, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
-import { Lock } from "lucide-react";
+
+import { PaywallOverlay } from "@/components/ui/paywall";
 
 type Tab = "quizzes" | "flashcards" | "essays" | "presentation" | "pro_con" | "mindmap" | "schedule" | "note_summary";
 
@@ -138,18 +139,17 @@ export default function HistoryPage() {
 
   return (
     <div className="max-w-4xl mx-auto pb-12 animate-in fade-in relative">
-      {false && subLoaded && tierRank < TIER_RANK.Core && (
-        <div className="absolute inset-0 z-50 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center rounded-2xl">
-          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-            <Lock className="w-8 h-8 text-primary" />
-          </div>
-          <h2 className="text-2xl font-semibold text-foreground mb-2">History Locked</h2>
-          <p className="text-muted-foreground mb-6 max-w-md">Upgrade to the Core plan to view your past study sessions, generated quizzes, and graded essays.</p>
-          <Button size="lg" onClick={() => router.push("/subscriptions")}>Upgrade to Core</Button>
-        </div>
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+
+      {subLoaded && tierRank < TIER_RANK.Core && (
+        <PaywallOverlay 
+          tierRequired="Core"
+          title="History Locked"
+          description="Upgrade to the Core plan to view your past study sessions, generated quizzes, flashcards, and graded essays."
+        />
       )}
       
-      <div className={cn("mb-8", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
+      <div className={cn("mb-8", tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
         <p className="label-title mb-1.5 flex items-center gap-2">
           Account
         </p>
@@ -162,7 +162,7 @@ export default function HistoryPage() {
         </p>
       </div>
 
-      <div className={cn("flex items-center gap-6 border-b border-border mb-8 overflow-x-auto scrollbar-hide", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
+      <div className={cn("flex items-center gap-6 border-b border-border mb-8 overflow-x-auto scrollbar-hide", tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
         {TABS.map(tab => (
           <button
             key={tab.id}
@@ -180,7 +180,7 @@ export default function HistoryPage() {
         ))}
       </div>
 
-      <div className={cn("mt-8", false && tierRank < TIER_RANK.Core && "opacity-50 pointer-events-none")}>
+      <div className={cn("mt-8", tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />

@@ -1,8 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Monitor, Smartphone, X, Gift, Loader2, Sparkles } from "lucide-react";
+import { Monitor, Smartphone, X, Gift, Loader2, Sparkles, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
+import { useRouter } from "next/navigation";
 
 export function DeviceModal({ onPreferenceSet, forceOpen = false, onClose }: { onPreferenceSet: (device: "mobile" | "desktop") => void; forceOpen?: boolean; onClose?: () => void }) {
   const [open, setOpen] = useState(false);
@@ -13,6 +15,20 @@ export function DeviceModal({ onPreferenceSet, forceOpen = false, onClose }: { o
   const [isSubmittingReferral, setIsSubmittingReferral] = useState(false);
   
   const [gamificationEnabled, setGamificationEnabled] = useState(true);
+  
+  const { tier, isLoaded: subLoaded } = useSubscription();
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleOpenPromo = (e: any) => {
+      setOpen(true);
+      if (e.detail?.code) {
+        setReferralCode(e.detail.code);
+      }
+    };
+    window.addEventListener("perenne_open_promo", handleOpenPromo);
+    return () => window.removeEventListener("perenne_open_promo", handleOpenPromo);
+  }, []);
 
   useEffect(() => {
     const pref = localStorage.getItem("perenne_device_preference");
@@ -52,6 +68,10 @@ export function DeviceModal({ onPreferenceSet, forceOpen = false, onClose }: { o
   };
 
   const handleGamificationToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (subLoaded && TIER_RANK[tier] < TIER_RANK.Maximum) {
+      router.push("/subscriptions");
+      return;
+    }
     const val = e.target.checked;
     setGamificationEnabled(val);
     localStorage.setItem("perenne_gamification_enabled", val ? "true" : "false");
@@ -161,14 +181,20 @@ export function DeviceModal({ onPreferenceSet, forceOpen = false, onClose }: { o
             </h3>
             <p className="text-xs text-slate-400 mb-4">Toggle community leaderboards and study heatmaps. Turn this off if you prefer a cleaner, distraction-free environment.</p>
             
-            <label className="flex items-center justify-between cursor-pointer p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-              <span className="text-sm text-white font-medium">Enable Gamification</span>
+            <label className={cn("flex items-center justify-between cursor-pointer p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors", subLoaded && TIER_RANK[tier] < TIER_RANK.Maximum && "opacity-50")}>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-white font-medium">Enable Gamification</span>
+                {subLoaded && TIER_RANK[tier] < TIER_RANK.Maximum && <Lock className="w-3 h-3 text-amber-500" />}
+              </div>
               <div className="relative">
                 <input type="checkbox" checked={gamificationEnabled} onChange={handleGamificationToggle} className="sr-only" />
                 <div className={cn("block w-10 h-6 rounded-full transition-colors", gamificationEnabled ? "bg-amber-500" : "bg-white/10")} />
                 <div className={cn("absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform", gamificationEnabled ? "translate-x-4" : "")} />
               </div>
             </label>
+            {subLoaded && TIER_RANK[tier] < TIER_RANK.Maximum && (
+              <p className="text-[10px] text-amber-500 mt-2 text-center">Requires Maximum Plan</p>
+            )}
           </div>
         </div>
       </div>

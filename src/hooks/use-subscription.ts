@@ -5,7 +5,7 @@ export type Tier = "Free" | "Core" | "Pro" | "Premium" | "Maximum";
 
 export const TIER_ALLOWANCES: Record<Tier, number> = {
   Free: 5_000,
-  Core: 20_000,
+  Core: 24_000,
   Pro: 60_000,
   Premium: 100_000,
   Maximum: 150_000,
@@ -29,7 +29,7 @@ export type ModelType =
   | "Atlas 5 Pro";
 
 export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> = {
-  "Polaris 1": { input: 1, output: 1 },        // Llama - Cheapest
+  "Polaris 1": { input: 0.5, output: 0.5 },        // Llama - Super Cheap
   "Bastion 3.5 Flash": { input: 2, output: 2 }, // Gemini Flash
   "Bastion 3.5 Pro": { input: 4, output: 4 },   // Gemini Pro
   "Apollo V4 Flash": { input: 3, output: 3 },   // Deepseek Flash
@@ -135,14 +135,9 @@ export function useSubscription() {
   const deductCredits = (inputTokens: number, outputTokens: number, model: ModelType, feature: "chat" | "other" = "other") => {
     let costConfig = MODEL_COSTS[model] || { input: 1, output: 1 };
     
-    // Llama is x1 in chat, x2 in other features (essay, flashcards, etc.)
-    if (model === "Polaris 1" && feature !== "chat") {
-      costConfig = { input: costConfig.input * 2, output: costConfig.output * 2 };
-    }
-
     const safeInput = inputTokens || 0;
     const safeOutput = outputTokens || 0;
-    const cost = (safeInput * costConfig.input) + (safeOutput * costConfig.output);
+    const cost = Math.ceil((safeInput * costConfig.input) + (safeOutput * costConfig.output));
     
     setState((prev) => {
       const currentCredits = prev.creditsUsed && !isNaN(prev.creditsUsed) ? prev.creditsUsed : 0;

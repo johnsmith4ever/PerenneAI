@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
   Plus, Trash2, ZoomIn, ZoomOut, Maximize, Bot, Loader2,
-  Sparkles, Network, X, RotateCcw, ChevronRight, PanelLeftClose, PanelLeftOpen,
+  Sparkles, Network, X, RotateCcw, ChevronRight, PanelLeftClose, PanelLeftOpen, Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -130,6 +131,7 @@ function palette(depth: number) {
   export default function MindmapsPage() {
   const { deductCredits, creditsUsed, dailyLimit, canAfford, tier, isLoaded: subLoaded } = useSubscription();
   const { openUserProfile } = useClerk();
+  const router = useRouter();
   const { user } = useUser();
 
   const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_root_v4", DEFAULT_ROOT);
@@ -203,8 +205,7 @@ function palette(depth: number) {
   const handleAnalyze = async () => {
     if (!analysisInput.trim()) return;
     if (TIER_RANK[tier] < TIER_RANK["Core"]) {
-      alert("DeepSeek analysis requires the Core plan or higher.");
-      openUserProfile();
+      router.push("/subscriptions");
       return;
     }
     const model: ModelType = "Apollo V4 Flash";
@@ -236,8 +237,7 @@ function palette(depth: number) {
   const buildWithGemini = async () => {
     if (!analysis) return;
     if (TIER_RANK[tier] < TIER_RANK["Pro"]) {
-      alert("Auto-build with Gemini requires the Pro plan or higher.");
-      openUserProfile();
+      router.push("/subscriptions");
       return;
     }
     const model: ModelType = "Bastion 3.5 Flash";
@@ -367,19 +367,28 @@ function palette(depth: number) {
           <div className="flex-1 overflow-y-auto p-4 space-y-5">
 
             {/* Input */}
-            <div className="space-y-2">
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Topic or raw notes</label>
-              <textarea
-                value={analysisInput}
-                onChange={e => setAnalysisInput(e.target.value)}
-                className="w-full h-28 rounded-xl border border-border bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none placeholder:text-muted-foreground/60"
-                placeholder="e.g. 'Climate change', 'The French Revolution', or paste a block of notes..."
-              />
-              <Button className="w-full gap-2" onClick={handleAnalyze} disabled={isAnalyzing || !analysisInput.trim()}>
-                {isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-                {isAnalyzing ? "Analysing…" : "Analyse with DeepSeek"}
-              </Button>
-            </div>
+            {subLoaded && TIER_RANK[tier] < TIER_RANK.Core ? (
+              <div className="p-4 rounded-xl border border-border bg-background/50 flex flex-col items-center text-center">
+                <Lock className="w-5 h-5 text-primary mb-2" />
+                <h3 className="text-sm font-bold text-foreground">Analysis Locked</h3>
+                <p className="text-xs text-muted-foreground mb-4">Upgrade to Core to use DeepSeek analysis.</p>
+                <Button size="sm" className="w-full" onClick={() => router.push("/subscriptions")}>Upgrade</Button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Topic or raw notes</label>
+                <textarea
+                  value={analysisInput}
+                  onChange={e => setAnalysisInput(e.target.value)}
+                  className="w-full h-28 rounded-xl border border-border bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none placeholder:text-muted-foreground/60"
+                  placeholder="e.g. 'Climate change', 'The French Revolution', or paste a block of notes..."
+                />
+                <Button className="w-full gap-2" onClick={handleAnalyze} disabled={isAnalyzing || !analysisInput.trim()}>
+                  {isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                  {isAnalyzing ? "Analysing…" : "Analyse with DeepSeek"}
+                </Button>
+              </div>
+            )}
 
             {/* Analysis Output */}
             {analysis && (
@@ -425,10 +434,23 @@ function palette(depth: number) {
                 {/* Build Buttons */}
                 <div className="space-y-2 pt-1">
                   <Button variant="outline" className="w-full gap-2" onClick={buildManually}><Network size={14} />Build Map Manually</Button>
-                  <Button className="w-full gap-2 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 text-white border-0 shadow-md" onClick={buildWithGemini} disabled={isBuilding}>
-                    {isBuilding ? <Loader2 className="w-4 h-4 animate-spin" /> : <Bot size={14} />}
-                    {isBuilding ? "Building…" : "Auto-Build with Gemini"}
-                  </Button>
+                  
+                  {subLoaded && TIER_RANK[tier] < TIER_RANK.Pro ? (
+                    <div className="pt-2">
+                      <div className="p-3 rounded-xl border border-border bg-background/50 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                          <Lock className="w-4 h-4 text-purple-400 shrink-0" />
+                          <span className="text-xs font-medium text-muted-foreground leading-tight">Auto-Build locked (Pro)</span>
+                        </div>
+                        <Button size="sm" variant="outline" className="h-7 text-[10px] shrink-0" onClick={() => router.push("/subscriptions")}>Upgrade</Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <Button className="w-full gap-2 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 text-white border-0 shadow-md" onClick={buildWithGemini} disabled={isBuilding}>
+                      {isBuilding ? <Loader2 className="w-4 h-4 animate-spin" /> : <Bot size={14} />}
+                      {isBuilding ? "Building…" : "Auto-Build with Gemini"}
+                    </Button>
+                  )}
                 </div>
               </div>
             )}

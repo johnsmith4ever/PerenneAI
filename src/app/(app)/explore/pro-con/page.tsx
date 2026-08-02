@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSubscription } from "@/hooks/use-subscription";
+import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
+import { PaywallOverlay } from "@/components/ui/paywall";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 
@@ -27,7 +28,8 @@ export default function ProConPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ProConData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const { deductCredits } = useSubscription();
+  const { deductCredits, tier, isLoaded: subLoaded } = useSubscription();
+  const tierRank = TIER_RANK[tier] ?? 0;
   const { user } = useUser();
 
   useEffect(() => {
@@ -77,8 +79,17 @@ export default function ProConPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12">
-      {/* Header */}
+    <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
+      {subLoaded && tierRank < TIER_RANK.Pro && (
+        <PaywallOverlay 
+          tierRequired="Pro"
+          title="Pro/Con Generator Locked"
+          description="Upgrade to the Pro plan to access the advanced Pro/Con evaluation tool."
+        />
+      )}
+      
+      <div className={cn(tierRank < TIER_RANK.Pro && "opacity-20 pointer-events-none blur-[2px]")}>
+        {/* Header */}
       <div>
 
         <div className="flex items-center gap-4 mb-4">
@@ -164,8 +175,9 @@ export default function ProConPage() {
               ))}
             </div>
           </div>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

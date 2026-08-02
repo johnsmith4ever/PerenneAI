@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
+import { PaywallOverlay } from "@/components/ui/paywall";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import pptxgen from "pptxgenjs";
@@ -126,7 +127,15 @@ export default function PresentationBuilderPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12">
+    <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
+      {isLoaded && tierRank < TIER_RANK.Pro && (
+        <PaywallOverlay 
+          tierRequired="Pro"
+          title="Presentation Builder Locked"
+          description="Upgrade to the Pro plan to auto-generate beautiful PowerPoint slides from any topic."
+        />
+      )}
+      <div className={cn(tierRank < TIER_RANK.Pro && "opacity-20 pointer-events-none blur-[2px]")}>
       {/* Header */}
       <div>
 
@@ -267,13 +276,22 @@ export default function PresentationBuilderPage() {
           </div>
 
           <div className="flex justify-center mt-6">
-            <Button onClick={downloadPptx} className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl shadow-lg">
-              Download PowerPoint (.pptx)
-            </Button>
+            {isLoaded && tierRank < TIER_RANK.Pro ? (
+              <PaywallOverlay 
+                tierRequired="Pro"
+                title="Download Locked"
+                description="Upgrade to the Pro plan to export your presentation as a PowerPoint file."
+              />
+            ) : (
+              <Button onClick={downloadPptx} className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl shadow-lg">
+                Download PowerPoint (.pptx)
+              </Button>
+            )}
           </div>
 
         </div>
       )}
+      </div>
     </div>
   );
 }

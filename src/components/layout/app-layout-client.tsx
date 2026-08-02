@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Sidebar } from "./sidebar";
 import { DeviceModal } from "@/components/device-modal";
+import { PromoModal } from "@/components/promo-modal";
+import { PromoBanner } from "@/components/promo-banner";
 import { cn } from "@/lib/utils";
 
 export function AppLayoutClient({ children }: { children: React.ReactNode }) {
@@ -11,7 +13,9 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
   const [showDeviceModal, setShowDeviceModal] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-950 text-slate-200 relative">
+    <div className="flex flex-col h-screen overflow-hidden bg-slate-950 text-slate-200 relative">
+      <PromoBanner />
+      
       {/* Global Ambient Background across the whole app */}
       <div className="fixed inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
       
@@ -25,6 +29,8 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
           else setSidebarOpen(true);
         }} 
       />
+
+      <PromoModal />
 
       <div className="relative z-10 flex h-full w-full">
         {device === "mobile" && sidebarOpen && (

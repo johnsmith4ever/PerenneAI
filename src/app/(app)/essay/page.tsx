@@ -66,7 +66,7 @@ export default function EssayPage() {
   const [config, setConfig] = usePersistentState<EssayConfig>("essay_config", {
     style: "Modernist",
     yearGroup: "Year 10",
-    paragraphs: 3,
+    paragraphs: 1,
     difficulty: "Standard",
     structure: "PEEL",
     subject: "English Lit",
@@ -178,7 +178,13 @@ export default function EssayPage() {
 
     setIsGenerating(true);
     setEssayStep(3);
-    const actualParagraphs = Math.min(config.paragraphs, maxParagraphs);
+    
+    let allowedParagraphs = 1;
+    if (tierRank >= TIER_RANK.Premium) allowedParagraphs = 8;
+    else if (tierRank >= TIER_RANK.Pro) allowedParagraphs = 5;
+    else if (tierRank >= TIER_RANK.Core) allowedParagraphs = 3;
+
+    const actualParagraphs = Math.min(config.paragraphs, allowedParagraphs);
     setStudentAnswers(Array(actualParagraphs).fill(""));
 
     try {
