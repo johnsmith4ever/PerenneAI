@@ -139,6 +139,21 @@ export default async function RootPage() {
           </div>
         </section>
 
+        {/* Pricing Teaser Section */}
+        <section className="text-center space-y-6 max-w-3xl mx-auto pt-12 relative z-10">
+          <div className="p-10 rounded-3xl bg-amber-500/10 border border-amber-500/20 backdrop-blur-md shadow-2xl">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-white mb-4">World-Class AI, for less than a cup of coffee.</h2>
+            <p className="text-slate-300 text-lg leading-relaxed mb-8">
+              Perenne charges a fraction of what other generic AI services demand, while giving you access to the exact same cutting-edge models (Claude 3.5 Sonnet, DeepSeek Pro, Gemini Flash). Why pay $20/month elsewhere when you can get the ultimate study engine built specifically for students for less than your morning latte?
+            </p>
+            <Link href="/get-started">
+              <Button size="lg" className="rounded-full px-8 h-12 bg-amber-500 hover:bg-amber-400 text-black font-bold shadow-[0_0_30px_rgba(245,158,11,0.2)] hover:shadow-[0_0_40px_rgba(245,158,11,0.4)] transition-all">
+                Start Studying For Free
+              </Button>
+            </Link>
+          </div>
+        </section>
+
       </main>
 
       {/* Footer */}

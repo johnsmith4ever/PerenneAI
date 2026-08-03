@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
+import { supabase } from "@/lib/supabase";
+
+const TIER_RANK: Record<string, number> = {
+  Free: 0,
+  Core: 1,
+  Pro: 2,
+  Premium: 3,
+  Maximum: 4,
+};
 
 const deepseek = createOpenAI({
   baseURL: "https://api.deepseek.com/v1",
@@ -20,6 +29,25 @@ export async function POST(req: Request) {
 
     if (!text || text.trim().length < 10) {
       return NextResponse.json({ status: "error", message: "Please provide more notes to summarize." }, { status: 400 });
+    }
+
+    const userObj = await clerkClient.users.getUser(userId);
+    const tier = (userObj.publicMetadata.tier as string) || "Free";
+    const tierRank = TIER_RANK[tier] || 0;
+
+    if (tierRank < TIER_RANK.Pro) {
+      const today = new Date();
+      today.setUTCHours(0,0,0,0);
+      const { count } = await supabase
+        .from("explore_history")
+        .select("*", { count: 'exact', head: true })
+        .eq("user_id", userId)
+        .eq("type", "note_summary")
+        .gte("created_at", today.toISOString());
+        
+      if (count && count >= 1) {
+        return NextResponse.json({ status: "error", message: "You have reached your daily limit for the Note Summarizer (1 per day on Free/Core plan). Upgrade to Pro for unlimited use!" }, { status: 403 });
+      }
     }
 
     let prompt = "";
@@ -89,6 +117,14 @@ Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSO
 
     // Fire and forget usage tracking
     trackUsage(userId, "summarize-notes").catch(console.error);
+
+    // Save history so we can enforce rate limits
+    supabase.from("explore_history").insert({
+      user_id: userId,
+      topic: "Note Summary",
+      type: "note_summary",
+      data: data
+    }).then();
 
     return NextResponse.json({ status: "success", data, usage });
   } catch (error: any) {

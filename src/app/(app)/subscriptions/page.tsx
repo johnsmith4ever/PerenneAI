@@ -39,21 +39,30 @@ const TIERS: { id: Tier; name: string; price: string; credits: string; features:
     credits: "60,000",
     features: [
       "Apollo V4 Pro (Deepseek) - Advanced Logic",
+      "Bastion 3.5 Pro (Gemini) - Advanced Vision",
+      "Unlocks Deep Web Research Assistant",
+      "Unlocks Live AI Debate Partner",
+      "Unlocks Math Step-by-Step Solver",
+      "Unlocks Mindmap Auto-Builder (Gemini)",
+      "Unlocks Note Summarizer",
       "Unlocks all Essay Writing Styles",
-      "Mindmap Auto-Builder (Gemini)",
-      "60,000 Credits (3x the Core plan!)",
+      "60,000 Credits (2.5x the Core plan!)",
       "Our most popular choice for serious students"
     ]
   },
   {
     id: "Premium",
     name: "Premium",
-    price: "£6.99/mo",
+    price: "£5.99/mo",
     credits: "100,000",
     features: [
       "Atlas 4.5 Flash (Claude Haiku)",
+      "Unlocks Presentation Builder AI",
+      "Unlocks Pro & Con Analyzer AI",
+      "Unlocks Schedule Maker",
       "Full-Length Essay Evaluations (8 Paragraphs)",
-      "Advanced Note Summarizer",
+      "Unlimited Daily Quizzes & Flashcards",
+      "Generate Full Interactive Study Planners",
       "Priority Server Access (Zero wait times)",
       "The ultimate toolkit for A-Level & Uni students"
     ]
@@ -66,8 +75,6 @@ const TIERS: { id: Tier; name: string; price: string; credits: string; features:
     features: [
       "Atlas 5 Pro (Claude 3.5 Sonnet) - State of the art",
       "Unlimited Chat History Retention",
-      "Strict Coach (Focus Timer Integration)",
-      "Beta access to experimental tools",
       "Zero token throttling",
       "Ideal for University students & absolute power users"
     ]
@@ -135,8 +142,8 @@ export default function SubscriptionsPage() {
           <h1 className="text-4xl font-serif font-black text-white tracking-tight flex items-center gap-3">
             Subscriptions & Usage
           </h1>
-          <p className="text-slate-400 mt-2 max-w-lg">
-            Manage your study plan and monitor your AI generation limits. Upgrade to unlock powerful models and unlimited features.
+          <p className="text-slate-400 mt-2 max-w-xl">
+            Manage your study plan and monitor your AI generation limits. Upgrade to unlock powerful models and unlimited features—all for less than the price of a cup of coffee, and significantly cheaper than other AI subscriptions.
           </p>
         </div>
       </div>

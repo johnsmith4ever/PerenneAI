@@ -1,4 +1,4 @@
-import { CheckCircle2, Gamepad2, Brain, Sparkles, BookOpen, Clock, Bot, Palette, ArrowRight, Mail, Eye, MousePointerClick, MonitorPlay, Headphones, FileSearch } from "lucide-react";
+import { CheckCircle2, Gamepad2, Brain, Sparkles, BookOpen, Clock, Bot, Palette, ArrowRight, Mail, Eye, MousePointerClick, MonitorPlay, Headphones, FileSearch, Scale, FileText, Mic, Users, FlaskConical, PenTool, Cat, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -37,6 +37,57 @@ export default function ExplorePage() {
             icon={<Eye className="w-6 h-6" />}
             color="bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
             href="https://optex-ai.vercel.app"
+          />
+          <ToolCard 
+            title="Pro & Con Analyzer" 
+            description="Weigh out complex decisions with balanced perspectives and insights." 
+            icon={<Scale className="w-6 h-6" />}
+            color="bg-blue-500/10 text-blue-500 border-blue-500/20"
+            href="/explore/pro-con"
+          />
+          <ToolCard 
+            title="Presentation Builder" 
+            description="Generate full PowerPoint slides (.pptx) instantly from a simple prompt." 
+            icon={<MonitorPlay className="w-6 h-6" />}
+            color="bg-purple-500/10 text-purple-500 border-purple-500/20"
+            href="/explore/presentation"
+          />
+        </div>
+      </section>
+
+      {/* Experimental Section */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-3 border-b border-border pb-3">
+          <div className="w-8 h-8 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <h2 className="text-2xl font-bold font-serif" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>Experimental Concepts</h2>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          <ToolCard 
+            title="Lab Report Alchemist" 
+            description="Upload raw lab data and instrument outputs, and the AI automatically structures a rigorous lab report with methodology and error analysis." 
+            icon={<FlaskConical className="w-6 h-6" />}
+            color="bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+          />
+          <ToolCard 
+            title="Grammar & Tone Coach" 
+            description="Doesn't just fix typos—it analyzes your writing style and helps you rewrite essays to sound like a PhD scholar, a journalist, or a novelist." 
+            icon={<PenTool className="w-6 h-6" />}
+            color="bg-purple-500/10 text-purple-500 border-purple-500/20"
+          />
+          <ToolCard 
+            title="Pomodoro Pet" 
+            description="A virtual focus pet that levels up and evolves while you study, but loses health if you get distracted by other tabs or close the timer." 
+            icon={<Cat className="w-6 h-6" />}
+            color="bg-rose-500/10 text-rose-500 border-rose-500/20"
+          />
+          <ToolCard 
+            title="Physics & Circuit Sandbox" 
+            description="Describe a physics problem or electronic circuit, and the AI builds an interactive visual simulation to help you understand the forces at play." 
+            icon={<Zap className="w-6 h-6" />}
+            color="bg-amber-500/10 text-amber-500 border-amber-500/20"
           />
         </div>
       </section>

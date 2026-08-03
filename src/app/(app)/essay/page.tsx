@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
+import { PaywallOverlay } from "@/components/ui/paywall";
 
 type Role = "student" | "teacher" | null;
 type SourceType = "ai" | "real" | null;
@@ -43,8 +45,15 @@ type GradingStatus = "idle" | "ocr" | "marker" | "judge" | "complete" | "error";
 interface GradingResult {
   final_score: number;
   grade_letter: string;
+  category_breakdown: {
+    "Content & Knowledge"?: number;
+    "Structure & Organisation"?: number;
+    "Language, Tone & Style"?: number;
+    "Technical Accuracy"?: number;
+  };
   key_issues: string[];
   improvement_points: string[];
+  student_summary: string;
   marker_log: string;
 }
 
@@ -82,6 +91,7 @@ export default function EssayPage() {
   const [studentAnswers, setStudentAnswers] = usePersistentState<string[]>("essay_student_answers", []);
   
   const [isGenerating, setIsGenerating] = useState(false);
+  const [setupError, setSetupError] = useState(false);
 
   // Teacher flow state
   const [teacherStep, setTeacherStep] = usePersistentState<number>("essay_teacher_step", 1);
@@ -188,6 +198,7 @@ export default function EssayPage() {
     setStudentAnswers(Array(actualParagraphs).fill(""));
 
     try {
+      setSetupError(false);
       let finalPassage = "";
       
       if (sourceType === "ai") {
@@ -246,8 +257,7 @@ export default function EssayPage() {
       
     } catch (e) {
       console.error(e);
-      setGeneratedPassage("Failed to generate passage. Please try again.");
-      setGeneratedQuestion("Failed to generate question. Please try again.");
+      setSetupError(true);
     } finally {
       setIsGenerating(false);
     }
@@ -300,9 +310,9 @@ export default function EssayPage() {
 
   const handleGradeEssay = async () => {
     if (!subLoaded) return;
-    const markerModel: ModelType = "Bastion 3.5 Flash";
+    const markerModel: ModelType = tierRank >= TIER_RANK.Pro ? "Apollo V4 Pro" : "Apollo V4 Flash";
     
-    if (!canAfford(4000, markerModel)) {
+    if (!canAfford(markerModel === "Apollo V4 Pro" ? 8000 : 4000, markerModel)) {
       alert("You do not have enough daily credits to grade this essay. Please try again tomorrow or upgrade your plan.");
       return;
     }
@@ -337,7 +347,15 @@ export default function EssayPage() {
       finalSubmissionText += `[Typed Answers]:\n${typedAnswers}`;
 
       setGradingStatus("marker");
-      const markerSystemPrompt = `You are The Marker, a fair and balanced essay analyst. You will be given a passage summary, assignment instructions, and a student submission. Evaluate the submission constructively. Look for missing ${gradingConfig.structure} elements, major factual errors, or thematic misunderstandings. Do NOT be overly strict or nitpick minor stylistic choices. Output a concise markdown error log highlighting only legitimate flaws.`;
+      const markerSystemPrompt = `You are The Marker, an expert GCSE/A-Level English examiner. You will receive a student's essay submission and a passage summary. 
+Your job is to read the essay strictly against these four categories:
+1. Content & Knowledge (out of 35)
+2. Structure & Organisation (out of 25)
+3. Language, Tone & Style (out of 25)
+4. Technical Accuracy (out of 15)
+
+Do NOT assign numeric grades yourself. 
+Instead, output a detailed, qualitative error log. For each category, write a short paragraph explaining exactly what the student did well, what they did poorly, and pinpoint exactly where in the essay the errors occurred. Be fair but brutally honest. Output only markdown text.`;
 
       const markerUserMessage = `Passage Summary (for thematic reference):
 ${gradingConfig.passage || "None provided"}
@@ -366,9 +384,27 @@ ${finalSubmissionText}`;
       const markerLog = markerData.text;
 
       setGradingStatus("judge");
-      const judgeSystemPrompt = `You are The Judge, an encouraging and fair educator. Evaluate essay error logs produced by The Marker. You MUST respond with ONLY a raw JSON object — no markdown code fences. The exact schema is: { "final_score": number (0-100), "grade_letter": string (A*-U), "key_issues": string[], "improvement_points": string[] }`;
+      const judgeSystemPrompt = `You are The Judge, an encouraging educator. You will receive an essay's qualitative error log produced by a strict examiner based on a 100-point Mark Scheme. 
 
-      const judgeUserMessage = `Based solely on the error log below, calculate a fair final score (0-100). Be generous and encouraging—do NOT grade harshly unless there are major structural or factual failures. A competent essay with minor flaws should still receive an A or B (70-90). Assign the grade letter, and provide 2-3 key issues and 2-3 actionable improvement points.\n\nMarker's Error Log:\n${markerLog}`;
+Your task is to translate this raw log into a final numeric grade and a concise summary for the student. Be encouraging but accurate to the examiner's notes. 
+
+You MUST respond with ONLY a raw JSON object matching this schema exactly:
+{
+  "final_score": 85,
+  "grade_letter": "A",
+  "category_breakdown": {
+    "Content & Knowledge": 30,
+    "Structure & Organisation": 20,
+    "Language, Tone & Style": 22,
+    "Technical Accuracy": 13
+  },
+  "key_issues": ["Issue 1", "Issue 2"],
+  "improvement_points": ["Actionable step 1", "Actionable step 2"],
+  "student_summary": "A brief, encouraging paragraph summarizing their performance."
+}
+Do not use markdown code blocks. Output pure JSON.`;
+
+      const judgeUserMessage = `Based solely on the error log below, extract the final fair score and breakdown. Assign the grade letter, and provide 2-3 key issues and 2-3 actionable improvement points.\n\nMarker's Error Log:\n${markerLog}`;
 
       const judgeRes = await fetch("/api/chat", {
         method: "POST",
@@ -420,7 +456,15 @@ ${finalSubmissionText}`;
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-2xl">
+        {subLoaded && tierRank < TIER_RANK.Core && (
+          <PaywallOverlay 
+            tierRequired="Core"
+            title="Essay Tool Locked"
+            description="Upgrade to the Core plan to access custom AI writing exercises and detailed essay grading."
+          />
+        )}
+        
+        <div className={cn("grid md:grid-cols-2 gap-6 max-w-2xl", tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
           <button 
             onClick={() => setRole("student")}
             className="flex flex-col items-center text-center p-8 rounded-2xl border border-border bg-card hover:border-primary/40 hover:bg-primary/5 transition-all group relative overflow-hidden shadow-sm hover:shadow-md"
@@ -627,14 +671,15 @@ ${finalSubmissionText}`;
             </div>
 
             <div className="flex justify-end pt-6 pb-20 border-t border-border">
-              {gradingStatus === "idle" || gradingStatus === "error" ? (
+              {gradingStatus === "idle" ? (
                 <div className="flex flex-col items-end gap-2">
                   <Button size="lg" className="px-8 shadow-sm gap-2" onClick={handleGradeEssay}>
                     <CheckCircle2 className="w-4 h-4" />
-                    {gradingStatus === "error" ? "Retry AI Grading" : "Submit for AI Grading"}
+                    Submit for AI Grading
                   </Button>
-                  {gradingStatus === "error" && <p className="text-xs text-destructive font-medium">An error occurred during grading. Please try again.</p>}
                 </div>
+              ) : gradingStatus === "error" ? (
+                <ApiErrorFallback message="An error occurred while grading the essay." onRetry={handleGradeEssay} />
               ) : gradingStatus !== "complete" ? (
                 <div className="flex items-center gap-3 px-8 py-3 rounded-lg bg-primary/10 border border-primary/20 text-primary">
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -661,6 +706,23 @@ ${finalSubmissionText}`;
                         <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Grade</span>
                         <span className="text-4xl font-black text-primary">{gradingResult.grade_letter}</span>
                       </div>
+                    </div>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-secondary/30 border border-secondary mb-8">
+                    <h4 className="text-sm font-bold text-foreground mb-2">Educator Summary</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{gradingResult.student_summary}</p>
+                  </div>
+
+                  <div className="mb-8">
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">Category Breakdown</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      {gradingResult.category_breakdown && Object.entries(gradingResult.category_breakdown).map(([cat, score]) => (
+                        <div key={cat} className="flex items-center justify-between p-3 rounded-lg border border-border bg-card shadow-sm">
+                          <span className="text-sm font-medium text-foreground">{cat}</span>
+                          <span className="text-sm font-bold text-primary">{score}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
@@ -979,6 +1041,8 @@ ${finalSubmissionText}`;
               <Loader2 className="w-8 h-8 text-primary animate-spin" />
               <p className="text-muted-foreground font-medium">Generating passage and question...</p>
             </div>
+          ) : setupError ? (
+            <ApiErrorFallback message="Failed to generate the practice setup." onRetry={handleGenerateExercise} />
           ) : (
             <>
               {/* Source Passage */}

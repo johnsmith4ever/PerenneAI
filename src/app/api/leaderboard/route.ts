@@ -30,7 +30,7 @@ export async function GET() {
         score: usage.credits_used,
         tier: (user?.publicMetadata?.tier as string) || "Free"
       };
-    }).filter(u => u.name !== "Anonymous" || u.score > 0);
+    }).filter(u => u.name !== "null" && u.score > 0);
 
     leaderboard.sort((a, b) => b.score - a.score);
     const top5 = leaderboard.slice(0, 5);

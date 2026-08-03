@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { PaywallOverlay } from "@/components/ui/paywall";
 import { useUser } from "@clerk/nextjs";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { PremiumGate } from "@/components/premium-gate";
 import { supabase } from "@/lib/supabase";
 import pptxgen from "pptxgenjs";
 
@@ -105,36 +107,9 @@ export default function PresentationBuilderPage() {
     pres.writeFile({ fileName: `${topic || "Presentation"}.pptx` });
   };
 
-  if (isLoaded && tierRank === 0) {
-    return (
-      <div className="max-w-3xl mx-auto space-y-10 animate-in fade-in pb-12 text-center pt-20">
-        <div className="w-20 h-20 mx-auto rounded-2xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center mb-6">
-          <MonitorPlay className="w-10 h-10" />
-        </div>
-        <h1 className="text-4xl font-bold font-serif" style={{ fontFamily: "Anthropic Serif, var(--font-merriweather), serif" }}>
-          Presentation Builder is a Core Feature
-        </h1>
-        <p className="text-muted-foreground text-xl">
-          Upgrade to the Core plan or above to unlock AI-powered presentations and PowerPoint exports.
-        </p>
-        <Link href="/subscriptions">
-          <Button className="mt-8 h-14 px-8 rounded-2xl bg-primary text-white font-bold text-lg">
-            View Plans
-          </Button>
-        </Link>
-      </div>
-    );
-  }
-
   return (
+    <PremiumGate featureName="Presentation Builder">
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
-      {isLoaded && tierRank < TIER_RANK.Pro && (
-        <PaywallOverlay 
-          tierRequired="Pro"
-          title="Presentation Builder Locked"
-          description="Upgrade to the Pro plan to auto-generate beautiful PowerPoint slides from any topic."
-        />
-      )}
       <div className={cn(tierRank < TIER_RANK.Pro && "opacity-20 pointer-events-none blur-[2px]")}>
       {/* Header */}
       <div>
@@ -293,5 +268,6 @@ export default function PresentationBuilderPage() {
       )}
       </div>
     </div>
+    </PremiumGate>
   );
 }

@@ -11,7 +11,7 @@ import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 
 import { PaywallOverlay } from "@/components/ui/paywall";
 
-type Tab = "quizzes" | "flashcards" | "essays" | "presentation" | "pro_con" | "mindmap" | "schedule" | "note_summary";
+type Tab = "quizzes" | "flashcards" | "essays" | "presentation" | "pro_con" | "mindmap" | "schedule" | "note_summary" | "debate" | "research";
 
 const TABS: { id: Tab, label: string }[] = [
   { id: "quizzes", label: "Quizzes" },
@@ -19,6 +19,8 @@ const TABS: { id: Tab, label: string }[] = [
   { id: "essays", label: "Essays" },
   { id: "presentation", label: "Presentations" },
   { id: "pro_con", label: "Pro/Cons" },
+  { id: "debate", label: "Debates" },
+  { id: "research", label: "Research" },
   { id: "mindmap", label: "Mindmaps" },
   { id: "schedule", label: "Schedules" },
   { id: "note_summary", label: "Note Summaries" }
@@ -104,6 +106,14 @@ export default function HistoryPage() {
       localStorage.setItem("explore_procon_data", JSON.stringify(item.data));
       localStorage.setItem("explore_procon_topic", item.topic);
       router.push("/explore/pro-con");
+    } else if (item.type === "debate") {
+      localStorage.setItem("explore_debate_data", JSON.stringify(item.data));
+      localStorage.setItem("explore_debate_topic", item.topic);
+      router.push("/debate");
+    } else if (item.type === "research") {
+      localStorage.setItem("explore_research_data", JSON.stringify(item.data));
+      localStorage.setItem("explore_research_topic", item.topic);
+      router.push("/research");
     } else if (item.type === "mindmap") {
       localStorage.setItem("mindmaps_root_v4", JSON.stringify(item.data));
       router.push("/mindmaps");
@@ -311,7 +321,7 @@ export default function HistoryPage() {
             )
           )}
 
-          {["presentation", "pro_con", "mindmap", "schedule", "note_summary"].includes(activeTab) && (
+          {["presentation", "pro_con", "mindmap", "schedule", "note_summary", "debate", "research"].includes(activeTab) && (
             explore.filter(item => item.type === activeTab).length === 0 ? (
               <div className="p-12 text-center rounded-xl border border-border bg-card">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 text-primary">

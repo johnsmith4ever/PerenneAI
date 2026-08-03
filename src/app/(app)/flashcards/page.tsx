@@ -329,9 +329,11 @@ export default function FlashcardsPage() {
                 className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none"
               >
                 <option value="Auto">Auto (Let AI decide)</option>
-                {Array.from({ length: 16 }, (_, i) => i + 5).map((num) => (
+                {Array.from({ length: 16 }, (_, i) => i + 5)
+                  .filter(num => tierRank >= TIER_RANK.Core || num <= 10)
+                  .map((num) => (
                   <option key={num} value={num.toString()}>
-                    {num} Cards
+                    {num} Cards {num > 10 && tierRank < TIER_RANK.Core ? "(Core)" : ""}
                   </option>
                 ))}
               </select>

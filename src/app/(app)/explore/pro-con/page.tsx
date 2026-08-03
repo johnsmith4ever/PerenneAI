@@ -10,7 +10,10 @@ import Link from "next/link";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { PaywallOverlay } from "@/components/ui/paywall";
 import { useUser } from "@clerk/nextjs";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { PremiumGate } from "@/components/premium-gate";
 import { supabase } from "@/lib/supabase";
+import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 
 type Item = {
   point: string;
@@ -27,7 +30,7 @@ export default function ProConPage() {
   const [extraContext, setExtraContext] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ProConData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [proConError, setProConError] = useState(false);
   const { deductCredits, tier, isLoaded: subLoaded } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
   const { user } = useUser();
@@ -43,12 +46,12 @@ export default function ProConPage() {
     }
   }, []);
 
-  const generateTable = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const generateTable = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!topic.trim()) return;
 
     setLoading(true);
-    setError(null);
+    setProConError(false);
     try {
       const res = await fetch("/api/pro-con", {
         method: "POST",
@@ -69,16 +72,19 @@ export default function ProConPage() {
           });
         }
       } else {
-        setError(data.message || "Failed to generate.");
+        console.error("Failed to generate:", data.message);
+        setProConError(true);
       }
     } catch (e: any) {
-      setError("An unexpected error occurred.");
+      console.error(e);
+      setProConError(true);
     } finally {
       setLoading(false);
     }
   };
 
   return (
+    <PremiumGate featureName="Pro-Con Analyzer">
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
       {subLoaded && tierRank < TIER_RANK.Pro && (
         <PaywallOverlay 
@@ -132,7 +138,11 @@ export default function ProConPage() {
             disabled={loading}
           />
         </form>
-        {error && <p className="text-red-500 mt-4 text-sm font-medium">{error}</p>}
+        {proConError && (
+          <div className="mt-6">
+            <ApiErrorFallback message="Failed to generate the pros and cons." onRetry={() => generateTable()} />
+          </div>
+        )}
       </div>
 
       {/* Results Section */}
@@ -179,5 +189,6 @@ export default function ProConPage() {
         )}
       </div>
     </div>
+    </PremiumGate>
   );
 }

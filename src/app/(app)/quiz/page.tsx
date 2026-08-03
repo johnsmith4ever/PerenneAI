@@ -4,10 +4,11 @@ import { useState } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
-import { useSubscription } from "@/hooks/use-subscription";
+import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { Sparkles, ArrowLeft, Calculator, BookOpen, GraduationCap, CheckCircle2, ListChecks, BarChart, Settings2, FileText, ChevronRight, XCircle, Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type QuizType = "Calculation" | "Word-Heavy" | null;
@@ -39,7 +40,8 @@ const wordQTypes = ["MC", "Short Answer", "Long Answer (Explain)", "Case Study",
 
 export default function QuizPage() {
   // Subscription
-  const { canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
+  const { tier, canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
+  const tierRank = TIER_RANK[tier] ?? 0;
 
   // Setup State
   const [step, setStep] = usePersistentState<Step>("quiz_step", 1);
@@ -611,9 +613,10 @@ export default function QuizPage() {
             </div>
             <div className="px-4 py-12 flex flex-col items-center">
               <span className="text-5xl font-bold text-foreground mb-8">{questionCount}</span>
-              <input type="range" min="5" max="20" step="1" value={questionCount} onChange={(e) => setQuestionCount(parseInt(e.target.value))} className="w-full max-w-sm accent-primary" />
+              <input type="range" min="5" max={tierRank < TIER_RANK.Core ? 5 : 20} step="1" value={questionCount} onChange={(e) => setQuestionCount(parseInt(e.target.value))} className="w-full max-w-sm accent-primary" />
               <div className="w-full max-w-sm flex justify-between mt-3 text-xs text-muted-foreground font-medium">
-                <span>5</span><span>20</span>
+                <span>5</span>
+                <span>{tierRank < TIER_RANK.Core ? "5 (Free Limit)" : "20"}</span>
               </div>
             </div>
             <div className="mt-auto flex justify-end">
@@ -704,8 +707,21 @@ export default function QuizPage() {
           </Button>
         )}
       </div>
+
+      {/* Tabs */}
+      {quizMode === "setup" && step === 1 && (
+        <div className="flex p-1 bg-secondary rounded-xl">
+          <button className="flex-1 py-2 text-sm font-semibold rounded-lg bg-background text-foreground shadow-sm">
+            Standard Quiz
+          </button>
+          <Link href="/quiz/exam-sim" className="flex-1 py-2 text-sm font-semibold rounded-lg text-muted-foreground hover:text-foreground text-center">
+            Exam Simulator
+          </Link>
+        </div>
+      )}
+
       {quizMode === "setup" && step < 8 && (
-        <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden mt-6">
           <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${(step / 7) * 100}%` }} />
         </div>
       )}

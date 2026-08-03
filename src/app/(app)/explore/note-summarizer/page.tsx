@@ -7,8 +7,9 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
 import { PaywallOverlay } from "@/components/ui/paywall";
-
+import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { ProGate } from "@/components/pro-gate";
 
 type SummarizerData = {
   tldr?: string;
@@ -24,6 +25,7 @@ export default function NoteSummarizerPage() {
 
   const [input, setInput] = useLocalStorage("ns_input", "");
   const [loading, setLoading] = useState(false);
+  const [summarizerError, setSummarizerError] = useState(false);
   const [result, setResult] = useLocalStorage<SummarizerData | null>("ns_result", null);
   
   const [mode, setMode] = useLocalStorage<"understand" | "pure">("ns_mode", "understand");
@@ -34,8 +36,8 @@ export default function NoteSummarizerPage() {
     if (!input.trim()) return;
     if (!subLoaded) return;
     
-    const isPremiumPlus = tierRank >= TIER_RANK.Premium;
-    const modelUsed: ModelType = isPremiumPlus ? "Apollo V4 Flash" : "Polaris 1";
+    const isProPlus = tierRank >= TIER_RANK.Pro;
+    const modelUsed: ModelType = isProPlus ? "Apollo V4 Flash" : "Polaris 1";
 
     if (!canAfford(1500, modelUsed)) {
       alert("You do not have enough daily credits to summarize these notes. Please try again tomorrow or upgrade your plan.");
@@ -43,6 +45,7 @@ export default function NoteSummarizerPage() {
     }
 
     setLoading(true);
+    setSummarizerError(false);
     try {
       const res = await fetch("/api/summarize-notes", {
         method: "POST",
@@ -54,25 +57,21 @@ export default function NoteSummarizerPage() {
         if (data.usage) deductCredits(data.usage.promptTokens || data.usage.inputTokens, data.usage.completionTokens || data.usage.outputTokens, modelUsed, "other");
         setResult(data.data);
       } else {
-        alert("Error: " + data.message);
+        console.error("Error summarizing notes:", data.message);
+        setSummarizerError(true);
       }
     } catch (e) {
-      alert("Failed to summarize notes.");
+      console.error(e);
+      setSummarizerError(true);
     } finally {
       setLoading(false);
     }
   };
 
   return (
+    <ProGate featureName="Note Summarizer">
     <div className="max-w-6xl mx-auto pb-12 animate-in fade-in relative">
-      {subLoaded && tierRank < TIER_RANK.Pro && (
-        <PaywallOverlay 
-          tierRequired="Pro"
-          title="Note Summarizer Locked"
-          description="Upgrade to the Pro plan to access the AI Note Summarizer."
-        />
-      )}
-      <div className={cn(tierRank < TIER_RANK.Pro && "opacity-20 pointer-events-none blur-[2px]")}>
+      <div className="w-full">
       
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -80,6 +79,11 @@ export default function NoteSummarizerPage() {
             <BookOpen className="w-5 h-5" />
           </div>
           <p className="label-title m-0">Productivity Tool</p>
+          {subLoaded && tierRank < TIER_RANK.Pro && (
+            <span className="ml-auto px-3 py-1 bg-amber-500/10 text-amber-600 border border-amber-500/20 rounded-full text-[11px] font-bold uppercase tracking-wider">
+              Free Limit: 1 / Day
+            </span>
+          )}
         </div>
         <h1 className="page-title font-serif" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>Note Summarizer</h1>
         <p className="text-sm text-muted-foreground mt-2 max-w-xl leading-relaxed font-sans" style={{ fontFamily: 'Anthropic Sans, var(--font-inter), sans-serif' }}>
@@ -139,25 +143,29 @@ export default function NoteSummarizerPage() {
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                 {loading ? "Summarizing..." : "Summarize"}
             </Button>
-            {mode === "understand" && subLoaded && tierRank < TIER_RANK.Premium && (
+            {mode === "understand" && subLoaded && tierRank < TIER_RANK.Pro && (
               <div className="absolute inset-0 z-10 bg-background/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center text-center p-6 border border-border">
                 <Lock className="w-6 h-6 text-amber-500 mb-2" />
                 <h3 className="font-bold mb-1">Understand Mode Locked</h3>
-                <p className="text-xs text-muted-foreground mb-4">Upgrade to Premium for Deepseek analogies and ELI5 explanations.</p>
+                <p className="text-xs text-muted-foreground mb-4">Upgrade to Pro for Deepseek analogies and ELI5 explanations.</p>
               </div>
             )}
           </div>
         </div>
 
         {/* OUTPUT */}
-        <div className={cn("space-y-6 transition-all duration-500", !result ? "opacity-50 grayscale pointer-events-none" : "")}>
-          {!result && !loading && (
+        <div className={cn("space-y-6 transition-all duration-500", !result && !summarizerError ? "opacity-50 grayscale pointer-events-none" : "")}>
+          {summarizerError ? (
+            <div className="h-full min-h-[500px] flex items-center justify-center">
+              <ApiErrorFallback message="Failed to summarize your notes." onRetry={handleSummarize} />
+            </div>
+          ) : !result && !loading ? (
              <div className="h-full min-h-[500px] border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center p-8 text-center bg-card/50">
                <Brain className="w-12 h-12 text-muted-foreground/30 mb-4" />
                <h3 className="font-semibold text-foreground mb-1 font-serif" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>Awaiting Notes</h3>
                <p className="text-sm text-muted-foreground max-w-sm font-sans">Hit summarize and watch your chaotic text transform into a beautiful, structured study guide.</p>
              </div>
-          )}
+          ) : null}
 
           {result && mode === "pure" && result.pureSummary && (
              <div className="space-y-6 animate-in slide-in-from-right-8 duration-500 font-sans" style={{ fontFamily: 'Anthropic Sans, var(--font-inter), sans-serif' }}>
@@ -232,5 +240,6 @@ export default function NoteSummarizerPage() {
       </div>
       </div>
     </div>
+    </ProGate>
   );
 }

@@ -66,19 +66,6 @@ export default function FunPage() {
             badge="Play Now"
             internal={true}
           />
-        </div>
-      </section>
-
-      {/* Creative Section */}
-      <section className="space-y-6 pt-4">
-        <div className="flex items-center gap-3 border-b border-border pb-3">
-          <div className="w-8 h-8 rounded-full bg-cyan-500/10 text-cyan-500 flex items-center justify-center">
-            <Palette className="w-4 h-4" />
-          </div>
-          <h2 className="text-2xl font-bold font-serif" style={{ fontFamily: "Anthropic Serif, var(--font-merriweather), serif" }}>Creative</h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <FunCard
             title="Elimination Spinner"
             description="Input names or choices, spin the wheel, and watch as items are randomly eliminated until one remains."

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageSquare, Plus, Loader2, ThumbsUp, User as UserIcon, AlertTriangle, Lightbulb } from "lucide-react";
+import { MessageSquare, Plus, Loader2, ThumbsUp, User as UserIcon, AlertTriangle, Lightbulb, Trash2 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,9 @@ export default function CommunityPage() {
         .order('created_at', { ascending: false });
         
       if (error) throw error;
-      setPosts(data || []);
+      // Filter out the old test post that couldn't be deleted via DB
+      const filtered = (data || []).filter(post => post.id !== "7eed7303-3e36-4785-b6a1-bc27c93b164a");
+      setPosts(filtered);
     } catch (e: any) {
       // Fallback mock data if table doesn't exist yet
       setErrorMsg("Failed to load live database. Showing local preview.");
@@ -93,6 +95,17 @@ export default function CommunityPage() {
       alert("Failed to submit. Please ensure the 'community_posts' table exists in Supabase.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (postId: string) => {
+    if (!confirm("Are you sure you want to delete this post?")) return;
+    try {
+      const { error } = await supabase.from('community_posts').delete().eq('id', postId);
+      if (error) throw error;
+      fetchPosts();
+    } catch (e: any) {
+      alert("Failed to delete post: " + e.message);
     }
   };
 
@@ -170,6 +183,15 @@ export default function CommunityPage() {
                         <span className="text-xs text-muted-foreground ml-auto">
                           {new Date(post.created_at).toLocaleDateString()}
                         </span>
+                        {user?.id === post.user_id && (
+                          <button 
+                            onClick={() => handleDelete(post.id)}
+                            className="p-1 ml-2 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded transition-colors"
+                            title="Delete Post"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
                       </div>
                       <h3 className="font-bold text-lg mb-2 font-serif">{post.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">

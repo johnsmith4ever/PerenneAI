@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { ProGate } from "@/components/pro-gate";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -435,22 +437,12 @@ function palette(depth: number) {
                 <div className="space-y-2 pt-1">
                   <Button variant="outline" className="w-full gap-2" onClick={buildManually}><Network size={14} />Build Map Manually</Button>
                   
-                  {subLoaded && TIER_RANK[tier] < TIER_RANK.Pro ? (
-                    <div className="pt-2">
-                      <div className="p-3 rounded-xl border border-border bg-background/50 flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
-                          <Lock className="w-4 h-4 text-purple-400 shrink-0" />
-                          <span className="text-xs font-medium text-muted-foreground leading-tight">Auto-Build locked (Pro)</span>
-                        </div>
-                        <Button size="sm" variant="outline" className="h-7 text-[10px] shrink-0" onClick={() => router.push("/subscriptions")}>Upgrade</Button>
-                      </div>
-                    </div>
-                  ) : (
+                  <ProGate featureName="Mindmap Auto-Builder">
                     <Button className="w-full gap-2 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 text-white border-0 shadow-md" onClick={buildWithGemini} disabled={isBuilding}>
                       {isBuilding ? <Loader2 className="w-4 h-4 animate-spin" /> : <Bot size={14} />}
                       {isBuilding ? "Building…" : "Auto-Build with Gemini"}
                     </Button>
-                  )}
+                  </ProGate>
                 </div>
               </div>
             )}

@@ -9,7 +9,8 @@ import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription"
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
-import { PaywallOverlay } from "@/components/ui/paywall";
+import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
+import { PremiumGate } from "@/components/premium-gate";
 
 // ─── TYPES ───────────────────────────────────────────────────────────────────────
 
@@ -39,6 +40,7 @@ export default function ScheduleMakerPage() {
   const { tier, canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
   const [loading, setLoading] = useState(false);
+  const [scheduleError, setScheduleError] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { user } = useUser();
   
@@ -69,6 +71,7 @@ export default function ScheduleMakerPage() {
   const generateSchedule = async () => {
     if (!goal || !subjects) return;
     setLoading(true);
+    setScheduleError(false);
     setIsSaved(false);
     const model: ModelType = "Apollo V4 Flash";
     
@@ -94,10 +97,12 @@ export default function ScheduleMakerPage() {
           });
         }
       } else {
-        alert("Failed to generate schedule: " + data.message);
+        console.error("Failed to generate schedule:", data.message);
+        setScheduleError(true);
       }
     } catch (e) {
-      alert("An error occurred");
+      console.error(e);
+      setScheduleError(true);
     } finally {
       setLoading(false);
     }
@@ -119,15 +124,9 @@ export default function ScheduleMakerPage() {
   };
 
   return (
+    <PremiumGate featureName="Schedule Maker">
     <div className="max-w-6xl mx-auto pb-12 animate-in fade-in relative">
-      {subLoaded && tierRank < TIER_RANK.Core && (
-        <PaywallOverlay 
-          tierRequired="Core"
-          title="Schedule Maker Locked"
-          description="Upgrade to the Core plan to auto-generate personalized study schedules."
-        />
-      )}
-      <div className={cn(tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
+      <div className="w-full">
       
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
@@ -284,7 +283,11 @@ export default function ScheduleMakerPage() {
 
         {/* SCHEDULE PANEL (Right) */}
         <div className="lg:col-span-8">
-          {!schedule ? (
+          {scheduleError ? (
+            <div className="h-full min-h-[500px] flex items-center justify-center">
+              <ApiErrorFallback message="Failed to generate your schedule." onRetry={generateSchedule} />
+            </div>
+          ) : !schedule ? (
             <div className="h-full min-h-[500px] border border-white/10 rounded-3xl flex flex-col items-center justify-center text-center p-8 bg-black/20 backdrop-blur-xl relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent pointer-events-none" />
               <div className="w-20 h-20 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
@@ -412,5 +415,6 @@ export default function ScheduleMakerPage() {
       </div>
       </div>
     </div>
+    </PremiumGate>
   );
 }

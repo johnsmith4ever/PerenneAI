@@ -33,9 +33,9 @@ function getModel(displayName: string) {
     case "Bastion 3.5 Pro":
       return deepseek.chat("deepseek-chat");
     case "Apollo V4 Flash":
-      return deepseek.chat("deepseek-v4-flash");
+      return deepseek.chat("deepseek-chat");
     case "Apollo V4 Pro":
-      return deepseek.chat("deepseek-v4-pro");
+      return deepseek.chat("deepseek-reasoner");
     case "Atlas 4.5 Flash":
       return anthropic.chat("claude-haiku-4-5-20251001");
     case "Atlas 5 Pro":

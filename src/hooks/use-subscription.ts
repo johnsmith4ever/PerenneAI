@@ -5,10 +5,10 @@ export type Tier = "Free" | "Core" | "Pro" | "Premium" | "Maximum";
 
 export const TIER_ALLOWANCES: Record<Tier, number> = {
   Free: 5_000,
-  Core: 24_000,
-  Pro: 60_000,
-  Premium: 100_000,
-  Maximum: 150_000,
+  Core: 25_000,
+  Pro: 80_000,
+  Premium: 150_000,
+  Maximum: 300_000,
 };
 
 export const TIER_RANK: Record<Tier, number> = {
@@ -26,7 +26,8 @@ export type ModelType =
   | "Apollo V4 Flash" 
   | "Apollo V4 Pro" 
   | "Atlas 4.5 Flash"
-  | "Atlas 5 Pro";
+  | "Atlas 5 Pro"
+  | "Tavily Search";
 
 export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> = {
   "Polaris 1": { input: 0.5, output: 0.5 },        // Llama - Super Cheap
@@ -36,6 +37,7 @@ export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> =
   "Apollo V4 Pro": { input: 6, output: 6 },     // Deepseek Pro
   "Atlas 4.5 Flash": { input: 10, output: 10 }, // Claude Haiku
   "Atlas 5 Pro": { input: 20, output: 20 },     // Claude Sonnet - Most Expensive
+  "Tavily Search": { input: 70, output: 70 },   // Web Search (Expensive API)
 };
 
 type SubscriptionState = {
