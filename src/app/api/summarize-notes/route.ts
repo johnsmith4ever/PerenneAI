@@ -31,7 +31,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ status: "error", message: "Please provide more notes to summarize." }, { status: 400 });
     }
 
-    const userObj = await clerkClient.users.getUser(userId);
+    const client = await clerkClient();
+    const userObj = await client.users.getUser(userId);
     const tier = (userObj.publicMetadata.tier as string) || "Free";
     const tierRank = TIER_RANK[tier] || 0;
 
