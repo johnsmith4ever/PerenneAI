@@ -70,7 +70,7 @@ export default function ResearchPage() {
         setSources(data.sources || []);
         if (data.usage) {
           // Deduct credits based on model used (Deepseek or Gemini fallback)
-          deductCredits(data.usage.promptTokens, data.usage.completionTokens, data.model.includes("Apollo") ? "Apollo V4 Flash" : "Bastion 3.5 Flash");
+          deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, data.model.includes("Apollo") ? "Apollo V4 Flash" : "Bastion 3.5 Flash");
         }
         if (data.sources && data.sources.length > 0) {
           deductCredits(25, 25, "Tavily Search"); // flat 3500 cost

@@ -124,6 +124,10 @@ export default function HistoryPage() {
       localStorage.setItem("explore_schedule_data", JSON.stringify(item.data));
       localStorage.setItem("explore_schedule_topic", item.topic);
       router.push("/explore/schedule-maker");
+    } else if (item.type === "note_summary_saved") {
+      localStorage.setItem("ns_result", JSON.stringify(item.data));
+      localStorage.setItem("ns_input", JSON.stringify(item.topic));
+      router.push("/explore/note-summarizer");
     }
   };
 
@@ -325,7 +329,7 @@ export default function HistoryPage() {
           )}
 
           {["presentation", "math_solver", "mindmap", "schedule", "note_summary", "debate", "research"].includes(activeTab) && (
-            explore.filter(item => item.type === activeTab).length === 0 ? (
+            explore.filter(item => item.type === activeTab || (activeTab === "note_summary" && item.type === "note_summary_saved")).length === 0 ? (
               <div className="p-12 text-center rounded-xl border border-border bg-card">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 text-primary">
                   <Globe className="w-6 h-6" />
@@ -334,9 +338,10 @@ export default function HistoryPage() {
                 <p className="text-sm text-muted-foreground">Generations will appear here.</p>
               </div>
             ) : (
-              <div className="space-y-6">
-                <div className="grid gap-4">
-                  {explore.filter(item => item.type === activeTab).map((item) => (
+              <div className="grid gap-4">
+                {explore
+                  .filter((item) => item.type === activeTab || (activeTab === "note_summary" && item.type === "note_summary_saved"))
+                  .map((item) => (
                     <div key={item.id} onClick={() => handleRetakeExplore(item)} className="bg-card border border-border rounded-xl p-5 flex items-start justify-between hover:shadow-md transition-shadow group cursor-pointer">
                       <div>
                         <h3 className="font-semibold text-foreground text-lg mb-1">{item.topic || "Untitled"}</h3>

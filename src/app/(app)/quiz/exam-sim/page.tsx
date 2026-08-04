@@ -84,7 +84,7 @@ export default function ExamSimPage() {
         setAnswers(new Array(data.questions.length).fill(""));
         setTimeLeft(timeLimit * 60);
         setExamState("taking");
-        if (data.usage) deductCredits(data.usage.promptTokens, data.usage.completionTokens, "Apollo V4 Flash");
+        if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, "Apollo V4 Flash");
       } else {
         alert("Failed to generate exam.");
         setExamState("setup");
@@ -107,7 +107,7 @@ export default function ExamSimPage() {
       if (data.status === "success") {
         setResults(data.results);
         setExamState("results");
-        if (data.usage) deductCredits(data.usage.promptTokens, data.usage.completionTokens, "Apollo V4 Flash");
+        if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, "Apollo V4 Flash");
       } else {
         alert("Grading failed.");
         setExamState("setup");

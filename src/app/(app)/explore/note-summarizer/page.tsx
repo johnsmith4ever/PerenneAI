@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target, Lock, Mail } from "lucide-react";
+import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target, Lock, Mail, Save, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ import { PaywallOverlay } from "@/components/ui/paywall";
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { ProGate } from "@/components/pro-gate";
+import { useUser } from "@clerk/nextjs";
 
 type SummarizerData = {
   tldr?: string;
@@ -31,6 +32,31 @@ export default function NoteSummarizerPage() {
   const [mode, setMode] = useLocalStorage<"understand" | "pure">("ns_mode", "understand");
   const [format, setFormat] = useLocalStorage<"paragraph" | "bullets">("ns_format", "paragraph");
   const [length, setLength] = useLocalStorage<"mini" | "short" | "medium">("ns_length", "short");
+
+  const { user } = useUser();
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasSaved, setHasSaved] = useState(false);
+
+  const saveToHistory = async () => {
+    if (!user || !result) return;
+    setIsSaving(true);
+    try {
+      const { supabase } = await import("@/lib/supabase");
+      const { error } = await supabase.from("explore_history").insert({
+        user_id: user.id,
+        type: "note_summary_saved",
+        topic: input.slice(0, 30) + (input.length > 30 ? "..." : "") || "Note Summary",
+        data: result
+      });
+      if (error) throw error;
+      setHasSaved(true);
+      setTimeout(() => setHasSaved(false), 3000);
+    } catch (e) {
+      console.error("Error saving note summary:", e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const handleSummarize = async () => {
     if (!input.trim()) return;
@@ -155,6 +181,14 @@ export default function NoteSummarizerPage() {
 
         {/* OUTPUT */}
         <div className={cn("space-y-6 transition-all duration-500", !result && !summarizerError ? "opacity-50 grayscale pointer-events-none" : "")}>
+          {result && !summarizerError && (
+            <div className="flex justify-end mb-4 animate-in fade-in">
+              <Button variant="outline" size="sm" onClick={saveToHistory} disabled={isSaving || hasSaved} className="gap-2">
+                {hasSaved ? <><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Saved to History</> : isSaving ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</> : <><Save className="w-4 h-4" /> Save Summary</>}
+              </Button>
+            </div>
+          )}
+          
           {summarizerError ? (
             <div className="h-full min-h-[500px] flex items-center justify-center">
               <ApiErrorFallback message="Failed to summarize your notes." onRetry={handleSummarize} />

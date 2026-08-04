@@ -87,11 +87,11 @@ export default function MathSolverPage() {
         
         // Deduct DeepSeek usage
         if (data.usage?.deepseek) {
-          deductCredits(data.usage.deepseek.promptTokens, data.usage.deepseek.completionTokens, "Apollo V4 Flash");
+          deductCredits(data.usage.deepseek.inputTokens ?? data.usage.deepseek.promptTokens, data.usage.deepseek.outputTokens ?? data.usage.deepseek.completionTokens, "Apollo V4 Flash");
         }
         // Deduct Gemini usage if image was used
         if (data.usage?.gemini) {
-          deductCredits(data.usage.gemini.promptTokens, data.usage.gemini.completionTokens, "Bastion 3.5 Flash");
+          deductCredits(data.usage.gemini.inputTokens ?? data.usage.gemini.promptTokens, data.usage.gemini.outputTokens ?? data.usage.gemini.completionTokens, "Bastion 3.5 Flash");
         }
       } else {
         alert(data.message || "Failed to solve problem");

@@ -76,7 +76,7 @@ export default function DebatePage() {
       if (data.status === "success") {
         setMessages([...newMessages, { role: "assistant", content: data.text }]);
         if (data.usage) {
-          deductCredits(data.usage.promptTokens, data.usage.completionTokens, "Apollo V4 Flash");
+          deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, "Apollo V4 Flash");
         }
         if (data.usedTavily) {
           deductCredits(25, 25, "Tavily Search"); // roughly 3500 flat fee for web search

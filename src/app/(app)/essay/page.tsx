@@ -311,7 +311,9 @@ export default function EssayPage() {
 
   const handleGradeEssay = async () => {
     if (!subLoaded) return;
-    const markerModel: ModelType = tierRank >= TIER_RANK.Pro ? "Apollo V4 Pro" : "Apollo V4 Flash";
+    // Use Apollo V4 Flash for the Marker since deepseek-reasoner (Pro) can sometimes 
+    // swallow output into reasoning blocks, causing "No response received" empty text errors.
+    const markerModel: ModelType = "Apollo V4 Flash";
     
     if (!canAfford(markerModel === "Apollo V4 Pro" ? 8000 : 4000, markerModel)) {
       alert("You do not have enough daily credits to grade this essay. Please try again tomorrow or upgrade your plan.");
