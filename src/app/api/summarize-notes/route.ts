@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
     const client = await clerkClient();
     const userObj = await client.users.getUser(userId);
-    const { FREE_ACCESS_MODE } = await import("@/hooks/use-subscription");
+    const FREE_ACCESS_MODE = true;
     const tier = (userObj.publicMetadata.tier as string) || "Free";
     const tierRank = TIER_RANK[tier] || 0;
 
