@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Lock, UserCheck, ShieldAlert, Zap, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
 
 type AdminUser = {
   id: string;
@@ -15,6 +16,7 @@ type AdminUser = {
 };
 
 export default function AdminDashboardPage() {
+  const { user, isLoaded } = useUser();
   const [authLevel, setAuthLevel] = useState<0 | 1 | 2 | 3 | 4>(0);
   const [pwdInput, setPwdInput] = useState("");
   const [error, setError] = useState(false);
@@ -104,6 +106,27 @@ export default function AdminDashboardPage() {
       setUpgrading(null);
     }
   };
+
+  if (!isLoaded) {
+    return <div className="min-h-[600px] flex items-center justify-center animate-pulse">Loading...</div>;
+  }
+
+  const primaryEmail = user?.primaryEmailAddress?.emailAddress;
+  if (primaryEmail !== "abcdjohnsmith01@gmail.com") {
+    return (
+      <div className="min-h-[600px] flex items-center justify-center animate-in fade-in zoom-in duration-500">
+        <div className="max-w-md w-full bg-card border border-border p-8 rounded-3xl shadow-2xl text-center">
+          <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <ShieldAlert className="w-8 h-8" />
+          </div>
+          <h1 className="text-2xl font-bold font-serif mb-2 text-foreground">Access Denied</h1>
+          <p className="text-sm text-muted-foreground mb-8">
+            You do not have the required permissions to view this page.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (authLevel < 4) {
     return (

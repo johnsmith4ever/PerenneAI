@@ -3,9 +3,17 @@ import { usePersistentState } from "./use-persistent-state";
 
 export type Tier = "Free" | "Core" | "Pro" | "Premium" | "Maximum";
 
+// ============================================================================
+// 🛑 FREE ACCESS MODE (Soft Bypass)
+// Set this to `true` to unlock all Pro/Premium features for everyone.
+// Users will still consume their normal tier credits and hit daily limits.
+// Set back to `false` when you want the paywalls to reappear.
+// ============================================================================
+export const FREE_ACCESS_MODE = true;
+
 export const TIER_ALLOWANCES: Record<Tier, number> = {
   Free: 5_000,
-  Core: 25_000,
+  Core: 24_000,
   Pro: 80_000,
   Premium: 150_000,
   Maximum: 300_000,

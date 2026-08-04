@@ -5,7 +5,7 @@ import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target, Lock, Mail 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
+import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { PaywallOverlay } from "@/components/ui/paywall";
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 import { useLocalStorage } from "@/hooks/use-local-storage";
@@ -79,7 +79,7 @@ export default function NoteSummarizerPage() {
             <BookOpen className="w-5 h-5" />
           </div>
           <p className="label-title m-0">Productivity Tool</p>
-          {subLoaded && tierRank < TIER_RANK.Pro && (
+          {subLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && (
             <span className="ml-auto px-3 py-1 bg-amber-500/10 text-amber-600 border border-amber-500/20 rounded-full text-[11px] font-bold uppercase tracking-wider">
               Free Limit: 1 / Day
             </span>
@@ -143,7 +143,7 @@ export default function NoteSummarizerPage() {
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                 {loading ? "Summarizing..." : "Summarize"}
             </Button>
-            {mode === "understand" && subLoaded && tierRank < TIER_RANK.Pro && (
+            {mode === "understand" && subLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && (
               <div className="absolute inset-0 z-10 bg-background/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center text-center p-6 border border-border">
                 <Lock className="w-6 h-6 text-amber-500 mb-2" />
                 <h3 className="font-bold mb-1">Understand Mode Locked</h3>

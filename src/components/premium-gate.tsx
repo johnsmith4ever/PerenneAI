@@ -1,6 +1,6 @@
 "use client";
 
-import { useSubscription } from "@/hooks/use-subscription";
+import { useSubscription, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { Lock, Sparkles, ArrowRight, Diamond } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ export function PremiumGate({ children, featureName }: { children: React.ReactNo
 
   const isPremiumOrHigher = ["Premium", "Maximum"].includes(tier);
 
-  if (isPremiumOrHigher) {
+  if (FREE_ACCESS_MODE || isPremiumOrHigher) {
     return <>{children}</>;
   }
 

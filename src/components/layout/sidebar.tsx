@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { FileText, Mic, Sparkles, BookOpen, Clock, Activity, Settings, Network, Search, MessageSquare, Bot, PenLine, LayoutDashboard, CreditCard, PanelLeftClose, Globe, FerrisWheel, Calendar, CalendarDays, Menu, Brain, AlignLeft } from "lucide-react";
-import { useSubscription } from "@/hooks/use-subscription";
+import { useSubscription, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -98,10 +98,10 @@ export function Sidebar({ isOpen = true, onClose, onOpen, isMobile = false, onOp
               >
                 <Icon className={cn("w-4 h-4 shrink-0 transition-transform group-hover:scale-110", active && "text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]")} />
                 {!isCollapsed && label}
-                {('pro' in item && item.pro) && !isCollapsed && (
+                {('pro' in item && item.pro) && !isCollapsed && !FREE_ACCESS_MODE && (
                   <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[8px] uppercase tracking-wider font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20 px-1.5 py-0.5 rounded-md">Pro</span>
                 )}
-                {('premium' in item && item.premium) && !isCollapsed && (
+                {('premium' in item && item.premium) && !isCollapsed && !FREE_ACCESS_MODE && (
                   <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[8px] uppercase tracking-wider font-bold bg-gradient-to-br from-slate-100/20 to-slate-400/10 text-slate-200 border border-slate-300/30 px-1.5 py-0.5 rounded-md shadow-[0_0_8px_rgba(203,213,225,0.15)]">Premium</span>
                 )}
                 {comingSoon && !isCollapsed && (

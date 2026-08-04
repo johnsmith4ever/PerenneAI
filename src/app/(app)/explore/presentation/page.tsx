@@ -7,11 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { PaywallOverlay } from "@/components/ui/paywall";
 import { useUser } from "@clerk/nextjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { PremiumGate } from "@/components/premium-gate";
+import { useSubscription, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { supabase } from "@/lib/supabase";
 import pptxgen from "pptxgenjs";
 
@@ -110,7 +110,7 @@ export default function PresentationBuilderPage() {
   return (
     <PremiumGate featureName="Presentation Builder">
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
-      <div className={cn(tierRank < TIER_RANK.Pro && "opacity-20 pointer-events-none blur-[2px]")}>
+      <div className={cn(tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && "opacity-20 pointer-events-none blur-[2px]")}>
       {/* Header */}
       <div>
 
@@ -251,7 +251,7 @@ export default function PresentationBuilderPage() {
           </div>
 
           <div className="flex justify-center mt-6">
-            {isLoaded && tierRank < TIER_RANK.Pro ? (
+            {isLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE ? (
               <PaywallOverlay 
                 tierRequired="Pro"
                 title="Download Locked"

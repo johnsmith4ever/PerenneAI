@@ -33,10 +33,11 @@ export async function POST(req: Request) {
 
     const client = await clerkClient();
     const userObj = await client.users.getUser(userId);
+    const { FREE_ACCESS_MODE } = await import("@/hooks/use-subscription");
     const tier = (userObj.publicMetadata.tier as string) || "Free";
     const tierRank = TIER_RANK[tier] || 0;
 
-    if (tierRank < TIER_RANK.Pro) {
+    if (!FREE_ACCESS_MODE && tierRank < TIER_RANK.Pro) {
       const today = new Date();
       today.setUTCHours(0,0,0,0);
       const { count } = await supabase

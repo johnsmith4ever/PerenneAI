@@ -4,7 +4,7 @@ import { useState } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
-import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
+import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { 
   Upload, FileText, ArrowRight, Image as ImageIcon, 
   Cpu, Sparkles, ArrowLeft, PenTool, BookOpenCheck, Loader2, CheckCircle2,
@@ -134,11 +134,11 @@ export default function EssayPage() {
 
   const handleLengthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
-    if (val === "Long" && tierRank < TIER_RANK.Premium) {
+    if (val === "Long" && !FREE_ACCESS_MODE && tierRank < TIER_RANK.Premium) {
       router.push("/subscriptions");
       return;
     }
-    if (val === "Medium" && tierRank < TIER_RANK.Pro) {
+    if (val === "Medium" && !FREE_ACCESS_MODE && tierRank < TIER_RANK.Pro) {
       router.push("/subscriptions");
       return;
     }
@@ -147,9 +147,10 @@ export default function EssayPage() {
 
   const handleParagraphsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = Number(e.target.value);
-    if ((tierRank < TIER_RANK.Core && val > 1) || 
+    if (!FREE_ACCESS_MODE && (
+        (tierRank < TIER_RANK.Core && val > 1) || 
         (tierRank < TIER_RANK.Pro && val > 3) || 
-        (tierRank < TIER_RANK.Premium && val > 5)) {
+        (tierRank < TIER_RANK.Premium && val > 5))) {
       router.push("/subscriptions");
       return;
     }
@@ -158,7 +159,7 @@ export default function EssayPage() {
 
   const handleStyleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
-    if (val !== "Modernist" && tierRank < TIER_RANK.Pro) {
+    if (val !== "Modernist" && !FREE_ACCESS_MODE && tierRank < TIER_RANK.Pro) {
       router.push("/subscriptions");
       return;
     }
@@ -456,7 +457,7 @@ Do not use markdown code blocks. Output pure JSON.`;
           </p>
         </div>
 
-        {subLoaded && tierRank < TIER_RANK.Core && (
+        {subLoaded && tierRank < TIER_RANK.Core && !FREE_ACCESS_MODE && (
           <PaywallOverlay 
             tierRequired="Core"
             title="Essay Tool Locked"
@@ -464,7 +465,7 @@ Do not use markdown code blocks. Output pure JSON.`;
           />
         )}
         
-        <div className={cn("grid md:grid-cols-2 gap-6 max-w-2xl", tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
+        <div className={cn("grid md:grid-cols-2 gap-6 max-w-2xl", tierRank < TIER_RANK.Core && !FREE_ACCESS_MODE && "opacity-20 pointer-events-none blur-[2px]")}>
           <button 
             onClick={() => setRole("student")}
             className="flex flex-col items-center text-center p-8 rounded-2xl border border-border bg-card hover:border-primary/40 hover:bg-primary/5 transition-all group relative overflow-hidden shadow-sm hover:shadow-md"

@@ -11,14 +11,14 @@ import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 
 import { PaywallOverlay } from "@/components/ui/paywall";
 
-type Tab = "quizzes" | "flashcards" | "essays" | "presentation" | "pro_con" | "mindmap" | "schedule" | "note_summary" | "debate" | "research";
+type Tab = "quizzes" | "flashcards" | "essays" | "presentation" | "math_solver" | "mindmap" | "schedule" | "note_summary" | "debate" | "research";
 
 const TABS: { id: Tab, label: string }[] = [
   { id: "quizzes", label: "Quizzes" },
   { id: "flashcards", label: "Flashcards" },
   { id: "essays", label: "Essays" },
   { id: "presentation", label: "Presentations" },
-  { id: "pro_con", label: "Pro/Cons" },
+  { id: "math_solver", label: "Maths Solutions" },
   { id: "debate", label: "Debates" },
   { id: "research", label: "Research" },
   { id: "mindmap", label: "Mindmaps" },
@@ -102,10 +102,13 @@ export default function HistoryPage() {
       localStorage.setItem("explore_presentation_data", JSON.stringify(item.data));
       localStorage.setItem("explore_presentation_topic", item.topic);
       router.push("/explore/presentation");
-    } else if (item.type === "pro_con") {
-      localStorage.setItem("explore_procon_data", JSON.stringify(item.data));
-      localStorage.setItem("explore_procon_topic", item.topic);
-      router.push("/explore/pro-con");
+    } else if (item.type === "math_solver") {
+      localStorage.setItem("math_problem", JSON.stringify(item.topic));
+      localStorage.setItem("math_solution", JSON.stringify(item.data.solution));
+      localStorage.setItem("math_finalAnswer", JSON.stringify(item.data.finalAnswer));
+      localStorage.setItem("math_extractedProblem", JSON.stringify(item.data.extractedProblem));
+      localStorage.setItem("math_context", JSON.stringify(item.data.context));
+      router.push("/math-solver");
     } else if (item.type === "debate") {
       localStorage.setItem("explore_debate_data", JSON.stringify(item.data));
       localStorage.setItem("explore_debate_topic", item.topic);
@@ -321,7 +324,7 @@ export default function HistoryPage() {
             )
           )}
 
-          {["presentation", "pro_con", "mindmap", "schedule", "note_summary", "debate", "research"].includes(activeTab) && (
+          {["presentation", "math_solver", "mindmap", "schedule", "note_summary", "debate", "research"].includes(activeTab) && (
             explore.filter(item => item.type === activeTab).length === 0 ? (
               <div className="p-12 text-center rounded-xl border border-border bg-card">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 text-primary">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSubscription } from "@/hooks/use-subscription";
+import { useSubscription, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { Lock, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ export function ProGate({ children, featureName }: { children: React.ReactNode, 
 
   const isProOrHigher = !["Free", "Core"].includes(tier);
 
-  if (isProOrHigher) {
+  if (FREE_ACCESS_MODE || isProOrHigher) {
     return <>{children}</>;
   }
 

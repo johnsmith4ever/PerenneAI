@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePersistentState } from "@/hooks/use-persistent-state";
-import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
+import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ProGate } from "@/components/pro-gate";
 import { useClerk, useUser } from "@clerk/nextjs";
@@ -206,7 +206,7 @@ function palette(depth: number) {
   // ── DeepSeek analysis ──────────────────────────────────────────────────────
   const handleAnalyze = async () => {
     if (!analysisInput.trim()) return;
-    if (TIER_RANK[tier] < TIER_RANK["Core"]) {
+    if (!FREE_ACCESS_MODE && TIER_RANK[tier] < TIER_RANK["Core"]) {
       router.push("/subscriptions");
       return;
     }
@@ -238,7 +238,7 @@ function palette(depth: number) {
   // ── Auto-build with Gemini ─────────────────────────────────────────────────
   const buildWithGemini = async () => {
     if (!analysis) return;
-    if (TIER_RANK[tier] < TIER_RANK["Pro"]) {
+    if (!FREE_ACCESS_MODE && TIER_RANK[tier] < TIER_RANK["Pro"]) {
       router.push("/subscriptions");
       return;
     }
@@ -369,7 +369,7 @@ function palette(depth: number) {
           <div className="flex-1 overflow-y-auto p-4 space-y-5">
 
             {/* Input */}
-            {subLoaded && TIER_RANK[tier] < TIER_RANK.Core ? (
+            {subLoaded && TIER_RANK[tier] < TIER_RANK.Core && !FREE_ACCESS_MODE ? (
               <div className="p-4 rounded-xl border border-border bg-background/50 flex flex-col items-center text-center">
                 <Lock className="w-5 h-5 text-primary mb-2" />
                 <h3 className="text-sm font-bold text-foreground">Analysis Locked</h3>

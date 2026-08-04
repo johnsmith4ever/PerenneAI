@@ -7,11 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { PaywallOverlay } from "@/components/ui/paywall";
 import { useUser } from "@clerk/nextjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { PremiumGate } from "@/components/premium-gate";
+import { useSubscription, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { supabase } from "@/lib/supabase";
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 
@@ -63,14 +63,7 @@ export default function ProConPage() {
         setResult(data.data);
         deductCredits(100, 300, "Apollo V4 Flash", "other");
         
-        if (user) {
-          await supabase.from("explore_history").insert({
-            user_id: user.id,
-            topic: topic,
-            type: "pro_con",
-            data: data.data
-          });
-        }
+        // Saving logic removed per user request
       } else {
         console.error("Failed to generate:", data.message);
         setProConError(true);
@@ -86,7 +79,7 @@ export default function ProConPage() {
   return (
     <PremiumGate featureName="Pro-Con Analyzer">
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
-      {subLoaded && tierRank < TIER_RANK.Pro && (
+      {subLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && (
         <PaywallOverlay 
           tierRequired="Pro"
           title="Pro/Con Generator Locked"
@@ -94,7 +87,7 @@ export default function ProConPage() {
         />
       )}
       
-      <div className={cn(tierRank < TIER_RANK.Pro && "opacity-20 pointer-events-none blur-[2px]")}>
+      <div className={cn(tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && "opacity-20 pointer-events-none blur-[2px]")}>
         {/* Header */}
       <div>
 
