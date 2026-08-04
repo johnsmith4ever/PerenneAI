@@ -315,7 +315,7 @@ export default function EssayPage() {
     // swallow output into reasoning blocks, causing "No response received" empty text errors.
     const markerModel: ModelType = "Apollo V4 Flash";
     
-    if (!canAfford(markerModel === "Apollo V4 Pro" ? 8000 : 4000, markerModel)) {
+    if (!canAfford(4000, markerModel)) {
       alert("You do not have enough daily credits to grade this essay. Please try again tomorrow or upgrade your plan.");
       return;
     }
