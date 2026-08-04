@@ -106,7 +106,7 @@ Since live web research is currently unavailable, use your own internal knowledg
 Ensure it is structured with headings, bullet points, and clear explanations.`;
 
       const { text, usage } = await generateText({
-        model: google("gemini-1.5-flash"),
+        model: google("gemini-3.1-flash-lite"),
         system: systemPrompt,
         messages: [{ role: "user", content: `Write the research report for: ${topic}${focusArea ? ` focusing on ${focusArea}` : ""}` }],
         maxOutputTokens: 1000,
