@@ -1,0 +1,212 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Ethanediolic acid reacts with propane-1,3-diol (HOCH2CH2CH2OH) to form a polyester."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.2",
+    "content": "Polyesters are biodegradable but polyalkenes are not biodegradable."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.3",
+    "content": "Sodium ethanedioate is used to find the concentration of solutions of potassium manganate(VII) by titration."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "The equation for the reaction of sodium ethanedioate with potassium manganate(VII) is 2MnO4– + 16H+ + 5C2O42– → 2Mn2+ + 8H2O + 10CO2."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.2.2",
+    "content": "The concentration of potassium manganate(VII) solution can be calculated using the equation for the reaction and the mean titre."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.3.1",
+    "content": "A 25.0 cm3 pipette is used to measure the sodium ethanedioate solution."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.3.2",
+    "content": "Potassium manganate(VII) is oxidising and harmful. Sodium ethanedioate is toxic."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.3.3",
+    "content": "Safety precautions, other than eye protection, should be taken when filling the burette with potassium manganate(VII) solution and dissolving the solid sodium ethanedioate in water."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "The colour change seen at the end point of each titration should be stated."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "The meniscus of the solution when the pipette is ready to transfer 25.0 cm3 of the sodium ethanedioate solution should be drawn on Figure 1."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.6.1",
+    "content": "Practical steps needed before recording the initial burette reading should be given."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.7.1",
+    "content": "The replacement of the water ligands by ethanedioate ions is favourable due to the enthalpy and entropy changes for the reaction."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.7.2",
+    "content": "The enthalpy and entropy changes influence the free-energy change for the reaction."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.8.1",
+    "content": "The protein fibroin can be broken down into amino acids using an enzyme."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.8.2",
+    "content": "Thin-layer chromatography (TLC) can be used to identify the amino acids."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.9.1",
+    "content": "The Rf value of the unknown amino acid can be calculated using Figure 3."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.9.2",
+    "content": "The identity of the unknown amino acid can be determined using the Rf value and Table 1."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.10.1",
+    "content": "The amino acids can be made visible at the end of the experiment by a specific method."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.10.2",
+    "content": "Each amino acid has a different Rf value due to a specific reason."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.11.1",
+    "content": "Ketones react with a specific solution to form a crystalline solid."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.11.2",
+    "content": "The crystalline solid can be separated and purified by a specific method."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.12.1",
+    "content": "Propanone reacts with the weak acid HCN to form a hydroxynitrile."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.12.2",
+    "content": "The hazard associated with the use of KCN should be stated."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.12.3",
+    "content": "A reason, other than safety, why KCN is used instead of HCN should be given."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.13.1",
+    "content": "The mechanism for the reaction of propanone with KCN followed by dilute acid should be outlined."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.14.1",
+    "content": "A mixture of methanoic acid and sodium methanoate in aqueous solution acts as an acidic buffer solution."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.14.2",
+    "content": "The mass of sodium methanoate that must be added to 25.0 cm3 of 0.100 mol dm–3 methanoic acid to produce a buffer solution with pH = 4.05 at 298 K can be calculated."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.15.1",
+    "content": "A student plans an experiment to investigate the yield of propanoic acid when a sample of propan-1-ol is oxidised."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.15.2",
+    "content": "The apparatus shown in Figure 4 is not safe due to specific reasons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.16.1",
+    "content": "An additional reagent needed to form any propanoic acid should be stated."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.16.2",
+    "content": "Mistakes in the way the apparatus is set up in Figure 4 should be stated."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.16.3",
+    "content": "The purpose of the small glass beads in the flask in Figure 4 should be stated."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.17.1",
+    "content": "The technique used to separate the propanoic acid from the reaction mixture should be stated."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.17.2",
+    "content": "The percentage yield of propanoic acid can be calculated."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.17.3",
+    "content": "A simple chemical test that distinguishes the propanoic acid from the propan-1-ol should be stated."
+  }
+]

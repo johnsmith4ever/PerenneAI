@@ -1,0 +1,1550 @@
+[
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT1.1",
+    "content": "Construct and present mathematical arguments through appropriate use of diagrams; sketching graphs; logical deduction; precise statements involving correct use of symbols and connecting language, including: constant, coefficient, expression, equation, function, identity, index, term, variable."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT1.2",
+    "content": "Understand and use mathematical language and syntax as set out in the content."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT1.3",
+    "content": "Understand and use language and symbols associated with set theory, as set out in the content."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT1.4",
+    "content": "Understand and use the definition of a function; domain and range of functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT1.5",
+    "content": "Comprehend and critique mathematical arguments, proofs and justifications of methods and formulae, including those relating to applications of mathematics."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT2.1",
+    "content": "Recognise the underlying mathematical structure in a situation and simplify and abstract appropriately to enable problems to be solved."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT2.2",
+    "content": "Construct extended arguments to solve problems presented in an unstructured form, including problems in context."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT2.3",
+    "content": "Interpret and communicate solutions in the context of the original problem."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT2.6",
+    "content": "Understand the concept of a mathematical problem solving cycle, including specifying the problem, collecting information, processing and representing information and interpreting results, which may identify the need to repeat the cycle."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT2.7",
+    "content": "Understand, interpret and extract information from diagrams and construct mathematical diagrams to solve problems, including in mechanics."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT3.1",
+    "content": "Translate a situation in context into a mathematical model, making simplifying assumptions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT3.2",
+    "content": "Use a mathematical model with suitable inputs to engage with and explore situations (for a given model or a model constructed or selected by the student)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT3.3",
+    "content": "Interpret the outputs of a mathematical model in the context of the original situation (for a given model or a model constructed or selected by the student)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT3.4",
+    "content": "Understand that a mathematical model can be refined by considering its outputs and simplifying assumptions; evaluate whether the model is appropriate."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "OT3.5",
+    "content": "Understand and use modelling assumptions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "A1",
+    "content": "Construct proofs using mathematical induction; contexts include sums of series, divisibility, and powers of matrices."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B1",
+    "content": "Solve any quadratic equation with real coefficients; solve cubic or quartic equations with real coefficients (given sufficient information to deduce at least one root for cubics or at least one complex root or quadratic factor for quartics)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B2",
+    "content": "Add, subtract, multiply and divide complex numbers in the form x + iy with x and y real; understand and use the terms ‘real part’ and ‘imaginary part’."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B3",
+    "content": "Understand and use the complex conjugate; know that non-real roots of polynomial equations with real coefficients occur in conjugate pairs."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B4",
+    "content": "Use and interpret Argand diagrams."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B5",
+    "content": "Convert between the Cartesian form and the modulus-argument form of a complex number (knowledge of radians is assumed)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B6",
+    "content": "Multiply and divide complex numbers in modulus-argument form (knowledge of radians and compound angle formulae is assumed)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B7",
+    "content": "Construct and interpret simple loci in the Argand diagram such as |z - a| = r and arg(z - a) = θ (knowledge of radians is assumed)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B8",
+    "content": "Understand de Moivre’s theorem and use it to find multiple angle formulae and sums of series."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B9",
+    "content": "Know and use the definition e^(iθ) = cosθ + i sinθ and the form z = re^(iθ)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B10",
+    "content": "Find the n distinct nth roots of re^(iθ) for r ≠ 0 and know that they form the vertices of a regular n-gon in the Argand diagram."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "B11",
+    "content": "Use complex roots of unity to solve geometric problems."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C1",
+    "content": "Add, subtract and multiply conformable matrices; multiply a matrix by a scalar."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C2",
+    "content": "Understand and use zero and identity matrices."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C3",
+    "content": "Use matrices to represent linear transformations in 2D; successive transformations; single transformations in 3D (3D transformations confined to reflection in one of x = 0, y = 0, z = 0 or rotation about one of the coordinate axes) (knowledge of 3D vectors is assumed)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C4",
+    "content": "Find invariant points and lines for a linear transformation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C5",
+    "content": "Calculate determinants of 2 × 2 and 3 × 3 matrices and interpret as scale factors, including the effect on orientation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C6",
+    "content": "Understand and use singular and non-singular matrices; properties of inverse matrices. Calculate and use the inverse of non-singular 2 × 2 matrices and 3 × 3 matrices."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C7",
+    "content": "Solve three linear simultaneous equations in three variables by use of the inverse matrix."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C8",
+    "content": "Interpret geometrically the solution and failure of solution of three simultaneous linear equations."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C9",
+    "content": "Factorisation of determinants using row and column operations."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C10",
+    "content": "Find eigenvalues and eigenvectors of 2 × 2 and 3 × 3 matrices. Find and use the characteristic equation. Understand the geometrical significance of eigenvalues and eigenvectors."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "C11",
+    "content": "Diagonalisation of matrices; M = UDU^(-1); M^n = UD^n U^(-1); when eigenvalues are real."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D1",
+    "content": "Understand and use the relationship between roots and coefficients of polynomial equations up to quartic equations."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D2",
+    "content": "Form a polynomial equation whose roots are a linear transformation of the roots of a given polynomial equation (of at least cubic degree)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D3",
+    "content": "Understand and use formulae for the sums of integers, squares and cubes and use these to sum other series."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D4",
+    "content": "Understand and use the method of differences for summation of series including use of partial fractions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D5",
+    "content": "Find the Maclaurin series of a function including the general term."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D6",
+    "content": "Recognise and use the Maclaurin series for e^x, ln(1 + x), sin x, cos x, and (1 + x)^n, and be aware of the range of values of x for which they are valid (proof not required)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D7",
+    "content": "Evaluation of limits using Maclaurin series or l'Hôpital's rule."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D8",
+    "content": "Inequalities involving polynomial equations (cubic and quartic)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D9",
+    "content": "Solving inequalities such as (ax + b)/(cx + d) < ex + f algebraically."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D10",
+    "content": "Modulus of functions and associated inequalities."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D11",
+    "content": "Graphs of y = f(x), y = 1/f(x) for given y = f(x)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D12",
+    "content": "Graphs of rational functions of form (ax + b)/(cx + d); asymptotes, points of intersection with coordinate axes or other straight lines; associated inequalities."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D13",
+    "content": "Graphs of rational functions of form (ax^2 + bx + c)/(dx^2 + ex + f), including cases when some of these coefficients are zero; asymptotes parallel to coordinate axes; oblique asymptotes."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D14",
+    "content": "Using quadratic theory (not calculus) to find the possible values of the function and coordinates of the stationary points of the graph for rational functions of form (ax^2 + bx + c)/(dx^2 + ex + f)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D15",
+    "content": "Sketching graphs of curves with equations y^2 = 4ax, x^2/a^2 + y^2/b^2 = 1, x^2/a^2 - y^2/b^2 = 1, xy = c^2 including intercepts with axes and equations of asymptotes of hyperbolas."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "D16",
+    "content": "Single transformations of curves involving translations, stretches parallel to coordinate axes and reflections in the coordinate axes and the lines y = ±x. Extend to composite transformations including rotations and enlargements."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E1",
+    "content": "Evaluate improper integrals where either the integrand is undefined at a value in the range of integration or the range of integration extends to infinity."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E2",
+    "content": "Derive formulae for and calculate volumes of revolution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E3",
+    "content": "Understand and evaluate the mean value of a function."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E4",
+    "content": "Integrate using partial fractions (extend to quadratic factors ax^2 + c in the denominator)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E5",
+    "content": "Differentiate inverse trigonometric functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E6",
+    "content": "Integrate functions of the form (a^2 - x^2)^(-1/2) and (a^2 + x^2)^(-1) and be able to choose trigonometric substitutions to integrate associated functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E7",
+    "content": "Arc length and area of surface of revolution for curves expressed in Cartesian or parametric coordinates."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E8",
+    "content": "Derivation and use of reduction formulae for integration."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "E9",
+    "content": "The limits lim(x→∞) x^k e^(-x) and lim(x→0) x^k ln x where k > 0, applied to improper integrals."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "F1",
+    "content": "Understand and use the vector and Cartesian forms of an equation of a straight line in 3D."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "F2",
+    "content": "Understand and use the vector and Cartesian forms of the equation of a plane."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "F3",
+    "content": "Calculate the scalar product and use the equivalent conditions for perpendicular lines in 3D."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "F4",
+    "content": "Check whether vectors are perpendicular by using the scalar product."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "F5",
+    "content": "Calculate and understand the properties of the vector product. Understand and use the equation of a straight line in the form (r – a) × b = 0. Use vector products to find the area of a triangle."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "F6",
+    "content": "Find the intersection of two lines. Find the intersection of a line and a plane. Calculate the perpendicular distance between two lines, from a point to a line and from a point to a plane."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "G1",
+    "content": "Understand and use polar coordinates and be able to convert between polar and Cartesian coordinates."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "G2",
+    "content": "Sketch curves with r given as a function of θ, including use of trigonometric functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "G3",
+    "content": "Find the area enclosed by a polar curve."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "H1",
+    "content": "Understand the definitions of hyperbolic functions sinh x, cosh x and tanh x, including their domains and ranges, and be able to sketch their graphs. Understand the definitions of hyperbolic functions sech x, cosech x and coth x, including their domains and ranges."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "H2",
+    "content": "Differentiate and integrate hyperbolic functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "H3",
+    "content": "Understand and be able to use the definitions of the inverse hyperbolic functions and their domains and ranges."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "H4",
+    "content": "Derive and use the logarithmic forms of the inverse hyperbolic functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "H5",
+    "content": "Integrate functions of the form (x² + a²)^(-1/2) and (x² - a²)^(-1/2) and be able to choose substitutions to integrate associated functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "H6",
+    "content": "Understand and use tanh x ≡ sinh x / cosh x. Understand and use cosh²x - sinh²x ≡ 1; sech²x ≡ 1 - tanh²x and cosech²x ≡ coth²x - 1, cosh 2x ≡ cosh²x + sinh²x, sinh 2x ≡ 2 sinh x cosh x."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "H7",
+    "content": "Construct proofs involving hyperbolic functions and identities."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I1",
+    "content": "Find and use an integrating factor to solve differential equations of the form dy/dx + P(x)y = Q(x) and recognise when it is appropriate to do so."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I2",
+    "content": "Find both general and particular solutions of differential equations."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I3",
+    "content": "Use differential equations in modelling in kinematics and in other contexts."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I4",
+    "content": "Solve differential equations of the form y'' + ay' + by = 0 where a and b are constants, by using the auxiliary equation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I5",
+    "content": "Solve differential equations of the form y'' + ay' + by = f(x) where a and b are constants by solving the homogeneous case and adding a particular integral to the complementary function (in cases where f(x) is a polynomial, exponential or trigonometric function)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I6",
+    "content": "Understand and use the relationship between the cases when the discriminant of the auxiliary equation is positive, zero and negative and the form of solution of the differential equation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I7",
+    "content": "Solve the equation for simple harmonic motion x¨ = -ω²x and relate the solution to the motion."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I8",
+    "content": "Model damped oscillations using 2nd order differential equations and interpret their solutions. Understand light, critical and heavy damping and be able to determine when each will occur."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I9",
+    "content": "Analyse and interpret models of situations with one independent variable and two dependent variables as a pair of coupled 1st order simultaneous equations and be able to solve them, for example predator-prey models."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I10",
+    "content": "Use of Hooke’s Law with T = kx to formulate a differential equation for simple harmonic motion, where k is a constant."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "I11",
+    "content": "Use models for damped motion where the damping force is proportional to the velocity."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "J1",
+    "content": "Mid-ordinate rule and Simpson’s rule for integration."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "J2",
+    "content": "Euler’s step by step method for solving first order differential equations."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "J3",
+    "content": "Improved Euler method for solving first order differential equations: y_(r+1) = y_(r-1) + 2h f(x_r, y_r), x_(r+1) = x_r + h."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MA1",
+    "content": "Finding dimensions of quantities; checking for dimensional consistency."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MA2",
+    "content": "Prediction of formulae; finding powers in potential formulae."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MB1",
+    "content": "Conservation of momentum for linear motion and cases where velocities are given as one or two dimensional vectors (problems which require resolving)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MB2",
+    "content": "Coefficient of restitution and Newton’s Experimental Law. Use in direct collisions and impacts with a fixed smooth surface. Problems which require resolving."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MB3",
+    "content": "Impulse and its relation to momentum. Use of Ft = mv - mu. Problems which require resolving."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MB4",
+    "content": "Impulse for variable forces. One dimension only. Use of I = ∫F dt."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MC1",
+    "content": "Work done by a force acting in the direction of motion or directly opposing the motion. Use of W = Fd cos θ."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MC2",
+    "content": "Gravitational potential energy. Use in conservation of energy problems."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MC3",
+    "content": "Kinetic energy. Use in conservation of energy problems."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MC4",
+    "content": "Hooke’s Law including using modulus of elasticity. Use of T = kx or T = (λ/l)x."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MC5",
+    "content": "Work done by a variable force. Use of W = ∫F dx. Use in conservation of energy problems."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MC6",
+    "content": "Elastic potential energy using modulus of elasticity. Use of EPE = (kx²)/2 and EPE = (λx²)/(2l). Use in conservation of energy problems."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MC7",
+    "content": "Power. Use of P = Fv."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MD1",
+    "content": "Motion of a particle moving in a circle with constant speed (knowledge of radians assumed)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MD2",
+    "content": "Understand the definition of angular speed. Use both radians and revolutions per unit time."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MD3",
+    "content": "Relationships between speed, angular speed, radius and acceleration. Use of v = rω, a = rω² and a = v²/r."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MD4",
+    "content": "Use position, velocity and acceleration as vectors in the context of circular motion."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MD5",
+    "content": "Conical pendulum, with one or two strings."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "MD6",
+    "content": "Circular motion in a vertical plane. Includes conditions to complete vertical circles. Use of conservation of energy in this context."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "ME1",
+    "content": "Centre of mass for a system of particles."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "ME2",
+    "content": "Centre of mass for a composite body."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "ME3",
+    "content": "Centre of mass of a lamina by integration."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "ME4",
+    "content": "Centres of mass of bodies formed by rotating a region about the x-axis."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "ME5",
+    "content": "Conditions for sliding and toppling. Problems including suspension and on an inclined plane."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "ME6",
+    "content": "Determine the forces acting on a rigid body in equilibrium. Use of moments and couples."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SA1",
+    "content": "Understand DRVs with distributions given in the form of a table or function."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SA2",
+    "content": "Evaluate probabilities for a DRV."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SA3",
+    "content": "Evaluate measures of average and spread for a DRV to include mean, variance, standard deviation, mode and median."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SA4",
+    "content": "Understand expectation and know the formulae: E(X) = Σx_i p_i; E(X²) = Σx_i² p_i; Var(X) = E(X²) - [E(X)]²."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SA5",
+    "content": "Understand expectation of linear functions of DRVs and know the formulae: E(aX + b) = aE(X) + b and Var(aX + b) = a²Var(X). Know the formula E(g(X)) = Σg(x_i) p_i. Find the mean, variance and standard deviation for functions of a DRV such as E(5X³), E(18X⁻³), Var(6X - 1)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SA6",
+    "content": "Know the discrete uniform distribution defined on the set {1, 2, ..., n}. Understand when this distribution can be used as a model."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SA7",
+    "content": "Proof of mean and variance of discrete uniform distribution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SB1",
+    "content": "Understand conditions for a Poisson distribution to model a situation. Understand terminology X ~ Po(λ)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SB2",
+    "content": "Know the Poisson formula and calculate Poisson probabilities using the formula or equivalent calculator function."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SB3",
+    "content": "Know mean, variance and standard deviation of a Poisson distribution. Use the result that, if X ~ Po(λ), then the mean and variance of X are equal."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SB4",
+    "content": "Understand the distribution of the sum of independent Poisson distributions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SB5",
+    "content": "Formulate hypotheses and carry out a hypothesis test of a population mean from a single observation from a Poisson distribution using direct evaluation of Poisson probabilities."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SC1",
+    "content": "Understand Type I and Type II errors and define in context. Calculate the probability of making a Type I error from tests based on a Poisson or Binomial distribution. Calculate probability of making Type I error from tests based on a normal distribution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SC2",
+    "content": "Understand the power of a test. Calculations of P(Type II error) and power for a test for tests based on a normal, Binomial or a Poisson distribution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SD1",
+    "content": "Understand and use a probability density function, f(x), for a continuous distribution and understand the differences between discrete and continuous distributions. Understand and use distributions of random variables that are part discrete and part continuous."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SD2",
+    "content": "Find the probability of an observation lying in a specified interval."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SD3",
+    "content": "Find the median and quartiles for a given probability density function, f(x)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SD4",
+    "content": "Find the mean, variance and standard deviation for a given pdf, f(x). Know the formulae E(X) = ∫x f(x) dx, E(X²) = ∫x² f(x) dx, Var(X) = E(X²) - [E(X)]²."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SD5",
+    "content": "Understand the expectation and variance of linear functions of CRVs and know the formulae: E(aX + b) = aE(X) + b and Var(aX + b) = a²Var(X). Know the formula E(g(X)) = ∫g(x) f(x) dx. Find the mean, variance and standard deviation of functions of a continuous random variable such as E(5X³), E(18X⁻³), Var(6X - 1)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SD6",
+    "content": "Understand and use a cumulative distribution function, F(x). Know the relationship between f(x) and F(x): F(x) = ∫(-∞ to x) f(t) dt and f(x) = d/dx F(x)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SD7",
+    "content": "Understand the rectangular distribution f(x) where f(x) = 1/(b - a) for a ≤ x ≤ b, 0 otherwise. Know the conditions for the rectangular distribution to be used as a model. Calculate probabilities from a rectangular distribution. Know proofs of mean, variance and standard deviation for a rectangular distribution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SD8",
+    "content": "Know that if X and Y are independent (discrete or continuous) random variables then E(X + Y) = E(X) + E(Y) and Var(X + Y) = Var(X) + Var(Y)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SE1",
+    "content": "Construction of n × m contingency tables."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SE2",
+    "content": "Use of Σ[(O_i - E_i)² / E_i] as an approximate χ² statistic with appropriate degrees of freedom."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SE3",
+    "content": "Know and use the convention that all E_i should be greater than 5."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SE4",
+    "content": "Identification of sources of association in the context of a question."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SE5",
+    "content": "Knowledge of when and how to apply Yates’ correction."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SF1",
+    "content": "Know the conditions for an exponential distribution to be used as a model. Know the probability density function, f(x), and the cumulative distribution function, F(x), for an exponential distribution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SF2",
+    "content": "Calculate probabilities for an exponential distribution using F(x) or integration of f(x)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SF3",
+    "content": "Know proofs of mean, variance and standard deviation for an exponential distribution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SF4",
+    "content": "Understand that the lengths of intervals between Poisson events have an exponential distribution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SG1",
+    "content": "Test for the mean of a normal distribution with unknown variance using a t-statistic with appropriate degrees of freedom."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SH1",
+    "content": "Construct symmetric confidence intervals for the mean of a normal distribution with known variance."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SH2",
+    "content": "Construct symmetric confidence intervals from large samples, for the mean of a normal distribution with unknown variance."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SH3",
+    "content": "Make inferences from constructed or given confidence intervals."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "SH4",
+    "content": "Construct symmetric confidence intervals from small samples, for the mean of a normal distribution with unknown variance using the t-distribution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DA1",
+    "content": "Understand and use the language of graphs including: vertex, edge, trail, cycle, connected, degree, subgraph, subdivision, multiple edge and loop."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DA2",
+    "content": "Identify or prove properties of a graph including that a graph is Eulerian, semi-Eulerian or Hamiltonian."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DA3",
+    "content": "Understand and use Euler’s formula for connected planar graphs."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DA4",
+    "content": "Use Kuratowski’s Theorem to determine the planarity of graphs."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DA5",
+    "content": "Understand and use complete graphs and bipartite graphs, including adjacency matrices and the complement of a graph."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DA6",
+    "content": "Understand and use simple graphs, simple-connected graphs and trees."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DA7",
+    "content": "Recognise and find isomorphism between graphs."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DB1",
+    "content": "Understand and use the language of networks including: node, arc and weight."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DB2",
+    "content": "Solve network optimisation problems using spanning trees."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DB3",
+    "content": "Solve route inspection problems."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DB4",
+    "content": "Find and interpret upper bounds and lower bounds for the travelling salesperson problem."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DB5",
+    "content": "Evaluate, modify and refine models which use networks."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DC1",
+    "content": "Interpret flow problems represented by a network of directed arcs."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DC2",
+    "content": "Find the value of a cut and understand its meaning."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DC3",
+    "content": "Use and interpret the maximum flow-minimum cut theorem."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DC4",
+    "content": "Introduce supersources and supersinks to a network."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DC5",
+    "content": "Augment flows and determine the maximum flow in a network."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DC6",
+    "content": "Solve problems involving arcs with upper and lower capacities."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DC7",
+    "content": "Refine network flow problems including using nodes of restricted capacity."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DD1",
+    "content": "Formulate constrained optimisation problems."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DD2",
+    "content": "Solve constrained optimisation problems via graphical methods."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DD3",
+    "content": "Use the Simplex algorithm for optimising (maximising and minimising) an objective function including the use of slack variables."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DD4",
+    "content": "Interpret a Simplex tableau."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DE1",
+    "content": "Construct, represent and interpret a precedence (activity) network using activity-on-node."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DE2",
+    "content": "Determine earliest and latest start and finish times for an activity network."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DE3",
+    "content": "Identify critical activities, critical paths and the float of non-critical activities."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DE4",
+    "content": "Refine models and understand the implications of possible changes in the context of critical path analysis."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DE5",
+    "content": "Construct and interpret Gantt (cascade) diagrams and resource histograms."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DE6",
+    "content": "Carry out resource levelling (using heuristic procedures) and solve problems where resources are restricted."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DF1",
+    "content": "Understand, interpret and construct pay-off matrices."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DF2",
+    "content": "Find play-safe strategies and the value of the game."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DF3",
+    "content": "Prove the existence or non-existence of a stable solution."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DF4",
+    "content": "Identify and make use of dominated strategies."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DF5",
+    "content": "Find optimal mixed strategies for a game including use of graphical methods."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DF6",
+    "content": "Convert and solve higher order games to linear programming problems."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG1",
+    "content": "Understand and use binary operations including use of modular arithmetic and matrix multiplication."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG2",
+    "content": "Understand, use and prove the commutativity of a binary operation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG3",
+    "content": "Understand, use and prove the associativity of a binary operation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG4",
+    "content": "Construct a Cayley table for a given set under a given binary operation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG5",
+    "content": "Understand and prove the existence of an identity element for a given set under a given binary operation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG6",
+    "content": "Find the inverse of an element belonging to a given set under a given binary operation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG7",
+    "content": "Understand and use the language of groups including: order, period, subgroup, proper, trivial, non-trivial."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG8",
+    "content": "Understand and use the group axioms: closure, identity, inverses and associativity, including use of Cayley tables."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG9",
+    "content": "Recognise and use finite and infinite groups and their subgroups, including: groups of symmetries of regular polygons, cyclic groups and abelian groups."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG10",
+    "content": "Understand and use Lagrange’s theorem."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG11",
+    "content": "Identify and use the generators of a group."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "DG12",
+    "content": "Recognise and find isomorphism between groups of finite order."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "the relevance of mathematics to the world of work and to situations in society in general"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "use their mathematical knowledge to make logical and reasoned decisions in solving problems both within pure mathematics and in a variety of contexts, and communicate the mathematical rationale for these decisions clearly"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "reason logically and recognise incorrect reasoning"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "generalise mathematically"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "construct mathematical proofs"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "use their mathematical skills and techniques to solve challenging problems which require them to decide on the solution strategy"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "recognise when mathematics can be used to analyse and solve a problem in context"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "represent situations mathematically and understand the relationship between problems in context and mathematical models that may be applied to solve them"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "draw diagrams and sketch graphs to help explore mathematical situations and interpret solutions"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "make deductions and inferences and draw conclusions by using mathematical reasoning"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "interpret solutions and communicate their interpretation effectively in the context of the problem"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "read and comprehend mathematical arguments, including justifications of methods and formulae, and communicate their understanding"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "read and comprehend articles concerning applications of mathematics and communicate their understanding"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "use technology such as calculators and computers effectively, and recognise when such use may be inappropriate"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "",
+    "content": "take increasing responsibility for their own learning and the evaluation of their own mathematical development"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "AO1",
+    "content": "Use and apply standard techniques. Students should be able to: select and correctly carry out routine procedures; accurately recall facts, terminology and definitions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "AO2",
+    "content": "Reason, interpret and communicate mathematically. Students should be able to: construct rigorous mathematical arguments (including proofs); make deductions and inferences; assess the validity of mathematical arguments; explain their reasoning; use mathematical language and notation correctly."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-level",
+    "topicCode": "AO3",
+    "content": "Solve problems within mathematics and in other contexts. Students should be able to: translate problems in mathematical and non-mathematical contexts into mathematical processes; interpret solutions to problems in their original context, and, where appropriate, evaluate their accuracy and limitations; translate situations in context into mathematical models; use mathematical models; evaluate the outcomes of modelling in context, recognise the limitations of models and, where appropriate, explain how to refine them."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.7",
+    "content": "X, Y, R etc. random variables"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.8",
+    "content": "x, y, r etc. values of the random variables X, Y, R etc."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.9",
+    "content": "x₁, x₂, ... values of observations"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.10",
+    "content": "f₁, f₂, ... frequencies with which the observations x₁, x₂, ... occur"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.11",
+    "content": "p_X(x), P(X = x) probability function of the discrete random variable X"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.12",
+    "content": "p₁, p₂, ... probabilities of the values x₁, x₂, ... of the discrete random variable X"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.13",
+    "content": "E(X) expectation of the random variable X"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.14",
+    "content": "Var(X) variance of the random variable X"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.16",
+    "content": "B(n, p) binomial distribution with parameters n and p, where n is the number of trials and p is the probability of success in a trial"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.17",
+    "content": "q = 1 − p for binomial distribution"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.18",
+    "content": "N(μ, σ²) Normal distribution with mean μ and variance σ²"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.19",
+    "content": "Z ~ N(0, 1) standard Normal distribution"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.20",
+    "content": "φ probability density function of the standardised Normal variable with distribution N(0, 1)"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.21",
+    "content": "Φ corresponding cumulative distribution function"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.22",
+    "content": "μ population mean"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.23",
+    "content": "σ² population variance"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.24",
+    "content": "σ population standard deviation"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.25",
+    "content": "x̄ sample mean"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.26",
+    "content": "s² sample variance"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.27",
+    "content": "s sample standard deviation"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.28",
+    "content": "H₀ null hypothesis"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.29",
+    "content": "H₁ alternative hypothesis"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.30",
+    "content": "r product moment correlation coefficient for a sample"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "11.31",
+    "content": "ρ product moment correlation coefficient for a population"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.1",
+    "content": "kg kilogram"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.2",
+    "content": "m metre"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.3",
+    "content": "km kilometre"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.4",
+    "content": "m/s, ms⁻¹ metre(s) per second (velocity)"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.5",
+    "content": "m/s², ms⁻² metre(s) per second per second (acceleration)"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.6",
+    "content": "F Force or resultant force"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.7",
+    "content": "N newton"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.8",
+    "content": "Nm newton metre (moment of a force)"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.9",
+    "content": "t time"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.10",
+    "content": "s displacement"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.11",
+    "content": "u initial velocity"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.12",
+    "content": "v velocity or final velocity"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.13",
+    "content": "a acceleration"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.14",
+    "content": "g acceleration due to gravity"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "12.15",
+    "content": "μ coefficient of friction"
+  }
+]

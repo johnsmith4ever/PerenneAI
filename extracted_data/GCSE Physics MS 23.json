@@ -1,0 +1,242 @@
+[
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.1",
+    "content": "Wave properties and behaviours, including perpendicular oscillations."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.2.2",
+    "content": "Investigative methods to test hypotheses about thermal insulation and energy transfer, including designing experiments to compare temperature changes."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.3.1",
+    "content": "Absorption and emission of infrared radiation, including the effect of surface colour and texture on temperature change."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.5.1.1",
+    "content": "Pressure in fluids, including the formula pressure = force / area."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.1.1",
+    "content": "Distance, displacement, and the use of scale diagrams to determine real-world values."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.1.4",
+    "content": "Resultant forces and their effect on motion, including zero resultant force."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.2.1",
+    "content": "Newton's First Law: Objects remain at constant velocity unless acted upon by a resultant force."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.1.2",
+    "content": "Types of forces, including tension, normal contact force, and upthrust."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.1.4",
+    "content": "Velocity-time graphs, including drawing and interpreting them."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.5.2",
+    "content": "Atmospheric pressure and its variation with height, including extrapolation of data."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.4",
+    "content": "Moments, levers, and gears, including how to increase the turning effect of a force."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.7.1",
+    "content": "Momentum, including the calculation of momentum using the formula p = mv."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.1.5",
+    "content": "Calculating distance travelled from velocity-time graphs."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.3.1",
+    "content": "Stopping distances, including thinking distance and braking distance."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.3.2",
+    "content": "Factors affecting stopping distances, including driver reaction time."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.3.4",
+    "content": "Work done and energy transfer in braking systems, including the increase in thermal energy."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.3.3",
+    "content": "Electric circuits, including the measurement of current and potential difference."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.1.2",
+    "content": "Magnetic fields around permanent magnets and current-carrying conductors."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.1.1",
+    "content": "Permanent and induced magnetism, including the properties of induced magnets."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.2.2",
+    "content": "The motor effect, including the calculation of force using F = BIL."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.2.4",
+    "content": "Applications of the motor effect in devices such as electric motors."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.4",
+    "content": "Analysis and interpretation of data, including comparing sound level thresholds across different conditions."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.7.2",
+    "content": "Conservation of energy in collisions."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.2.1",
+    "content": "Conservation of momentum in collisions."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.2.3",
+    "content": "Newton's Third Law: Forces are equal and opposite."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.7.3",
+    "content": "Force, change in momentum, and impact time (F = Δp/Δt)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.1.5",
+    "content": "Equations of motion (v² = u² + 2as)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.1.3",
+    "content": "Orbital motion and satellites."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.2",
+    "content": "Wave speed, frequency, and wavelength (v = fλ)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.1.1",
+    "content": "Gravitational forces and acceleration."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.1.3",
+    "content": "Circular motion and velocity changes."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.2",
+    "content": "Red-shift and the expanding universe."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.2.6",
+    "content": "Specular reflection."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.3",
+    "content": "Law of reflection (angle of incidence = angle of reflection)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "RPA9",
+    "content": "Required practical: Investigating reflection and refraction of light."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.2.2",
+    "content": "Refraction of waves and change in speed."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.3.4",
+    "content": "Magnetic materials and transformers."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.1.2",
+    "content": "Electromagnetic induction and generators."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.3.1",
+    "content": "Induced potential difference and current."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.3.2",
+    "content": "Generators and the production of alternating current."
+  }
+]

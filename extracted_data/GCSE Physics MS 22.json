@@ -1,0 +1,146 @@
+[
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.1.3",
+    "content": "Specific heat capacity and the equation E = m c Δθ."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.2.1",
+    "content": "Energy transfers and the principle of conservation of energy."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.2.2",
+    "content": "Efficiency and calculations involving efficiency, including the equations: efficiency = useful output energy transfer / total input energy transfer and efficiency = useful power output / total power input."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.3",
+    "content": "National and global energy resources, including renewable and non-renewable sources, and their environmental impacts."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.4.1",
+    "content": "Electric circuits, including current, potential difference, and resistance, and the equation P = V × I."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.4.2",
+    "content": "Charge, current, and the equation Q = I × t."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.4.3",
+    "content": "Transformers, including their role in electricity transmission and the equations relating to their operation."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.5.1",
+    "content": "Static electricity, including charging by friction and the forces between charges."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.5.2",
+    "content": "Electric fields and sparking, including the conditions required for a spark to occur."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.3.1.1",
+    "content": "Density and the equation density = mass / volume, including practical methods to determine density."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.4.2.1",
+    "content": "Atomic structure, including the nature of alpha particles."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.4.2.2",
+    "content": "Nuclear equations, including the representation of alpha and beta decay."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "RPA2",
+    "content": "Required practical: Investigation of the effectiveness of different materials as thermal insulators and the factors affecting cooling rates."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "RPA5",
+    "content": "Required practical: Determination of the density of regular and irregular objects."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.4.2.4",
+    "content": "Alpha radiation is highly ionising and is absorbed by living tissue/organs internally, causing greater risk of harm to cells/tissues/organs/DNA/genes. Internal contamination increases radiation dose and the chance of developing cancer or mutations."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.3.2.3",
+    "content": "Use of measuring instruments (e.g., measuring cylinder, burette, beaker with scale) to determine quantities. Calculation of specific latent heat using energy, mass, and latent heat formula (L = E/m). Evaluation of experimental errors, such as energy loss leading to incorrect latent heat values."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.1.4",
+    "content": "Calculation of gravitational potential energy (E_p = mgh) and power (P = E/t)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.1.2",
+    "content": "Energy transfers and conservation, including gravitational potential energy and kinetic energy. Calculation of elastic potential energy (E_e = 0.5 × k × e²) and kinetic energy (E_k = 0.5 × m × v²)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.1.1",
+    "content": "Energy stores and systems, including kinetic energy and energy dissipation (e.g., thermal energy in muscles)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.2.1",
+    "content": "Energy efficiency and dissipation, including energy wasted in muscles or transferred as thermal energy."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.1.1",
+    "content": "Circuit symbols and diagrams."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.2",
+    "content": "Current, potential difference, and resistance in circuits, including the need for a complete circuit for current flow."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.4.2",
+    "content": "Calculation of energy transferred (E = P × t) in electrical circuits."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.4.1",
+    "content": "Power in circuits, including the effect of resistance on current and power output."
+  }
+]

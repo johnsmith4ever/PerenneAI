@@ -1,0 +1,176 @@
+[
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.2",
+    "content": "Pathogens: viruses, methods of transmission (e.g., droplets, saliva, mucus), symptoms of infection (e.g., fever, rash), and vaccination (herd immunity)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.7",
+    "content": "Vaccination and its role in reducing the spread of disease (herd immunity)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.9",
+    "content": "Development of drugs (e.g., willow as a source of aspirin)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.6",
+    "content": "Health issues: type 2 diabetes, obesity, correlation between variables, and data interpretation (e.g., scatter graphs)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.7",
+    "content": "Health issues linked to obesity (e.g., cardiovascular disease, arthritis)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "Enzymes: amylase, protease, factors affecting enzyme activity (e.g., temperature, pH), denaturation, and practical investigations (e.g., RPA5)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.2",
+    "content": "Osmosis: movement of water in plant cells (e.g., potato cubes in salt solutions), active transport, and practical investigations (e.g., RPA3)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.3",
+    "content": "Active transport: requires energy, transports substances against a concentration gradient, and transports minerals/ions."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.1.2",
+    "content": "Rate of photosynthesis: factors affecting it (e.g., temperature), and practical investigations (e.g., RPA6)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.1.2",
+    "content": "Factors affecting the rate of photosynthesis, including the effects of temperature, light intensity, carbon dioxide concentration, and chlorophyll on the rate of photosynthesis. Required practical activity (RPA) 6: Investigating the effect of light intensity on the rate of photosynthesis."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "The structure and function of the human circulatory system, including the role of blood vessels (arteries, veins, and capillaries). The effect of exercise on heart rate and blood pressure."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.2.1",
+    "content": "Aerobic and anaerobic respiration in living organisms, including the word equations and the differences in energy transfer. The concept of oxygen debt and the oxidation of lactic acid."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.2.2",
+    "content": "The role of the liver in the removal of lactic acid and the concept of oxygen debt."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.2.3",
+    "content": "The response of the circulatory and respiratory systems to exercise, including increased heart rate, breathing rate, and breath volume."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.3.1",
+    "content": "Plant diseases and the methods of identifying and treating them, including the use of gardening manuals, laboratory testing, and monoclonal antibodies."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.4",
+    "content": "The role of mineral ions in plants, including magnesium ions for chlorophyll production and nitrate ions for protein synthesis. The effects of mineral deficiencies on plant health."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.5",
+    "content": "The use of microscopy to calculate the magnification and size of biological specimens using the formula: magnification = size of image / size of real object."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.2",
+    "content": "The structure and function of blood vessels, including the differences in pressure and structure between arteries, veins, and capillaries."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.3",
+    "content": "The components of blood, including red blood cells, white blood cells, platelets, and plasma, and their roles in transport and defence."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.1",
+    "content": "The process of diffusion and its importance in the exchange of substances in living organisms, including gas exchange in fish gills."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.2",
+    "content": "Stem cells and their potential uses in medicine, including the ethical issues surrounding their use. The process of differentiation and specialisation of cells."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.2.1",
+    "content": "The production and use of monoclonal antibodies, including their role in medical diagnosis and treatment, such as in pregnancy tests and cancer treatment."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.2.2",
+    "content": "The uses of monoclonal antibodies in medicine, including diagnosis, treatment, and targeted drug delivery."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.6",
+    "content": "The immune system and the role of antibodies in the defence against pathogens."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "The role of the digestive system, including the production and function of bile in the emulsification of fats and neutralisation of stomach acid."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.1",
+    "content": "The differences between eukaryotic and prokaryotic cells, including the structure and features of bacterial and yeast cells."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.2",
+    "content": "The structure and function of subcellular structures in eukaryotic cells, including the nucleus, mitochondria, and vacuoles."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.6",
+    "content": "The investigation of the effect of antibiotics on bacterial growth, including methods for measuring bacterial populations and comparing the effectiveness of different antibiotics."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.5",
+    "content": "Methods for culturing microorganisms, including aseptic techniques and the calculation of bacterial populations."
+  }
+]

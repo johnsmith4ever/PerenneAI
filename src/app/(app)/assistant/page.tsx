@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useMemo } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
+import { useCurriculum } from "@/hooks/use-curriculum";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
 import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Zap, BrainCircuit, Eye, EyeOff, MessageSquare, MoreHorizontal, Lock, PanelLeft, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { useUser } from "@clerk/nextjs";
 
-type ChatMode = "Normal" | "Understand" | "Quick Answer";
+type ChatMode = "Standard" | "Strict Syllabus" | "Quick Answer";
 
 type ModelDefinition = {
   displayName: string;
@@ -17,13 +18,16 @@ type ModelDefinition = {
 };
 
 const MODELS: ModelDefinition[] = [
-  { displayName: "Polaris 1", realProvider: "Llama 3.3 70B (Groq)" },
-  { displayName: "Bastion 3.5 Flash", realProvider: "Gemini 2.5 Flash-Lite" },
-  { displayName: "Bastion 3.5 Pro", realProvider: "Gemini 3.5 Flash" },
-  { displayName: "Apollo V4 Flash", realProvider: "DeepSeek V4 Flash" },
-  { displayName: "Apollo V4 Pro", realProvider: "DeepSeek V4 Pro" },
-  { displayName: "Atlas 4.5 Flash", realProvider: "Claude Haiku" },
-  { displayName: "Atlas 5 Pro", realProvider: "Claude Sonnet" },
+  { displayName: "Llama 70B", realProvider: "Llama 3.3 70B (Groq)" },
+  { displayName: "Mistral Small", realProvider: "Mistral Small (Mistral)" },
+  { displayName: "Mistral Large", realProvider: "Mistral Large (Mistral)" },
+  { displayName: "Gemini 3.5 Flash-Lite", realProvider: "Gemini 3.5 Flash-Lite" },
+  { displayName: "Gemini 3.6 Flash", realProvider: "Gemini 2.5 Flash-Lite" },
+  { displayName: "Gemini 3.5 Pro", realProvider: "Gemini 3.6 Flash" },
+  { displayName: "Deepseek-V4-Flash", realProvider: "DeepSeek V4 Flash" },
+  { displayName: "Deepseek-V4-Pro", realProvider: "DeepSeek V4 Pro" },
+  { displayName: "Claude 4.5 Haiku", realProvider: "Claude 3.5 Haiku" },
+  { displayName: "Claude 3.5 Sonnet", realProvider: "Claude 3.5 Sonnet" },
 ];
 
 type Message = {
@@ -41,29 +45,40 @@ type ChatSession = {
 
 export default function AssistantPage() {
   const { user } = useUser();
-  const { tier, canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
+  const { tier, canAfford, deductCredits, isLoaded: subLoaded , assistant } = useSubscription();
+  const { curriculumLevel, setCurriculumLevel, curriculumSubject, setCurriculumSubject } = useCurriculum();
   const tierRank = TIER_RANK[tier] ?? 0;
 
   const availableModels = useMemo(() => {
     return MODELS.map(m => {
       let isLocked = false;
-      if (m.displayName === "Bastion 3.5 Pro" && tierRank < TIER_RANK.Core) isLocked = true;
-      if (m.displayName === "Apollo V4 Pro" && tierRank < TIER_RANK.Pro) isLocked = true;
-      if (m.displayName === "Atlas 4.5 Flash" && tierRank < TIER_RANK.Premium) isLocked = true;
-      if (m.displayName === "Atlas 5 Pro" && tierRank < TIER_RANK.Maximum) isLocked = true;
+      const name = m.displayName;
+      if (name.includes("Mistral") && tierRank < TIER_RANK.Core) isLocked = true;
+      if (name.includes("Gemini") && tierRank < TIER_RANK.Pro) isLocked = true;
+      if (name.includes("Deepseek") && tierRank < TIER_RANK.Premium) isLocked = true;
+      if (name.includes("Claude") && tierRank < TIER_RANK.Maximum) isLocked = true;
+
       return { ...m, isLocked };
     });
   }, [tierRank]);
 
-  const [chatMode, setChatMode] = useState<ChatMode>("Normal");
+  const [chatMode, setChatMode] = useState<ChatMode>("Standard");
+  const [isModeSelectorOpen, setIsModeSelectorOpen] = useState(false);
+  const modeDropdownRef = useRef<HTMLDivElement>(null);
+  const [isCurriculumSelectorOpen, setIsCurriculumSelectorOpen] = useState(false);
+  const currDropdownRef = useRef<HTMLDivElement>(null);
+  const [isSubjectSelectorOpen, setIsSubjectSelectorOpen] = useState(false);
+  const subjectDropdownRef = useRef<HTMLDivElement>(null);
   const [activeModel, setActiveModel] = useState<ModelDefinition>(MODELS[0]);
   const [isModelSelectorOpen, setIsModelSelectorOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = usePersistentState<boolean>("assistant_sidebar_open", true);
   const [hoveredModel, setHoveredModel] = useState<string | null>(null);
+  const [extraTopicDetails, setExtraTopicDetails] = useState("");
   const [inputText, setInputText] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [chats, setChats, chatsLoaded] = usePersistentState<ChatSession[]>("assistant_chats", []);
-  const [activeChatId, setActiveChatId, activeIdLoaded] = usePersistentState<string | null>("assistant_activeId", null);
+  const [activeChatId, setActiveChatId] = useState<string | null>(null);
+  const activeIdLoaded = true;
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
   const [editChatTitle, setEditChatTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -180,11 +195,20 @@ export default function AssistantPage() {
     }
   };
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsModelSelectorOpen(false);
+      }
+      if (modeDropdownRef.current && !modeDropdownRef.current.contains(event.target as Node)) {
+        setIsModeSelectorOpen(false);
+      }
+      if (currDropdownRef.current && !currDropdownRef.current.contains(event.target as Node)) {
+        setIsCurriculumSelectorOpen(false);
+      }
+      if (subjectDropdownRef.current && !subjectDropdownRef.current.contains(event.target as Node)) {
+        setIsSubjectSelectorOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -281,8 +305,8 @@ export default function AssistantPage() {
     let systemPrompt = "";
     if (chatMode === "Quick Answer") {
       systemPrompt = identity + "\nBe brief. Key facts only.";
-    } else if (chatMode === "Understand") {
-      systemPrompt = identity + "\nExplain step-by-step. At the very end, on its own line, write the direct answer prefixed with 'ANSWER: '.";
+    } else if (chatMode === "Strict Syllabus") {
+      systemPrompt = identity + "\nExplain step-by-step using only strict syllabus knowledge. At the very end, on its own line, write the direct answer prefixed with 'ANSWER: '.";
     } else {
       systemPrompt = identity;
     }
@@ -295,6 +319,9 @@ export default function AssistantPage() {
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
           systemPrompt,
           model: activeModel.displayName,
+          curriculumLevel,
+          curriculumSubject,
+          chatMode,
         }),
       });
 
@@ -303,11 +330,15 @@ export default function AssistantPage() {
         if (data.usage) {
           deductCredits(data.usage.inputTokens, data.usage.outputTokens, activeModel.displayName as ModelType, "chat");
         }
+        // Deduct Mistral embedding cost when RAG is triggered
+        if (chatMode === "Standard" || chatMode === "Strict Syllabus") {
+          deductCredits(150, 0, "Mistral Embed", "chat");
+        }
         
         const assistantMessage: Message = {
           role: "assistant",
           content: data.text,
-          revealAnswer: chatMode === "Understand" ? false : undefined,
+          revealAnswer: (chatMode as string) === "Understand" ? false : undefined,
         };
         const finalMessages = [...newMessages, assistantMessage];
         setMessages(finalMessages);
@@ -502,7 +533,7 @@ export default function AssistantPage() {
       {/* Main chat area */}
       <div className="flex-1 flex flex-col relative min-w-0">
         {/* Top Right Controls (Model Selector) */}
-        <div className="absolute top-0 right-0 z-10 flex items-center gap-3">
+        <div className="absolute top-4 right-4 z-[60] flex items-center gap-3">
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsModelSelectorOpen(!isModelSelectorOpen)}
@@ -522,9 +553,10 @@ export default function AssistantPage() {
                   {availableModels.map((model) => (
                     <div key={model.displayName} className="relative">
                       <button
-                        disabled={model.isLocked}
                         onClick={() => {
-                          if (!model.isLocked) {
+                          if (model.isLocked) {
+                            alert("This premium AI model is restricted to a higher tier. Please upgrade your subscription to unlock it.");
+                          } else {
                             setActiveModel(model);
                             setIsModelSelectorOpen(false);
                           }
@@ -533,7 +565,7 @@ export default function AssistantPage() {
                         onMouseLeave={() => setHoveredModel(null)}
                         className={cn(
                           "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors text-left",
-                          model.isLocked && "opacity-50 cursor-not-allowed",
+                          model.isLocked && "opacity-50",
                           activeModel.displayName === model.displayName
                             ? "bg-primary/5 text-primary font-medium"
                             : "text-foreground hover:bg-muted"
@@ -546,7 +578,6 @@ export default function AssistantPage() {
                         {activeModel.displayName === model.displayName && <Check className="w-4 h-4 shrink-0" />}
                       </button>
 
-                      {/* Tooltip */}
                       {hoveredModel === model.displayName && (
                         <div className="absolute right-full top-1/2 -translate-y-1/2 mr-2 whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-foreground text-background text-[11px] font-medium shadow-lg pointer-events-none animate-in fade-in zoom-in-95 duration-150">
                           Powered by {model.realProvider}
@@ -564,7 +595,10 @@ export default function AssistantPage() {
         {/* Chat Messages */}
         {messages.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center pb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-3 tracking-tight">How can I help you study?</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-3 tracking-tight flex items-center justify-center gap-3">
+              How can I help you study?
+              <span className="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">AQA Syllabus</span>
+            </h2>
             <p className="text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
               Ask a question, upload a photo of your homework, or paste your revision notes to get started.
             </p>
@@ -603,45 +637,106 @@ export default function AssistantPage() {
         {/* Input area */}
         <div className="pt-4 mt-auto pb-4 max-w-3xl w-full mx-auto">
           
-          {/* Modes Selector */}
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <button
-              onClick={() => setChatMode("Normal")}
-              className={cn(
-                "px-4 py-1.5 rounded-full text-[13px] font-medium transition-all flex items-center gap-1.5",
-                chatMode === "Normal" ? "bg-primary text-primary-foreground shadow-sm" : "bg-card border border-border text-muted-foreground hover:bg-muted"
+          <div className="flex items-center justify-between mb-3 w-full">
+            {/* Modes Selector */}
+            <div className="relative" ref={modeDropdownRef}>
+              <button
+                onClick={() => setIsModeSelectorOpen(!isModeSelectorOpen)}
+                className={cn(
+                  "flex items-center gap-1.5 px-4 py-1.5 rounded-full border shadow-sm transition-all text-[13px] font-medium group",
+                  chatMode === "Strict Syllabus" 
+                    ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
+                    : "bg-card border-border hover:bg-muted/50 text-foreground"
+                )}
+              >
+                {chatMode === "Standard" && <MessagesSquare className="w-3.5 h-3.5 text-primary" />}
+                {chatMode === "Strict Syllabus" && <BrainCircuit className="w-3.5 h-3.5 text-emerald-600 animate-pulse" />}
+                {chatMode === "Quick Answer" && <Zap className="w-3.5 h-3.5 text-amber-500" />}
+                {chatMode}
+                <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground transition-transform", isModeSelectorOpen && "rotate-180")} />
+              </button>
+
+              {isModeSelectorOpen && (
+                <div className="absolute bottom-full left-0 mb-2 w-48 rounded-xl border border-border bg-card shadow-lg overflow-visible animate-in fade-in slide-in-from-bottom-2 z-[60]">
+                  <div className="p-2 border-b border-border bg-muted/30">
+                    <p className="text-[10px] font-semibold tracking-wider uppercase text-muted-foreground px-2">Select Mode</p>
+                  </div>
+                  <div className="p-1.5 flex flex-col gap-0.5">
+                    {(["Quick Answer", "Standard", "Strict Syllabus"] as ChatMode[]).map((mode) => (
+                      <button
+                        key={mode}
+                        onClick={() => {
+                          setChatMode(mode);
+                          setIsModeSelectorOpen(false);
+                        }}
+                        className={cn(
+                          "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors text-left",
+                          chatMode === mode
+                            ? (mode === "Strict Syllabus" ? "bg-emerald-500/10 text-emerald-600 font-medium" : "bg-primary/5 text-primary font-medium")
+                            : "text-foreground hover:bg-muted"
+                        )}
+                      >
+                        <div className="flex items-center gap-2 truncate">
+                          {mode === "Standard" && <MessagesSquare className="w-4 h-4 shrink-0 text-primary" />}
+                          {mode === "Strict Syllabus" && <BrainCircuit className="w-4 h-4 shrink-0 text-emerald-600" />}
+                          {mode === "Quick Answer" && <Zap className="w-4 h-4 shrink-0 text-amber-500" />}
+                          <span className="truncate">{mode}</span>
+                        </div>
+                        {chatMode === mode && <Check className="w-4 h-4 shrink-0" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               )}
-            >
-              <MessagesSquare className="w-3.5 h-3.5" />
-              Normal
-            </button>
-            <button
-              onClick={() => setChatMode("Understand")}
-              className={cn(
-                "px-4 py-1.5 rounded-full text-[13px] font-medium transition-all flex items-center gap-1.5",
-                chatMode === "Understand" ? "bg-emerald-600 text-white shadow-sm" : "bg-card border border-border text-muted-foreground hover:bg-muted"
-              )}
-            >
-              <BrainCircuit className="w-3.5 h-3.5" />
-              Understand
-            </button>
-            <button
-              onClick={() => setChatMode("Quick Answer")}
-              className={cn(
-                "px-4 py-1.5 rounded-full text-[13px] font-medium transition-all flex items-center gap-1.5",
-                chatMode === "Quick Answer" ? "bg-amber-500 text-white shadow-sm" : "bg-card border border-border text-muted-foreground hover:bg-muted"
-              )}
-            >
-              <Zap className="w-3.5 h-3.5" />
-              Quick Answer
-            </button>
+            </div>
+
+            {/* AI and Curriculum Selector */}
+            <div className="flex items-center gap-2">
+              <div className="relative" ref={currDropdownRef}>
+                <button
+                  onClick={() => setIsCurriculumSelectorOpen(!isCurriculumSelectorOpen)}
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-border bg-card shadow-sm hover:bg-muted/50 transition-colors text-[13px] font-medium text-foreground group"
+                >
+                  {(curriculumLevel as string) === "General" ? "Casual Mode" : curriculumLevel}
+                  <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground transition-transform", isCurriculumSelectorOpen && "rotate-180")} />
+                </button>
+
+                {isCurriculumSelectorOpen && (
+                  <div className="absolute bottom-full right-0 mb-2 w-48 rounded-xl border border-border bg-card shadow-lg overflow-visible animate-in fade-in slide-in-from-bottom-2 z-[60]">
+                    <div className="p-2 border-b border-border bg-muted/30">
+                      <p className="text-[10px] font-semibold tracking-wider uppercase text-muted-foreground px-2">Select Curriculum</p>
+                    </div>
+                    <div className="p-1.5 flex flex-col gap-0.5">
+                      {(["Casual", "GCSE", "A-Level"] as any[]).map((level) => (
+                        <button
+                          key={level}
+                          onClick={() => {
+                            setCurriculumLevel(level);
+                            setIsCurriculumSelectorOpen(false);
+                          }}
+                          className={cn(
+                            "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors text-left",
+                            curriculumLevel === level
+                              ? "bg-primary/5 text-primary font-medium"
+                              : "text-foreground hover:bg-muted"
+                          )}
+                        >
+                          <span className="truncate">{level === "Casual" ? "Casual Mode" : level}</span>
+                          {curriculumLevel === level && <Check className="w-4 h-4 shrink-0" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
-          <div className="relative rounded-2xl border border-border bg-card shadow-sm focus-within:shadow-md focus-within:border-primary/50 transition-all duration-300">
+          <div className="relative rounded-2xl border border-border bg-card shadow-sm focus-within:shadow-md focus-within:border-primary/50 transition-all duration-300 flex flex-col">
             <textarea
               className="w-full max-h-32 min-h-[60px] resize-none bg-transparent px-5 py-4 text-sm placeholder:text-muted-foreground focus:outline-none"
               placeholder={
-                chatMode === "Understand"
+                chatMode === "Strict Syllabus"
                   ? "Ask a question you want to deeply understand..."
                   : chatMode === "Quick Answer"
                     ? "What do you need a quick answer for?"

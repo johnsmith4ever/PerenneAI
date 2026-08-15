@@ -4,6 +4,7 @@ import { Monitor, Smartphone, X, Gift, Loader2, Sparkles, Lock } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 export function DeviceModal({ onPreferenceSet, forceOpen = false, onClose }: { onPreferenceSet: (device: "mobile" | "desktop") => void; forceOpen?: boolean; onClose?: () => void }) {
@@ -19,16 +20,7 @@ export function DeviceModal({ onPreferenceSet, forceOpen = false, onClose }: { o
   const { tier, isLoaded: subLoaded } = useSubscription();
   const router = useRouter();
 
-  useEffect(() => {
-    const handleOpenPromo = (e: any) => {
-      setOpen(true);
-      if (e.detail?.code) {
-        setReferralCode(e.detail.code);
-      }
-    };
-    window.addEventListener("perenne_open_promo", handleOpenPromo);
-    return () => window.removeEventListener("perenne_open_promo", handleOpenPromo);
-  }, []);
+
 
   useEffect(() => {
     const pref = localStorage.getItem("perenne_device_preference");

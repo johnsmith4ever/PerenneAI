@@ -1,0 +1,638 @@
+[
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Global patterns of production and consumption reflect globalisation, with Transnational Corporations (TNCs) dictating where products are made, usually in areas with lower labour costs."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "3.1.2",
+    "content": "The pattern of consumption is changing as consumers in Newly Emerging Economies (NEEs) become more affluent, demanding a bigger share of exports from their own region."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "Global systems can lead to inequalities and injustices, with issues such as unequal power relations, exploitation of workers, and environmental degradation."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "3.2.2",
+    "content": "The impacts of Transnational Corporations (TNCs) on local economies and environments, including the effects of foreign investment, technology transfer, and cultural exchange."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "4.1.1",
+    "content": "The carbon cycle and its impact on the environment, including the effects of climate change on Antarctica and the Southern Ocean."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "4.1.2",
+    "content": "The governance of Antarctica and the Southern Ocean, including international agreements, such as the Paris Agreement, and the role of International Governmental Organisations (IGOs) and Non-Governmental Organisations (NGOs)."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "7037/2",
+    "content": "Students should be able to demonstrate knowledge and understanding of key concepts, processes and interactions and change (AO1)."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "7037/2",
+    "content": "Students should be able to apply knowledge and understanding to the context of the question, offering clear analysis and evaluation drawn appropriately from the context provided (AO2)."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "7037/2",
+    "content": "Students should be able to evaluate the role of past processes in creating present-day place meanings, using Figures 4a and 4b (AO1 and AO2)."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "7037/2",
+    "content": "Students should be able to assess the contrasting impact of economic change or changing cultural characteristics on the characters of their local and distant places (AO1 and AO2)."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "7037/2",
+    "content": "Students should be able to outline how the rise of the service economy has led to urban change (AO1)."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "7037/2",
+    "content": "Students should be able to analyse the data shown in Figure 5, making connections between different aspects of the data (AO3)."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "7037/2",
+    "content": "Students should be able to evaluate the success of pollution reduction policies in cities, using Figures 6a and 6b (AO1 and AO2)."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of urban pollution reduction policies"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Urban climates – urban heat island effect"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Air quality – particulate and photo-chemical pollution"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Environmental problems in urban areas: atmospheric pollution, water pollution and dereliction"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Strategies to manage atmospheric pollution"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Case-study knowledge and understanding of environmental problems in contrasting urban areas"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the factors that might contribute to atmospheric pollution in Mexico City"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of strategies used to reduce pollution in Mexico City"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the effectiveness of strategies in Figure 6b"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of urban physical waste generation: sources of waste – industrial and commercial activity, personal consumption"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Relation of waste components and waste streams to economic characteristics, lifestyles and attitudes"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "The environmental impacts of alternative approaches to waste disposal: recycling"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Environmental problems in urban areas"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Contemporary opportunities and challenges in developing more sustainable cities"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the sources of urban waste and their links to economic characteristics and attitudes of the population"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of recycling schemes as strategy of managing waste"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the relationship between attitudes of populations and recycling"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of spatial patterns of economic inequality"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding physical and human factors in urban forms"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of two contrasting urban areas"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Application of knowledge and understanding to analyse and evaluate the relative importance of human and physical factors in creating patterns of economic inequality in two contrasting urban areas"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO3",
+    "content": "Analysis of the patterns, connections and relationships shown in the hexbin maps"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of the health impacts of global climate change"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Application of knowledge and understanding to analyse the health impacts of global climate change as shown in Figure 8"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Health impacts of global climate change: thermal stress, emergent and changing distribution of vector borne diseases, agricultural productivity and nutritional standards."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Prospects for the global population. Projected distributions."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Critical appraisal of future population-environment relationships."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Role of international agencies and NGOs in promoting health and combating disease at the global scale."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Figure 8 shows that even with very small temperature changes there are a diverse range of health impacts."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the links between global climate change and health impacts can also be seen in Figure 8 in the increase in deaths from storms."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the extent to which global climate change might lead to health impacts."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the distribution of health impacts."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Global patterns of health, mortality and morbidity."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Economic and social development and the epidemiological transition."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Demographic transition."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "The global prevalence and distribution of one specified non-communicable disease (NCD), eg a specific type of cancer, coronary heart disease, asthma."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "The links between the non-communicable disease and the physical and socio-economic environment including impacts of lifestyles. Impact on health and well-being."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Management and mitigation strategies for the non-communicable disease."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Role of international agencies and NGOs in promoting health and combating disease at the global scale."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the idea of epidemiological transition and its links to demographic transition."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "The extent to which the model of epidemiological transition can be applied and its applicability to current global health patterns."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Assessment of the evidence supporting epidemiological transition in relation to patterns of health, morbidity and mortality."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the extent to which the NCD fits into the concept of epidemiological transition."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "The extent to which the global distribution of the NCD represents different stages of epidemiological transitions."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of physical and human factors affecting health."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Key elements in the physical environment: climate, soils, resource distributions including water supply."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Key population parameters: distribution, density, numbers, change."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "The relationship between environment variables eg climate, topography (drainage) and incidence of disease."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Air quality and health. Water quality and health."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Case study of a specified local area to illustrate and analyse the relationship between place and health related to its physical environment, socio-economic character and the experience and attitudes of its populations."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Critical appraisal of future population-environment relationships."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the physical environment in the local area and its impact on the health characteristics."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the links between the physical environment and health in the local area."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the socio-economic factors in the local area that impact on the health characteristics."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the links between socio-economic factors and health in the local area."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "The extent to which values and attitudes of the population have an impact on health characteristics."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "The extent to which temporal change and spatial variation in the health characteristics, are influenced by the physical environment and socio-economic factors."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO3",
+    "content": "Analysis of the temporal change in levels of drought and the energy mix of Montana"
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of the relationship between resource security and human welfare."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Applies knowledge and understanding to assess the extent to which there might be conflicts between resource security and human welfare as shown in Figure 10a and Figure 10b."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of a case study of either water or energy or mineral ore resource issues in a global or specified regional setting and the relationship between resource security and human welfare."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of the environmental impacts of a major resource development – oil, coal or gas fields."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of primary sources of energy."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of sustainability issues associated with energy production – acid rain, enhanced greenhouse effect, nuclear waste and energy conservation."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Alternative resource futures – technological advancements, environmental and political developments."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "The geopolitics of resource development."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of Figure 10a to assess resource security and human welfare suggests that the coal mine will give the UK and Europe more energy security, as they will have to import less."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "There is also a benefit to local people as there are more than 500 jobs, improving welfare as the local area of Whitehaven suffers from deprivation."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of Figure 10b to assess resource security and human welfare suggests that due to the environmental impacts of coal, there may be less resource security – ‘no future in coal’ as globally there is a shift away from fossil fuels."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of the sources of the specified ore and the distribution of reserves/resources."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "End uses of the ore."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Components of demand for ore."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Role of specified ore in global commerce and industry."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of the mineral ore trade and the role of TNCs."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of mineral security."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Factors affecting the demand and supply of mineral ores."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the factors affecting demand for mineral ores – industrial and manufacturing diversity and financial strength. The largest importers of ore minerals tend to be countries with extensive agricultural and industrial bases."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Temporal and spatial change in the consumption of, and demand for mineral ores. Over the course of the twentieth century increasing demand and consumption in China. China has overtaken US as world’s largest consumer at 42% of global consumption."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the factors affecting the end uses of the ore. Changing technological advancements. Copper has a very diverse range of enduses."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the extent to which sustainability issues impact end uses. Copper becomes less profitable due the increasing waste obtained and declining quality of ore grade."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the role of TNCs in changing demand and end-uses. TNCs dominate the trade in mineral ores and therefore control over end use."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the link between demand and end-use. Copper is key raw material – the third most widely used metal. However, some traditional end-uses are replacing copper with other materials, for example fibre-optic cables."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Strategies used to increase water supply such as dams, reservoirs, water transfer schemes, desalinisation."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Environmental impacts of strategies used to increase supply."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Environmental impacts of a major water supply scheme incorporating a major dam and/or barrage and associated distribution networks."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Sustainability issues associated with water management: virtual water trade, conservation, recycling, ‘greywater’ and groundwater management."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Geopolitics of water supply and distribution."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Knowledge and understanding of water conflicts at different scales – local, national, international."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the factors leading to the implementation of water supply schemes. Consideration of the water demand and supply issues."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the extent to which strategies to increase water supply are successful in meeting demand."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Evaluation of the sustainability of the water supply scheme. River diversion in the former Soviet Union successfully transferred water to enable mass cotton production in Uzbekistan but at the expense of the Aral Sea which has shrunk by 90%."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Analysis of the link between water shortages and conflict. Consideration of the extent to which water supply schemes might resolve conflicts and therefore be considered sustainable."
+  },
+  {
+    "subject": "Geography",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "The link between strategies used to increase water supply and the possibility of conflict. Any strategy employed to increase supply in one area is likely to have an impact on neighbouring areas. For example, the Aswan Dam affects water supplies downstream, meaning farmers have to use fertilisers."
+  }
+]

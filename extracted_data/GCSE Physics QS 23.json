@@ -1,0 +1,188 @@
+[
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.1",
+    "content": "Transverse and longitudinal waves: Students should be able to describe the differences between transverse and longitudinal waves. In a transverse wave, the oscillations are perpendicular to the direction of energy transfer."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.2.1",
+    "content": "Properties of electromagnetic waves: Students should be able to explain how the colour of a surface affects the emission, absorption, and reflection of infrared radiation."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.2.2",
+    "content": "Investigating infrared radiation: Students should be able to describe methods to investigate how different surfaces emit and absorb infrared radiation."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.1",
+    "content": "Pressure and pressure differences in fluids: Students should know and be able to use the relationship between pressure, force, and area: pressure = force / area."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.1",
+    "content": "Distance and displacement: Students should be able to explain the difference between distance and displacement and determine displacement using scale diagrams."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.3",
+    "content": "Resultant forces: Students should be able to calculate the resultant of two or more forces acting along the same line."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.4.1",
+    "content": "Newton's First Law: Students should understand the concept of inertia and how forces affect the motion of an object."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.2",
+    "content": "Velocity and acceleration: Students should be able to interpret and draw distance-time and velocity-time graphs, and calculate acceleration."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.2",
+    "content": "Atmospheric pressure: Students should understand how atmospheric pressure varies with height above the Earth's surface."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.5",
+    "content": "Forces and moments: Students should be able to describe how moments can be increased and calculate the size of a moment."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.3",
+    "content": "Momentum: Students should know and use the equation for momentum: momentum = mass × velocity."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.7.1",
+    "content": "Stopping distance: Students should understand the factors affecting stopping distances, including thinking distance and braking distance."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.7.2",
+    "content": "Energy transfers during braking: Students should be able to explain why the temperature of the brakes increases during braking."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.2",
+    "content": "Properties of waves: Students should understand how sound waves are detected and how microphones convert sound waves into electrical signals."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.3",
+    "content": "Permanent and induced magnetism: Students should be able to describe the properties of permanent and induced magnets."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.4",
+    "content": "Magnetic fields: Students should understand the concept of magnetic fields and the motor effect."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.5",
+    "content": "Electromagnetic induction: Students should be able to explain how a direct current can be induced in a coil and the factors affecting the size of the induced current."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.3.1",
+    "content": "Sound waves and human hearing: Students should understand how age and exposure to loud sounds can affect human hearing."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.1.2",
+    "content": "Conservation of momentum: Students should understand the concept of a closed system and apply the conservation of momentum to collisions."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.2.1",
+    "content": "Newton's Third Law: Students should understand and apply Newton's Third Law to interactions between objects."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.4",
+    "content": "Force and momentum: Students should be able to use the relationship between force, change in momentum, and time taken: force = change in momentum / time taken."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.8.1",
+    "content": "Changes in momentum and safety: Students should understand how safety features in vehicles, such as flexible bumpers, reduce injury by increasing the time of impact."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.6.5",
+    "content": "Equations of motion: Students should be able to use the equations of motion to calculate velocity, acceleration, and distance travelled."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.2.1",
+    "content": "Orbits of planets and satellites: Students should know the types of objects that orbit planets and understand the forces acting on them."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.3",
+    "content": "Wave speed: Students should know and use the equation for wave speed: wave speed = frequency × wavelength."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.1.2",
+    "content": "Gravitational fields: Students should understand the effect of gravitational forces on the motion of objects in orbit."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.2.3",
+    "content": "Red-shift: Students should understand how the red-shift of light from galaxies provides evidence for the Big Bang theory and the expansion of the Universe."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.4",
+    "content": "Reflection of waves: Students should understand the law of reflection and the difference between specular and diffuse reflection."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1.5",
+    "content": "Refraction of waves: Students should understand the concept of refraction and explain why it occurs at the boundary between two different media."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.6.1",
+    "content": "Transformers: Students should understand the structure and function of transformers, including the material used for the core and why."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.6.2",
+    "content": "Transformer equations: Students should be able to use the transformer equations to calculate current, voltage, and power in primary and secondary coils."
+  }
+]

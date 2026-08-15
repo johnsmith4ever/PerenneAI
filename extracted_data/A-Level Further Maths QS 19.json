@@ -1,0 +1,74 @@
+[
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP1.1",
+    "content": "Understand and use the domains and ranges of functions, including the greatest possible domain."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP1.2",
+    "content": "Use and understand the Maclaurin series expansion of functions, including the first few non-zero terms."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP1.3",
+    "content": "Calculate the mean value of a function over a given interval."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP2.1",
+    "content": "Solve equations involving complex numbers, including the use of the complex conjugate (z*)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP3.1",
+    "content": "Calculate the angle between a line and a plane using vector methods."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP1.4",
+    "content": "Use hyperbolic functions, including identities such as cosh³x + sinh³x and expressions for cosh⁶x - sinh⁶x."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP4.1",
+    "content": "Understand and use matrices representing linear transformations, including rotations and their properties."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP2.2",
+    "content": "Use de Moivre’s theorem to derive trigonometric identities, including expressions for sinⁿθ."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP2.3",
+    "content": "Solve equations of the form zⁿ = complex number, expressing roots in exponential form (re^iθ)."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP4.2",
+    "content": "Apply matrix transformations to geometric problems, including finding areas of transformed shapes."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP3.2",
+    "content": "Find the shortest distance from a point to a line in 3D using vector methods."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "FP1.5",
+    "content": "Solve first-order differential equations using integrating factors, including those with non-constant coefficients."
+  }
+]

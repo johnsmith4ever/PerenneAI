@@ -12,9 +12,7 @@ const groq = createOpenAI({
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
+    // Guest bypass allowed: userId can be null
 
     const { text } = await req.json();
     if (!text) return NextResponse.json({ title: "New Chat" });
@@ -27,7 +25,7 @@ export async function POST(req: Request) {
       temperature: 0.2,
     });
 
-    trackUsage(userId, "generate-chat-title").catch(console.error);
+    if (userId) trackUsage(userId, "generate-chat-title").catch(console.error);
 
     return NextResponse.json({ title: title.trim().replace(/^["']|["']$/g, "") });
   } catch (error) {

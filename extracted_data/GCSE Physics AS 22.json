@@ -1,0 +1,260 @@
+[
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.1",
+    "content": "Energy changes in a system, and the ways energy is stored before and after such changes."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.2",
+    "content": "Calculating the mean power needed for a home using given data (e.g., total power output and number of homes)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.3",
+    "content": "Reasons why renewable energy sources (e.g., wind power) may not meet electricity demand."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.4",
+    "content": "How reducing energy wastage (e.g., oiling mechanical parts) affects the efficiency of a system (e.g., wind turbine)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.1.5",
+    "content": "Importance of using energy-efficient electrical devices in homes."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.1",
+    "content": "Method to determine the density of a solid object (e.g., a rock) using measurements of mass and volume."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.2",
+    "content": "Calculating maximum and minimum values for density given an uncertainty range."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.3",
+    "content": "Comparing experimental density values with known densities of different materials to identify possible matches."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.2.4",
+    "content": "Explanation of how repeating measurements can improve the accuracy of experimental results."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.3.1",
+    "content": "Equation linking current (I), potential difference (V), and power (P): P = V × I."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.3.2",
+    "content": "Calculating current in a circuit given potential difference and power output."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.3.3",
+    "content": "Equation linking efficiency, total power input, and useful power output: Efficiency = useful power output / total power input."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.3.4",
+    "content": "Calculating useful power output given total power input and efficiency."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.4.1",
+    "content": "Identifying independent and dependent variables in an investigation (e.g., insulating properties of materials)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.4.2",
+    "content": "Determining the resolution of measuring instruments (e.g., thermometers)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.4.3",
+    "content": "Reasons why certain measuring instruments are more likely to be misread."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.4.4",
+    "content": "Calculating mass using the specific heat capacity formula: E = m × c × θ."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.4.5",
+    "content": "Using experimental results to compare the thermal conductivity of different materials."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.1",
+    "content": "Explanation of how objects become charged through friction (e.g., rubbing a plastic rod with a cloth)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.2",
+    "content": "Explanation of why the reading on a balance changes when a charged object is brought near another charged object."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.3",
+    "content": "Explanation of why a zero error on a balance is not important in certain experiments."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.5.4",
+    "content": "Explanation of why a spark jumps between a charged object and an earthed conductor."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.1",
+    "content": "Explanation of the role of step-up transformers (Transformer X) in the National Grid."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.2",
+    "content": "Explanation of the role of step-down transformers (Transformer Y) in the National Grid."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.6.3",
+    "content": "Calculating charge flow using the formula: E = V × Q."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.1",
+    "content": "Composition of an alpha particle."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.2",
+    "content": "Completing nuclear equations for beta decay (e.g., krypton decaying into rubidium)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.7.3",
+    "content": "Comparison of risks from internal contamination and external irradiation by alpha radiation."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.1",
+    "content": "Measuring instruments used to determine the volume of a liquid in an experiment."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.2",
+    "content": "Identifying hazards in an experimental procedure (e.g., boiling water)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.3",
+    "content": "Calculating specific latent heat of vaporisation using experimental data: E = m × L."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.4",
+    "content": "Explanation of how energy transfer to surroundings affects the calculated value of specific latent heat."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.8.5",
+    "content": "Explanation of how early evaporation of water affects the calculated value of specific latent heat."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.9.1",
+    "content": "Calculating power output using the formula: P = (m × g × h) / t."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.9.2",
+    "content": "Reasons why the total power output of a person may be greater than the calculated value."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.9.3",
+    "content": "Drawing conclusions about mass based on power output and time taken to complete a task."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.10.1",
+    "content": "Calculating maximum speed of an object using energy stored in a spring: E = 0.5 × k × e²."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.10.2",
+    "content": "Energy changes as an object moves through the air (e.g., decrease in kinetic or gravitational potential energy)."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.10.3",
+    "content": "Factors that increase the horizontal distance traveled by a projectile."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.11.1",
+    "content": "Circuit symbol for an LED."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.11.2",
+    "content": "Explanation of why a circuit does not function when only one switch is closed."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.11.3",
+    "content": "Calculating time taken for an appliance to reach operating temperature using energy and power: E = P × t."
+  },
+  {
+    "subject": "Physics",
+    "level": "GCSE",
+    "topicCode": "4.11.4",
+    "content": "Explanation of how closing multiple switches in a circuit affects the power output of the power supply."
+  }
+]

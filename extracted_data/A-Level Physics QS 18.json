@@ -1,0 +1,266 @@
+[
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "Force, energy and momentum: Determination of the force decelerating a vehicle using a velocity-time graph."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "Force, energy and momentum: Use of kinematic equations to determine stopping distances and validate predictions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.2",
+    "content": "Energy transfers: Discussion of energy transfers during deceleration, including work done against friction and conversion of kinetic energy."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1",
+    "content": "Circular motion and gravitational fields: Analysis of forces on a vehicle moving on an inclined escape ramp, assuming negligible friction."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.2",
+    "content": "Comparison of safety mechanisms: Discussion of the relative safety of escape lanes containing gravel versus escape ramps."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.1",
+    "content": "Wave-particle duality: Understanding and application of the de Broglie wavelength relationship λ ∝ 1/v."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.1",
+    "content": "Wave-particle duality: Calculation of the Planck constant using experimental data on electron velocity and wavelength."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.2",
+    "content": "Electron diffraction: Explanation of diffraction patterns produced by electrons incident on a thin graphite target, supporting wave behaviour."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.2",
+    "content": "Particle behaviour of electrons: Explanation of light emission from a fluorescent screen as evidence of particle behaviour of electrons."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.1",
+    "content": "Stationary waves: Explanation of how stationary waves are produced when a stretched string is plucked."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.1",
+    "content": "Stationary waves: Calculation of the mass per unit length of a string using the first-harmonic frequency and tension."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.1",
+    "content": "Stationary waves: Determination of the speed of waves travelling along a string vibrating at its first-harmonic frequency."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.1",
+    "content": "Stationary waves: Analysis of the effect of changing tension in a string on its frequency, using stress-strain relationships."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.2.1",
+    "content": "Circuit principles: Calculation of the cross-sectional area of a wire given its resistivity, length, and resistance."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.2.2",
+    "content": "Power in circuits: Determination of the suitability of a resistor based on its power rating."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.2.1",
+    "content": "Circuit calculations: Calculation of resistance values in potential divider circuits to achieve specific output voltages."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.2.3",
+    "content": "Sensing devices: Explanation of the effect of temperature changes on the output potential difference in a thermistor-based circuit."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1",
+    "content": "Circular motion: Calculation of the linear speed of an object moving in a horizontal circle given the period of rotation."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1",
+    "content": "Circular motion: Determination of the tension in ropes supporting objects moving in a horizontal circle."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1",
+    "content": "Circular motion: Discussion of the consequences of unequal masses on the forces acting on a rotating system."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Collisions and momentum: Understanding the conservation principles in inelastic collisions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Collisions and momentum: Calculation of the speed of combined objects immediately after an inelastic collision."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Collisions and momentum: Calculation of the impulse acting on objects during a collision."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Collisions and momentum: Explanation of the differences in motion after elastic versus inelastic collisions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "Force and momentum: Understanding the unit for the area under a force-time graph."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.2.4",
+    "content": "Resistivity: Identification of the measurement contributing the largest uncertainty in the calculation of resistivity."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.3.1",
+    "content": "Particle physics: Calculation of the specific charge of a fluoride ion."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.3.2",
+    "content": "Particle physics: Calculation of the minimum frequency of gamma radiation produced during annihilation of a muon and an antimuon."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.3.3",
+    "content": "Particle interactions: Determination of the quark composition of particles produced in a strong interaction."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.3.2",
+    "content": "Nuclear decay: Identification of properties of particles emitted during beta decay."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.1",
+    "content": "Energy levels: Determination of the number of different wavelengths emitted when electrons collide with hydrogen atoms."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.1",
+    "content": "Photoelectric effect: Calculation of the maximum kinetic energy of emitted electrons given the wavelength of incident photons and the work function of the metal."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.2",
+    "content": "Wave properties: Calculation of the path difference in terms of wavelength for waves travelling via different routes."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.2",
+    "content": "Interference: Understanding factors affecting fringe spacing in double-slit interference patterns."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.2",
+    "content": "Diffraction gratings: Calculation of the wavelength of monochromatic light using diffraction grating data."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.2",
+    "content": "Refraction: Calculation of the refractive index of a material given the speed of light in that material."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.4.2",
+    "content": "Refraction and total internal reflection: Determination of the path of a light ray through a prism given the refractive index."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "Forces in equilibrium: Understanding conditions for zero resultant force with coplanar forces."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.2",
+    "content": "Moments: Calculation of the extension of springs supporting a non-uniform sign in equilibrium."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "Forces and acceleration: Calculation of the thrust produced by a rocket motor given its mass and acceleration."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "Projectile motion: Calculation of the time of flight for a projectile launched at an angle to the horizontal."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.2",
+    "content": "Stress and strain: Understanding the effect of dimensions on the extension of a wire under load."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.2.1",
+    "content": "Electric current: Calculation of the number of ions passing a point given the current and charge."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.2.2",
+    "content": "Power and energy: Calculation of the discharge time of a battery given its charge capacity and the power of the device."
+  }
+]

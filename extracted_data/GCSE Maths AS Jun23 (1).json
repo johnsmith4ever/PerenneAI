@@ -1,0 +1,80 @@
+[
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "S1.1",
+    "content": "Understand and use the terms median, lower quartile (LQ), upper quartile (UQ), and interquartile range (IQR). Interpret box plots to identify these values."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "S1.2",
+    "content": "Determine if a data set meets specific conditions related to quartiles and range, such as: values in order with the last number ≥ median, UQ = 2.5 × LQ with the first ten numbers in order and last number ≥ UQ, or range = 2 × IQR with all values in order."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A4.1",
+    "content": "Solve simultaneous linear equations in two variables using algebraic methods, including equating coefficients, substitution, and elimination."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G16.5",
+    "content": "Calculate the surface area of composite solids, including hemispheres and cylinders, using appropriate formulae."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "P2.1",
+    "content": "Calculate the number of permutations and combinations for arrangements with restrictions, such as forming numbers with specific digit properties."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A5.2",
+    "content": "Form and solve linear equations in one or more variables, including problems involving balance and proportionality."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A4.4",
+    "content": "Complete the square for quadratic expressions and identify the vertex form of a quadratic equation."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A2.3",
+    "content": "Match algebraic expressions to their simplified forms or equivalent operations, such as addition, multiplication, or exponentiation."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "N10.2",
+    "content": "Convert recurring decimals to fractions using algebraic methods, including multiplying by powers of 10 and subtraction."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G6.1",
+    "content": "Find the coordinates of points on a line given gradients and other points, using equations of lines and properties of similar triangles."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G20.1",
+    "content": "Use trigonometric identities and exact values of sine, cosine, and tangent for specific angles to solve equations."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G10.1",
+    "content": "Calculate lengths and areas involving circles and inscribed shapes, such as squares, using properties of right-angled triangles and trigonometry."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "R11.1",
+    "content": "Calculate average speeds using the formula: average speed = total distance / total time, including problems involving different speeds for different parts of a journey."
+  }
+]

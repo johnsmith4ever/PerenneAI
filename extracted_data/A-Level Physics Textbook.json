@@ -1,0 +1,2090 @@
+[
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.1.1",
+    "content": "Use of SI units and their prefixes. Fundamental (base) units. Use of mass, length, time, amount of substance, temperature, electric current and their associated SI units. SI units derived. Knowledge and use of the SI prefixes, values and standard form. The fundamental unit of light intensity, the candela, is excluded. Students are not expected to recall definitions of the fundamental quantities. Dimensional analysis is not required. Students should be able to use the prefixes: T, G, M, k, c, m, μ, n, p, f. Students should be able to convert between different units of the same quantity, e.g., J and eV, J and kW h."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.1.2",
+    "content": "Limitation of physical measurements. Random and systematic errors. Precision, repeatability, reproducibility, resolution and accuracy. Uncertainty: Absolute, fractional and percentage uncertainties represent uncertainty in the final answer for a quantity. Combination of absolute and percentage uncertainties. Represent uncertainty in a data point on a graph using error bars. Determine the uncertainties in the gradient and intercept of a straight-line graph."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.1.3",
+    "content": "Estimation of physical quantities. Orders of magnitude. Estimation of approximate values of physical quantities."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.2.1.1",
+    "content": "Constituents of the atom. Simple model of the atom, including the proton, neutron and electron. Charge and mass of the proton, neutron and electron in SI units and relative units. The atomic mass unit (amu) is included in the A-level Nuclear physics section. Specific charge of the proton and the electron, and of nuclei and ions. Proton number Z, nucleon number A, nuclide notation. Students should be familiar with the X_Z^A notation. Meaning of isotopes and the use of isotopic data."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.2.1.2",
+    "content": "Stable and unstable nuclei. The strong nuclear force; its role in keeping the nucleus stable; short-range attraction up to approximately 3 fm, very-short range repulsion closer than approximately 0.5 fm. Unstable nuclei; alpha and beta decay. Equations for alpha decay, β− decay including the need for the neutrino. The existence of the neutrino was hypothesised to account for conservation of energy in beta decay."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.2.1.3",
+    "content": "Particles, antiparticles and photons. For every type of particle, there is a corresponding antiparticle. Comparison of particle and antiparticle masses, charge and rest energy in MeV. Students should know that the positron, antiproton, antineutron and antineutrino are the antiparticles of the electron, proton, neutron and neutrino respectively. Photon model of electromagnetic radiation, the Planck constant. E = hf = hc/λ. Knowledge of annihilation and pair production and the energies involved. The use of E = mc^2 is not required in calculations."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.2.1.4",
+    "content": "Particle interactions. Four fundamental interactions: gravity, electromagnetic, weak nuclear, strong nuclear. The concept of exchange particles to explain forces between elementary particles. The electromagnetic force; virtual photons as the exchange particle. The weak interaction limited to β− and β+ decay, electron capture and electron–proton collisions; W+ and W− as the exchange particles. Simple diagrams to represent the above reactions or interactions in terms of incoming and outgoing particles and exchange particles."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.2.1.5",
+    "content": "Classification of particles. Hadrons are subject to the strong interaction. The two classes of hadrons: baryons (proton, neutron) and antibaryons (antiproton and antineutron), mesons (pion, kaon). Baryon number as a quantum number. Conservation of baryon number. The proton is the only stable baryon into which other baryons eventually decay. The pion as the exchange particle of the strong nuclear force. The kaon as a particle that can decay into pions. Leptons: electron, muon, neutrino (electron and muon types only) and their antiparticles. Lepton number as a quantum number; conservation of lepton number for muon leptons and for electron leptons. The muon as a particle that decays into an electron. Strange particles as particles that are produced through the strong interaction and decay through the weak interaction (e.g., kaons). Strangeness (symbol s) as a quantum number to reflect the fact that strange particles are always created in pairs. Conservation of strangeness in strong interactions. Strangeness can change by 0, +1 or -1 in weak interactions."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.3",
+    "content": "Waves. This section covers progressive waves, longitudinal and transverse waves, principles of superposition, and stationary waves."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.4",
+    "content": "Mechanics and materials. This section includes scalars and vectors, moments, motion along a straight line, projectile motion, Newton’s laws of motion, momentum, work, energy and power, conservation of energy, bulk properties of solids, and the Young modulus."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS and A-level",
+    "topicCode": "3.5",
+    "content": "Electricity. This section covers basics of electricity, current–voltage characteristics, resistivity, circuits, potential divider, electromotive force, and internal resistance."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level only",
+    "topicCode": "3.6",
+    "content": "Further mechanics and thermal physics. This section includes circular motion, simple harmonic motion, simple harmonic systems, forced vibrations and resonance, thermal energy transfer, ideal gases, and molecular kinetic theory model."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level only",
+    "topicCode": "3.7",
+    "content": "Fields and their consequences. This section covers fields, gravitational fields, electric fields, capacitors, magnetic fields, and electromagnetic induction."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level only",
+    "topicCode": "3.8",
+    "content": "Nuclear physics. This section covers radioactivity, nuclear instability, nuclear radius, mass and energy, and nuclear fusion and fission."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level only",
+    "topicCode": "3.9",
+    "content": "Astrophysics. This optional section covers telescopes, classification of stars, cosmology, and the life cycle of stars."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level only",
+    "topicCode": "3.10",
+    "content": "Medical physics. This optional section covers physics of the eye, physics of the ear, biological measurements, non-ionising imaging, and X-ray imaging."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level only",
+    "topicCode": "3.11",
+    "content": "Engineering physics. This optional section covers rotational dynamics, thermodynamics and engines."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level only",
+    "topicCode": "3.12",
+    "content": "Turning points in physics. This optional section covers the discovery of the electron, wave-particle duality, and special relativity."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level only",
+    "topicCode": "3.13",
+    "content": "Electronics. This optional section covers discrete semiconductor devices, analogue and digital signals, and operational amplifiers."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.2.1.6",
+    "content": "Properties of quarks and antiquarks: charge, baryon number and strangeness. Combinations of quarks and antiquarks required for baryons (proton and neutron only), antibaryons (antiproton and antineutron only) and mesons (pion and kaon only). Only knowledge of up (u), down (d) and strange (s) quarks and their antiquarks will be tested. The decay of the neutron should be known."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.2.1.7",
+    "content": "Change of quark character in β⁻ and in β⁺ decay. Application of the conservation laws for charge, baryon number, lepton number and strangeness to particle interactions. The necessary data will be provided in questions for particles outside those specified. Students should recognise that energy and momentum are conserved in interactions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "AT k",
+    "content": "Use of computer simulations of particle collisions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "AT l",
+    "content": "Cosmic ray showers as a source of high energy particles including pions and kaons; observation of stray tracks in a cloud chamber; use of two Geiger counters to detect a cosmic ray shower."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.2.2.1",
+    "content": "Threshold frequency; photon explanation of threshold frequency. Work function φ, stopping potential. Photoelectric equation: hf = φ + Eₖ(max), where Eₖ(max) is the maximum kinetic energy of the photoelectrons. The experimental determination of stopping potential is not required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "PS 3.2 / MS 2.3",
+    "content": "Demonstration of the photoelectric effect using a photocell or an electroscope with a zinc plate attachment and UV lamp."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.2.2.2",
+    "content": "Ionisation and excitation; understanding of ionisation and excitation in the fluorescent tube. The electron volt. Students will be expected to be able to convert eV into J and vice versa."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.2.2.3",
+    "content": "Line spectra (e.g. of atomic hydrogen) as evidence for transitions between discrete energy levels in atoms. hf = E₁ − E₂. In questions, energy levels may be quoted in J or eV."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "AT j / MS 0.1, 0.2",
+    "content": "Observation of line spectra using a diffraction grating."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.2.2.4",
+    "content": "Students should know that electron diffraction suggests that particles possess wave properties and the photoelectric effect suggests that electromagnetic waves have a particulate nature. Details of particular methods of particle diffraction are not expected. de Broglie wavelength λ = h/mv, where mv is the momentum. Students should be able to explain how and why the amount of diffraction changes when the momentum of the particle is changed. Appreciation of how knowledge and understanding of the nature of matter changes over time. Appreciation that such changes need to be evaluated through peer review and validated by the scientific community."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "PS 1.2",
+    "content": "Demonstration using an electron diffraction tube."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 1.1, 2.3",
+    "content": "Use prefixes when expressing wavelength values."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.3.1.1",
+    "content": "Oscillation of the particles of the medium; amplitude, frequency, wavelength, speed, phase, phase difference, c = fλ, f = 1/T. Phase difference may be measured as angles (radians and degrees) or as fractions of a cycle."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "PS 2.3 / MS 0.1, 4.7 / AT a, b",
+    "content": "Laboratory experiment to determine the speed of sound in free air using direct timing or standing waves with a graphical analysis."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.3.1.2",
+    "content": "Nature of longitudinal and transverse waves. Examples to include: sound, electromagnetic waves, and waves on a string. Students will be expected to know the direction of displacement of particles/fields relative to the direction of energy propagation and that all electromagnetic waves travel at the same speed in a vacuum. Polarisation as evidence for the nature of transverse waves. Applications of polarisers to include Polaroid material and the alignment of aerials for transmission and reception. Malus’s law will not be expected."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "PS 2.2, 2.4 / MS 1.2, 3.2, 3.4, 3.5 / AT i",
+    "content": "Students can investigate the factors that determine the speed of a water wave."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.3.1.3",
+    "content": "Stationary waves. Nodes and antinodes on strings. f = 1/(2l) √(T/μ) for first harmonic. The formation of stationary waves by two waves of the same frequency travelling in opposite directions. A graphical explanation of formation of stationary waves will be expected. Stationary waves formed on a string and those produced with microwaves and sound waves should be considered. Stationary waves on strings will be described in terms of harmonics. The terms fundamental (for first harmonic) and overtone will not be used."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 4.7 / PS 1.2, 2.1 / AT i",
+    "content": "Students can investigate the factors that determine the frequency of stationary wave patterns of a stretched string."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required practical 1",
+    "content": "Investigation into the variation of the frequency of stationary waves on a string with length, tension and mass per unit length of the string."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.3.2.1",
+    "content": "Path difference. Coherence. Interference and diffraction using a laser as a source of monochromatic light. Young’s double-slit experiment: the use of two coherent sources or the use of a single source with double slits to produce an interference pattern. Fringe spacing, w = λD/s. Production of interference pattern using white light. Students are expected to show awareness of safety issues associated with using lasers. Students will not be required to describe how a laser works. Students will be expected to describe and explain interference produced with sound and electromagnetic waves. Appreciation of how knowledge and understanding of nature of electromagnetic radiation has changed over time."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "AT i",
+    "content": "Investigation of two-source interference with sound, light and microwave radiation."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required practical 2",
+    "content": "Investigation of interference effects to include the Young’s slit experiment and interference by a diffraction grating."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.3.2.2",
+    "content": "Appearance of the diffraction pattern from a single slit using monochromatic and white light. Qualitative treatment of the variation of the width of the central diffraction maximum with wavelength and slit width. The graph of intensity against angular separation is not required. Plane transmission diffraction grating at normal incidence. Derivation of d sinθ = nλ. Use of the spectrometer will not be tested. Applications of diffraction gratings."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.3.2.3",
+    "content": "Refractive index of a substance, n = c/cₛ. Students should recall that the refractive index of air is approximately 1. Snell’s law of refraction for a boundary: n₁ sinθ₁ = n₂ sinθ₂. Total internal reflection: sinθc = n₂/n₁. Simple treatment of fibre optics including the function of the cladding. Optical fibres will be limited to step index only. Material and modal dispersion. Students are expected to understand the principles and consequences of pulse broadening and absorption."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.6, 4.1",
+    "content": ""
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1.1",
+    "content": "Nature of scalars and vectors. Examples should include: velocity/speed, mass, force/weight, acceleration, displacement/distance. Addition of vectors by calculation or scale drawing. Calculations will be limited to two vectors at right angles. Scale drawings may involve vectors at angles other than 90°. Resolution of vectors into two components at right angles to each other. Examples should include components of forces along and perpendicular to an inclined plane. Problems may be solved either by the use of resolved forces or the use of a closed triangle. Conditions for equilibrium for two or three coplanar forces acting at a point. Appreciation of the meaning of equilibrium in the context of an object at rest or moving with constant velocity."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.6, 4.2, 4.4, 4.5 / PS 1.1",
+    "content": "Investigation of the conditions for equilibrium for three coplanar forces acting at a point using a force board."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1.2",
+    "content": "Moment of a force about a point. Moment defined as force × perpendicular distance from the point to the line of action of the force. Couple as a pair of equal and opposite coplanar forces. Moment of couple defined as force × perpendicular distance between the lines of action of the forces. Principle of moments. Centre of mass. Knowledge that the position of the centre of mass of uniform regular solid is at its centre."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1.3",
+    "content": "Displacement, speed, velocity, acceleration. v = Δs/Δt, a = Δv/Δt. Calculations may include average and instantaneous speeds and velocities. Representation by graphical methods of uniform and non-uniform acceleration. Significance of areas of velocity–time and acceleration–time graphs and gradients of displacement–time and velocity–time graphs for uniform and non-uniform acceleration (e.g. graphs for motion of bouncing ball). Equations for uniform acceleration: v = u + at, s = (u+v)/2 t, s = ut + ½ at², v² = u² + 2as. Acceleration due to gravity, g."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 3.6, 3.7 / PS 1.1, 3.1",
+    "content": "Distinguish between instantaneous velocity and average velocity."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 3.5, 3.6",
+    "content": "Measurements and calculations from displacement–time, velocity–time and acceleration–time graphs."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.5, 2.2, 2.3, 2.4",
+    "content": "Calculations involving motion in a straight line."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required practical 3",
+    "content": "Determination of g by a freefall method."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.3, 1.2, 3.7 / AT d",
+    "content": "Students should be able to identify random and systematic errors in the experiment and suggest ways to remove them."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 3.9",
+    "content": "Determine g from a graph."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1.4",
+    "content": "Independent effect of motion in horizontal and vertical directions of a uniform gravitational field. Problems will be solvable using the equations of uniform acceleration. Qualitative treatment of friction. Distinctions between static and dynamic friction will not be tested. Qualitative treatment of lift and drag forces. Terminal speed. Knowledge that air resistance increases with speed. Qualitative understanding of the effect of air resistance on the trajectory of a projectile and on the factors that affect the maximum speed of a vehicle."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "PS 2.2, 3.1",
+    "content": "Investigation of the factors that determine the motion of an object through a fluid."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1.5",
+    "content": "Knowledge and application of the three laws of motion in appropriate situations. F = ma for situations where the mass is constant."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "PS 4.1 / MS 0.5, 3.2 / AT a, b, d",
+    "content": "Students can verify Newton’s second law of motion."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 4.1, 4.2",
+    "content": "Students can use free-body diagrams."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1.6",
+    "content": "Momentum = mass × velocity. Conservation of linear momentum. Principle applied quantitatively to problems in one dimension. Force as the rate of change of momentum, F = Δmv/Δt. Impulse = change in momentum, FΔt = Δmv, where F is constant. Significance of the area under a force–time graph. Quantitative questions may be set on forces that vary with time. Impact forces are related to contact times (e.g. kicking a football, crumple zones, packaging). Elastic and inelastic collisions; explosions. Appreciation of momentum conservation issues in the context of ethical transport design."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 2.2, 2.3",
+    "content": "Students can apply conservation of momentum and rate of change of momentum to a range of examples."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1.7",
+    "content": "Energy transferred, W = Fs cosθ. Rate of doing work = rate of energy transfer, P = ΔW/Δt = Fv. Quantitative questions may be set on variable forces. Significance of the area under a force–displacement graph. Efficiency = useful output power/input power. Efficiency can be expressed as a percentage."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.3 / PS 3.3, 4.1 / AT a, b, f",
+    "content": "Investigate the efficiency of an electric motor being used to raise a mass through a measured height. Students should be able to identify random and systematic errors in the experiment and suggest ways to remove them."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.1.8",
+    "content": "Principle of conservation of energy. ΔEₚ = mgΔh and Eₖ = ½ mv². Quantitative and qualitative application of energy conservation to examples involving gravitational potential energy, kinetic energy, and work done against resistive forces."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.4, 2.2",
+    "content": "Estimate the energy that can be derived from food consumption."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.2.1",
+    "content": "Density, ρ = m/V. Hooke’s law, elastic limit, F = kΔL, where k is stiffness and spring constant. Tensile strain and tensile stress. Elastic strain energy, breaking stress. Energy stored = ½ FΔL = area under force–extension graph. Description of plastic behaviour, fracture and brittle behaviour linked to force–extension graphs. Quantitative and qualitative application of energy conservation to examples involving elastic strain energy and energy to deform. Spring energy transformed to kinetic and gravitational potential energy. Interpretation of simple stress–strain curves. Appreciation of energy conservation issues in the context of ethical transport design."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.2, 4.3 / PS 3.3, 4.1",
+    "content": "Students can compare the use of analogue and digital meters."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.4, 4.3 / AT e",
+    "content": "Estimate the volume of an object leading to an estimate of its density."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.4.2.2",
+    "content": "Young modulus = tensile stress/tensile strain = FL/AΔL. Use of stress–strain graphs to find the Young modulus. (One simple method of measurement is required.)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 3.1",
+    "content": ""
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required practical 4",
+    "content": "Determination of the Young modulus by a simple method."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.1",
+    "content": "Electric current as the rate of flow of charge; potential difference as work done per unit charge. I = ΔQ/Δt, V = W/Q. Resistance defined as R = V/I."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "AT b, f",
+    "content": "Students can construct circuits from the range of components."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.2",
+    "content": "For an ohmic conductor, semiconductor diode, and filament lamp. Ohm’s law as a special case where I ∝ V under constant physical conditions. Unless specifically stated in questions, ammeters and voltmeters should be treated as ideal (having zero and infinite resistance respectively). Questions can be set where either I or V is on the horizontal axis of the characteristic graph."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.3",
+    "content": "Resistivity, ρ = RA/L. Description of the qualitative effect of temperature on the resistance of metal conductors and thermistors. Only negative temperature coefficient (ntc) thermistors will be considered. Applications of thermistors to include temperature sensors and resistance–temperature graphs. Superconductivity as a property of certain materials which have zero resistivity at and below a critical temperature which depends on the material. Applications of superconductors to include the production of strong magnetic fields and the reduction of energy loss in transmission of electric power. Critical field will not be assessed."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 3.2, 4.3 / PS 1.2 / AT a, b, f, g",
+    "content": "Investigation of the variation of resistance of a thermistor with temperature."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required practical 5",
+    "content": "Determination of resistivity of a wire using a micrometer, ammeter and voltmeter."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.4",
+    "content": "Resistors: in series, Rₜ = R₁ + R₂ + R₃ + ...; in parallel, 1/Rₜ = 1/R₁ + 1/R₂ + 1/R₃ + ... Energy and power equations: E = IVt; P = IV = I²R = V²/R. The relationships between currents, voltages and resistances in series and parallel circuits, including cells in series and identical cells in parallel. Conservation of charge and conservation of energy in dc circuits."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "MS 0.3 / PS 4.1 / AT a, b, f, g",
+    "content": "Students can construct circuits with various component configurations and measure currents and potential differences."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.5",
+    "content": "The potential divider used to supply constant or variable potential difference from a power supply. The use of the potentiometer as a measuring instrument is not required. Examples should include the use of variable resistors, thermistors, and light dependent resistors."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.5",
+    "content": "Use of thermistors and light-dependent resistors (LDR) in potential divider circuits."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.5",
+    "content": "Students can investigate the behaviour of a potential divider circuit (MS 3.2 / PS 4.1 / AT f)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.5",
+    "content": "Students should design and construct potential divider circuits to achieve various outcomes (MS 3.2 / AT g)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.6",
+    "content": "Electromotive force (emf) and internal resistance: ε = E/Q, ε = I(R + r). Terminal potential difference (pd); emf."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.6",
+    "content": "Students will be expected to understand and perform calculations for circuits in which the internal resistance of the supply is not negligible."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.5.1.6",
+    "content": "Required practical 6: Investigation of the emf and internal resistance of electric cells and batteries by measuring the variation of the terminal pd of the cell with current in it (MS 3.1, 3.3 / PS 2.2, 3.1 / AT f)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.1",
+    "content": "Motion in a circular path at constant speed implies there is an acceleration and requires a centripetal force."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.1",
+    "content": "Magnitude of angular speed ω = v/r = 2πf. Radian measure of angle. Direction of angular velocity will not be considered."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.1",
+    "content": "Centripetal acceleration a = v²/r = ω²r. The derivation of the centripetal acceleration formula will not be examined."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.1",
+    "content": "Centripetal force F = mv²/r = mω²r (MS 0.4). Estimate the acceleration and centripetal force in situations that involve rotation."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.2",
+    "content": "Analysis of characteristics of simple harmonic motion (SHM). Condition for SHM: a ∝ −x. Defining equation: a = −ω²x."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.2",
+    "content": "Equations: x = A cos ωt and v = ±ω√(A² − x²)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.2",
+    "content": "Graphical representations linking the variations of x, v and a with time. Appreciation that the v–t graph is derived from the gradient of the x–t graph and that the a–t graph is derived from the gradient of the v–t graph."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.2",
+    "content": "Maximum speed = ωA. Maximum acceleration = ω²A."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.2",
+    "content": "Data loggers can be used to produce s–t, v–t and a–t graphs for SHM (AT i, k)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.2",
+    "content": "Sketch relationships between x, v, a and t for simple harmonic oscillators (MS 3.6, 3.8, 3.9, 3.12)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.3",
+    "content": "Study of mass-spring system: T = 2π√(m/k). Study of simple pendulum: T = 2π√(l/g)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.3",
+    "content": "Questions may involve other harmonic oscillators (e.g., liquid in U-tube) but full information will be provided in questions where necessary."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.3",
+    "content": "Variation of Ek, Ep, and total energy with both displacement and time. Effects of damping on oscillations."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.3",
+    "content": "Students should recognise the use of the small-angle approximation in the derivation of the time period for examples of approximate SHM (MS 4.6 / AT b, c)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.3",
+    "content": "Required practical 7: Investigation into simple harmonic motion using a mass–spring system and a simple pendulum."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.4",
+    "content": "Qualitative treatment of free and forced vibrations. Resonance and the effects of damping on the sharpness of resonance."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.4",
+    "content": "Examples of these effects in mechanical systems and situations involving stationary waves."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.1.4",
+    "content": "Investigation of the factors that determine the resonant frequency of a driven system (AT g, i, k)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "Internal energy is the sum of the randomly distributed kinetic energies and potential energies of the particles in a body."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "The internal energy of a system is increased when energy is transferred to it by heating or when work is done on it (and vice versa), e.g., a qualitative treatment of the first law of thermodynamics."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "Appreciation that during a change of state the potential energies of the particle ensemble are changing but not the kinetic energies. Calculations involving transfer of energy."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "For a change of temperature: Q = mcΔθ where c is specific heat capacity. Calculations including continuous flow."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "For a change of state: Q = ml where l is the specific latent heat."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "Investigate the factors that affect the change in temperature of a substance using an electrical method or the method of mixtures (MS 1.5 / PS 2.3 / AT a, b, d, f). Students should be able to identify random and systematic errors in the experiment and suggest ways to remove them."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "Investigate, with a data logger and temperature sensor, the change in temperature with time of a substance undergoing a phase change when energy is supplied at a constant rate (PS 1.1, 4.1 / AT k)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.2",
+    "content": "Gas laws as experimental relationships between p, V, T and the mass of the gas. Concept of absolute zero of temperature."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.2",
+    "content": "Ideal gas equation: pV = nRT for n moles and pV = NkT for N molecules. Work done = pΔV."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.2",
+    "content": "Avogadro constant NA, molar gas constant R, Boltzmann constant k. Molar mass and molecular mass."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.2",
+    "content": "Required practical 8: Investigation of Boyle's law (constant temperature) and Charles’s law (constant pressure) for a gas (MS 3.3, 3.4, 3.14 / AT a)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.3",
+    "content": "Brownian motion as evidence for existence of atoms. Explanation of relationships between p, V and T in terms of a simple molecular model."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.3",
+    "content": "Students should understand that the gas laws are empirical in nature whereas the kinetic theory model arises from theory."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.3",
+    "content": "Assumptions leading to pV = 1/3 Nm<c²>, including derivation of the equation and calculations. A simple algebraic approach involving conservation of momentum is required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.3",
+    "content": "Appreciation that for an ideal gas internal energy is kinetic energy of the atoms. Use of average molecular kinetic energy = 1/2 m<c²> = 3/2 kT = 3RT/2NA."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.3",
+    "content": "Appreciation of how knowledge and understanding of the behaviour of a gas has changed over time."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.1",
+    "content": "Concept of a force field as a region in which a body experiences a non-contact force. Students should recognise that a force field can be represented as a vector, the direction of which must be determined by inspection."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.1",
+    "content": "Force fields arise from the interaction of mass, of static charge, and between moving charges."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.1",
+    "content": "Similarities and differences between gravitational and electrostatic forces: Similarities: Both have inverse-square force laws that have many characteristics in common, e.g., use of field lines, use of potential concept, equipotential surfaces etc. Differences: masses always attract, but charges may attract or repel."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.1",
+    "content": "Gravity as a universal attractive force acting between all matter. Magnitude of force between point masses: F = Gm₁m₂/r² where G is the gravitational constant."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.1",
+    "content": "Students can estimate the gravitational force between a variety of objects (MS 0.4)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.2",
+    "content": "Representation of a gravitational field by gravitational field lines. g as force per unit mass as defined by g = F/m."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.2",
+    "content": "Magnitude of g in a radial field given by g = GM/r²."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.3",
+    "content": "Understanding of definition of gravitational potential, including zero value at infinity. Understanding of gravitational potential difference."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.3",
+    "content": "Work done in moving mass m given by ΔW = mΔV. Equipotential surfaces. Idea that no work is done when moving along an equipotential surface."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.3",
+    "content": "V in a radial field given by V = −GM/r. Significance of the negative sign."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.3",
+    "content": "Graphical representations of variations of g and V with r. V related to g by: g = −ΔV/Δr. ΔV from area under graph of g against r."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.3",
+    "content": "Students use graphical representations to investigate relationships between v, r and g (MS 3.8, 3.9)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.4",
+    "content": "Orbital period and speed related to radius of circular orbit; derivation of T² ∝ r³. Energy considerations for an orbiting satellite. Total energy of an orbiting satellite. Escape velocity."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.4",
+    "content": "Synchronous orbits. Use of satellites in low orbits and geostationary orbits, to include plane and radius of geostationary orbit."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.4",
+    "content": "Estimate various parameters of planetary orbits, e.g., kinetic energy of a planet in orbit (MS 0.4)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.4",
+    "content": "Use logarithmic plots to show relationships between T and r for given data (MS 3.11)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.1",
+    "content": "Force between point charges in a vacuum: F = (1/4πε₀)(Q₁Q₂/r²). Permittivity of free space, ε₀. Appreciation that air can be treated as a vacuum when calculating force between charges."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.1",
+    "content": "For a charged sphere, charge may be considered to be at the centre. Comparison of magnitude of gravitational and electrostatic forces between subatomic particles."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.1",
+    "content": "Students can estimate the magnitude of the electrostatic force between various charge configurations (MS 0.3, 2.3)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.2",
+    "content": "Representation of electric fields by electric field lines. Electric field strength. E as force per unit charge defined by E = F/Q."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.2",
+    "content": "Magnitude of E in a uniform field given by E = V/d. Derivation from work done moving charge between plates: Fd = QΔV."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.2",
+    "content": "Trajectory of moving charged particle entering a uniform electric field initially at right angles. Magnitude of E in a radial field given by E = (1/4πε₀)(Q/r²)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.2",
+    "content": "Students can investigate the patterns of various field configurations using conducting paper (2D) or electrolytic tank (3D) (PS 1.2, 2.2 / AT b)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.3",
+    "content": "Understanding of definition of absolute electric potential, including zero value at infinity, and of electric potential difference. Work done in moving charge Q given by ΔW = QΔV."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.3",
+    "content": "Equipotential surfaces. No work done moving charge along an equipotential surface. Magnitude of V in a radial field given by V = (1/4πε₀)(Q/r)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.3",
+    "content": "Graphical representations of variations of E and V with r. V related to E by E = ΔV/Δr. ΔV from the area under graph of E against r."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.1",
+    "content": "Definition of capacitance: C = Q/V."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.2",
+    "content": "Dielectric action in a capacitor: C = Aε₀εᵣ/d. Relative permittivity and dielectric constant."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.2",
+    "content": "Students should be able to describe the action of a simple polar molecule that rotates in the presence of an electric field."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.2",
+    "content": "Determine the relative permittivity of a dielectric using a parallel-plate capacitor. Investigate the relationship between C and the dimensions of a parallel-plate capacitor, e.g., using a capacitance meter (PS 1.2, 2.2, 4.3 / AT f, g)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.3",
+    "content": "Interpretation of the area under a graph of charge against pd. E = 1/2 QV = 1/2 CV² = 1/2 Q²/C."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.4",
+    "content": "Graphical representation of charging and discharging of capacitors through resistors. Corresponding graphs for Q, V and I against time for charging and discharging."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.4",
+    "content": "Interpretation of gradients and areas under graphs where appropriate. Time constant RC. Calculation of time constants including their determination from graphical data."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.4",
+    "content": "Time to halve, T½ = 0.69RC. Quantitative treatment of capacitor discharge: Q = Q₀e^(−t/RC). Use of the corresponding equations for V and I."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.4",
+    "content": "Quantitative treatment of capacitor charge: Q = Q₀(1 − e^(−t/RC))."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.4",
+    "content": "Required practical 9: Investigation of the charge and discharge of capacitors. Analysis techniques should include log-linear plotting leading to a determination of the time constant, RC (MS 3.8, 3.10, 3.11 / PS 2.2, 2.3 / AT f, k)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.1",
+    "content": "Force on a current-carrying wire in a magnetic field: F = BIl when field is perpendicular to current. Fleming’s left hand rule. Magnetic flux density B and definition of the tesla."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.1",
+    "content": "Required practical 10: Investigate how the force on a wire varies with flux density, current and length of wire using a top pan balance."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.2",
+    "content": "Force on charged particles moving in a magnetic field, F = BQv when the field is perpendicular to velocity. Direction of force on positive and negative charged particles."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.2",
+    "content": "Circular path of particles; application in devices such as the cyclotron."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.2",
+    "content": "Convert between 2D representations and 3D situations (MS 4.3)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.3",
+    "content": "Magnetic flux defined by Φ = BA where B is normal to A. Flux linkage as NΦ where N is the number of turns cutting the flux."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.3",
+    "content": "Flux and flux linkage passing through a rectangular coil rotated in a magnetic field: flux linkage NΦ = BAN cos θ."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.3",
+    "content": "Required practical 11: Investigate, using a search coil and oscilloscope, the effect on magnetic flux linkage of varying the angle between a search coil and magnetic field direction."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.4",
+    "content": "Simple experimental phenomena. Faraday’s and Lenz’s laws. Magnitude of induced emf = rate of change of flux linkage: ε = N(ΔΦ/Δt)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.4",
+    "content": "Applications such as a straight conductor moving in a magnetic field. emf induced in a coil rotating uniformly in a magnetic field: ε = BANω sin ωt."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.5",
+    "content": "Sinusoidal voltages and currents only; root mean square, peak and peak-to-peak values for sinusoidal waveforms only. I_rms = I₀/√2; V_rms = V₀/√2."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.5",
+    "content": "Application to the calculation of mains electricity peak and peak-to-peak voltage values. Use of an oscilloscope as a dc and ac voltmeter, to measure time intervals and frequencies, and to display ac waveforms. No details of the structure of the instrument are required but familiarity with the operation of the controls is expected."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.6",
+    "content": "The transformer equation: Ns/Np = Vs/Vp. Transformer efficiency = (IsVs)/(IpVp). Production of eddy currents. Causes of inefficiencies in a transformer."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.6",
+    "content": "Transmission of electrical power at high voltage including calculations of power loss in transmission lines."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.6",
+    "content": "Investigate relationships between currents, voltages and numbers of coils in transformers (MS 0.3 / AT b, h)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.1",
+    "content": "Qualitative study of Rutherford scattering. Appreciation of how knowledge and understanding of the structure of the nucleus has changed over time."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.2",
+    "content": "Properties of α, β and γ radiation and experimental identification using simple absorption experiments; applications e.g., to relative hazards of exposure to humans."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.2",
+    "content": "Applications also include thickness measurements of aluminium foil, paper and steel. Inverse-square law for γ radiation: I = k/x². Experimental verification of inverse-square law."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.2",
+    "content": "Applications e.g., to safe handling of radioactive sources. Background radiation; examples of its origins and experimental elimination from calculations. Appreciation of balance between risk and benefits in the uses of radiation in medicine."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.2",
+    "content": "Required practical 12: Investigation of the inverse-square law for gamma radiation."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.3",
+    "content": "Random nature of radioactive decay; constant decay probability of a given nucleus; ΔN/Δt = −λN. N = N₀e^(−λt). Use of activity, A = λN."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.3",
+    "content": "Modelling with constant decay probability. Questions may be set which require students to use A = A₀e^(−λt). Questions may also involve use of molar mass or the Avogadro constant."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.3",
+    "content": "Half-life equation: T½ = ln2/λ. Determination of half-life from graphical decay data including decay curves and log graphs."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.3",
+    "content": "Applications e.g., relevance to storage of radioactive waste, radioactive dating etc."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.3",
+    "content": "Investigate the decay equation using a variety of approaches (including the use of experimental data, dice simulations etc) and a variety of analytical methods (MS 1.3, 3.10, 3.11 / PS 3.1, 3.2)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.8.1.4",
+    "content": "Graph of N against Z for stable nuclei. Possible decay modes of unstable nuclei including α, β+, β− and electron capture. Changes in N and Z caused by radioactive decay and representation in simple decay equations. Questions may use nuclear energy level diagrams. Existence of nuclear excited states; γ ray emission; application eg use of technetium-99m as a γ source in medical diagnosis."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.8.1.5",
+    "content": "Estimate of radius from closest approach of alpha particles and determination of radius from electron diffraction. Knowledge of typical values for nuclear radius. Students will need to be familiar with the Coulomb equation for the closest approach estimate. Dependence of radius on nucleon number: R=R₀A^(1/3) derived from experimental data. Interpretation of equation as evidence for constant density of nuclear material. Calculation of nuclear density. Students should be familiar with the graph of intensity against angle for electron diffraction by a nucleus."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.8.1.6",
+    "content": "Appreciation that E=mc² applies to all energy changes. Simple calculations involving mass difference and binding energy. Atomic mass unit, u. Conversion of units; 1 u = 931.5 MeV. Fission and fusion processes. Simple calculations from nuclear masses of energy released in fission and fusion reactions. Graph of average binding energy per nucleon against nucleon number. Students may be expected to identify, on the plot, the regions where nuclei will release energy when undergoing fission/fusion. Appreciation that knowledge of the physics of nuclear energy allows society to use science to inform decision making."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.8.1.7",
+    "content": "Fission induced by thermal neutrons; possibility of a chain reaction; critical mass. The functions of the moderator, control rods, and coolant in a thermal nuclear reactor. Details of particular reactors are not required. Students should have studied a simple mechanical model of moderation by elastic collisions. Factors affecting the choice of materials for the moderator, control rods and coolant. Examples of materials used for these functions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.8.1.8",
+    "content": "Fuel used, remote handling of fuel, shielding, emergency shut-down. Production, remote handling, and storage of radioactive waste materials. Appreciation of balance between risk and benefits in the development of nuclear power."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.1.1",
+    "content": "Ray diagram to show the image formation in normal adjustment. Angular magnification in normal adjustment. M = angle subtended by image at eye / angle subtended by object at unaided eye. Focal lengths of the lenses. M = f₀ / fₑ."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.1.2",
+    "content": "Cassegrain arrangement using a parabolic concave primary mirror and convex secondary mirror. Ray diagram to show path of rays through the telescope up to the eyepiece. Relative merits of reflectors and refractors including a qualitative treatment of spherical and chromatic aberration."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.1.3",
+    "content": "Similarities and differences of radio telescopes compared to optical telescopes. Discussion should include structure, positioning and use, together with comparisons of resolving and collecting powers."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.1.4",
+    "content": "Minimum angular resolution of telescope. Rayleigh criterion, θ ≈ λ / D. Collecting power is proportional to diameter². Students should be familiar with the rad as the unit of angle. Comparison of the eye and CCD as detectors in terms of quantum efficiency, resolution, and convenience of use. No knowledge of the structure of the CCD is required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.2.1",
+    "content": "Apparent magnitude, m. The Hipparcos scale. Dimmest visible stars have a magnitude of 6. Relation between brightness and apparent magnitude. Difference of 1 on magnitude scale is equal to an intensity ratio of 2.51. Brightness is a subjective scale of measurement."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.2.2",
+    "content": "Parsec and light year. Definition of M, relation to m: m – M = 5 log(d / 10)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.2.3",
+    "content": "Stefan’s law and Wien’s displacement law. General shape of black-body curves, use of Wien’s displacement law to estimate black-body temperature of sources. λ_max T = constant = 2.9 × 10⁻³ m K. Assumption that a star is a black body. Inverse square law, assumptions in its application. Use of Stefan’s law to compare the power output, temperature and size of stars: P = σAT⁴."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.2.4",
+    "content": "Description of the main spectral classes: O, B, A, F, G, K, M with intrinsic colour, temperature range, and prominent absorption lines. Temperature related to absorption spectra limited to Hydrogen Balmer absorption lines: requirement for atoms in an n=2 state."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.2.5",
+    "content": "General shape of the Hertzsprung-Russell (HR) diagram: main sequence, dwarfs and giants. Axis scales range from –10 to +15 (absolute magnitude) and 50 000 K to 2 500 K (temperature) or OBAFGKM (spectral class). Students should be familiar with the position of the Sun on the HR diagram. Stellar evolution: path of a star similar to our Sun on the HR diagram from formation to white dwarf."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.2.6",
+    "content": "Defining properties: rapid increase in absolute magnitude of supernovae; composition and density of neutron stars; escape velocity > c for black holes. Gamma ray bursts due to the collapse of supergiant stars to form neutron stars or black holes. Comparison of energy output with total energy output of the Sun. Use of type 1a supernovae as standard candles to determine distances. Controversy concerning accelerating Universe and dark energy. Students should be familiar with the light curve of typical type 1a supernovae. Supermassive black holes at the centre of galaxies. Calculation of the radius of the event horizon for a black hole, Schwarzschild radius Rs ≈ 2GM / c²."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.3.1",
+    "content": "Doppler effect: Δf/f = v/c and z = Δλ/λ = -v/c for v ≪ c applied to optical and radio frequencies. Calculations on binary stars viewed in the plane of orbit. Galaxies and quasars."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.3.2",
+    "content": "Red shift v = Hd. Simple interpretation as expansion of universe; estimation of age of universe, assuming H is constant. Qualitative treatment of Big Bang theory including evidence from cosmological microwave background radiation, and relative abundance of hydrogen and helium."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.3.3",
+    "content": "Quasars as the most distant measurable objects. Discovery of quasars as bright radio sources. Quasars show large optical red shifts; estimation involving distance and power output. Formation of quasars from active supermassive black holes."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.9.3.4",
+    "content": "Difficulties in the direct detection of exoplanets. Detection techniques will be limited to variation in Doppler shift (radial velocity method) and the transit method. Typical light curve."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.1.1",
+    "content": "The eye as an optical refracting system, including ray diagrams of image formation. Sensitivity of the eye; spectral response as a photodetector. Spatial resolution of the eye; explanation in terms of the behaviour of rods and cones."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.1.2",
+    "content": "Properties of converging and diverging lenses; principal focus, focal length and power, power = 1/f; 1/u + 1/v = 1/f; m = v/u. Myopia, hypermetropia, astigmatism. Ray diagrams and calculations of powers (in dioptres) of correcting lenses for myopia and hypermetropia. The format of prescriptions for astigmatism."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.2.1",
+    "content": "Simple structure of the ear, transmission processes."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.2.2",
+    "content": "Production and interpretation of equal loudness curves. Human perception of relative intensity levels and the need for a logarithmic scale to reflect this. Definition of intensity. Intensity level = 10 log(I / I₀) where the threshold of hearing I₀ = 1.0 × 10⁻¹² W m⁻². Measurement of sound intensity levels and the use of dB and dBA scales; relative intensity levels of sounds."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.2.3",
+    "content": "The effect on equal loudness curves and the changes experienced in terms of hearing loss due to injury resulting from exposure to excessive noise or deterioration with age (excluding physiological changes)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.3.1",
+    "content": "Principles of operation for obtaining the ECG waveform; explanation of the characteristic shape of a normal ECG waveform."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.4.1",
+    "content": "Reflection and transmission characteristics of sound waves at tissue boundaries, acoustic impedance, Z, and attenuation. Advantages and disadvantages of ultrasound imaging in comparison with alternatives including safety issues and resolution. Piezoelectric devices. Principles of generation and detection of ultrasound pulses. A-scans and B-scans. Examples of applications. Use of the equations Z = ρc and Ir / Ii = (Z₂ - Z₁)² / (Z₂ + Z₁)²."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.4.2",
+    "content": "Properties of fibre optics and applications in medical physics; including total internal reflection at the core–cladding interface. Physical principles of the optical system of a flexible endoscope; the use of coherent and non-coherent fibre bundles; examples of use for internal imaging and related advantages."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.4.3",
+    "content": "Basic principles of MR scanner: cross-section of patient scanned using magnetic fields; protons initially aligned with spins parallel; spinning hydrogen nuclei (protons) precess about the magnetic field lines of a superconducting magnet; 'gradient' field coils used to scan cross-section; short radio frequency (RF) pulses cause excitation and change of spin state in successive small regions; protons excited during the scan emit RF signals as they de-excite; RF signals detected and the resulting signals are processed by a computer to produce a visual image. Students will not be asked about the production of magnetic fields used in an MR scanner, or about de-excitation relaxation times."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.5.1",
+    "content": "Physical principles of the production of X-rays; maximum photon energy, energy spectrum; continuous spectrum and characteristic spectrum. Rotating-anode X-ray tube; methods of controlling the beam intensity, the photon energy, the image sharpness and contrast, and the patient dose."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.5.2",
+    "content": "Flat panel (FTP) detector including X-ray scintillator, photodiode pixels, electronic scanning. Advantages of FTP detector compared with photographic detection. Contrast enhancement; use of X-ray opaque material as illustrated by the barium meal technique. Photographic detection with intensifying screen and fluoroscopic image intensification; reasons for using these."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.5.3",
+    "content": "Exponential attenuation. Linear coefficient μ, mass attenuation coefficient μm, half-value thickness. I = I₀ e^(−μx); μm = μ / ρ. Differential tissue absorption of X-rays excluding details of the absorption processes."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.5.4",
+    "content": "Basic principles of CT scanner: movement of X-ray tube; narrow, monochromatic X-ray beam; array of detectors; computer used to process the signals and produce a visual image. Comparisons will be limited to advantages and disadvantages of image resolution, cost and safety issues. Students will not be asked about the construction or operation of the detectors."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.6.1",
+    "content": "Use of a gamma-emitting radioisotope as a tracer; technetium-99m, iodine-131 and indium-111 and their relevant properties. The properties should include the radiation emitted, the half-life, the energy of the gamma radiation, the ability for it to be labelled with a compound with an affinity for a particular organ. The Molybdenum-Technetium generator, its basic use and importance. PET scans."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.6.2",
+    "content": "Physical, biological and effective half-lives; 1/TE = 1/TB + 1/TP; definitions of each term."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.6.3",
+    "content": "Basic structure and workings of a photomultiplier tube and gamma camera."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.6.4",
+    "content": "External treatment using high-energy X-rays. Methods used to limit exposure to healthy cells."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.6.5",
+    "content": "Internal treatment using beta emitting implants."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.10.6.6",
+    "content": "Students will be required to make comparisons between imaging techniques. Questions will be limited to consideration of image resolution, convenience and safety issues."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.1.1",
+    "content": "I = mr² for a point mass. I = Σmr² for an extended object. Qualitative knowledge of the factors that affect the moment of inertia of a rotating object. Expressions for moment of inertia will be given where necessary."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.1.2",
+    "content": "Ek = ½ Iω². Factors affecting the energy storage capacity of a flywheel. Use of flywheels in machines. Use of flywheels for smoothing torque and speed, and for storing energy in vehicles, and in machines used for production processes."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.1.3",
+    "content": "Angular displacement, angular speed, angular velocity, angular acceleration, ω = Δθ / Δt, α = Δω / Δt. Representation by graphical methods of uniform and non-uniform angular acceleration. Equations for uniform angular acceleration: ω₂ = ω₁ + αt, θ = (ω₁ + ω₂)t / 2, θ = ω₁t + ½ αt², ω₂² = ω₁² + 2αθ. Students should be aware of the analogy between rotational and translational dynamics."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.1.4",
+    "content": "T = Fr. T = Iα."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.1.5",
+    "content": "Angular momentum = Iω. Conservation of angular momentum. Angular impulse = change in angular momentum; TΔt = ΔIω where T is constant. Applications may include examples from sport."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.1.6",
+    "content": "W = Tθ; P = Tω. Awareness that frictional torque has to be taken into account in rotating machinery."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.2.1",
+    "content": "Quantitative treatment of first law of thermodynamics, Q = ΔU + W where Q is energy transferred to the system by heating, ΔU is increase in internal energy and W is work done by the system. Applications of first law of thermodynamics."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.2.2",
+    "content": "Isothermal, adiabatic, constant pressure and constant volume changes. pV = nRT. Adiabatic change: pV^γ = constant. Isothermal change: pV = constant. At constant pressure W = pΔV. Application of first law of thermodynamics."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.2.3",
+    "content": "Representation of processes on a p–V diagram. Estimation of work done in terms of area below the graph. Extension to cyclic processes: work done per cycle = area of loop. Expressions for work done are not required except for the constant pressure case, W = pΔV."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.2.4",
+    "content": "Understanding of a four-stroke petrol engine cycle and a diesel engine cycle, and of the corresponding indicator diagrams. Comparison with the theoretical diagrams for these cycles; use of indicator diagrams for predicting and measuring power and efficiency. Input power = calorific value × fuel flow rate. Indicated power as area of p−V loop × no. of cycles per second × no. of cylinders. Output or brake power, P = Tω. Friction power = indicated power – brake power. Engine efficiency; overall, thermal and mechanical efficiencies. Overall efficiency = brake power / input power. Thermal efficiency = indicated power / input power. Mechanical efficiency = brake power / indicated power. A knowledge of engine constructional details is not required. Questions may be set on other cycles, but they will be interpretative and all essential information will be given."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.2.5",
+    "content": "Impossibility of an engine working only by the First Law. Second Law of Thermodynamics expressed as the need for a heat engine to operate between a source and a sink. Efficiency = W / Q_H = (Q_H − Q_C) / Q_H. Maximum theoretical efficiency = (T_H − T_C) / T_H. Reasons for the lower efficiencies of practical engines. Maximising use of W and Q_H, for example in combined heat and power schemes."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.11.2.6",
+    "content": "Basic principles and uses of heat pumps and refrigerators. A knowledge of practical heat pumps or refrigerator cycles and devices is not required. Coefficients of performance: refrigerator: COP_ref = Q_C / W = Q_C / (Q_H − Q_C) = T_C / (T_H − T_C). Heat pump: COP_hp = Q_H / W = Q_H / (Q_H − Q_C) = T_H / (T_H − T_C)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.1.1",
+    "content": "Production of cathode rays in a discharge tube."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.1.2",
+    "content": "The principle of thermionic emission. Work done on an electron accelerated through a pd V; ½mv² = eV."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.1.3",
+    "content": "Determination of the specific charge of an electron, e/m_e, by any one method. Significance of Thomson’s determination of e/m_e. Comparison with the specific charge of the hydrogen ion."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.1.4",
+    "content": "Condition for holding a charged oil droplet, of charge Q, stationary between oppositely charged parallel plates: QV/d = mg. Motion of a falling oil droplet with and without an electric field; terminal speed to determine the mass and the charge of the droplet. Stokes’ Law for the viscous force on an oil droplet used to calculate the droplet radius: F = 6πηrv. Significance of Millikan’s results. Quantisation of electric charge."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.2.1",
+    "content": "Comparison with Huygens’ wave theory in general terms. The reasons why Newton’s theory was preferred."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.2.2",
+    "content": "Explanation for fringes in general terms, no calculations are expected. Delayed acceptance of Huygens’ wave theory of light."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.2.3",
+    "content": "Nature of electromagnetic waves. Maxwell’s formula for the speed of electromagnetic waves in a vacuum: c = 1 / √(μ₀ε₀), where μ₀ is the permeability of free space and ε₀ is the permittivity of free space. Students should appreciate that ε₀ relates to the electric field strength due to a charged object in free space and μ₀ relates to the magnetic flux density due to a current-carrying wire in free space. Hertz’s discovery of radio waves including measurements of the speed of radio waves. Fizeau’s determination of the speed of light and its implications."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.2.4",
+    "content": "The ultraviolet catastrophe and black-body radiation. Planck’s interpretation in terms of quanta. The failure of classical wave theory to explain observations on photoelectricity. Einstein’s explanation of photoelectricity and its significance in terms of the nature of electromagnetic radiation."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.2.5",
+    "content": "de Broglie’s hypothesis: p = h / λ; λ = h / √(2meV). Low-energy electron diffraction experiments; qualitative explanation of the effect of a change of electron speed on the diffraction pattern."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.2.6",
+    "content": "Estimate of anode voltage needed to produce wavelengths of the order of the size of the atom. Principle of operation of the transmission electron microscope (TEM). Principle of operation of the scanning tunnelling microscope (STM)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.3.1",
+    "content": "Principle of the Michelson-Morley interferometer. Outline of the experiment as a means of detecting absolute motion. Significance of the failure to detect absolute motion. The invariance of the speed of light."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.3.2",
+    "content": "The concept of an inertial frame of reference. The two postulates of Einstein’s theory of special relativity: 1. Physical laws have the same form in all inertial frames. 2. The speed of light in free space is invariant."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.3.3",
+    "content": "Proper time and time dilation as a consequence of special relativity. Time dilation: t = t₀ / √(1 − v²/c²). Evidence for time dilation from muon decay."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.3.4",
+    "content": "Length of an object having a speed v: l = l₀ √(1 − v²/c²)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.12.3.5",
+    "content": "Equivalence of mass and energy, E = mc²; E = m₀c² / √(1 − v²/c²). Graphs of variation of mass and kinetic energy with speed. Bertozzi’s experiment as direct evidence for the variation of kinetic energy with speed."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.1.1",
+    "content": "Simplified structure, behaviour and characteristics of MOSFET (metal-oxide semiconducting field-effect transistor). Drain, source and gate. V_DS, V_GS, I_DSS, and V_th. Use as a switch, use as a device with a very high input resistance. Use in N-channel, enhancement mode only is required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.1.2",
+    "content": "Characteristic curve showing zener breakdown voltage and typical minimum operating current. Anode and cathode. Use with a resistor as a constant voltage source. Use to provide a reference voltage. Use as a stabiliser is not required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.1.3",
+    "content": "Characteristic curves and spectral response curves of photodiodes. Use in photo-conductive mode as a detector in optical systems. Use with scintillator to detect atomic particles."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.1.4",
+    "content": "Use of Hall effect sensor as magnetic field sensor to monitor attitude. Use in tachometer. Principles of operation are not required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.2.1",
+    "content": "Difference between analogue and digital signals. Bits, bytes. Analogue-to-digital conversion: sampling audio signals for transmission in digital form, conversion of analogue signals into digital data using two voltage levels, quantisation, sampling rate, effect of sampling rate and number of bits per sample on quality of conversion, advantages and disadvantages of digital sampling, process of recovery of original data from noisy signal, effect of noise in communication systems. Pulse code modulation. Students should appreciate the use of a variety of sensors to collect analogue data. The ability to carry out binary arithmetic is not required. Knowledge of binary numbers 1 to 10 is adequate."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.3.1",
+    "content": "Resonant frequency of LC circuit: f₀ = 1 / (2π√(LC)). Only parallel resonance arrangements are required. Analogy between LC circuit and mass–spring system. Inductance as mass analogy. Capacitance as spring analogy. Derivation of the equation is not required. Energy (voltage) response curve. Q factor: Q = f₀ / f_B, where f_B is the bandwidth of the filter at the 50% energy points."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.3.2",
+    "content": "Operation and characteristics of an ideal operational amplifier: power supply and signal connections, infinite open-loop gain, infinite input resistance. Open-loop transfer function for a real operational amplifier: V_out = A_OL (V₊ − V₋). Use as a comparator. The operational amplifier should be treated as an important system building block."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.4.1",
+    "content": "Derivation of V_out / V_in = −R_f / R_in for inverting amplifier configuration. Meaning of virtual earth, virtual-earth analysis."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.4.2",
+    "content": "V_out / V_in = 1 + R_f / R_l for non-inverting amplifier configuration. Derivation is not required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.4.3",
+    "content": "V_out = −R_f (V₁/R₁ + V₂/R₂ + V₃/R₃ + ...) for summing amplifier configuration. Difference amplifier configuration: V_out = (V₊ − V₋) (R_f / R_l). Derivation is not required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.4.4",
+    "content": "Limitations of real operational amplifiers. Frequency response curve. Gain × bandwidth = constant for a given device."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.5.1",
+    "content": "Use of Boolean algebra related to truth tables and logic gates: A̅ = not A, A·B = A and B, A+B = A or B. Identification and use of AND, NAND, OR, NOR, NOT and EOR gates in combination in logic circuits. Construction and deduction of a logic circuit from a truth table. The gates should be treated as building blocks. The internal structure or circuit of the gates is not required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.5.2",
+    "content": "Counting circuits: Binary counter, BCD counter, Johnson counter. Inputs to the circuits: clock, reset, up/down. Outputs from the circuits. Modulo-n counter from basic counter with the logic driving a reset pin. The gates should be treated as building blocks. The internal structure or circuit of the gates is not required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.5.3",
+    "content": "The astable as an oscillator to provide a clock pulse. Clock (pulse) rate (frequency), pulse width, period, duty cycle, mark-to-space ratio. Variation of running frequency using an external RC network. Knowledge of a particular circuit or a specific device (e.g., 555 chip) will not be required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.6.1",
+    "content": "Communication systems, block diagram of 'real time' communication system. Only the purpose of each stage is required."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.6.2",
+    "content": "Transmission-path media: metal wire, optic fibre, electromagnetic (radio, microwave). Ground wave, refraction and reflection of sky waves, diffraction of long-wavelength radiation around the Earth’s surface. Satellite systems and typical transmission frequencies. Students should recognise that up- and down-links require different frequencies so that the receivers are not de-sensed. Advantages and disadvantages of various transmission media. Students should consider data transmission rate, cost, and security issues."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.6.3",
+    "content": "Basic principles of time-division multiplexing."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "3.13.6.4",
+    "content": "Principles of modulation; bandwidth. Carrier wave and information signal. Graphical representation of both AM and FM modulated signals. Bandwidth requirements of simple AM and FM: bandwidth = 2f_M for AM, bandwidth = 2Δf + f_M for FM. Data capacity of a channel. Comparison of bandwidth availability for various media. A detailed mathematical treatment is not required. Students will be expected to identify the carrier frequency and the information frequency from a graph of the variation of signal voltage with time."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "AO1",
+    "content": "Demonstrate knowledge and understanding of scientific ideas, processes, techniques and procedures."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "AO2",
+    "content": "Apply knowledge and understanding of scientific ideas, processes, techniques and procedures: in a theoretical context; in a practical context; when handling qualitative data; when handling quantitative data."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "AO3",
+    "content": "Analyse, interpret and evaluate scientific information, ideas and evidence, including in relation to issues, to: make judgements and reach conclusions; develop and refine practical design and procedures."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "Weighting",
+    "content": "Weighting of assessment objectives: AO1 (37%), AO2 (40%), AO3 (24%). 40% of the overall assessment will contain mathematical skills equivalent to Level 2 or above. At least 15% of the overall assessment will assess knowledge, skills and understanding in relation to practical work."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "AO1",
+    "content": "Demonstrate knowledge and understanding of scientific ideas, processes, techniques and procedures."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "AO2",
+    "content": "Apply knowledge and understanding of scientific ideas, processes, techniques and procedures: in a theoretical context; in a practical context; when handling qualitative data; when handling quantitative data."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "AO3",
+    "content": "Analyse, interpret and evaluate scientific information, ideas and evidence, including in relation to issues, to: make judgements and reach conclusions; develop and refine practical design and procedures."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "Weighting",
+    "content": "Weighting of assessment objectives: AO1 (33%), AO2 (42%), AO3 (25%). 40% of the overall assessment will contain mathematical skills equivalent to Level 2 or above. At least 15% of the overall assessment will assess knowledge, skills and understanding in relation to practical work."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.0.1",
+    "content": "Recognise and make use of appropriate units in calculations."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.0.2",
+    "content": "Recognise and use expressions in decimal and standard form."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.0.3",
+    "content": "Use ratios, fractions and percentages."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.0.4",
+    "content": "Estimate results."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.0.5",
+    "content": "Use calculators to find and use power, exponential and logarithmic functions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.0.6",
+    "content": "Use calculators to handle sin x, cos x, tan x when x is expressed in degrees or radians."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.1.1",
+    "content": "Use an appropriate number of significant figures."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.1.2",
+    "content": "Find arithmetic means."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.1.3",
+    "content": "Understand simple probability."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.1.4",
+    "content": "Make order of magnitude calculations."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.1.5",
+    "content": "Identify uncertainties in measurements and use simple techniques to determine uncertainty when data are combined by addition, subtraction, multiplication, division and raising to powers."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.2.1",
+    "content": "Understand and use the symbols: =, <, <<, >>, >, ∝, ≈, ∆."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.2.2",
+    "content": "Change the subject of an equation, including non-linear equations."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.2.3",
+    "content": "Substitute numerical values into algebraic equations using appropriate units for physical quantities."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.2.4",
+    "content": "Solve algebraic equations, including quadratic equations."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.2.5",
+    "content": "Use logarithms in relation to quantities that range over several orders of magnitude."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.3.1",
+    "content": "Translate information between graphical, numerical and algebraic forms."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.3.2",
+    "content": "Plot two variables from experimental or other data."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.3.3",
+    "content": "Understand that y = mx + c represents a linear relationship."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.3.4",
+    "content": "Determine the slope and intercept of a linear graph."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.3.5",
+    "content": "Calculate rate of change from a graph showing a linear relationship."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.3.6",
+    "content": "Draw and use the slope of a tangent to a curve as a measure of rate of change."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.3.7",
+    "content": "Distinguish between instantaneous rate of change and average rate of change."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.3.8",
+    "content": "Understand the possible physical significance of the area between a curve and the x-axis and be able to calculate it or estimate it by graphical methods as appropriate."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.3.9",
+    "content": "Apply the concepts underlying calculus (but without requiring the explicit use of derivatives or integrals) by solving equations involving rates of change using a graphical method or spreadsheet modelling."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.3.10",
+    "content": "Interpret logarithmic plots."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.3.11",
+    "content": "Use logarithmic plots to test exponential and power law variations."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.3.12",
+    "content": "Sketch relationships which are modelled by y = k/x, y = kx², y = k/x², y = kx, y = sin x, y = cos x, y = e±x, and y = sin²x, y = cos²x as applied to physical relationships."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.4.1",
+    "content": "Use angles in regular 2D and 3D structures."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.4.2",
+    "content": "Visualise and represent 2D and 3D forms including two-dimensional representations of 3D objects."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.4.3",
+    "content": "Calculate areas of triangles, circumferences and areas of circles, surface areas and volumes of rectangular blocks, cylinders and spheres."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.4.4",
+    "content": "Use Pythagoras’ theorem, and the angle sum of a triangle."
+  },
+  {
+    "subject": "Physics",
+    "level": "AS",
+    "topicCode": "MS.4.5",
+    "content": "Use sin, cos and tan in physical problems."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.4.6",
+    "content": "Use of small angle approximations including sinθ ≈ θ, tanθ ≈ θ, cosθ ≈ 1 for small θ where appropriate."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-level",
+    "topicCode": "MS.4.7",
+    "content": "Understand the relationship between degrees and radians and translate from one to the other."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.1",
+    "content": "Use of apparatus and techniques: All students taking an A-level Physics qualification are expected to have carried out the required practical activities in Section 7.2. These develop skills in the use of the following apparatus and techniques: ATa to ATl."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATa",
+    "content": "Use appropriate analogue apparatus to record a range of measurements (to include length/distance, temperature, pressure, force, angles, volume) and to interpolate between scale markings."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATb",
+    "content": "Use appropriate digital instruments, including electrical multimeters, to obtain a range of measurements (to include time, current, voltage, resistance, mass)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATc",
+    "content": "Use methods to increase accuracy of measurements, such as timing over multiple oscillations, or use of fiducial marker, set square or plumb line."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATd",
+    "content": "Use stopwatch or light gates for timing."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATe",
+    "content": "Use calipers and micrometers for small distances, using digital or vernier scales."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATf",
+    "content": "Correctly construct circuits from circuit diagrams using DC power supplies, cells, and a range of circuit components, including those where polarity is important."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATg",
+    "content": "Design, construct and check circuits using DC power supplies, cells, and a range of circuit components."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATh",
+    "content": "Use signal generator and oscilloscope, including volts/division and time-base."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATi",
+    "content": "Generate and measure waves, using microphone and loudspeaker, or ripple tank, or vibration transducer, or microwave / radio wave source."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATj",
+    "content": "Use laser or light source to investigate characteristics of light, including interference and diffraction."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATk",
+    "content": "Use ICT such as computer modelling, or data logger with a variety of sensors to collect data, or use of software to process data."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "ATl",
+    "content": "Use ionising radiation, including detectors."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.2",
+    "content": "Required practical activities: The following practicals must be carried out by all students taking this course. Written papers will assess knowledge and understanding of these, and the skills exemplified within each practical."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 1",
+    "content": "Investigation into the variation of the frequency of stationary waves on a string with length, tension and mass per unit length of the string. (Apparatus and technique references: a, b, c, i)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 2",
+    "content": "Investigation of interference effects to include the Young’s slit experiment and interference by a diffraction grating. (Apparatus and technique references: a, j)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 3",
+    "content": "Determination of g by a free-fall method. (Apparatus and technique references: a, c, d, k)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 4",
+    "content": "Determination of the Young modulus by a simple method. (Apparatus and technique references: a, c, e)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 5",
+    "content": "Determination of resistivity of a wire using a micrometer, ammeter and voltmeter. (Apparatus and technique references: a, b, e, f)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 6",
+    "content": "Investigation of the emf and internal resistance of electric cells and batteries by measuring the variation of the terminal pd of the cell with current in it. (Apparatus and technique references: b, f, g)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 7",
+    "content": "Investigation into simple harmonic motion using a mass–spring system and a simple pendulum. (Apparatus and technique references: a, b, c, h, i)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 8",
+    "content": "Investigation of Boyle’s (constant temperature) law and Charles’s (constant pressure) law for a gas. (Apparatus and technique references: a)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 9",
+    "content": "Investigation of the charge and discharge of capacitors. Analysis techniques should include log-linear plotting leading to a determination of the time constant RC. (Apparatus and technique references: b, f, g, h, k)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 10",
+    "content": "Investigate how the force on a wire varies with flux density, current and length of wire using a top pan balance. (Apparatus and technique references: a, b, f)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 11",
+    "content": "Investigate, using a search coil and oscilloscope, the effect on magnetic flux linkage of varying the angle between a search coil and magnetic field direction. (Apparatus and technique references: a, b, f, h)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "Required Practical 12",
+    "content": "Investigation of the inverse-square law for gamma radiation. (Apparatus and technique references: a, b, k, l)"
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.1 PS1.1",
+    "content": "Solve problems set in practical contexts."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.1 PS1.2",
+    "content": "Apply scientific knowledge to practical contexts."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.2 PS2.1",
+    "content": "Comment on experimental design and evaluate scientific methods."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.2 PS2.2",
+    "content": "Present data in appropriate ways."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.2 PS2.3",
+    "content": "Evaluate results and draw conclusions with reference to measurement uncertainties and errors."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.2 PS2.4",
+    "content": "Identify variables including those that must be controlled."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.3 PS3.1",
+    "content": "Plot and interpret graphs."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.3 PS3.2",
+    "content": "Process and analyse data using appropriate mathematical skills as exemplified in the mathematical appendix for each science."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.3 PS3.3",
+    "content": "Consider margins of error, accuracy and precision of data."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "7.3.4 PS4.1",
+    "content": "Know and understand how to use a wide range of experimental and practical instruments, equipment and techniques appropriate to the knowledge and understanding included in the specification."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "8.4.2 Competency 1",
+    "content": "Follows written procedures: (a) Correctly follows written instructions to carry out experimental techniques or procedures."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "8.4.2 Competency 2",
+    "content": "Applies investigative approaches and methods when using instruments and equipment: (a) Correctly uses appropriate instrumentation, apparatus and materials (including ICT) to carry out investigative activities, experimental techniques and procedures with minimal assistance or prompting. (b) Carries out techniques or procedures methodically, in sequence and in combination, identifying practical issues and making adjustments where necessary. (c) Identifies and controls significant quantitative variables where applicable, and plans approaches to take account of variables that cannot readily be controlled. (d) Selects appropriate equipment and measurement strategies in order to ensure suitably accurate results."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "8.4.2 Competency 3",
+    "content": "Safely uses a range of practical equipment and materials: (a) Identifies hazards and assesses risks associated with those hazards, making safety adjustments as necessary, when carrying out experimental techniques and procedures in the lab or field. (b) Uses appropriate safety equipment and approaches to minimise risks with minimal prompting."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "8.4.2 Competency 4",
+    "content": "Makes and records observations: (a) Makes accurate observations relevant to the experimental or investigative procedure. (b) Obtains accurate, precise and sufficient data for experimental and investigative procedures and records this methodically using appropriate units and conventions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "8.4.2 Competency 5",
+    "content": "Researches, references and reports: (a) Uses appropriate software and/or tools to process data, carry out research and report findings. (b) Cites sources of information demonstrating that research has taken place, supporting planning and conclusions."
+  }
+]

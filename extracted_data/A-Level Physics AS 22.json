@@ -1,0 +1,80 @@
+[
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "Thermal energy transfer: Use of the equations Q = Pt and Q = mcΔθ to solve problems involving specific heat capacity and power."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.2",
+    "content": "Ideal gases: Use of the ideal gas equation PV = nRT and the relationship between kinetic energy and temperature, E_k = (3/2)kT."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.6.2.3",
+    "content": "Assumptions of the kinetic theory of gases: Volume of molecules is negligible compared to the volume of the container; collision time is negligible compared to time between collisions; collisions are elastic; negligible forces between molecules except during collisions. Derivation of pressure using Newton’s laws and momentum changes."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.1",
+    "content": "Electric fields: Distribution of charge on the surface of a conductor, including the mutual repulsion of like charges (electrons)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.3.3",
+    "content": "Capacitance: Use of the equations V = Q/(4πε₀r) and C = Q/V to determine the capacitance of an isolated charged sphere. Calculation of energy stored in a capacitor using E = (1/2)CV², E = (1/2)QV, or E = Q²/(2C)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Electric fields: Determination of electric field strength from the gradient of a potential-distance graph."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.4.3",
+    "content": "Accept alternative routes based on calculation of two separate energies and a difference. When no other marks awarded, credit one mark for an attempt to calculate an energy difference provided one correct energy equation seen."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.2",
+    "content": "Gravitational fields: Explanation based on gravitational field strength or gravitational potential. Alternative routes for determining greater mass using null points or field line density. Calculation of radius using the formula R = √(GM/g). Representation of gravitational field lines with correct tangential arrows."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.3",
+    "content": "Gravitational potential: Sketching a graph passing through specific coordinates related to gravitational potential. Explanation that the area under a gravitational potential graph represents energy transferred/work done per unit mass or change in gravitational potential."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.2.1",
+    "content": "Gravitational forces and fields: Use of the formula F = GMm/r² to calculate the gravitational force between two masses. Calculation of resultant force and acceleration using vector addition."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.7.5.6",
+    "content": "Transformers: Explanation of the role of the core in providing greater linkage of magnetic flux. Explanation of how a varying magnetic flux in the secondary coil induces an emf. Design features to improve efficiency such as using thin sheets/laminations of iron to reduce eddy currents. Explanation of the need for high voltage transmission to reduce power loss."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.6",
+    "content": "Binding energy: Definition of binding energy as the energy required to separate a nucleus into its individual nucleons or energy given out when a nucleus is formed from its nucleons. Calculation of binding energy using mass defect and conversion to MeV."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "3.8.1.4",
+    "content": "Nuclear fission and fusion: Explanation of the decay process of fission fragments, including beta-minus decay and movement towards stability on the N-Z graph."
+  }
+]

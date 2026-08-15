@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
-import { deepseek } from "@ai-sdk/deepseek";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
+import { generateGeminiText } from "@/lib/gemini-fallback";
+import { generateAssistantText } from "@/lib/assistant-router";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
     }
 
-    const { topic, extraContext } = await req.json();
+    const { topic, extraContext , model } = await req.json();
 
     if (!topic) {
       return NextResponse.json({ status: "error", message: "Topic is required" }, { status: 400 });
@@ -22,8 +23,9 @@ export async function POST(req: Request) {
       promptContext = `\nExtra Details/Context to consider:\n${extraContext}\n`;
     }
 
-    const { text } = await generateText({
-      model: deepseek("deepseek-chat"),
+    const { text } = await generateAssistantText({
+      model: model || "Gemini 3.6 Flash",
+      system: "You are an expert at generating pro-con lists.",
       prompt: `Generate a comprehensive Pros and Cons list for the following topic/dilemma: "${topic}".
       ${promptContext}
       You MUST respond with ONLY a raw JSON object and nothing else. Do not use markdown formatting like \`\`\`json.

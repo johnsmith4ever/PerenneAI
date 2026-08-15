@@ -1,0 +1,206 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.1",
+    "content": "Carbon and hydrogen as elements in hydrocarbons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.1",
+    "content": "Hydrocarbons and their formulae, including alkanes (CₙH₂ₙ₊₂)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.3",
+    "content": "Uses of hydrocarbons as fuels."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3.1",
+    "content": "Products of incomplete combustion (soot and carbon monoxide)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.4",
+    "content": "Alkenes and their formulae (e.g., C₆H₁₂)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3.2",
+    "content": "Effects of atmospheric pollutants, including acid rain and global dimming."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1.3",
+    "content": "Paper chromatography, including practical techniques (RPA6), Rf values, and identification of substances."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.2",
+    "content": "Changes in the Earth's atmosphere, including the increase of nitrogen over time."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.4",
+    "content": "Decrease in carbon dioxide in the Earth's atmosphere over time."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.3",
+    "content": "Role of algae and plants in producing oxygen through photosynthesis, requiring light."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.3.4",
+    "content": "Polymers and natural polymers, including cellulose, starch, and DNA structure (helix, four bases)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.2",
+    "content": "Use of standard form in calculations (e.g., 1.4 × 10¹¹)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.2",
+    "content": "Rates of reaction, including factors affecting rate (concentration, temperature, catalysts) and practical techniques (RPA5)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.1",
+    "content": "Concentration calculations (e.g., g/dm³)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.3",
+    "content": "Collision theory and factors affecting the frequency of collisions (e.g., concentration, particle proximity)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.2",
+    "content": "Properties and reactions of alkenes, including addition reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.4",
+    "content": "Tests for gases, including chlorine (damp litmus paper)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.3.1",
+    "content": "Composition and properties of polymers, including empirical formulae and density ratios."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3.3",
+    "content": "Properties and uses of materials, including polymers and composites (e.g., pre-stressed concrete)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3.2",
+    "content": "Alloys and their uses, including reinforcement in materials."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2.2",
+    "content": "Carbon footprint and the impact of burning fuels (e.g., methane)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.3",
+    "content": "Tests for ions, including carbonate ions (hydrochloric acid and limewater)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1.1",
+    "content": "Renewable and non-renewable resources (e.g., oil vs. paper)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3.3",
+    "content": "Properties and uses of ceramics, polymers, and composites (including plain and pre-stressed concrete)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.1",
+    "content": "Flame tests and flame emission spectroscopy for identifying metal ions (e.g., sodium)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.4",
+    "content": "Tests for halide ions using acidified silver nitrate solution (e.g., chloride ions forming a white precipitate)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1.2",
+    "content": "Methods of analysis and purification of water, including evaporation, determining mass of dissolved solids, and calculating mean concentrations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.4.1",
+    "content": "The Haber process: recycling unreacted nitrogen and hydrogen, use of iron catalyst, and applications of ammonia (e.g., fertilisers)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.4",
+    "content": "Catalysts in chemical reactions (e.g., iron in the Haber process) and the production of nitric acid from ammonia."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.2",
+    "content": "Tests for gases: oxygen relights a glowing splint."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.4.2",
+    "content": "Energy profiles and reaction conditions in the Haber process and production of nitric acid."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.1",
+    "content": "Reversible reactions and combustion."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.3",
+    "content": "Dynamic equilibrium: rate of forward and reverse reactions (e.g., water molecules breaking down and reforming)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1.3",
+    "content": "Waste water treatment processes, including screening, sedimentation, and biological treatment."
+  }
+]

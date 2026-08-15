@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
-import { generateText } from "ai";
+import { generateText, embed } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
+import { createMistral } from "@ai-sdk/mistral";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
 import { supabase } from "@/lib/supabase";
+import { generateGeminiText } from "@/lib/gemini-fallback";
+import { generateAssistantText } from "@/lib/assistant-router";
 
 const TIER_RANK: Record<string, number> = {
   Free: 0,
@@ -13,29 +16,25 @@ const TIER_RANK: Record<string, number> = {
   Maximum: 4,
 };
 
-const deepseek = createOpenAI({
-  baseURL: "https://api.deepseek.com/v1",
-  apiKey: process.env.DEEPSEEK_API_KEY,
-});
-
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
+    // Guest bypass allowed: userId can be null
 
-    const { text, mode = "understand", format = "paragraph", length = "short" } = await req.json();
+    const { text, mode = "understand", format = "paragraph", length = "short", subject , model } = await req.json();
 
-    if (!text || text.trim().length < 10) {
-      return NextResponse.json({ status: "error", message: "Please provide more notes to summarize." }, { status: 400 });
+    if (!text || text.trim().length < 2) {
+      return NextResponse.json({ status: "error", message: "Please provide a topic or notes to summarize." }, { status: 400 });
     }
 
     const client = await clerkClient();
-    const userObj = await client.users.getUser(userId);
+    let tier = "Guest";
+    if (userId) {
+      const userObj = await client.users.getUser(userId);
+      tier = (userObj.publicMetadata.tier as string) || "Free";
+    }
     const FREE_ACCESS_MODE = true;
-    const tier = (userObj.publicMetadata.tier as string) || "Free";
-    const tierRank = TIER_RANK[tier] || 0;
+    const tierRank = TIER_RANK[tier] || -1;
 
     if (!FREE_ACCESS_MODE && tierRank < TIER_RANK.Pro) {
       const today = new Date();
@@ -52,13 +51,41 @@ export async function POST(req: Request) {
       }
     }
 
-    let prompt = "";
+    let aqaContext = "";
     
+    // Always try to fetch AQA specs if it's Understand or ELI10 mode (especially if it's a short topic)
+    if (mode === "understand" || mode === "eli10") {
+      try {
+        const mistralProvider = createMistral({ apiKey: process.env.MISTRAL_API_KEY_2 });
+        const { embedding } = await embed({
+          model: mistralProvider.textEmbeddingModel("mistral-embed"),
+          value: text,
+        });
+        
+        const threshold = subject === "Mathematics" || subject === "Maths" ? 0.70 : 0.70;
+
+        const { data: specs, error: specError } = await supabase.rpc("match_aqa_specs", {
+          query_embedding: embedding,
+          match_threshold: threshold,
+          match_count: 3,
+          filter_subject: subject || null,
+          filter_level: null
+        });
+
+        if (!specError && specs && specs.length > 0) {
+          aqaContext = `\n\nOfficial AQA Syllabus Context:\n${specs.map((s: any) => s.content).join("\n")}\n\nMake sure to align your explanation and examples entirely with this official curriculum context.`;
+        }
+      } catch (e) {
+        console.error("AQA context search failed:", e);
+      }
+    }
+
+    let prompt = "";
     if (mode === "pure") {
       prompt = `You are a highly efficient AI summarizer.
-I am going to give you my messy lecture/study notes. I need a pure summary.
+I am going to give you my messy lecture/study notes or a topic. I need a pure summary.
 
-My notes:
+Input:
 """
 ${text}
 """
@@ -73,39 +100,69 @@ You must respond with EXACTLY and ONLY a valid JSON object matching this schema:
 }
 
 Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object.`;
-    } else {
-      prompt = `You are an incredibly creative, witty, and highly intelligent study assistant.
-I am going to give you my messy lecture/study notes. I need you to summarize them, but make it engaging and deeply educational.
+    } else if (mode === "eli10") {
+      prompt = `You are a highly skilled educator who specializes in breaking down complex topics clearly.
+I am going to give you a topic or concept. Explain it step by step using plain, simple English — as if speaking to someone who has no prior knowledge.
+Do NOT use silly analogies or forced comparisons. Just use clear, direct, jargon-free English to explain what it is and how it works.
+CRITICAL: Keep all sections strictly concise. No long paragraphs.
 
-My notes:
+Topic:
 """
 ${text}
-"""
+"""${aqaContext}
 
 You must respond with EXACTLY and ONLY a valid JSON object matching this schema:
 {
-  "tldr": "A punchy, memorable 1-2 sentence summary of the entire text.",
+  "tldr": "A punchy, memorable 1-2 sentence summary of the entire concept.",
+  "eli10": "A clear, plain-English breakdown of the concept. No analogies, no gimmicks. Just simple sentences that explain what it is, step by step, as if talking to someone who has never heard of it before. Keep it concise.",
   "keyConcepts": [
     {
       "title": "Concept Name",
-      "explanation": "A clear, deep explanation of the concept.",
-      "analogy": "A highly creative, slightly humorous, or extremely memorable analogy to help me remember this concept forever."
+      "explanation": "A short, clear explanation of this specific concept."
     }
   ],
   "actionableTakeaways": [
-    "What I actually need to memorize or do, point 1",
-    "Point 2"
-  ],
-  "eli10": "An 'Explain Like I'm 10' summary. Use a real-life, practical example to break the core idea down so simply that a 10-year-old could grasp it. Do not be overly childish."
+    "Short actionable point 1",
+    "Short actionable point 2"
+  ]
 }
 
-Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object. Ensure the JSON is perfectly formatted.`;
+Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object. You MUST properly escape any newlines as \\n inside strings so the JSON remains valid.`;
+    } else {
+      prompt = `You are an incredibly skilled and educational study assistant.
+I am going to give you either messy lecture notes OR a specific topic. Break it down clearly and educationally.
+If I gave you a topic, use the provided AQA syllabus context to build a comprehensive lesson around it.
+CRITICAL: Keep all sections strictly concise, short, and to the point. Do not write long essays.
+
+Input:
+"""
+${text}
+"""${aqaContext}
+
+You must respond with EXACTLY and ONLY a valid JSON object matching this schema:
+{
+  "tldr": "A punchy, memorable 1-2 sentence summary of the entire concept.",
+  "eli10": "A clear, plain-English breakdown of the concept. No silly analogies or gimmicks. Just simple, direct sentences that explain what it is and how it works — as if talking to someone who has never heard of it before. Keep it concise.",
+  "keyConcepts": [
+    {
+      "title": "Concept Name",
+      "explanation": "A clear, concise explanation of the concept."
+    }
+  ],
+  "actionableTakeaways": [
+    "Short actionable point 1",
+    "Short actionable point 2"
+  ]
+}
+
+Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object. Ensure the JSON is perfectly formatted. You MUST properly escape any newlines as \\n inside strings so the JSON remains valid.`;
     }
 
-    const { text: rawJson, usage } = await generateText({
-      model: deepseek.chat("deepseek-v4-flash"),
+    const { text: rawJson, usage } = await generateAssistantText({
+      model: model || "Gemini 3.6 Flash",
       system: "You are an AI study summarizer. You always output valid, raw JSON.",
       prompt,
+      maxOutputTokens: 800,
     });
 
     const cleaned = rawJson.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -118,15 +175,17 @@ Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSO
     }
 
     // Fire and forget usage tracking
-    trackUsage(userId, "summarize-notes").catch(console.error);
+    if (userId) trackUsage(userId, "summarize-notes").catch(console.error);
 
     // Save history so we can enforce rate limits
-    supabase.from("explore_history").insert({
-      user_id: userId,
-      topic: "Note Summary",
-      type: "note_summary",
-      data: data
-    }).then();
+    if (userId) {
+      supabase.from("explore_history").insert({
+        user_id: userId,
+        topic: "Note Summary",
+        type: "note_summary",
+        data: data
+      }).then();
+    }
 
     return NextResponse.json({ status: "success", data, usage });
   } catch (error: any) {

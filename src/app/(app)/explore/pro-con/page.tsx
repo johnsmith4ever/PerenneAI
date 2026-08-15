@@ -10,7 +10,7 @@ import Link from "next/link";
 import { PaywallOverlay } from "@/components/ui/paywall";
 import { useUser } from "@clerk/nextjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { PremiumGate } from "@/components/premium-gate";
+
 import { useSubscription, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { supabase } from "@/lib/supabase";
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
@@ -31,7 +31,7 @@ export default function ProConPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ProConData | null>(null);
   const [proConError, setProConError] = useState(false);
-  const { deductCredits, tier, isLoaded: subLoaded } = useSubscription();
+  const { deductCredits, tier, isLoaded: subLoaded , assistant } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
   const { user } = useUser();
 
@@ -56,12 +56,12 @@ export default function ProConPage() {
       const res = await fetch("/api/pro-con", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic, extraContext }),
+        body: JSON.stringify({ topic, extraContext, model: assistant }),
       });
       const data = await res.json();
       if (data.status === "success") {
         setResult(data.data);
-        deductCredits(100, 300, "Apollo V4 Flash", "other");
+        deductCredits(100, 300, assistant, "other");
         
         // Saving logic removed per user request
       } else {
@@ -77,7 +77,7 @@ export default function ProConPage() {
   };
 
   return (
-    <PremiumGate featureName="Pro-Con Analyzer">
+
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
       {subLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && (
         <PaywallOverlay 
@@ -182,6 +182,6 @@ export default function ProConPage() {
         )}
       </div>
     </div>
-    </PremiumGate>
+
   );
 }

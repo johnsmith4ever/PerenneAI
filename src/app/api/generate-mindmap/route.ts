@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
-import { deepseek } from "@ai-sdk/deepseek";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
+import { generateGeminiText } from "@/lib/gemini-fallback";
+import { generateAssistantText } from "@/lib/assistant-router";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
     }
 
-    const { text } = await req.json();
+    const { text, model } = await req.json();
 
     if (!text || text.trim().length < 2) {
       return NextResponse.json({ status: "error", message: "Please provide a topic or notes." }, { status: 400 });
@@ -50,8 +51,8 @@ You must respond with EXACTLY and ONLY a valid JSON object matching this schema:
 
 Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object. Ensure the JSON is perfectly formatted and deeply nested (at least 2-3 levels deep).`;
 
-    const { text: rawJson, usage } = await generateText({
-      model: deepseek.chat("deepseek-chat"),
+    const { text: rawJson, usage } = await generateAssistantText({
+      model: model || "Gemini 3.6 Flash",
       system: "You are an AI mindmap architect. You always output valid, raw JSON.",
       prompt,
     });

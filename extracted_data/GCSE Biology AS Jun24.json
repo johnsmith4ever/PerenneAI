@@ -1,0 +1,170 @@
+[
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.1",
+    "content": "Structure and function of organs and organ systems."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.3.1",
+    "content": "Structure and function of plant tissues and organs, including the leaf, stem, and root. Role of xylem and phloem in transport."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.3.2",
+    "content": "Transpiration and factors affecting its rate. Role of stomata and guard cells in gas exchange and water loss."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.2",
+    "content": "Cell structure and function, including the roles of the permanent vacuole and mitochondria."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.3",
+    "content": "Active transport: definition, role in cells, and requirement for energy from respiration."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.1.1",
+    "content": "Photosynthesis: process, site of occurrence, and factors affecting its rate."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.6",
+    "content": "Defence against pathogens: role of the skin as a physical barrier and antimicrobial secretions."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "Enzymes: role in digestion, factors affecting enzyme activity (e.g., pH), and practical investigations involving enzymes."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.7",
+    "content": "Vaccination: principles, role in immunity, and herd immunity."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.2",
+    "content": "Communicable diseases: causes, transmission, and prevention. Analysis of trends in disease incidence."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.9",
+    "content": "Evaluation of scientific claims: peer review, bias, and the importance of evidence in scientific research."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.5",
+    "content": "Cancer: causes, including ionising radiation, and development of tumours."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.6",
+    "content": "Viruses: structure, replication, and role in disease."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.7",
+    "content": "Mitosis: role in growth, repair, and asexual reproduction. Cell cycle and stages of mitosis."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.2.2",
+    "content": "Cell division: mitosis and the cell cycle, including chromosome behaviour and cytokinesis."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.5",
+    "content": "Microscopy: use of light microscopes, magnification, and calculation of cell size."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.2",
+    "content": "Osmosis: definition, role in plant cells, and practical investigations involving osmosis."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.2",
+    "content": "Required Practical Activity 3 (RPA3): Investigate the effect of a range of concentrations of salt or sugar solutions on the mass of plant tissue."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.2",
+    "content": "The structure and function of the human circulatory system, including the heart, blood vessels (arteries, veins, capillaries), and blood."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.4",
+    "content": "Cardiovascular diseases (CVD), including coronary heart disease, and ways of reducing the risk (e.g., statins, stents)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.2.1",
+    "content": "The human respiratory system, including gas exchange in the lungs and the role of oxygen in respiration."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.6",
+    "content": "Lifestyle factors (e.g., smoking, diet, exercise) and their impact on the risk of cardiovascular diseases."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.2",
+    "content": "Eukaryotic and prokaryotic cells, including the structure and function of the nucleus."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.2.1",
+    "content": "Cell division: mitosis and the cell cycle."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "The components of blood and their functions (red blood cells, white blood cells, platelets, plasma)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.2.3",
+    "content": "Metabolism and the role of enzymes in digestion and respiration."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.1",
+    "content": "The structure and function of the lungs, including gas exchange in the alveoli."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.4.2.2",
+    "content": "Aerobic and anaerobic respiration, including the production of lactic acid and its effects on the body."
+  }
+]

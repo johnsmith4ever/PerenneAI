@@ -3,6 +3,8 @@ import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
+import { generateGeminiText } from "@/lib/gemini-fallback";
+import { generateAssistantText } from "@/lib/assistant-router";
 
 const deepseek = createOpenAI({
   baseURL: "https://api.deepseek.com/v1",
@@ -41,7 +43,7 @@ export async function POST(req: Request) {
     const { userId } = await auth();
     if (!userId) return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
 
-    const { messages, useResearch, topic, stance } = await req.json();
+    const { messages, useResearch, topic, stance , model } = await req.json();
 
     let contextText = "";
     let usedTavily = false;
@@ -67,8 +69,8 @@ Your stance must strictly be: **${aiStance}**.
 You must vigorously but respectfully challenge their arguments, point out logical fallacies, and provide counter-evidence.
 Do not break character. Do not agree with them easily. Keep your responses concise (1-2 paragraphs max) and punchy.${contextText}`;
 
-    const { text, usage } = await generateText({
-      model: deepseek.chat("deepseek-chat"), // deepseek normal version
+    const { text, usage } = await generateAssistantText({
+      model: model || "Gemini 3.6 Flash",
       system: systemPrompt,
       messages,
       maxOutputTokens: 500,

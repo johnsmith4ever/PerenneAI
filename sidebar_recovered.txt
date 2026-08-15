@@ -1,0 +1,49 @@
+Created At: 2026-08-05T22:27:30Z
+Completed At: 2026-08-05T22:27:31Z
+File Path: `file:///Users/kyrus/Documents/AI.com/src/components/layout/sidebar.tsx`
+Total Lines: 239
+Total Bytes: 14500
+Showing lines 90 to 130
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+90:                 />
+91:                 
+92:                 <button
+93:                   onClick={() => router.push("/dashboard")}
+94:                   className={cn(
+95:                     "flex-1 relative z-10 flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold rounded-lg transition-colors",
+96:                     !isStrictMode ? "text-white" : "text-slate-400 hover:text-slate-200"
+97:                   )}
+98:                 >
+99:                   <Sparkles className="w-3 h-3" />
+100:                   General
+101:                 </button>
+102:                 
+103:                 <button
+104:                   onClick={() => router.push("/strict-mode")}
+105:                   className={cn(
+106:                     "flex-1 relative z-10 flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold rounded-lg transition-colors",
+107:                     isStrictMode ? "text-emerald-400" : "text-slate-400 hover:text-emerald-400/70"
+108:                   )}
+109:                 >
+110:                   <GraduationCap className="w-3 h-3" />
+111:                   Oracle
+112:                 </button>
+113:               </div>
+114:             </div>
+115:           )}
+116:         </div>
+117: 
+118:         {/* Navigation */}
+119:         <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide py-4 px-3 space-y-0.5">
+120:           {activeNavItems.map((item) => {
+121:             const { href, label, icon: Icon } = item;
+122:             const comingSoon = ('comingSoon' in item ? item.comingSoon : false) as boolean;
+123:             
+124:             const baseHref = href.split("?")[0];
+125:             const active = baseHref === "/explore" 
+126:               ? pathname === "/explore" 
+127:               : pathname === baseHref || pathname.startsWith(baseHref + "/");
+128:             return (
+129:               <Link
+130:                 key={href}
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

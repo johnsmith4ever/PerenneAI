@@ -1,10 +1,11 @@
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { ArrowRight, BookOpen, BrainCircuit, Calendar, FileText, FlaskConical, LayoutDashboard, Lightbulb, List, MessageSquare, Network, PenLine, Sparkles, TrendingUp, Zap } from "lucide-react";
+import { ArrowRight, BookOpen, BrainCircuit, Calendar, FileText, FlaskConical, LayoutDashboard, Lightbulb, List, MessageSquare, Network, PenLine, Sparkles, TrendingUp, Zap, Clock } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { formatDistanceToNow } from "date-fns";
 import { KnowledgeWeb } from "@/components/knowledge-web";
 import { GamificationWrapper } from "@/components/gamification-wrapper";
+import { AqaTextbookSearch } from "@/components/aqa-search";
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -30,71 +31,49 @@ export default async function DashboardPage() {
       </div>
 
       {/* Bento Box Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6">
-        
-        {/* Large Hero Card - Study Assistant */}
-        <Link href="/assistant" className="group col-span-1 md:col-span-2 md:row-span-2 block rounded-3xl bg-white/5 border border-white/10 p-8 hover:bg-white/10 transition-all backdrop-blur-sm relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-40 transition-opacity">
-            <MessageSquare className="w-48 h-48 text-amber-500 transform rotate-12" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Link href="/weak-areas" className="group block rounded-3xl bg-red-500/5 border border-red-500/20 p-8 hover:bg-red-500/10 transition-all backdrop-blur-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+            <TrendingUp className="w-48 h-48 text-red-500 transform rotate-12" />
           </div>
           <div className="relative z-10 h-full flex flex-col">
-            <div className="w-14 h-14 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-6 border border-amber-500/30 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-              <MessageSquare className="w-7 h-7 text-amber-400" />
+            <div className="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center mb-6 border border-red-500/30 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+              <TrendingUp className="w-7 h-7 text-red-400" />
             </div>
-            <h2 className="text-3xl font-serif font-bold text-white mb-2">Study Assistant</h2>
-            <p className="text-slate-400 text-lg max-w-sm mb-auto">Chat with our advanced AI to break down complex topics and instantly clarify your doubts.</p>
+            <h2 className="text-3xl font-serif font-bold text-white mb-2">Access Weak Points</h2>
+            <p className="text-slate-400 text-lg max-w-sm mb-auto">Review your mistakes across Exams, Quizzes, and Math Solver to target your revision.</p>
             
-            <div className="mt-8 bg-black/40 border border-white/10 rounded-full p-2 flex items-center gap-4 max-w-md w-full">
-              <div className="flex-1 bg-transparent px-4 text-sm text-slate-500">Ask a question to start...</div>
-              <div className="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+            <div className="mt-8 bg-black/40 border border-white/10 rounded-full p-2 flex items-center gap-4 max-w-sm w-full">
+              <div className="flex-1 bg-transparent px-4 text-sm font-semibold text-red-400">Improve your grades</div>
+              <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(239,68,68,0.4)]">
                 <ArrowRight className="w-5 h-5 text-white" />
               </div>
             </div>
           </div>
         </Link>
 
-        {/* Medium Card - Essay Grader */}
-        <Link href="/essay" className="group col-span-1 md:col-span-1 block rounded-3xl bg-white/5 border border-white/10 p-6 hover:bg-white/10 transition-all backdrop-blur-sm flex flex-col justify-center">
-          <div className="w-12 h-12 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-4 border border-orange-500/30 group-hover:scale-110 transition-transform">
-            <FileText className="w-6 h-6 text-orange-400" />
+        <Link href="/history" className="group block rounded-3xl bg-purple-500/5 border border-purple-500/20 p-8 hover:bg-purple-500/10 transition-all backdrop-blur-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+            <Clock className="w-48 h-48 text-purple-500 transform -rotate-12" />
           </div>
-          <h3 className="text-xl font-serif font-bold text-white mb-2">Essay Grader</h3>
-          <p className="text-slate-400 text-sm">Get brutal, accurate feedback on your essays with paragraph rewrites.</p>
-        </Link>
-
-        {/* Medium Card - Note Summarizer */}
-        <Link href="/explore/note-summarizer" className="group col-span-1 md:col-span-1 block rounded-3xl bg-white/5 border border-white/10 p-6 hover:bg-white/10 transition-all backdrop-blur-sm flex flex-col justify-center">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-4 border border-emerald-500/30 group-hover:scale-110 transition-transform">
-            <List className="w-6 h-6 text-emerald-400" />
+          <div className="relative z-10 h-full flex flex-col">
+            <div className="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 border border-purple-500/30 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+              <Clock className="w-7 h-7 text-purple-400" />
+            </div>
+            <h2 className="text-3xl font-serif font-bold text-white mb-2">View History</h2>
+            <p className="text-slate-400 text-lg max-w-sm mb-auto">Look back at all of your past generated flashcards, solved math problems, and essays.</p>
+            
+            <div className="mt-8 bg-black/40 border border-white/10 rounded-full p-2 flex items-center gap-4 max-w-sm w-full">
+              <div className="flex-1 bg-transparent px-4 text-sm font-semibold text-purple-400">View past sessions</div>
+              <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                <ArrowRight className="w-5 h-5 text-white" />
+              </div>
+            </div>
           </div>
-          <h3 className="text-xl font-serif font-bold text-white mb-2">Note Summarizer</h3>
-          <p className="text-slate-400 text-sm">Turn messy notes into structured, perfectly formatted study guides.</p>
         </Link>
       </div>
-
-      {/* Secondary Tools Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Link href="/flashcards" className="group rounded-2xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-all">
-          <BookOpen className="w-6 h-6 text-purple-400 mb-3 group-hover:scale-110 transition-transform" />
-          <h4 className="font-bold text-white text-sm mb-1">Flashcards</h4>
-          <p className="text-xs text-slate-500">Spaced repetition</p>
-        </Link>
-        <Link href="/quiz" className="group rounded-2xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-all">
-          <PenLine className="w-6 h-6 text-red-400 mb-3 group-hover:scale-110 transition-transform" />
-          <h4 className="font-bold text-white text-sm mb-1">Adaptive Quizzes</h4>
-          <p className="text-xs text-slate-500">Find your weak spots</p>
-        </Link>
-        <Link href="/explore/schedule-maker" className="group rounded-2xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-all">
-          <Calendar className="w-6 h-6 text-blue-400 mb-3 group-hover:scale-110 transition-transform" />
-          <h4 className="font-bold text-white text-sm mb-1">Schedule Maker</h4>
-          <p className="text-xs text-slate-500">Optimize revision</p>
-        </Link>
-        <Link href="/mindmaps" className="group rounded-2xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-all">
-          <Network className="w-6 h-6 text-cyan-400 mb-3 group-hover:scale-110 transition-transform" />
-          <h4 className="font-bold text-white text-sm mb-1">Mindmaps</h4>
-          <p className="text-xs text-slate-500">Visualize concepts</p>
-        </Link>
-      </div>
+      
+      <AqaTextbookSearch />
       
       <GamificationWrapper>
         <KnowledgeWeb userId={user?.id} />

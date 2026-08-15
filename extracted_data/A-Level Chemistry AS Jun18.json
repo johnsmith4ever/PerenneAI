@@ -1,0 +1,242 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Marking of lists: This applies to questions requiring a set number of responses, but for which students have provided extra responses. The general ‘List’ principle to be followed in such a situation is that ‘right + wrong = wrong’."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.2",
+    "content": "Marking procedure for calculations: Full marks should be awarded for a correct numerical answer, without any working shown, unless the question states ‘Show your working’ or ‘justify your answer’."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.3",
+    "content": "Errors carried forward, consequential marking and arithmetic errors: Allowances for errors carried forward are most likely to be restricted to calculation questions and should be shown by the abbreviation ECF or consequential in the marking scheme."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.4",
+    "content": "Equations: In questions requiring students to write equations, state symbols are generally ignored unless otherwise stated in the ‘Comments’ column."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.5",
+    "content": "Oxidation states: In general, the sign for an oxidation state will be assumed to be positive unless specifically shown to be negative."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.6",
+    "content": "Interpretation of ‘it’: Answers using the word ‘it’ should be given credit only if it is clear that the ‘it’ refers to the correct subject."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.7",
+    "content": "Phonetic spelling: The phonetic spelling of correct scientific terminology should be credited unless there is a possible confusion with another technical term or if the question requires correct IUPAC nomenclature."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.8",
+    "content": "Brackets: (.....) are used to indicate information which is not essential for the mark to be awarded but is included to help the examiner identify the sense of the answer required."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.9",
+    "content": "Ignore / Insufficient / Do not allow: Ignore or insufficient is used when the information given is irrelevant to the question or not enough to gain the marking point."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.10",
+    "content": "Marking crossed out work: Crossed out work that has not been replaced should be marked as if it were not crossed out, if possible."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.11",
+    "content": "Reagents: The command word “Identify”, allows the student to choose to use either the name or the formula of a reagent in their answer."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.12",
+    "content": "Organic structures: Where students are asked to draw organic structures, unless a specific type is required in the question and stated in the mark scheme, these may be given as displayed, structural or skeletal formulas or a combination of all three as long as the result is unambiguous."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.13",
+    "content": "Organic names: As a general principle, non-IUPAC names or incorrect spelling or incomplete names should not gain credit."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.14",
+    "content": "Organic reaction mechanisms: Curly arrows should originate either from a lone pair of electrons or from a bond."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.15",
+    "content": "Extended responses: For questions marked using a ‘Levels of Response’ mark scheme: Level of response mark schemes are broken down into three levels, each of which has a descriptor."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "01.3",
+    "content": "constant gradient OR change/decrease in concentration is proportional to time"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "01.4",
+    "content": "evidence of attempt at calculation of gradient via ∆y/∆x"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "01.5",
+    "content": "5 points correctly plotted"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "01.6",
+    "content": "Smooth curve only within one small square of all points"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "01.7",
+    "content": "Tangent to curve drawn at [H3O+] = 0.35 mol dm–3"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "01.8",
+    "content": "This question is marked using levels of response"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "02.1",
+    "content": "4Na + O2 → 2Na2O"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "02.2",
+    "content": "4P + 5O2 → P4O10"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "02.3",
+    "content": "Greater/increased charge/charge density on magnesium ion/Mg2+"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "02.4",
+    "content": "(SiO2) giant covalent / macromolecular"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "02.5",
+    "content": "Sample in suitable melting point apparatus"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "03.1",
+    "content": "Moles of cyclohexanol = (10 x 0.96)/100.0 = 0.096"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "03.2",
+    "content": "Add bromine (water)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "03.3",
+    "content": "Na2CO3 would neutralise/react with/remove (phosphoric) acid/H3PO4/H+"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "03.4",
+    "content": "avoid pressure build-up / release pressure / release CO2/air/gas"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "03.5",
+    "content": "Does not dissolve in/react with the cyclohexene"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "03.6",
+    "content": "Diagram of basic set up to include flask or tube with side-arm/Buchner flask, flat-bottomed funnel/Buchner funnel, filter paper"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "03.7",
+    "content": "Cyclohexene is less polar than cyclohexanol / cyclohexanol is more polar than cyclohexene"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "03.8",
+    "content": "Would be no peak at 3230 – 3550 cm–1 due to O—H((alcohol))"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "04.1",
+    "content": "Temperature on the y-axis and uses sensible scales"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "04.2",
+    "content": "0.2 / 2.1 x 100 = 9.5 %"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "04.3",
+    "content": "Replace the glass beaker with a polystyrene cup / insulate the glass beaker / use a lid"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "04.4",
+    "content": "Increase magnitude of temperature change"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "04.5",
+    "content": "HOOCCOOH + 2KOH → K2(OOCCOO) + 2H2O"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "04.6",
+    "content": "HOOCCOOH is a weak acid / not fully dissociated"
+  }
+]

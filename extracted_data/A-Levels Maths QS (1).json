@@ -1,0 +1,140 @@
+[
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Find the coefficient of a term in the binomial expansion of an expression."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "Differentiate functions of the form y = kx^n."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.3.1",
+    "content": "Apply transformations to functions, including stretches parallel to the axes."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "Use small angle approximations for trigonometric functions."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Use the trapezium rule to approximate definite integrals."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.6.1",
+    "content": "Manipulate and solve logarithmic equations, including combining logs and changing the base."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.7.1",
+    "content": "Rationalise denominators involving surds and simplify expressions with surds."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.8.1",
+    "content": "Integrate functions using integration by parts or other techniques."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.9.1",
+    "content": "Find the midpoint and perpendicular bisector of a line segment given two points."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.10.1",
+    "content": "Find the equation of a circle given conditions such as points on the circle and the centre lying on a line."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.11.1",
+    "content": "Solve trigonometric equations and use trigonometric identities, including sin and cos of related angles."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.12.1",
+    "content": "Work with sequences defined by recurrence relations, including finding terms and limits."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.13.1",
+    "content": "Model situations using trigonometric functions and combine them using trigonometric identities."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "7.03.1",
+    "content": "Use the Newton-Raphson method to find approximate solutions to equations."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "6.07.1",
+    "content": "Differentiate functions of the form y = a^x, where a is a positive constant."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "6.07.2",
+    "content": "Integrate functions of the form ∫ a^x dx, where a is a positive constant."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "7.02.1",
+    "content": "Use numerical methods to approximate areas under curves, including the use of rectangles and geometric sequences."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "7.02.2",
+    "content": "Find the limit of approximations for areas under curves as the number of rectangles tends to infinity."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "6.05.1",
+    "content": "Find stationary points on curves defined implicitly and determine their coordinates."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "6.10.1",
+    "content": "Use partial fractions to decompose rational expressions of the form (ax + b) / [(cx + d)(ex + f)]."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "7.04.1",
+    "content": "Formulate and solve differential equations related to rates of change in real-world contexts, including the use of integration."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.06.1",
+    "content": "Understand and use the inverse trigonometric functions arcsin, arccos, and arctan, including their domains and ranges."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.06.2",
+    "content": "Solve equations involving inverse trigonometric functions and understand their graphical representations."
+  }
+]

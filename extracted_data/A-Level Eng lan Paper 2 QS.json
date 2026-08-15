@@ -1,0 +1,80 @@
+[
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Apply appropriate methods of language analysis, using associated terminology and coherent written expression."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Demonstrate critical understanding of concepts and issues relevant to language use."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO3",
+    "content": "Analyse and evaluate how contextual factors and language features are associated with the construction of meaning."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO4",
+    "content": "Explore connections across texts, informed by linguistic concepts and methods."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO5",
+    "content": "Demonstrate expertise and creativity in the use of English to communicate in different ways."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "Paper 2: Section A",
+    "content": "Language diversity and change: Evaluate the idea that aspects of context determine how a person uses language. Includes assessment of AO1 and AO2."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "Paper 2: Section A",
+    "content": "Language diversity and change: Evaluate the idea that language change is a process of continual improvement. Includes assessment of AO1 and AO2."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "Paper 2: Section B",
+    "content": "Language discourses: Questions assessing AO1, AO3, and AO4 (Question 3) or AO2 and AO5 (Question 4)."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO1",
+    "content": "Apply appropriate methods of language analysis, using associated terminology and coherent written expression. This includes examining features such as semantic patterns, pragmatic features, sentence and clause types, elements and linking, cohesion, textual structure, metaphors, similes, word classes, verb tenses, voice, aspect, modals, phrases, connotations, semantic fields, verb moods, and graphology."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO2",
+    "content": "Demonstrate critical understanding of concepts and issues relevant to language use. This includes exploring social and cultural contexts, evaluating debates about standard and non-standard accents, assessing the effect of attitudes on language use and identity, and challenging views on accentism, code-switching, and accommodation."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO3",
+    "content": "Analyse and evaluate how contextual factors and language features are associated with the construction of meaning. This includes evaluating the use of language and representations according to context, analysing how language choices create meanings, and linking specific language choices with aspects of context such as class, clarity, intelligibility, prestige, and audience positioning."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO4",
+    "content": "Explore connections across texts, informed by linguistic concepts and methods. This includes evaluating the significance of connections found across texts, comparing language use, content, and context, and assessing the effects of genre, purpose, and audience on representation."
+  },
+  {
+    "subject": "English Language",
+    "level": "A-Level",
+    "topicCode": "AO5",
+    "content": "Demonstrate expertise and creativity in the use of English to communicate in different ways. This includes using form and register creatively and innovatively for context, writing accurately, and effectively guiding the reader through cohesion strategies and sentence effects."
+  }
+]

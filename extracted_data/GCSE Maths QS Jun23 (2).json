@@ -1,0 +1,164 @@
+[
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "R1",
+    "content": "Write ratios in the form n:1."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A21",
+    "content": "Recognise and use sequences of triangular numbers."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "N5",
+    "content": "Find the reciprocal of a number or fraction."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "R9",
+    "content": "Solve problems involving percentage increase and decrease, including reverse percentages."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "R10",
+    "content": "Solve problems involving ratio and proportion, including expressing ratios in their simplest form."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G1",
+    "content": "Calculate the sum of interior and exterior angles of polygons, and use properties of regular polygons."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "P2",
+    "content": "Calculate and use probabilities from two-way tables and sample space diagrams."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "P4",
+    "content": "Use relative frequency as an estimate of probability and understand expected frequency."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A4",
+    "content": "Form and solve equations, including those involving algebraic identities."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G6",
+    "content": "Use coordinates to find midpoints and solve geometric problems involving parallelograms."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G7",
+    "content": "Describe translations using vectors."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G16",
+    "content": "Calculate the volume of spheres and hemispheres."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G19",
+    "content": "Understand and use the properties of similar shapes."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "R11",
+    "content": "Convert between units, including rates of flow."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "S4",
+    "content": "Interpret and construct tables, including grouped frequency tables."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "S5",
+    "content": "Calculate and interpret the mean, median, mode, and range of data."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A5",
+    "content": "Expand products of binomials."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A18",
+    "content": "Find the gradient of a line given its equation and compare gradients."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G10",
+    "content": "Use circle theorems to find angles, including the alternate segment theorem."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A19",
+    "content": "Rearrange formulae to change the subject, including when the subject appears twice."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A20",
+    "content": "Find the nth term of quadratic sequences."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "N8",
+    "content": "Solve problems involving compound interest."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A22",
+    "content": "Use iterative methods to find approximate solutions to equations."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "P6",
+    "content": "Calculate probabilities of combined events using sample spaces and product rule."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "N11",
+    "content": "Calculate upper and lower bounds, including in calculations involving area and volume."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A6",
+    "content": "Simplify algebraic fractions and perform algebraic operations on fractions."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G12",
+    "content": "Describe and perform transformations of graphs, including translations and reflections."
+  }
+]

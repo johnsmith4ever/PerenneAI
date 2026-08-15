@@ -4,6 +4,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
+import { generateGeminiText } from "@/lib/gemini-fallback";
 
 const deepseek = createOpenAI({
   baseURL: "https://api.deepseek.com/v1",
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
 
     let reportText = "";
     let finalUsage = null;
-    let usedModel = "Apollo V4 Flash";
+    let usedModel = "Deepseek-V4-Flash";
     
     if (searchResults) {
       // Step 2: Summarize with Deepseek
@@ -86,16 +87,16 @@ Use inline citations like [Source 1] and include a References section at the ver
 Web Context:
 ${context}`;
 
-      const { text, usage } = await generateText({
-        model: deepseek.chat("deepseek-chat"),
+      const { text, usage } = await generateGeminiText({
+        modelName: "gemini-3.5-flash",
         system: systemPrompt,
-        messages: [{ role: "user", content: `Write the research report for: ${topic}${focusArea ? ` focusing on ${focusArea}` : ""}` }],
+        prompt: `Write the research report for: ${topic}${focusArea ? ` focusing on ${focusArea}` : ""}`,
         maxOutputTokens: 1000,
       });
       
       reportText = text;
       finalUsage = usage;
-      usedModel = "Apollo V4 Flash (Deepseek)";
+      usedModel = "Deepseek V4 Flash (Deepseek)";
     } else {
       // Step 3: Fallback to Gemini Flash
       console.log("Tavily failed or returned no results. Falling back to Gemini Flash.");
@@ -105,16 +106,16 @@ ${focusArea ? `\nCRITICAL INSTRUCTION: You must explicitly focus your research r
 Since live web research is currently unavailable, use your own internal knowledge to provide the best possible overview.
 Ensure it is structured with headings, bullet points, and clear explanations.`;
 
-      const { text, usage } = await generateText({
-        model: google("gemini-3.1-flash-lite"),
+      const { text, usage } = await generateGeminiText({
+        modelName: "gemini-3.5-flash",
         system: systemPrompt,
-        messages: [{ role: "user", content: `Write the research report for: ${topic}${focusArea ? ` focusing on ${focusArea}` : ""}` }],
+        prompt: `Write the research report for: ${topic}${focusArea ? ` focusing on ${focusArea}` : ""}`,
         maxOutputTokens: 1000,
       });
 
-      reportText = text + "\n\n*(Note: Live web search was unavailable. This report was generated using Bastion 3.5 Flash's internal knowledge base.)*";
+      reportText = text + "\n\n*(Note: Live web search was unavailable. This report was generated using Gemini 3.6 Flash's internal knowledge base.)*";
       finalUsage = usage;
-      usedModel = "Bastion 3.5 Flash (Gemini)";
+      usedModel = "Gemini 3.6 Flash (Gemini)";
     }
 
     trackUsage(userId, "chat").catch(console.error);

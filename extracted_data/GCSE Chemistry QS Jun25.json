@@ -1,0 +1,284 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.1",
+    "content": "Describe where the non-metallic elements are found in the periodic table."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.2",
+    "content": "Explain the properties of metals and non-metals, including exceptions (e.g., gallium's low melting point)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.3",
+    "content": "Describe the electronic structure of atoms, including the representation of sodium's electronic structure."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.1",
+    "content": "Explain how Mendeleev arranged the periodic table, including the placement of tellurium and iodine based on their properties rather than atomic weight."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.2",
+    "content": "Explain why noble gases (Group 0) like argon are unreactive in terms of their electronic structure."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.4",
+    "content": "Define isotopes in terms of subatomic particles."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.5",
+    "content": "Calculate the relative atomic mass of an element from the mass numbers and percentage abundances of its isotopes."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.1",
+    "content": "Determine the empirical formula of an ionic compound (e.g., calcium sulfide)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.2",
+    "content": "Describe the formation of ions in terms of electron transfer when a metal reacts with a non-metal (e.g., calcium and sulfur)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "Describe the structure and bonding in graphite, including its giant covalent structure and delocalised electrons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.2",
+    "content": "Explain why substances consisting of small molecules do not conduct electricity."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.3",
+    "content": "Explain why polymers like poly(ethene) have higher melting points than small molecules like methane, in terms of intermolecular forces."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.1",
+    "content": "Define reduction in terms of oxygen loss and identify which substance is reduced in a reaction (e.g., tin oxide with carbon)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.2",
+    "content": "Explain why carbon can be used to extract metals from their oxides (e.g., tin from tin oxide)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.1",
+    "content": "Calculate the percentage atom economy for a reaction (e.g., cadmium production)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.2",
+    "content": "Compare the properties of transition metals (e.g., tungsten) and Group 1 metals (e.g., potassium)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.3",
+    "content": "Explain the law of conservation of mass and show how a chemical equation obeys it (e.g., tungsten oxide with hydrogen)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.4",
+    "content": "Explain the importance of high atom economy in industrial reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.1",
+    "content": "Describe the trends in physical properties of the halogens (Group 7), including boiling points."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.2",
+    "content": "Predict the state of a halogen at a given temperature (e.g., fluorine at -250°C)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.3",
+    "content": "State the number of electrons in the outer shell of a halogen atom (e.g., astatine)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.4",
+    "content": "Predict the formula of a hydrogen halide (e.g., hydrogen astatide)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.1",
+    "content": "Explain the trend in reactivity of the halogens in terms of electronic structure and electron shielding."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.2",
+    "content": "Write balanced equations for displacement reactions involving halogens (e.g., bromine with potassium iodide)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1.1",
+    "content": "Describe the plum pudding model of the atom."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1.2",
+    "content": "Describe the conclusions from the alpha particle scattering experiment (e.g., the existence of a nucleus and empty space in the atom)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1.3",
+    "content": "Describe Niels Bohr's contribution to the model of the atom (e.g., electrons in fixed energy levels)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1.4",
+    "content": "Compare the radius of an atom to the radius of its nucleus (e.g., helium atom)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.2.1",
+    "content": "Calculate the surface area to volume ratio of nanoparticles."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.2.2",
+    "content": "Explain the uses of nanoparticles in terms of their high surface area to volume ratio (e.g., scratch-resistant coatings)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.1",
+    "content": "Explain why ionic compounds like aluminium oxide have high melting points in terms of their giant ionic lattice structure."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.2",
+    "content": "Name the substance added to aluminium oxide to lower its melting point in electrolysis (e.g., cryolite)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.3",
+    "content": "Explain why a mixture is used as the electrolyte in the extraction of aluminium."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.1",
+    "content": "Write half equations for the reactions at electrodes during electrolysis (e.g., oxygen production at the positive electrode)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.2",
+    "content": "Explain why the positive electrode must be continually replaced in the electrolysis of aluminium oxide."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.1",
+    "content": "Evaluate the use of different fuels in fuel cells (e.g., hydrazine vs hydrogen)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.2",
+    "content": "Draw dot and cross diagrams to show the bonding in molecules (e.g., hydrazine)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.3",
+    "content": "Compare different models of molecular structure (e.g., ball and stick vs dot and cross)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.1",
+    "content": "Calculate bond energies in exothermic reactions (e.g., hydrazine with oxygen)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1.1",
+    "content": "State the formula of the hydroxide ion (OH⁻) present in alkalis."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1.2",
+    "content": "Plan and improve titration experiments to determine the concentration of solutions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1.3",
+    "content": "Read and interpret burette measurements in titrations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.1",
+    "content": "Calculate the concentration of a solution using titration data (e.g., sodium hydroxide with sulfuric acid)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.2",
+    "content": "Compare the strength and concentration of acids (e.g., HCl vs HCN)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.3",
+    "content": "Explain differences in pH between acids in terms of ionisation (e.g., HCl vs HCN)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.1",
+    "content": "Plan a method to obtain crystals of a salt from a reaction (e.g., zinc iodide from zinc and iodine)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.2",
+    "content": "Calculate the percentage yield of a reaction (e.g., zinc iodide production)."
+  }
+]

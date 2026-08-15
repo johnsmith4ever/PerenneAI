@@ -1,0 +1,98 @@
+[
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Structure of viruses: genetic material (DNA or RNA), capsid, and attachment proteins. Functions of these components: genetic material codes for viral proteins, capsid protects genetic material, attachment proteins bind to receptors on host cells."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Differences between viruses and living organisms: viruses are acellular (no cell-surface membrane or cell structure), non-living (no metabolism, cannot independently move, respire, replicate, excrete, or obtain nutrition)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Why antibiotics are ineffective against viruses: viruses lack bacterial structures (e.g., cell walls, metabolic processes, or enzymes)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.2",
+    "content": "Structure of cellulose: alternate glucose monomers flipped by 180°, joined by glycosidic bonds, forming straight/unbranched chains."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.4",
+    "content": "Adaptations of insect gas exchange systems: tracheoles have thin walls for rapid diffusion, enter tissues for direct diffusion, and are highly branched for a large surface area."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.3",
+    "content": "Cohesion-tension theory of water transport in xylem: unbroken water column, cohesion between water molecules via hydrogen bonds, and tension created by evaporation/transpiration pulling water upward."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "Eukaryotic cell structures: membrane-bound organelles (e.g., mitochondria, vesicles, lysosomes, rough endoplasmic reticulum, nucleus)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "Functions of the Golgi apparatus: modifies, packages, and transports proteins and lipids; forms vesicles and lysosomes."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4.6",
+    "content": "Natural selection and evolution: mutation produces alleles, individuals with advantageous alleles survive and reproduce, increasing allele frequency over generations."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.4",
+    "content": "Impact of cholera toxin on water absorption: reduced surface area or fewer co-transport proteins, altering water potential to cause water loss by osmosis."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.4",
+    "content": "Immune response to toxins: anti-toxins/antibodies neutralise toxins, preventing symptoms like diarrhoea."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.3",
+    "content": "Protein digestion: hydrolysis of peptide bonds by endopeptidases (internal bonds), exopeptidases (terminal bonds), and dipeptidases (dipeptides to amino acids)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.5",
+    "content": "Aseptic techniques in microbiology: washing hands with soap, using sterile equipment, flaming bottle necks, lifting agar plate lids at an angle, working near upward air currents, and sterilising tools post-use."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.1",
+    "content": "Definitions: genome (complete set of genes/DNA in a cell) and proteome (full range of proteins a cell can produce)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Limitations of using optical microscopes to study bacterial flagella: low resolution, flagella may be damaged/misinterpreted as artefacts, difficult to stain, not all bacteria have flagella."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Modern techniques to study bacterial flagella: DNA/mRNA/amino acid sequencing, electron microscopy with improved resolution and staining."
+  }
+]

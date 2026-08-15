@@ -1,12 +1,13 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 // Define routes that should be protected
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/assistant(.*)", "/flashcards(.*)", "/quiz(.*)", "/essay(.*)"]);
+// const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/assistant(.*)", "/flashcards(.*)", "/quiz(.*)", "/essay(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect();
-  }
+  // Guest mode allowed: We no longer protect these routes at the middleware level.
+  // if (isProtectedRoute(req)) {
+  //   await auth.protect();
+  // }
 });
 
 export const config = {

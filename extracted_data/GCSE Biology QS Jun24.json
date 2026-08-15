@@ -1,0 +1,194 @@
+[
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.1",
+    "content": "Understanding that plants are made of different tissues and defining an organ as a group of tissues working together."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.2",
+    "content": "Describing the structure and function of leaf tissues: palisade mesophyll (contains the most chloroplasts), spongy mesophyll (contains many air spaces), and xylem (transports water and is strengthened by lignin)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.3",
+    "content": "Defining transpiration as the loss of water from the leaves."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.4",
+    "content": "Explaining why the upper epidermis of a leaf is transparent (to allow light to pass through to the palisade mesophyll for photosynthesis)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.1.5",
+    "content": "Identifying stomata as pores in the lower epidermis of a leaf and explaining that their opening and closing is controlled by guard cells."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.2.1",
+    "content": "Describing phloem tissue, including the role of sieve tubes and companion cells, and identifying part A (cell sap) in phloem tissue."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.2.2",
+    "content": "Explaining that active transport moves sugars against the concentration gradient and requires energy from mitochondria."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.1",
+    "content": "Describing how the skin defends the human body against pathogens as a physical barrier."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.1.2",
+    "content": "Explaining the role of stomach acid in killing pathogens."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.2.1",
+    "content": "Understanding the effect of pH on bacterial survival and interpreting experimental data on bacterial survival at different pH levels."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.3.1",
+    "content": "Describing the components of blood (white blood cells and platelets) and their functions, particularly in the immune response (producing antibodies) and blood clotting."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.3.2",
+    "content": "Explaining the impact of vaccination on disease trends, including the measles vaccine and herd immunity."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.3.3.3",
+    "content": "Understanding the importance of peer review in validating scientific research and detecting false claims."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "Describing the chemical tests for carbohydrates: iodine test for starch (positive: blue-black, negative: brown) and Benedict’s test for sugars (positive: brick-red precipitate, negative: blue)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.2",
+    "content": "Explaining the role of amylase in breaking down starch into sugar in the mouth."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.2.3",
+    "content": "Understanding experimental design, including identifying independent variables (type of bread), drawing conclusions from data, and improving investigations by repeating tests and calculating means."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.1",
+    "content": "Describing cancer as uncontrolled cell division (mitosis) and identifying factors that can cause cancer (ionising radiation and viruses)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.2",
+    "content": "Explaining the cell cycle, including cell growth, DNA replication, and mitosis, and identifying the stages of the cell cycle."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.3",
+    "content": "Identifying structures in a dividing cell, such as chromosomes, and calculating the real size of cells using magnification."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.3.4",
+    "content": "Describing the process of drug testing, including preclinical testing on cells and clinical trials on people, and explaining the use of placebos in trials."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.4.1",
+    "content": "Explaining osmosis as the movement of water across a partially permeable membrane and describing its effects on plant cells (e.g., potato tissue)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.1.4.2",
+    "content": "Designing and evaluating experiments on osmosis, including identifying control variables, ensuring accuracy, and presenting data (e.g., line graphs)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.3.1",
+    "content": "Describing coronary heart disease as a condition affecting the arteries and explaining treatments such as stents and cholesterol-lowering drugs (statins)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "4.2.3.2",
+    "content": "Explaining how CPR (chest compressions and rescue breaths) helps a person whose heart has stopped by maintaining blood circulation and oxygen supply."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "B7.1",
+    "content": "The effect of lifestyle factors, including smoking, on the risk of developing cardiovascular diseases."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "B7.1",
+    "content": "Interpreting data on the impact of lifestyle factors on health, including drawing conclusions from tables and graphs."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "B7.1",
+    "content": "Identifying and describing lifestyle factors (other than smoking) that increase the risk of cardiovascular disease."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "B5.1",
+    "content": "The location of genes in a cell (nucleus)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "B5.3",
+    "content": "The organs affected by cystic fibrosis (CF), including the lungs, pancreas, and small intestine."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "B5.3",
+    "content": "The impact of cystic fibrosis on enzyme production and digestion, including difficulty digesting food and gaining body mass."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "B4.4",
+    "content": "Features of alveoli that maximise gas exchange (e.g., large surface area, thin walls, good blood supply)."
+  },
+  {
+    "subject": "Biology",
+    "level": "GCSE",
+    "topicCode": "B4.4",
+    "content": "The effects of reduced oxygen entering the blood on the human body, including impacts on respiration and energy levels."
+  }
+]

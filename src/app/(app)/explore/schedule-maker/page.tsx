@@ -10,7 +10,7 @@ import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
-import { PremiumGate } from "@/components/premium-gate";
+
 
 // ─── TYPES ───────────────────────────────────────────────────────────────────────
 
@@ -21,6 +21,8 @@ type Block = {
   title: string;
   type: "study" | "break" | "sleep" | "other";
   details: string;
+  pomodoro?: string | null;
+  microTargets?: string[];
 };
 
 type Day = {
@@ -37,7 +39,7 @@ type Schedule = {
 // ─── COMPONENT ─────────────────────────────────────────────────────────────────
 
 export default function ScheduleMakerPage() {
-  const { tier, canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
+  const { tier, canAfford, deductCredits, isLoaded: subLoaded , assistant } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
   const [loading, setLoading] = useState(false);
   const [scheduleError, setScheduleError] = useState(false);
@@ -49,7 +51,6 @@ export default function ScheduleMakerPage() {
   const [subjects, setSubjects] = useLocalStorage("sm_subjects", "");
   const [hours, setHours] = useLocalStorage("sm_hours", "4");
   const [style, setStyle] = useLocalStorage("sm_style", "Balanced");
-  const [intensity, setIntensity] = useLocalStorage("sm_intensity", "Normal");
   const [targets, setTargets] = useLocalStorage("sm_targets", "");
   const [days, setDays] = useLocalStorage("sm_days", "7");
 
@@ -73,13 +74,13 @@ export default function ScheduleMakerPage() {
     setLoading(true);
     setScheduleError(false);
     setIsSaved(false);
-    const model: ModelType = "Apollo V4 Flash";
+    const model: ModelType = assistant;
     
     try {
       const res = await fetch("/api/generate-schedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ goal, subjects, hours, style, intensity, targets, days }),
+        body: JSON.stringify({ goal, subjects, hours, style, targets, days, model }),
       });
       
       const data = await res.json();
@@ -124,7 +125,7 @@ export default function ScheduleMakerPage() {
   };
 
   return (
-    <PremiumGate featureName="Schedule Maker">
+
     <div className="max-w-6xl mx-auto pb-12 animate-in fade-in relative">
       <div className="w-full">
       
@@ -180,7 +181,7 @@ export default function ScheduleMakerPage() {
                 <textarea 
                   value={targets}
                   onChange={e => setTargets(e.target.value)}
-                  placeholder="e.g. Finish past paper 2023, Read chapters 4-6"
+                  placeholder="e.g. Past paper 2023"
                   className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm h-16 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
@@ -212,52 +213,6 @@ export default function ScheduleMakerPage() {
                       {days}d
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 block">Intensity (Pacing)</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {["Chill", "Normal", "Stressed"].map(i => (
-                    <button
-                      key={i}
-                      onClick={() => setIntensity(i)}
-                      className={cn(
-                        "py-2 px-1 text-[11px] font-bold uppercase tracking-wider rounded-lg border transition-all flex flex-col items-center gap-1",
-                        intensity === i 
-                          ? "bg-primary/10 border-primary text-primary" 
-                          : "bg-background border-border text-muted-foreground hover:bg-muted"
-                      )}
-                    >
-                      <span className="text-xl mb-0.5">
-                        {i === "Chill" && "🏖️"}
-                        {i === "Normal" && "⚖️"}
-                        {i === "Stressed" && "🔥"}
-                      </span>
-                      <span>{i}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 block">Routine Style</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {["Early Bird", "Balanced", "Night Owl"].map(s => (
-                    <button
-                      key={s}
-                      onClick={() => setStyle(s)}
-                      className={cn(
-                        "py-2 px-1 text-[11px] font-bold uppercase tracking-wider rounded-xl border transition-all flex flex-col items-center gap-1",
-                        style === s ? getStyleColor(s) : "bg-white/5 border-white/10 text-slate-400 hover:bg-white/10"
-                      )}
-                    >
-                      {s === "Early Bird" && <Sunrise className="w-4 h-4" />}
-                      {s === "Balanced" && <Flame className="w-4 h-4" />}
-                      {s === "Night Owl" && <Sunset className="w-4 h-4" />}
-                      {s}
-                    </button>
-                  ))}
                 </div>
               </div>
 
@@ -394,7 +349,14 @@ export default function ScheduleMakerPage() {
                       {/* Content Card */}
                       <div className={cn("flex-1 p-5 rounded-2xl border transition-all duration-300 hover:shadow-lg hover:-translate-y-1", getBlockColor(block.type))}>
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-bold text-sm text-white">{block.title}</h4>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-sm text-white">{block.title}</h4>
+                            {block.pomodoro && (
+                              <span className="text-[9px] font-bold uppercase tracking-wider bg-white/20 px-1.5 py-0.5 rounded text-white flex items-center gap-1">
+                                <Clock className="w-3 h-3" /> {block.pomodoro}
+                              </span>
+                            )}
+                          </div>
                           <span className="text-[10px] font-black uppercase tracking-widest opacity-80 px-2 py-0.5 rounded-md bg-white/10">
                             {block.type}
                           </span>
@@ -402,6 +364,17 @@ export default function ScheduleMakerPage() {
                         <p className="text-xs opacity-90 leading-relaxed font-medium">
                           {block.details}
                         </p>
+                        {block.microTargets && block.microTargets.length > 0 && (
+                          <div className="bg-black/20 rounded-lg p-3 space-y-2 mt-3 border border-white/5 shadow-inner">
+                            <p className="text-[10px] font-bold uppercase tracking-wider opacity-70 mb-1">Flow Micro-Targets</p>
+                            {block.microTargets.map((target, idx) => (
+                              <div key={idx} className="flex items-start gap-2 text-xs font-medium">
+                                <div className="w-4 h-4 rounded bg-white/10 shrink-0 flex items-center justify-center mt-0.5"><Check className="w-2.5 h-2.5 opacity-50" /></div>
+                                <span className="opacity-90">{target}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
 
                     </div>
@@ -415,6 +388,6 @@ export default function ScheduleMakerPage() {
       </div>
       </div>
     </div>
-    </PremiumGate>
+
   );
 }

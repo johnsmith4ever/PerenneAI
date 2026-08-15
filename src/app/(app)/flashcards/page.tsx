@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
+import { useCurriculum } from "@/hooks/use-curriculum";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import {
@@ -19,6 +20,7 @@ import {
   EyeOff,
   CheckCircle2,
   ChevronDown,
+  BookOpenCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
@@ -26,22 +28,44 @@ import { cn } from "@/lib/utils";
 
 type Flashcard = { term: string; definition: string };
 type AppMode = "input" | "studying" | "results" | "editing";
+type InputTab = "manual" | "ai";
 type ExitDirection = "left" | "right" | null;
 
 export default function FlashcardsPage() {
-  const { tier, canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
+  const { user, isLoaded: userLoaded } = useUser();
+  const { curriculumLevel, setCurriculumLevel, curriculumSubject, setCurriculumSubject } = useCurriculum();
+  const { tier, canAfford, deductCredits, isLoaded: subLoaded , assistant } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
 
   // Input state
+  const [inputTab, setInputTab] = usePersistentState<InputTab>("flashcards_input_tab", "manual");
+  const [manualDeckTitle, setManualDeckTitle] = useState("");
+  const [manualCards, setManualCards] = useState<Flashcard[]>([
+    { term: "", definition: "" },
+    { term: "", definition: "" },
+    { term: "", definition: "" },
+  ]);
   const [topic, setTopic] = usePersistentState("flashcards_topic", "");
   const [textContent, setTextContent] = usePersistentState("flashcards_text", "");
   const [imageBase64, setImageBase64] = usePersistentState<string | null>("flashcards_image", null);
   const [cardCount, setCardCount] = usePersistentState<string>("flashcards_count", "Auto");
+  const [flashcardGenMode, setFlashcardGenMode] = usePersistentState<"Standard" | "Syllabus">("flashcards_gen_mode", "Syllabus");
+  const [extraTopicDetails, setExtraTopicDetails] = usePersistentState("flashcards_extra_details", "");
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const { user } = useUser();
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const t = params.get("topic");
+      if (t) {
+        setInputTab("ai");
+        setTopic(t);
+      }
+    }
+  }, []);
 
   // Card state
   const [allCards, setAllCards] = usePersistentState<Flashcard[]>("flashcards_all", []);
@@ -79,7 +103,7 @@ export default function FlashcardsPage() {
     if (!subLoaded) return;
     
     const isPremiumPlus = tierRank >= TIER_RANK.Premium;
-    const modelUsed: ModelType = isPremiumPlus ? "Apollo V4 Flash" : "Polaris 1";
+    const modelUsed: ModelType = assistant;
 
     // Quick pre-flight check
     if (!canAfford(2000, modelUsed)) {
@@ -87,17 +111,35 @@ export default function FlashcardsPage() {
       return;
     }
 
+    if (flashcardGenMode === "Syllabus" && !topic.trim()) {
+      alert("Topic is required when using Syllabus Strict mode.");
+      return;
+    }
+
     setIsGenerating(true);
     try {
+      const payloadText = flashcardGenMode === "Syllabus" ? "" : textContent;
+      const payloadImage = flashcardGenMode === "Syllabus" ? null : imageBase64;
+      
       const res = await fetch("/api/generate-flashcards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic, text: textContent, imageBase64, tierRank, cardCount }),
+        body: JSON.stringify({ 
+          topic: topic.trim(), 
+          text: payloadText,
+          imageBase64: payloadImage,
+          tierRank,
+          cardCount,
+          curriculumLevel,
+          curriculumSubject,
+          extraDetails: extraTopicDetails.trim() || undefined,
+          model: modelUsed
+        }),
       });
       const data = await res.json();
       if (data.status === "success") {
         if (data.textUsage) deductCredits(data.textUsage.inputTokens, data.textUsage.outputTokens, modelUsed);
-        if (data.imageUsage) deductCredits(data.imageUsage.inputTokens, data.imageUsage.outputTokens, "Bastion 3.5 Flash");
+        if (data.imageUsage) deductCredits(data.imageUsage.inputTokens, data.imageUsage.outputTokens, "Gemini 3.6 Flash");
         setAllCards(data.data);
         setDeckTitle(data.title || topic || "Flashcard Deck");
         setHasSaved(false);
@@ -201,6 +243,22 @@ export default function FlashcardsPage() {
     setDeckTitle("");
     setRoundNumber(1);
     setHasSaved(false);
+    setManualDeckTitle("");
+    setManualCards([
+      { term: "", definition: "" },
+      { term: "", definition: "" },
+      { term: "", definition: "" },
+    ]);
+  };
+
+  const handleStartManual = () => {
+    const validCards = manualCards.filter(c => c.term.trim() && c.definition.trim());
+    if (validCards.length < 1) return;
+    setAllCards(validCards);
+    setDeckTitle(manualDeckTitle.trim() || "My Deck");
+    setRoundNumber(1);
+    setHasSaved(false);
+    startStudyRound(validCards);
   };
 
   const saveToHistory = async () => {
@@ -211,7 +269,10 @@ export default function FlashcardsPage() {
         user_id: user.id,
         title: deckTitle || "Untitled Deck",
         topic: topic || "Generated Deck",
-        cards: allCards
+        cards: allCards.map(c => ({
+          ...c,
+          failed: wrongCards.some(wc => wc.term === c.term)
+        }))
       });
       if (error) throw error;
       setHasSaved(true);
@@ -262,110 +323,311 @@ export default function FlashcardsPage() {
 
   // ─── INPUT MODE ───
   if (mode === "input") {
+    const validManualCount = manualCards.filter(c => c.term.trim() && c.definition.trim()).length;
+
     return (
-      <div className="max-w-2xl mx-auto pb-12 animate-in fade-in">
+      <div className="max-w-2xl mx-auto pb-16 animate-in fade-in">
         <div className="mb-8">
           <p className="label-title mb-1.5">Study tools</p>
-          <h1 className="page-title">Flashcards</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Paste your notes or upload an image to generate flashcards.
-          </p>
+          <div className="flex items-center gap-3">
+            <h1 className="page-title m-0">Flashcards</h1>
+            <span className="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider whitespace-nowrap mt-1">AQA Syllabus</span>
+          </div>
         </div>
 
-        <div className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Topic (optional)
-            </label>
-            <input
-              type="text"
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-              placeholder="e.g. Cell Biology, French Revolution..."
-              className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Content
-            </label>
-            <textarea
-              value={textContent}
-              onChange={(e) => setTextContent(e.target.value)}
-              placeholder="Paste your notes, textbook content, or key terms here..."
-              className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all"
-              rows={8}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Upload Image (optional)
-            </label>
-            <div className="flex items-center gap-4">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer"
-              />
-              {imageBase64 && (
-                <span className="text-xs text-emerald-600 font-medium flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded-md">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Attached
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Number of Cards
-            </label>
-            <div className="relative">
-              <select
-                value={cardCount}
-                onChange={(e) => setCardCount(e.target.value)}
-                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none"
-              >
-                <option value="Auto">Auto (Let AI decide)</option>
-                {Array.from({ length: 16 }, (_, i) => i + 5)
-                  .filter(num => tierRank >= TIER_RANK.Core || num <= 10)
-                  .map((num) => (
-                  <option key={num} value={num.toString()}>
-                    {num} Cards {num > 10 && tierRank < TIER_RANK.Core ? "(Core)" : ""}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
-                <ChevronDown className="w-4 h-4" />
-              </div>
-            </div>
-          </div>
-
-          <Button
-            className="w-full gap-2 mt-4"
-            size="lg"
-            onClick={handleGenerate}
-            disabled={
-              isGenerating ||
-              (!topic.trim() && !textContent.trim() && !imageBase64)
-            }
+        {/* ── Tab toggle ── */}
+        <div className="flex bg-muted p-1 rounded-xl w-full mb-8">
+          <button
+            onClick={() => setInputTab("manual")}
+            className={cn(
+              "flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all",
+              inputTab === "manual" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+            )}
           >
-            {isGenerating ? (
+            ✏️ Create Manually
+          </button>
+          <button
+            onClick={() => setInputTab("ai")}
+            className={cn(
+              "flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5",
+              inputTab === "ai" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Build with AI
+          </button>
+        </div>
+
+        {/* ── MANUAL TAB ── */}
+        {inputTab === "manual" && (
+          <div className="space-y-6">
+            {/* Deck title */}
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Deck Title
+              </label>
+              <input
+                type="text"
+                value={manualDeckTitle}
+                onChange={(e) => setManualDeckTitle(e.target.value)}
+                placeholder="e.g. Cell Biology, French Revolution..."
+                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-semibold"
+              />
+            </div>
+
+            {/* Cards */}
+            <div className="space-y-3">
+              {manualCards.map((card, i) => (
+                <div key={i} className="relative bg-card border border-border rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow group">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Card {i + 1}</span>
+                    {manualCards.length > 1 && (
+                      <button
+                        onClick={() => setManualCards(manualCards.filter((_, idx) => idx !== i))}
+                        className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-muted-foreground hover:text-red-500 hover:bg-red-50 transition-all"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Term</label>
+                      <input
+                        type="text"
+                        value={card.term}
+                        onChange={(e) => {
+                          const updated = [...manualCards];
+                          updated[i] = { ...updated[i], term: e.target.value };
+                          setManualCards(updated);
+                        }}
+                        placeholder="Enter term..."
+                        className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Definition</label>
+                      <input
+                        type="text"
+                        value={card.definition}
+                        onChange={(e) => {
+                          const updated = [...manualCards];
+                          updated[i] = { ...updated[i], definition: e.target.value };
+                          setManualCards(updated);
+                        }}
+                        placeholder="Enter definition..."
+                        className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Add card */}
+            <button
+              onClick={() => setManualCards([...manualCards, { term: "", definition: "" }])}
+              className="w-full py-4 rounded-2xl border-2 border-dashed border-border text-sm font-semibold text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+            >
+              <Plus className="w-4 h-4" /> Add Card
+            </button>
+
+            {/* Start studying */}
+            <Button
+              className="w-full gap-2 mt-2"
+              size="lg"
+              onClick={handleStartManual}
+              disabled={validManualCount < 1}
+            >
+              <BookOpenCheck className="w-4 h-4" />
+              Study {validManualCount > 0 ? `${validManualCount} Card${validManualCount !== 1 ? "s" : ""}` : "Deck"}
+            </Button>
+          </div>
+        )}
+
+        {/* ── AI TAB ── */}
+        {inputTab === "ai" && (
+          <div className="space-y-5">
+            {/* Mode Toggle */}
+            <div className="flex bg-muted p-1 rounded-xl w-full mb-1">
+              <button
+                onClick={() => setFlashcardGenMode("Syllabus")}
+                className={cn(
+                  "flex-1 py-2 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5",
+                  flashcardGenMode === "Syllabus" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                Syllabus Strict
+              </button>
+              <button
+                onClick={() => setFlashcardGenMode("Standard")}
+                className={cn(
+                  "flex-1 py-2 text-sm font-semibold rounded-lg transition-all",
+                  flashcardGenMode === "Standard" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                Standard
+              </button>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Topic {flashcardGenMode === "Syllabus" ? "(Required)" : "(Optional)"}
+              </label>
+              <input
+                type="text"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                placeholder="e.g. Cell Biology, French Revolution..."
+                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Extra Details <span className="text-muted-foreground font-normal">(optional)</span>
+              </label>
+              <textarea
+                value={extraTopicDetails}
+                onChange={(e) => setExtraTopicDetails(e.target.value)}
+                placeholder="Any specific areas to focus on, keywords to include, or hints for the AI..."
+                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all"
+                rows={3}
+              />
+            </div>
+
+            {flashcardGenMode === "Standard" && (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" /> Generating...
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4" /> Generate Flashcards
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Content
+                  </label>
+                  <textarea
+                    value={textContent}
+                    onChange={(e) => setTextContent(e.target.value)}
+                    placeholder="Paste your notes, textbook content, or key terms here..."
+                    className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all"
+                    rows={8}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Upload Image (optional)
+                  </label>
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer"
+                    />
+                    {imageBase64 && (
+                      <span className="text-xs text-emerald-600 font-medium flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded-md">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Attached
+                      </span>
+                    )}
+                  </div>
+                </div>
               </>
             )}
-          </Button>
-        </div>
+
+            {flashcardGenMode === "Syllabus" && (
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Level
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={curriculumLevel}
+                      onChange={(e) => setCurriculumLevel(e.target.value as any)}
+                      className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none"
+                    >
+                      <option value="KS3">KS3</option>
+                      <option value="GCSE">GCSE</option>
+                      <option value="A-Level">A-Level</option>
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
+                      <ChevronDown className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Subject
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={curriculumSubject}
+                      onChange={(e) => setCurriculumSubject(e.target.value as any)}
+                      className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none"
+                    >
+                      <option value="Biology">Biology</option>
+                      <option value="Chemistry">Chemistry</option>
+                      <option value="Physics">Physics</option>
+                      <option value="Geography">Geography</option>
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
+                      <ChevronDown className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Number of Cards
+              </label>
+              <div className="relative">
+                <select
+                  value={cardCount}
+                  onChange={(e) => setCardCount(e.target.value)}
+                  className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none"
+                >
+                  <option value="Auto">Auto (Let AI decide)</option>
+                  {Array.from({ length: 16 }, (_, i) => i + 5)
+                    .filter(num => tierRank >= TIER_RANK.Core || num <= 10)
+                    .map((num) => (
+                    <option key={num} value={num.toString()}>
+                      {num} Cards {num > 10 && tierRank < TIER_RANK.Core ? "(Core)" : ""}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
+                  <ChevronDown className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+
+            <Button
+              className="w-full gap-2 mt-4"
+              size="lg"
+              onClick={handleGenerate}
+              disabled={
+                isGenerating ||
+                (!topic.trim() && !textContent.trim() && !imageBase64)
+              }
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" /> Generating...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4" /> Generate Flashcards
+                </>
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     );
   }
+
 
   // ─── STUDY MODE ───
   if (mode === "studying") {
@@ -484,31 +746,51 @@ export default function FlashcardsPage() {
               >
                 {/* Front */}
                 <div
-                  className="absolute inset-0 rounded-2xl border border-border bg-card shadow-lg flex flex-col items-center justify-center p-8 md:p-14"
+                  className="absolute inset-0 rounded-[2rem] border border-border/50 bg-gradient-to-br from-card to-card/90 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] flex flex-col items-center justify-center p-8 md:p-14 overflow-hidden backdrop-blur-xl"
                   style={{ backfaceVisibility: "hidden" }}
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 mb-6">
-                    Term · tap to flip
-                  </p>
-                  <p className="text-2xl md:text-3xl font-semibold text-foreground leading-relaxed text-center max-w-2xl">
-                    {card.term}
-                  </p>
+                  {/* Decorative Orbs */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+                  
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div className="px-3 py-1 mb-8 rounded-full border border-border/50 bg-muted/50 backdrop-blur-sm flex items-center gap-2 shadow-sm">
+                      <Sparkles className="w-3.5 h-3.5 text-primary" />
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/80">
+                        Term · tap to flip
+                      </p>
+                    </div>
+                    <p className="text-2xl md:text-4xl font-bold text-foreground leading-relaxed text-center max-w-2xl tracking-tight">
+                      {card.term}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Back */}
                 <div
-                  className="absolute inset-0 rounded-2xl border border-border bg-card shadow-lg flex flex-col items-center justify-center p-8 md:p-14"
+                  className="absolute inset-0 rounded-[2rem] border border-border/50 bg-gradient-to-br from-card to-card/90 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] flex flex-col items-center justify-center p-8 md:p-14 overflow-hidden backdrop-blur-xl"
                   style={{
                     backfaceVisibility: "hidden",
                     transform: "rotateY(180deg)",
                   }}
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 mb-6">
-                    Definition
-                  </p>
-                  <p className="text-lg md:text-xl text-foreground leading-relaxed text-center max-w-2xl">
-                    {card.definition}
-                  </p>
+                  {/* Decorative Orbs */}
+                  <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+                  <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] translate-y-1/2 translate-x-1/2 pointer-events-none" />
+
+                  <div className="relative z-10 flex flex-col items-center w-full h-full justify-center">
+                    <div className="px-3 py-1 mb-6 rounded-full border border-border/50 bg-muted/50 backdrop-blur-sm flex items-center gap-2 shadow-sm">
+                      <BookOpenCheck className="w-3.5 h-3.5 text-blue-500" />
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/80">
+                        Definition
+                      </p>
+                    </div>
+                    <div className="overflow-y-auto w-full max-h-[80%] flex flex-col items-center justify-center custom-scrollbar px-4">
+                      <p className="text-lg md:text-2xl text-foreground/90 font-medium leading-relaxed text-center max-w-2xl">
+                        {card.definition}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

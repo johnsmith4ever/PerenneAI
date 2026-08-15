@@ -3,14 +3,14 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
   Plus, Trash2, ZoomIn, ZoomOut, Maximize, Bot, Loader2,
-  Sparkles, Network, X, RotateCcw, ChevronRight, PanelLeftClose, PanelLeftOpen, Lock,
+  Sparkles, Network, X, RotateCcw, ChevronRight, PanelLeftClose, PanelLeftOpen, Lock, CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ProGate } from "@/components/pro-gate";
+
 import { useClerk, useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -131,7 +131,7 @@ function palette(depth: number) {
 // ─── Main component ───────────────────────────────────────────────────────────
 
   export default function MindmapsPage() {
-  const { deductCredits, creditsUsed, dailyLimit, canAfford, tier, isLoaded: subLoaded } = useSubscription();
+  const { deductCredits, creditsUsed, dailyLimit, canAfford, tier, isLoaded: subLoaded, assistant } = useSubscription();
   const { openUserProfile } = useClerk();
   const router = useRouter();
   const { user } = useUser();
@@ -141,10 +141,43 @@ function palette(depth: number) {
   const [panelOpen, setPanelOpen] = useState(false);
 
   // Analysis
+  const [inputMode, setInputMode] = useState<"notes" | "topic">("topic");
+  const [topic, setTopic] = useState("");
+  const [subject, setSubject] = useState("Biology");
+  const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
   const [analysisInput, setAnalysisInput] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [isBuilding, setIsBuilding] = useState(false);
+
+  // AQA Checker
+  useEffect(() => {
+    if (inputMode !== "topic" || !topic.trim()) {
+      setAqaStatus(null);
+      return;
+    }
+
+    setAqaStatus("checking");
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/search-aqa", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: topic, subject })
+        });
+        const data = await res.json();
+        if (data.status === "success" && data.results && data.results.length === 0) {
+          setAqaStatus("not_found");
+        } else {
+          setAqaStatus("found");
+        }
+      } catch (e) {
+        setAqaStatus(null);
+      }
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [topic, subject, inputMode]);
 
   // Canvas panning
   const containerRef = useRef<HTMLDivElement>(null);
@@ -205,15 +238,16 @@ function palette(depth: number) {
 
   // ── DeepSeek analysis ──────────────────────────────────────────────────────
   const handleAnalyze = async () => {
-    if (!analysisInput.trim()) return;
+    const textToAnalyze = inputMode === "notes" ? analysisInput : topic;
+    if (!textToAnalyze.trim()) return;
     if (!FREE_ACCESS_MODE && TIER_RANK[tier] < TIER_RANK["Core"]) {
       router.push("/subscriptions");
       return;
     }
-    const model: ModelType = "Apollo V4 Flash";
+    const model: ModelType = assistant;
     setIsAnalyzing(true);
     try {
-      const res  = await fetch("/api/analyze-topic", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: analysisInput }) });
+      const res  = await fetch("/api/analyze-topic", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: textToAnalyze, inputMode, subject, model }) });
       const data = await res.json();
       if (data.status === "success") {
         if (data.usage) deductCredits(data.usage.promptTokens ?? data.usage.inputTokens, data.usage.completionTokens ?? data.usage.outputTokens, model, "other");
@@ -242,12 +276,12 @@ function palette(depth: number) {
       router.push("/subscriptions");
       return;
     }
-    const model: ModelType = "Bastion 3.5 Flash";
+    const model: ModelType = assistant;
     const structured = `Title: ${analysis.title}\nTheme: ${analysis.mainTheme}\n\n` +
       analysis.sections.map(s => `Section: ${s.heading}\n${s.points.map(p => `- ${p}`).join("\n")}`).join("\n\n");
     setIsBuilding(true);
     try {
-      const res  = await fetch("/api/generate-mindmap", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: structured }) });
+      const res  = await fetch("/api/generate-mindmap", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: structured, model }) });
       const data = await res.json();
       if (data.status === "success") {
         if (data.usage) deductCredits(data.usage.promptTokens ?? data.usage.inputTokens, data.usage.completionTokens ?? data.usage.outputTokens, model, "other");
@@ -377,15 +411,57 @@ function palette(depth: number) {
                 <Button size="sm" className="w-full" onClick={() => router.push("/subscriptions")}>Upgrade</Button>
               </div>
             ) : (
-              <div className="space-y-2">
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Topic or raw notes</label>
-                <textarea
-                  value={analysisInput}
-                  onChange={e => setAnalysisInput(e.target.value)}
-                  className="w-full h-28 rounded-xl border border-border bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none placeholder:text-muted-foreground/60"
-                  placeholder="e.g. 'Climate change', 'The French Revolution', or paste a block of notes..."
-                />
-                <Button className="w-full gap-2" onClick={handleAnalyze} disabled={isAnalyzing || !analysisInput.trim()}>
+              <div className="space-y-4">
+                <div className="flex bg-muted p-1 rounded-lg">
+                  <button onClick={() => setInputMode("topic")} className={cn("flex-1 text-xs py-1.5 rounded-md font-medium transition-all", inputMode === "topic" ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")}>Topic Mode</button>
+                  <button onClick={() => setInputMode("notes")} className={cn("flex-1 text-xs py-1.5 rounded-md font-medium transition-all", inputMode === "notes" ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")}>Raw Notes</button>
+                </div>
+                
+                {inputMode === "notes" ? (
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Paste raw notes</label>
+                    <textarea
+                      value={analysisInput}
+                      onChange={e => setAnalysisInput(e.target.value)}
+                      className="w-full h-28 rounded-xl border border-border bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none placeholder:text-muted-foreground/60"
+                      placeholder="e.g. Paste a block of notes here..."
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Subject</label>
+                      <select value={subject} onChange={e => setSubject(e.target.value)} className="w-full text-sm rounded-lg border border-border bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-primary/20">
+                        <option value="Biology">Biology (AQA)</option>
+                        <option value="Chemistry">Chemistry (AQA)</option>
+                        <option value="Physics">Physics (AQA)</option>
+                        <option value="Geography">Geography (AQA)</option>
+                        <option value="General">General / Other</option>
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Topic</label>
+                      <div className="relative">
+                        <input
+                          value={topic}
+                          onChange={e => setTopic(e.target.value)}
+                          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          placeholder="e.g. The Carbon Cycle..."
+                        />
+                        {aqaStatus === "checking" && <Loader2 className="absolute right-3 top-2.5 w-4 h-4 animate-spin text-muted-foreground" />}
+                      </div>
+                      
+                      {aqaStatus === "found" && (
+                        <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider flex items-center gap-1 mt-1"><CheckCircle2 className="w-3 h-3"/> Found in AQA DB</p>
+                      )}
+                      {aqaStatus === "not_found" && subject !== "General" && (
+                        <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider mt-1">Not found in official DB (Soft warning)</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <Button className="w-full gap-2" onClick={handleAnalyze} disabled={isAnalyzing || (inputMode === "notes" ? !analysisInput.trim() : !topic.trim())}>
                   {isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                   {isAnalyzing ? "Analysing…" : "Analyse with DeepSeek"}
                 </Button>
@@ -437,12 +513,12 @@ function palette(depth: number) {
                 <div className="space-y-2 pt-1">
                   <Button variant="outline" className="w-full gap-2" onClick={buildManually}><Network size={14} />Build Map Manually</Button>
                   
-                  <ProGate featureName="Mindmap Auto-Builder">
+
                     <Button className="w-full gap-2 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 text-white border-0 shadow-md" onClick={buildWithGemini} disabled={isBuilding}>
                       {isBuilding ? <Loader2 className="w-4 h-4 animate-spin" /> : <Bot size={14} />}
                       {isBuilding ? "Building…" : "Auto-Build with Gemini"}
                     </Button>
-                  </ProGate>
+
                 </div>
               </div>
             )}

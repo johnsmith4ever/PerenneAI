@@ -1,0 +1,86 @@
+[
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.3.1",
+    "content": "Use of potential divider formula to determine resistance of parallel combination."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.3.1",
+    "content": "Use of equation for resistors in parallel."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.3.2",
+    "content": "Power dissipation in resistors and maximum power conditions (e.g., V²/R and comparison with supply potential difference)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.3.2",
+    "content": "Effect of resistance changes in a circuit (e.g., thermistor resistance decreasing with temperature) on output potential difference."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.3",
+    "content": "Circular motion: calculation of radius of orbit using trigonometry (e.g., tan θ)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.3",
+    "content": "Calculation of speed in circular motion using v = 2πr/T."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.3",
+    "content": "Centripetal force calculation (F = mv²/r)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.3",
+    "content": "Resolution of forces in circular motion (e.g., tension in a rope as a combination of centripetal force and weight)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.5.3",
+    "content": "Effect of changing mass on forces in circular motion (e.g., unbalanced forces causing sway or tilt)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.6.1",
+    "content": "Conservation of momentum in collisions."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.6.1",
+    "content": "Calculation of velocity after collision using conservation of momentum."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.6.1",
+    "content": "Impulse as change in momentum (FΔt = mΔv)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.6.1",
+    "content": "Analysis of post-collision motion (e.g., direction and relative velocities of colliding objects)."
+  },
+  {
+    "subject": "Physics",
+    "level": "A-Level",
+    "topicCode": "4.2.1",
+    "content": "Kinetic energy in collisions."
+  }
+]

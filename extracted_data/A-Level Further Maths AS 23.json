@@ -1,0 +1,170 @@
+[
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO1.1a",
+    "content": "Select routine procedures"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO1.1b",
+    "content": "Correctly carry out routine procedures"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO1.2",
+    "content": "Accurately recall facts, terminology and definitions"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.1",
+    "content": "Construct rigorous mathematical arguments (including proofs)"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.2a",
+    "content": "Make deductions"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.2b",
+    "content": "Make inferences"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.3",
+    "content": "Assess the validity of mathematical arguments"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.4",
+    "content": "Explain their reasoning"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.5",
+    "content": "Use mathematical language and notation correctly"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.1a",
+    "content": "Translate problems in mathematical contexts into mathematical processes"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.1b",
+    "content": "Translate problems in non-mathematical contexts into mathematical processes"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.2a",
+    "content": "Interpret solutions to problems in their original context"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.2b",
+    "content": "Where appropriate, evaluate the accuracy and limitations of solutions to problems"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.3",
+    "content": "Translate situations in context into mathematical models"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.4",
+    "content": "Use mathematical models"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.5a",
+    "content": "Evaluate the outcomes of modelling in context"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.5b",
+    "content": "Recognise the limitations of models"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.5c",
+    "content": "Where appropriate, explain how to refine models"
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1a",
+    "content": "Completes a reasoned argument to obtain the required result."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1b",
+    "content": "Obtains fully correct expressions for the sums of geometric series."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "2.1",
+    "content": "Completes a reasoned argument to obtain the required result."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1a",
+    "content": "Obtains expressions for the sums of their geometric series. Rearranges to obtain a term in the denominator or numerator of a fraction."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.3",
+    "content": "Forms an equation of motion with at least three terms correct."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1a",
+    "content": "Obtains solutions of their auxiliary equation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1b",
+    "content": "Obtains a complementary function consistent with their solutions to their auxiliary equation. Uses a correct method to obtain the correct particular integral. Obtains fully correct differential equation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1b",
+    "content": "Correctly substitutes all relevant values into the general equation."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.4",
+    "content": "Substitutes specific values into the general equation or its derivative."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "2.2a",
+    "content": "Deduces that a specific term (e.g., R) equals zero in the equation of motion or obtains a correct solution to the differential equation formed using that condition."
+  }
+]

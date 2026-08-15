@@ -1,0 +1,152 @@
+[
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "14.1",
+    "content": "Use and interpret algebraic manipulation, including: collecting like terms, multiplying a single term over a bracket, expanding products of two or more binomials, factorising quadratic expressions of the form x² + bx + c, including the difference of two squares."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "14.2",
+    "content": "Understand and use the concepts and vocabulary of factors (divisors), multiples, common factors, highest common factor (HCF), least common multiple (LCM), prime numbers and prime factorisation (including product notation and the unique factorisation property)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "14.3",
+    "content": "Simplify and manipulate algebraic expressions (including those involving surds and algebraic fractions) by: factorising quadratic expressions of the form ax² + bx + c, including the difference of two squares."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "15.1",
+    "content": "Use linear and quadratic graphs to estimate values of y for given values of x and vice versa, and to find approximate solutions of simultaneous linear equations."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "15.2",
+    "content": "Find approximate solutions to contextual problems from given graphs of a variety of functions, including piece-wise linear, exponential and reciprocal graphs."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "16.1",
+    "content": "Solve linear equations in one unknown algebraically, including those with the unknown on both sides of the equation; find approximate solutions using a graph."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "16.2",
+    "content": "Solve quadratic equations algebraically by factorising, including those that require rearrangement; find approximate solutions using a graph."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "17.1",
+    "content": "Solve two simultaneous equations in two variables (linear/linear or linear/quadratic) algebraically; find approximate solutions using a graph."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "18.1",
+    "content": "Translate simple situations or procedures into algebraic expressions or formulae; derive an equation (or two simultaneous equations), solve the equation(s) and interpret the solution."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "19.1",
+    "content": "Use iteration to find approximate solutions to equations, including numerical methods for solving equations."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "20.1",
+    "content": "Use compound units such as rate, density, and pressure; convert between units in algebraic contexts."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "21.1",
+    "content": "Set up, solve and interpret growth and decay problems, including compound interest and exponential growth/decay."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "22.1",
+    "content": "Understand and use the trigonometric ratios sine, cosine, and tangent in right-angled triangles to solve problems, including those involving angles of elevation and depression."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "23.1",
+    "content": "Calculate and interpret conditional probabilities through representation using expected frequencies with two-way tables, tree diagrams, and Venn diagrams."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "24.1",
+    "content": "Use statistics to compare distributions and make inferences, including understanding and calculating measures of central tendency (mean, median, mode) and spread (range, quartiles, inter-quartile range, standard deviation)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "25.1",
+    "content": "Use the basic congruence criteria for triangles (SSS, SAS, ASA, RHS) to solve geometric problems."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "26.1",
+    "content": "Identify and use circle definitions and properties, including: tangent, arc, sector, and segment."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "27.1",
+    "content": "Use Pythagoras' theorem and trigonometric ratios in similar triangles to solve problems involving right-angled triangles."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "28.1",
+    "content": "Find the nth term of a quadratic sequence and understand how to derive it from given terms."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A4",
+    "content": "Expanding products of two or more binomials, including the use of grids to display the expansion process."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A4",
+    "content": "Simplifying algebraic expressions by collecting like terms, including after expansion of brackets."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A4",
+    "content": "Forming and simplifying algebraic fractions, ensuring correct expansion and handling of numerators and denominators."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A12",
+    "content": "Identifying coordinates in all four quadrants, including plotting and interpreting points."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "A13",
+    "content": "Recognising and interpreting equations of quadratic functions, including forms such as y = -x²."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "G7",
+    "content": "Describing translations of graphs using vectors, including column vector notation."
+  }
+]

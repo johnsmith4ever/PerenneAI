@@ -1,0 +1,332 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1",
+    "content": "Hydrocarbons are compounds containing only hydrogen and carbon atoms."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1",
+    "content": "Students should be able to calculate the number of atoms in a molecule from its formula."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1",
+    "content": "Alkanes are a homologous series with the general formula CₙH₂ₙ₊₂."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1",
+    "content": "Students should be able to recognise alkanes from their formulae."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1",
+    "content": "Students should be able to draw the displayed structural formula of alkanes, such as C₆H₁₄."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2",
+    "content": "Fuels react with oxygen to release energy in combustion reactions. Petrol is an example of a fuel."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2",
+    "content": "Incomplete combustion of hydrocarbons produces carbon monoxide and soot (carbon) as atmospheric pollutants."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.3",
+    "content": "Cracking is the process of breaking down larger hydrocarbons into smaller, more useful molecules, such as alkanes and alkenes."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1",
+    "content": "Students should be able to calculate the percentage by mass of elements in a compound."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1",
+    "content": "Carbon dioxide is a greenhouse gas that contributes to global climate change. Increasing the burning of fossil fuels increases the rate of global climate change."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1",
+    "content": "Students should be able to calculate the mass of a product or reactant using given data."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2",
+    "content": "Sulfur dioxide causes acid rain."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2",
+    "content": "Students should be able to interpret and plot data showing the relationship between variables, such as mass of coal burned and mass of sulfur dioxide produced."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2",
+    "content": "Particulates released into the atmosphere cause global dimming."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1",
+    "content": "Paper chromatography is used to separate mixtures. The start line should be drawn in pencil, not ink, to avoid interference with the results."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1",
+    "content": "Students should be able to interpret chromatograms, including identifying the number of components in a mixture and matching components to known substances."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1",
+    "content": "Students should be able to explain why a substance may remain on the start line in chromatography (e.g., it is insoluble in the solvent)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1",
+    "content": "Students should be able to calculate the Rf value of a substance using the formula: Rf = distance moved by substance / distance moved by solvent."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1",
+    "content": "In chromatography, the solvent is referred to as the mobile phase."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3",
+    "content": "Students should be able to describe the changes in the Earth’s atmosphere over time, including the increase in nitrogen and oxygen and the decrease in carbon dioxide."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3",
+    "content": "Photosynthesis by algae and plants decreased the percentage of carbon dioxide in the atmosphere and increased the percentage of oxygen."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3",
+    "content": "Photosynthesis uses light energy to convert carbon dioxide and water into glucose and oxygen."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3",
+    "content": "Algae and plants produce oxygen through photosynthesis."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.4",
+    "content": "Glucose produced in photosynthesis can form naturally occurring polymers such as starch and cellulose."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.4",
+    "content": "DNA is a naturally occurring polymer made of nucleotides, with a double helix structure."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.4",
+    "content": "Students should be able to express very large or small numbers in standard form."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1",
+    "content": "The rate of a chemical reaction can be determined by measuring the time taken for a reactant to be used up or a product to form."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1",
+    "content": "Students should be able to identify suitable apparatus for measuring volumes of solutions, such as measuring cylinders or burettes."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1",
+    "content": "Students should be able to identify dependent, independent, and control variables in an experiment."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1",
+    "content": "Increasing the concentration of reactants increases the rate of reaction because particles collide more frequently."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1",
+    "content": "Increasing the temperature of reactants increases the rate of reaction because particles collide more frequently and with more energy."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.2",
+    "content": "Alkenes react with bromine water, turning it from orange to colourless."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.2",
+    "content": "Chlorine can be identified using damp litmus paper, which it bleaches."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.2",
+    "content": "Alkenes undergo addition reactions with halogens, such as chlorine, to form halogenoalkanes."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.3",
+    "content": "Alkenes can be used to make polymers through addition polymerisation, such as poly(ethene) and poly(chloroethene)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.3",
+    "content": "Students should be able to calculate the simplest whole number ratio of properties, such as density, for different polymers."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.3",
+    "content": "Students should be able to evaluate the suitability of materials for specific uses based on their properties, such as melting points."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1",
+    "content": "Sustainability of materials should be considered, such as the use of renewable resources (e.g., paper from trees) versus non-renewable resources (e.g., poly(ethene) from crude oil)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.2",
+    "content": "Composite materials consist of a matrix and reinforcement. For example, pre-stressed concrete uses concrete as the matrix and steel bars as the reinforcement."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.2",
+    "content": "High carbon steel is an alloy used in construction for its strength."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3",
+    "content": "Limestone (calcium carbonate) decomposes when heated to form calcium oxide and carbon dioxide."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3",
+    "content": "Burning methane releases carbon dioxide, a greenhouse gas. The decomposition of limestone also releases carbon dioxide."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2",
+    "content": "Carbonate ions can be identified by adding hydrochloric acid and testing the gas produced with limewater, which turns cloudy if carbon dioxide is present."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.3",
+    "content": "Explain the uses of different types of concrete (plain and pre-stressed) based on their properties such as cost, density, and strength."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1",
+    "content": "Describe tests to identify sodium ions and chloride ions in a salt solution, including the expected results."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2",
+    "content": "Explain practical methods for determining the concentration of a salt solution, including heating to constant mass and calculating the mass of solid remaining."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1",
+    "content": "Describe the Haber process for producing ammonia, including the role of the catalyst and the recycling of unreacted gases."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2",
+    "content": "Identify the catalyst used in the Haber process (iron)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3",
+    "content": "Describe the production of nitric acid from ammonia, including the role of platinum as a catalyst."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.4",
+    "content": "Describe the test for oxygen gas and the expected result if oxygen is present."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.5",
+    "content": "Interpret and complete reaction profiles, including labelling activation energy, reactants, and products, and explain the effect of a catalyst on the reaction profile."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.6",
+    "content": "State uses of ammonium nitrate, such as in fertilisers."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1",
+    "content": "Describe the reaction between hydrogen and oxygen to produce water, including the terms 'combustion' and 'reversible'."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.2",
+    "content": "Explain the concept of dynamic equilibrium in the context of water dissociating into hydrogen ions and hydroxide ions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3",
+    "content": "Describe the processes involved in making water potable and treating sewage, including the stages of water treatment (e.g., filtration, sterilisation)."
+  }
+]

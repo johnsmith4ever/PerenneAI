@@ -14,7 +14,7 @@ const merriweather = Merriweather({
 });
 
 import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from "@/components/theme-provider";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "PerenneAI",
@@ -33,18 +33,17 @@ export default function RootLayout({
     <ClerkProvider>
       <html
         lang="en"
-        className={`${inter.variable} ${merriweather.variable} h-full antialiased`}
+        className={`${inter.variable} ${merriweather.variable} h-full antialiased dark`}
         suppressHydrationWarning
       >
+        <head>
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
+        </head>
         <body className="min-h-full flex flex-col font-sans">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          {children}
+          <Script src="https://unpkg.com/mathlive" strategy="afterInteractive" />
+          <Script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" strategy="afterInteractive" />
+          <Script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" strategy="afterInteractive" />
         </body>
       </html>
     </ClerkProvider>

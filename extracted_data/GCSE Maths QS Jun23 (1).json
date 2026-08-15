@@ -1,0 +1,182 @@
+[
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "1.1",
+    "content": "Basic arithmetic operations: multiplication of decimals (e.g., 0.7 × 0.5)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "1.2",
+    "content": "Division of fractions (e.g., 5/6 ÷ 3)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "1.3",
+    "content": "Division involving decimals (e.g., 27 ÷ 0.6)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "2.1",
+    "content": "Solving linear inequalities (e.g., 2x < 26)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "2.2",
+    "content": "Evaluating expressions involving indices (e.g., (2/3)^2 as a mixed number)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "3.1",
+    "content": "Angle properties in geometric figures (e.g., relationships between angles on straight lines)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "3.2",
+    "content": "Prime numbers and their properties (e.g., identifying two primes whose product is an even number between 50 and 60)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "3.3",
+    "content": "Ratio and proportion (e.g., sharing money in a given ratio and calculating fractions of shares)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "4.1",
+    "content": "Solving equations involving indices and prime factorisation (e.g., 2^a × 3 × 5^2 = 600)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "4.2",
+    "content": "Expanding and simplifying algebraic expressions (e.g., 5(3x + 4) – 2(x – 1))."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "5.1",
+    "content": "Graph sketching and identifying errors in sketches (e.g., y = 1/x)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "5.2",
+    "content": "Formulating and solving equations involving mean (e.g., mean of ages)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "6.1",
+    "content": "Venn diagrams and set notation (e.g., P(A ∩ B), P(A'), P(A ∪ B))."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "6.2",
+    "content": "Standard form and calculations involving standard form (e.g., inequalities for standard form, converting standard form to ordinary numbers)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "7.1",
+    "content": "Number machines and input-output relationships (e.g., showing how changes in input affect output)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "7.2",
+    "content": "Evaluating functions and verifying statements (e.g., f(x) = kx^2)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "8.1",
+    "content": "Quartiles, median, and range in data sets (e.g., completing a list of numbers using given conditions)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "9.1",
+    "content": "Properties of trapeziums and triangles (e.g., similarity, congruence, angle properties, area relationships)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "10.1",
+    "content": "Solving simultaneous equations (e.g., 2x – 5y = 13 and 3x + 4y = 8)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "11.1",
+    "content": "Surface area calculations for 3D shapes (e.g., ratio of surface areas of a hemisphere and a cylinder)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "11.2",
+    "content": "Inequalities involving indices (e.g., 6 < x/3 < 7)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "12.1",
+    "content": "Counting principles for permutations (e.g., number of 5-digit odd numbers using given digits)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "13.1",
+    "content": "Balancing scales and proportional reasoning (e.g., determining weights using balance scales)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "14.1",
+    "content": "Completing the square for quadratic expressions (e.g., x^2 – 6x – 15)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "14.2",
+    "content": "Evaluating expressions involving indices and fractions (e.g., matching expressions to values)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "15.1",
+    "content": "Converting recurring decimals to fractions (e.g., 0.13 recurring)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "16.1",
+    "content": "Coordinate geometry and properties of triangles (e.g., finding coordinates of points given geometric conditions)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "17.1",
+    "content": "Trigonometric identities and simplifying expressions (e.g., 4 sin 30 tan 45 / 2 cos 30)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "18.1",
+    "content": "Circumference and perimeter ratios involving circles and squares (e.g., ratio of perimeter of a square to circumference of a circle)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "GCSE",
+    "topicCode": "19.1",
+    "content": "Average speed calculations for multi-stage journeys (e.g., deriving average speed formula)."
+  }
+]

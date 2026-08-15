@@ -34,6 +34,9 @@ export default async function RootPage() {
             </Link>
           ) : (
             <>
+              <Link href="/dashboard" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
+                Try as Guest
+              </Link>
               <Link href="/sign-in" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
                 Sign In
               </Link>
@@ -50,20 +53,20 @@ export default async function RootPage() {
         {/* Hero Section */}
         <section className="text-center space-y-8 max-w-4xl mx-auto pt-12 md:pt-20">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-amber-500 text-sm font-semibold backdrop-blur-md mb-4 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            <Sparkles className="w-4 h-4" /> Next-Generation AI Study Engine
+            <Sparkles className="w-4 h-4" /> The Ultimate AQA Study Engine
           </div>
           <h1 className="text-5xl md:text-7xl font-serif font-black tracking-tight text-white leading-[1.1] animate-in fade-in zoom-in-95 duration-1000 delay-150 fill-mode-both">
-            Outsmart your <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 drop-shadow-sm">curriculum.</span>
+            Outsmart the <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 drop-shadow-sm">AQA Specification.</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto font-medium animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300 fill-mode-both">
-            Stop grinding endlessly. Use Perenne's elite suite of AI tools—from Note Summarizers to Essay Graders—to extract the exact knowledge you need to ace your exams.
+            Stop guessing what will be on the test. Perenne's elite suite of AI tools extracts the exact knowledge you need to ace your AQA exams, aligned flawlessly to the syllabus.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 fill-mode-both">
-            <Link href="/get-started">
+            <Link href="/dashboard">
               <Button size="lg" className="h-14 rounded-full px-8 text-base bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold shadow-[0_0_40px_rgba(245,158,11,0.3)] hover:shadow-[0_0_60px_rgba(245,158,11,0.5)] transition-all flex items-center gap-2 group border-0">
-                Enter Perenne
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <Sparkles className="w-5 h-5 text-amber-100" />
+                Try it out
               </Button>
             </Link>
           </div>
@@ -91,9 +94,9 @@ export default async function RootPage() {
               <div className="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 border border-orange-500/30 group-hover:scale-110 transition-transform">
                 <GraduationCap className="w-7 h-7 text-orange-400" />
               </div>
-              <h3 className="text-xl font-serif font-bold text-white mb-3">Essay Grader</h3>
+              <h3 className="text-xl font-serif font-bold text-white mb-3">AQA Essay Grader</h3>
               <p className="text-slate-400 leading-relaxed">
-                Get brutal, accurate feedback on your essays across Content, Structure, and Grammar, along with paragraph-by-paragraph rewrites.
+                Get brutal, accurate feedback on your essays rigorously matched to the AQA mark schemes. See paragraph-by-paragraph rewrites.
               </p>
             </div>
 

@@ -1,0 +1,1190 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1",
+    "content": "Atomic structure and the periodic table: Students should be able to describe the structure of atoms, including the relative charges and masses of subatomic particles. Understand the development of the atomic model over time."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2",
+    "content": "Atomic structure and the periodic table: Students should understand the significance of the work of scientists such as Dalton, Thomson, Rutherford, and Bohr in the development of the atomic model."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.3",
+    "content": "Atomic structure and the periodic table: Know the structure of the periodic table, including groups and periods, and how it is organized based on atomic number."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.4",
+    "content": "Atomic structure and the periodic table: Understand how elements in the same group have similar properties and the trends in reactivity within groups."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1",
+    "content": "Bonding, structure, and the properties of matter: Students should know how atoms bond through ionic, covalent, and metallic bonding."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2",
+    "content": "Bonding, structure, and the properties of matter: Understand the properties of ionic compounds, simple molecules, giant covalent structures, polymers, and metals."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.3",
+    "content": "Bonding, structure, and the properties of matter: Explain the limitations of particular models to represent bonding and structure."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1",
+    "content": "Quantitative chemistry: Understand the concept of the mole and use the mole to calculate the mass of substances in reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2",
+    "content": "Quantitative chemistry: Calculate reacting masses using experimental data and chemical equations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.3",
+    "content": "Quantitative chemistry: Understand the concept of yield and calculate the percentage yield of a reaction."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.4",
+    "content": "Quantitative chemistry: Use the concentration of solutions in mol/dm³ and convert between units."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1",
+    "content": "Chemical changes: Understand the reactivity series and how metals react with water, acids, and salt solutions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2",
+    "content": "Chemical changes: Explain displacement reactions and how they relate to the reactivity series."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3",
+    "content": "Chemical changes: Understand the process of extracting metals and the principles of oxidation and reduction."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.4",
+    "content": "Chemical changes: Explain the reactions of acids with metals, bases, and alkalis to form salts."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.5",
+    "content": "Chemical changes: Understand the pH scale and the use of indicators to measure pH."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1",
+    "content": "Energy changes: Explain exothermic and endothermic reactions and represent them using energy level diagrams."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.2",
+    "content": "Energy changes: Understand the energy changes in bond breaking and bond making."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.3",
+    "content": "Energy changes: Calculate energy changes in reactions using bond energies."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1",
+    "content": "The rate and extent of chemical change: Investigate factors that affect the rate of chemical reactions, including concentration, temperature, pressure, and catalysts."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2",
+    "content": "The rate and extent of chemical change: Explain how these factors affect the rate of reaction in terms of collision theory."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.3",
+    "content": "The rate and extent of chemical change: Understand reversible reactions and dynamic equilibrium."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.4",
+    "content": "The rate and extent of chemical change: Explain the effect of changing conditions on equilibrium position (Le Chatelier's Principle)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1",
+    "content": "Organic chemistry: Understand the concept of homologous series and functional groups."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2",
+    "content": "Organic chemistry: Know the structure, properties, and reactions of alkanes and alkenes."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.3",
+    "content": "Organic chemistry: Understand the process of fractional distillation and cracking of hydrocarbons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.4",
+    "content": "Organic chemistry: Explain the properties and uses of alcohols, carboxylic acids, and esters."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1",
+    "content": "Chemical analysis: Understand how to use chemical tests to identify gases and ions in unknown substances."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2",
+    "content": "Chemical analysis: Explain the principles of chromatography and its use in separating mixtures."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3",
+    "content": "Chemical analysis: Understand instrumental methods such as flame emission spectroscopy."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1",
+    "content": "Chemistry of the atmosphere: Explain the composition and evolution of the Earth's atmosphere."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2",
+    "content": "Chemistry of the atmosphere: Understand the role of greenhouse gases in climate change."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3",
+    "content": "Chemistry of the atmosphere: Explain the causes and effects of atmospheric pollutants."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1",
+    "content": "Using resources: Understand the use of Earth's resources and sustainable development."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.2",
+    "content": "Using resources: Explain the processes of water treatment and desalination."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3",
+    "content": "Using resources: Understand the life cycle assessment and recycling of materials."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.1.1",
+    "content": "Development of scientific thinking: Understand how scientific methods and theories develop over time."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.1.2",
+    "content": "Development of scientific thinking: Use a variety of models such as representational, spatial, descriptive, computational, and mathematical to solve problems, make predictions, and develop scientific explanations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.1.3",
+    "content": "Development of scientific thinking: Appreciate the power and limitations of science and consider any ethical issues which may arise."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.1.4",
+    "content": "Development of scientific thinking: Explain everyday and technological applications of science; evaluate associated personal, social, economic, and environmental implications; and make decisions based on the evaluation of evidence and arguments."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.1.5",
+    "content": "Development of scientific thinking: Evaluate risks both in practical science and the wider societal context, including perception of risk in relation to data and consequences."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.1.6",
+    "content": "Development of scientific thinking: Recognise the importance of peer review of results and of communicating results to a range of audiences."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.2.1",
+    "content": "Experimental skills and strategies: Use scientific theories and explanations to develop hypotheses."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.2.2",
+    "content": "Experimental skills and strategies: Plan experiments or devise procedures to make observations, produce or characterise a substance, test hypotheses, check data, or explore phenomena."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.2.3",
+    "content": "Experimental skills and strategies: Apply a knowledge of a range of techniques, instruments, apparatus, and materials to select those appropriate to the experiment."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.2.4",
+    "content": "Experimental skills and strategies: Carry out experiments appropriately having due regard for the correct manipulation of apparatus, the accuracy of measurements, and health and safety considerations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.2.5",
+    "content": "Experimental skills and strategies: Recognise when to apply a knowledge of sampling techniques to ensure any samples collected are representative."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.2.6",
+    "content": "Experimental skills and strategies: Make and record observations and measurements using a range of apparatus and methods."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.2.7",
+    "content": "Experimental skills and strategies: Evaluate methods and suggest possible improvements and further investigations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.3.1",
+    "content": "Analysis and evaluation: Present observations and other data using appropriate methods."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.3.2",
+    "content": "Analysis and evaluation: Translate data from one form to another."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.3.3",
+    "content": "Analysis and evaluation: Carry out and represent mathematical and statistical analysis."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.3.4",
+    "content": "Analysis and evaluation: Represent distributions of results and make estimations of uncertainty."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.3.5",
+    "content": "Analysis and evaluation: Interpret observations and other data (presented in verbal, diagrammatic, graphical, symbolic, or numerical form), including identifying patterns and trends, making inferences, and drawing conclusions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.3.6",
+    "content": "Analysis and evaluation: Present reasoned explanations including relating data to hypotheses."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.3.7",
+    "content": "Analysis and evaluation: Be objective, evaluate data in terms of accuracy, precision, repeatability, and reproducibility, and identify potential sources of random and systematic error."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS.3.8",
+    "content": "Analysis and evaluation: Communicate the scientific rationale for investigations, methods used, findings, and reasoned conclusions through paper-based and electronic reports and presentations using verbal, diagrammatic, graphical, and symbolic forms."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 4.1",
+    "content": "Use scientific vocabulary, terminology and definitions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 4.2",
+    "content": "Recognise the importance of scientific quantities and understand how they are determined."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 4.3",
+    "content": "Use SI units (eg kg, g, mg; km, m, mm; kJ, J) and IUPAC chemical nomenclature unless inappropriate."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 4.4",
+    "content": "Use prefixes and powers of ten for orders of magnitude (eg tera, giga, mega, kilo, centi, milli, micro and nano)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 4.5",
+    "content": "Interconvert units."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 4.6",
+    "content": "Use an appropriate number of significant figures in calculation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.1",
+    "content": "All substances are made of atoms. An atom is the smallest part of an element that can exist. Atoms of each element are represented by a chemical symbol, eg O represents an atom of oxygen, Na represents an atom of sodium. There are about 100 different elements. Elements are shown in the periodic table. Compounds are formed from elements by chemical reactions. Chemical reactions always involve the formation of one or more new substances, and often involve a detectable energy change. Compounds contain two or more elements chemically combined in fixed proportions and can be represented by formulae using the symbols of the atoms from which they were formed. Compounds can only be separated into elements by chemical reactions. Chemical reactions can be represented by word equations or equations using symbols and formulae. Students will be supplied with a periodic table for the exam and should be able to: • use the names and symbols of the first 20 elements in the periodic table, the elements in Groups 1 and 7, and other elements in this specification • name compounds of these elements from given formulae or symbol equations • write word equations for the reactions in this specification • write formulae and balanced chemical equations for the reactions in this specification. (HT only) write balanced half equations and ionic equations where appropriate."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.2",
+    "content": "A mixture consists of two or more elements or compounds not chemically combined together. The chemical properties of each substance in the mixture are unchanged. Mixtures can be separated by physical processes such as filtration, crystallisation, simple distillation, fractional distillation and chromatography. These physical processes do not involve chemical reactions and no new substances are made. Students should be able to: • describe, explain and give examples of the specified processes of separation • suggest suitable separation and purification techniques for mixtures when given appropriate information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.3",
+    "content": "New experimental evidence may lead to a scientific model being changed or replaced. Before the discovery of the electron, atoms were thought to be tiny spheres that could not be divided. The discovery of the electron led to the plum pudding model of the atom. The plum pudding model suggested that the atom is a ball of positive charge with negative electrons embedded in it. The results from the alpha particle scattering experiment led to the conclusion that the mass of an atom was concentrated at the centre (nucleus) and that the nucleus was charged. This nuclear model replaced the plum pudding model. Niels Bohr adapted the nuclear model by suggesting that electrons orbit the nucleus at specific distances. The theoretical calculations of Bohr agreed with experimental observations. Later experiments led to the idea that the positive charge of any nucleus could be subdivided into a whole number of smaller particles, each particle having the same amount of positive charge. The name proton was given to these particles. The experimental work of James Chadwick provided the evidence to show the existence of neutrons within the nucleus. This was about 20 years after the nucleus became an accepted scientific idea. Students should be able to describe: • why the new evidence from the scattering experiment led to a change in the atomic model • the difference between the plum pudding model of the atom and the nuclear model of the atom."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.4",
+    "content": "The relative electrical charges of the particles in atoms are: In an atom, the number of electrons is equal to the number of protons in the nucleus. Atoms have no overall electrical charge. The number of protons in an atom of an element is its atomic number. All atoms of a particular element have the same number of protons. Atoms of different elements have different numbers of protons. Students should be able to use the nuclear model to describe atoms."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.5",
+    "content": "Atoms are very small, having a radius of about 0.1 nm (1 x 10^-10 m). The radius of a nucleus is less than 1/10 000 of that of the atom (about 1 x 10^-14 m). Almost all of the mass of an atom is in the nucleus. The relative masses of protons, neutrons and electrons are: The sum of the protons and neutrons in an atom is its mass number. Atoms of the same element can have different numbers of neutrons; these atoms are called isotopes of that element. Atoms can be represented as shown in this example: Students should be able to calculate the numbers of protons, neutrons and electrons in an atom or ion, given its atomic number and mass number. Students should be able to relate size and scale of atoms to objects in the physical world."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.6",
+    "content": "The relative atomic mass of an element is an average value that takes account of the abundance of the isotopes of the element. Students should be able to calculate the relative atomic mass of an element given the percentage abundance of its isotopes."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.7",
+    "content": "The electrons in an atom occupy the lowest available energy levels (innermost available shells). The electronic structure of an atom can be represented by numbers or by a diagram. For example, the electronic structure of sodium is 2,8,1 or showing two electrons in the lowest energy level, eight in the second energy level and one in the third energy level. Students may answer questions in terms of either energy levels or shells. Students should be able to represent the electronic structures of the first twenty elements of the periodic table in both forms."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.1",
+    "content": "The elements in the periodic table are arranged in order of atomic (proton) number and so that elements with similar properties are in columns, known as groups. The table is called a periodic table because similar properties occur at regular intervals. Elements in the same group in the periodic table have the same number of electrons in their outer shell (outer electrons) and this gives them similar chemical properties. Students should be able to: • explain how the position of an element in the periodic table is related to the arrangement of electrons in its atoms and hence to its atomic number • predict possible reactions and probable reactivity of elements from their positions in the periodic table."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.2",
+    "content": "Before the discovery of protons, neutrons and electrons, scientists attempted to classify the elements by arranging them in order of their atomic weights. The early periodic tables were incomplete and some elements were placed in inappropriate groups if the strict order of atomic weights was followed. Mendeleev overcame some of the problems by leaving gaps for elements that he thought had not been discovered and in some places changed the order based on atomic weights. Elements with properties predicted by Mendeleev were discovered and filled the gaps. Knowledge of isotopes made it possible to explain why the order based on atomic weights was not always correct. Students should be able to describe these steps in the development of the periodic table."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.3",
+    "content": "Elements that react to form positive ions are metals. Elements that do not form positive ions are non-metals. The majority of elements are metals. Metals are found to the left and towards the bottom of the periodic table. Non-metals are found towards the right and top of the periodic table. Students should be able to: • explain the differences between metals and non-metals on the basis of their characteristic physical and chemical properties • explain how the atomic structure of metals and non-metals relates to their position in the periodic table • explain how the reactions of elements are related to the arrangement of electrons in their atoms and hence to their atomic number."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.4",
+    "content": "The elements in Group 0 of the periodic table are called the noble gases. They are unreactive and do not easily form molecules because their atoms have stable arrangements of electrons. The noble gases have eight electrons in their outer shell, except for helium, which has only two electrons. The boiling points of the noble gases increase with increasing relative atomic mass (going down the group). Students should be able to: • explain how properties of the elements in Group 0 depend on the outer shell of electrons of the atoms • predict properties from given trends down the group."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.5",
+    "content": "The elements in Group 1 of the periodic table are known as the alkali metals and have characteristic properties because of the single electron in their outer shell. Students should be able to describe the reactions of the first three alkali metals with oxygen, chlorine and water. In Group 1, the reactivity of the elements increases going down the group. Students should be able to: • explain how properties of the elements in Group 1 depend on the outer shell of electrons of the atoms • predict properties from given trends down the group."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.6",
+    "content": "The elements in Group 7 of the periodic table are known as the halogens and have similar reactions because they all have seven electrons in their outer shell. The halogens are non-metals and consist of molecules made of pairs of atoms. Students should be able to describe the nature of the compounds formed when chlorine, bromine and iodine react with metals and non-metals. In Group 7, the further down the group an element is the higher its relative molecular mass, melting point and boiling point. In Group 7, the reactivity of the elements decreases going down the group. A more reactive halogen can displace a less reactive halogen from an aqueous solution of its salt. Students should be able to: • explain how properties of the elements in Group 7 depend on the outer shell of electrons of the atoms • predict properties from given trends down the group."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.3.1",
+    "content": "The transition elements are metals with similar properties which are different from those of the elements in Group 1. Students should be able to describe the difference compared with Group 1 in melting points, densities, strength, hardness and reactivity with oxygen, water and halogens. Students should be able to exemplify these general properties by reference to Cr, Mn, Fe, Co, Ni, Cu."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.3.2",
+    "content": "Many transition elements have ions with different charges, form coloured compounds and are useful as catalysts. Students should be able to exemplify these general properties by reference to compounds of Cr, Mn, Fe, Co, Ni, Cu."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.1",
+    "content": "There are three types of strong chemical bonds: ionic, covalent and metallic. For ionic bonding the particles are oppositely charged ions. For covalent bonding the particles are atoms which share pairs of electrons. For metallic bonding the particles are atoms which share delocalised electrons. Ionic bonding occurs in compounds formed from metals combined with non-metals. Covalent bonding occurs in most non-metallic elements and in compounds of non-metals. Metallic bonding occurs in metallic elements and alloys. Students should be able to explain chemical bonding in terms of electrostatic forces and the transfer or sharing of electrons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.2",
+    "content": "When a metal atom reacts with a non-metal atom electrons in the outer shell of the metal atom are transferred. Metal atoms lose electrons to become positively charged ions. Non-metal atoms gain electrons to become negatively charged ions. The ions produced by metals in Groups 1 and 2 and by non-metals in Groups 6 and 7 have the electronic structure of a noble gas (Group 0)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.2",
+    "content": "Students should be able to draw dot and cross diagrams for ionic compounds formed by metals in Groups 1 and 2 with non-metals in Groups 6 and 7. The charge on the ions produced by metals in Groups 1 and 2 and by non-metals in Groups 6 and 7 relates to the group number of the element in the periodic table. Students should be able to work out the charge on the ions of metals and non-metals from the group number of the element, limited to the metals in Groups 1 and 2, and non-metals in Groups 6 and 7."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.3",
+    "content": "Students should be able to: • deduce that a compound is ionic from a diagram of its structure in one of the specified forms • describe the limitations of using dot and cross, ball and stick, two and three-dimensional diagrams to represent a giant ionic structure • work out the empirical formula of an ionic compound from a given model or diagram that shows the ions in the structure. Students should be familiar with the structure of sodium chloride but do not need to know the structures of other ionic compounds."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.4",
+    "content": "Students should be able to: • draw dot and cross diagrams for the molecules of hydrogen, chlorine, oxygen, nitrogen, hydrogen chloride, water, ammonia and methane • represent the covalent bonds in small molecules, in the repeating units of polymers and in part of giant covalent structures, using a line to represent a single bond • describe the limitations of using dot and cross, ball and stick, two and three-dimensional diagrams to represent molecules or giant structures • deduce the molecular formula of a substance from a given model or diagram in these forms showing the atoms and bonds in the molecule."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.5",
+    "content": "Students should understand that metals consist of giant structures of atoms arranged in a regular pattern. The electrons in the outer shell of metal atoms are delocalised and so are free to move through the whole structure. The sharing of delocalised electrons gives rise to strong metallic bonds."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "Students should be able to: • predict the states of substances at different temperatures given appropriate data • explain the different temperatures at which changes of state occur in terms of energy transfers and types of bonding • recognise that atoms themselves do not have the bulk properties of materials • (HT only) explain the limitations of the particle theory in relation to changes of state when particles are represented by solid inelastic spheres which have no forces between them."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.2",
+    "content": "Students should be able to include appropriate state symbols in chemical equations for the reactions in this specification."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.3",
+    "content": "Ionic compounds have regular structures (giant ionic lattices) in which there are strong electrostatic forces of attraction in all directions between oppositely charged ions. These compounds have high melting points and high boiling points because of the large amounts of energy needed to break the many strong bonds. When melted or dissolved in water, ionic compounds conduct electricity because the ions are free to move and so charge can flow."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.4",
+    "content": "Substances that consist of small molecules are usually gases or liquids that have relatively low melting points and boiling points. These substances have only weak forces between the molecules (intermolecular forces). It is these intermolecular forces that are overcome, not the covalent bonds, when the substance melts or boils. The intermolecular forces increase with the size of the molecules, so larger molecules have higher melting and boiling points. These substances do not conduct electricity because the molecules do not have an overall electric charge. Students should be able to use the idea that intermolecular forces are weak compared with covalent bonds to explain the bulk properties of molecular substances."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.5",
+    "content": "Polymers have very large molecules. The atoms in the polymer molecules are linked to other atoms by strong covalent bonds. The intermolecular forces between polymer molecules are relatively strong and so these substances are solids at room temperature. Students should be able to recognise polymers from diagrams showing their bonding and structure."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.6",
+    "content": "Substances that consist of giant covalent structures are solids with very high melting points. All of the atoms in these structures are linked to other atoms by strong covalent bonds. These bonds must be overcome to melt or boil these substances. Diamond and graphite (forms of carbon) and silicon dioxide (silica) are examples of giant covalent structures. Students should be able to recognise giant covalent structures from diagrams showing their bonding and structure."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.7",
+    "content": "Metals have giant structures of atoms with strong metallic bonding. This means that most metals have high melting and boiling points. In pure metals, atoms are arranged in layers, which allows metals to be bent and shaped. Pure metals are too soft for many uses and so are mixed with other metals to make alloys which are harder. Students should be able to explain why alloys are harder than pure metals in terms of distortion of the layers of atoms in the structure of a pure metal."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.8",
+    "content": "Metals are good conductors of electricity because the delocalised electrons in the metal carry electrical charge through the metal. Metals are good conductors of thermal energy because energy is transferred by the delocalised electrons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.3.1",
+    "content": "In diamond, each carbon atom forms four covalent bonds with other carbon atoms in a giant covalent structure, so diamond is very hard, has a very high melting point and does not conduct electricity. Students should be able to explain the properties of diamond in terms of its structure and bonding."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.3.2",
+    "content": "In graphite, each carbon atom forms three covalent bonds with three other carbon atoms, forming layers of hexagonal rings which have no covalent bonds between the layers. In graphite, one electron from each carbon atom is delocalised. Students should be able to explain the properties of graphite in terms of its structure and bonding. Students should know that graphite is similar to metals in that it has delocalised electrons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.3.3",
+    "content": "Students should be able to: • recognise graphene and fullerenes from diagrams and descriptions of their bonding and structure • give examples of the uses of fullerenes, including carbon nanotubes. Graphene is a single layer of graphite and has properties that make it useful in electronics and composites."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.4.1",
+    "content": "Nanoscience refers to structures that are 1–100 nm in size, of the order of a few hundred atoms. Nanoparticles may have properties different from those for the same materials in bulk because of their high surface area to volume ratio. It may also mean that smaller quantities are needed to be effective than for materials with normal particle sizes. Students should be able to compare ‘nano’ dimensions to typical dimensions of atoms and molecules."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.4.2",
+    "content": "Students should be able to: • given appropriate information, evaluate the use of nanoparticles for a specified purpose • explain that there are possible risks associated with the use of nanoparticles. Nanoparticles have many applications in medicine, in electronics, in cosmetics and sun creams, as deodorants, and as catalysts."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.1",
+    "content": "The law of conservation of mass states that no atoms are lost or made during a chemical reaction so the mass of the products equals the mass of the reactants. This means that chemical reactions can be represented by symbol equations which are balanced in terms of the numbers of atoms of each element involved on both sides of the equation. Students should understand the use of the multipliers in equations in normal script before a formula and in subscript within a formula."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.2",
+    "content": "The relative formula mass (M_r) of a compound is the sum of the relative atomic masses of the atoms in the numbers shown in the formula. In a balanced chemical equation, the sum of the relative formula masses of the reactants in the quantities shown equals the sum of the relative formula masses of the products in the quantities shown. Students should be able to calculate the percentage by mass in a compound given the relative formula mass and the relative atomic masses."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.3",
+    "content": "Some reactions may appear to involve a change in mass but this can usually be explained because a reactant or product is a gas and its mass has not been taken into account. For example: when a metal reacts with oxygen the mass of the oxide produced is greater than the mass of the metal or in thermal decompositions of metal carbonates carbon dioxide is produced and escapes into the atmosphere leaving the metal oxide as the only solid product. Students should be able to explain any observed changes in mass in non-enclosed systems during a chemical reaction given the balanced symbol equation for the reaction and explain these changes in terms of the particle model."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.4",
+    "content": "Students should be able to: • represent the distribution of results and make estimations of uncertainty • use the range of a set of measurements about the mean as a measure of uncertainty."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.1",
+    "content": "Chemical amounts are measured in moles. The symbol for the unit mole is mol. The mass of one mole of a substance in grams is numerically equal to its relative formula mass. One mole of a substance contains the same number of the stated particles, atoms, molecules or ions as one mole of any other substance. The number of atoms, molecules or ions in a mole of a given substance is the Avogadro constant. The value of the Avogadro constant is 6.02 x 10^23 per mole. Students should understand that the measurement of amounts in moles can apply to atoms, molecules, ions, electrons, formulae and equations. Students should be able to use the relative formula mass of a substance to calculate the number of moles in a given mass of that substance and vice versa."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "MS 5b",
+    "content": "Visualise and represent 2D and 3D forms including two-dimensional representations of 3D objects."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 1.2",
+    "content": "Development of scientific thinking and scientific methods."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "MS 4a",
+    "content": "Use appropriate methods to present and interpret data."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "MS 1a, 1c",
+    "content": "Recognise and use expressions in decimal form; use ratios, fractions and percentages."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.2",
+    "content": "Chemical equations can be interpreted in terms of moles. For example: Mg + 2HCl → MgCl₂ + H₂ shows that one mole of magnesium reacts with two moles of hydrochloric acid to produce one mole of magnesium chloride and one mole of hydrogen gas. Students should be able to: • calculate the masses of substances shown in a balanced symbol equation • calculate the masses of reactants and products from the balanced symbol equation and the mass of a given reactant or product."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.3 (HT only)",
+    "content": "The balancing numbers in a symbol equation can be calculated from the masses of reactants and products by converting the masses in grams to amounts in moles and converting the numbers of moles to simple whole number ratios. Students should be able to balance an equation given the masses of reactants and products. Students should be able to change the subject of a mathematical equation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.4 (HT only)",
+    "content": "In a chemical reaction involving two reactants, it is common to use an excess of one of the reactants to ensure that all of the other reactant is used. The reactant that is completely used up is called the limiting reactant because it limits the amount of products. Students should be able to explain the effect of a limiting quantity of a reactant on the amount of products it is possible to obtain in terms of amounts in moles or masses in grams."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.5",
+    "content": "The concentration of a solution can be measured in mass per given volume of solution, e.g., grams per dm³ (g/dm³). Students should be able to: • calculate the mass of solute in a given volume of solution of known concentration in terms of mass per given volume of solution • (HT only) explain how the mass of a solute and the volume of a solution is related to the concentration of the solution."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.3.1",
+    "content": "Even though no atoms are gained or lost in a chemical reaction, it is not always possible to obtain the calculated amount of a product because: • the reaction may not go to completion because it is reversible • some of the product may be lost when it is separated from the reaction mixture • some of the reactants may react in ways different to the expected reaction. The amount of a product obtained is known as the yield. When compared with the maximum theoretical amount as a percentage, it is called the percentage yield. % Yield = (Mass of product actually made / Maximum theoretical mass of product) × 100. Students should be able to: • calculate the percentage yield of a product from the actual yield of a reaction • (HT only) calculate the theoretical mass of a product from a given mass of reactant and the balanced equation for the reaction."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.3.2",
+    "content": "The atom economy (atom utilisation) is a measure of the amount of starting materials that end up as useful products. It is important for sustainable development and for economic reasons to use reactions with high atom economy. The percentage atom economy of a reaction is calculated using the balanced equation for the reaction as follows: % Atom Economy = (Relative formula mass of desired product from equation / Sum of relative formula masses of all reactants from equation) × 100. Students should be able to: • calculate the atom economy of a reaction to form a desired product from the balanced equation • (HT only) explain why a particular reaction pathway is chosen to produce a specified product given appropriate data such as atom economy (if not calculated), yield, rate, equilibrium position and usefulness of by-products."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.4 (HT only)",
+    "content": "The concentration of a solution can be measured in mol/dm³. The amount in moles of solute or the mass in grams of solute in a given volume of solution can be calculated from its concentration in mol/dm³. If the volumes of two solutions that react completely are known and the concentration of one solution is known, the concentration of the other solution can be calculated. Students should be able to explain how the concentration of a solution in mol/dm³ is related to the mass of the solute and the volume of the solution."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.5 (HT only)",
+    "content": "Equal amounts in moles of gases occupy the same volume under the same conditions of temperature and pressure. The volume of one mole of any gas at room temperature and pressure (20°C and 1 atmosphere pressure) is 24 dm³. The volumes of gaseous reactants and products can be calculated from the balanced equation for the reaction. Students should be able to: • calculate the volume of a gas at room temperature and pressure from its mass and relative formula mass • calculate volumes of gaseous reactants and products from a balanced equation and a given volume of a gaseous reactant or product • change the subject of a mathematical equation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.1",
+    "content": "Metals react with oxygen to produce metal oxides. The reactions are oxidation reactions because the metals gain oxygen. Students should be able to explain reduction and oxidation in terms of loss or gain of oxygen."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.2",
+    "content": "When metals react with other substances the metal atoms form positive ions. The reactivity of a metal is related to its tendency to form positive ions. Metals can be arranged in order of their reactivity in a reactivity series. The metals potassium, sodium, lithium, calcium, magnesium, zinc, iron and copper can be put in order of their reactivity from their reactions with water and dilute acids. The non-metals hydrogen and carbon are often included in the reactivity series. A more reactive metal can displace a less reactive metal from a compound. Students should be able to: • recall and describe the reactions, if any, of potassium, sodium, lithium, calcium, magnesium, zinc, iron and copper with water or dilute acids and where appropriate, to place these metals in order of reactivity • explain how the reactivity of metals with water or dilute acids is related to the tendency of the metal to form its positive ion • deduce an order of reactivity of metals based on experimental results."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.3",
+    "content": "Unreactive metals such as gold are found in the Earth as the metal itself but most metals are found as compounds that require chemical reactions to extract the metal. Metals less reactive than carbon can be extracted from their oxides by reduction with carbon. Reduction involves the loss of oxygen. Students should be able to: • interpret or evaluate specific metal extraction processes when given appropriate information • identify the substances which are oxidised or reduced in terms of gain or loss of oxygen."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.4 (HT only)",
+    "content": "Oxidation is the loss of electrons and reduction is the gain of electrons. Students should be able to: • write ionic equations for displacement reactions • identify in a given reaction, symbol equation or half equation which species are oxidised and which are reduced."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.1",
+    "content": "Acids react with some metals to produce salts and hydrogen. (HT only) Students should be able to: • explain in terms of gain or loss of electrons, that these are redox reactions • identify which species are oxidised and which are reduced in given chemical equations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.2",
+    "content": "Acids are neutralised by alkalis (e.g., soluble metal hydroxides) and bases (e.g., insoluble metal hydroxides and metal oxides) to produce salts and water, and by metal carbonates to produce salts, water and carbon dioxide. The particular salt produced in any reaction between an acid and a base or alkali depends on: • the acid used (hydrochloric acid produces chlorides, nitric acid produces nitrates, sulfuric acid produces sulfates) • the positive ions in the base, alkali or carbonate. Students should be able to: • predict products from given reactants • use the formulae of common ions to deduce the formulae of salts."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.3",
+    "content": "Soluble salts can be made from acids by reacting them with solid insoluble substances, such as metals, metal oxides, hydroxides or carbonates. The solid is added to the acid until no more reacts and the excess solid is filtered off to produce a solution of the salt. Salt solutions can be crystallised to produce solid salts. Students should be able to describe how to make pure, dry samples of named soluble salts from information provided."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.4",
+    "content": "Acids produce hydrogen ions (H⁺) in aqueous solutions. Aqueous solutions of alkalis contain hydroxide ions (OH⁻). The pH scale, from 0 to 14, is a measure of the acidity or alkalinity of a solution, and can be measured using universal indicator or a pH probe. A solution with pH 7 is neutral. Aqueous solutions of acids have pH values of less than 7 and aqueous solutions of alkalis have pH values greater than 7. In neutralisation reactions between an acid and an alkali, hydrogen ions react with hydroxide ions to produce water. Students should be able to: • describe the use of universal indicator or a wide range indicator to measure the approximate pH of a solution • use the pH scale to identify acidic or alkaline solutions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.5 (chemistry only)",
+    "content": "The volumes of acid and alkali solutions that react with each other can be measured by titration using a suitable indicator. Students should be able to: • describe how to carry out titrations using strong acids and strong alkalis only (sulfuric, hydrochloric and nitric acids only) to find the reacting volumes accurately • (HT Only) calculate the chemical quantities in titrations involving concentrations in mol/dm³ and in g/dm³."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.6 (HT only)",
+    "content": "A strong acid is completely ionised in aqueous solution. Examples of strong acids are hydrochloric, nitric and sulfuric acids. A weak acid is only partially ionised in aqueous solution. Examples of weak acids are ethanoic, citric and carbonic acids. For a given concentration of aqueous solutions, the stronger an acid, the lower the pH. As the pH decreases by one unit, the hydrogen ion concentration of the solution increases by a factor of 10. Students should be able to: • use and explain the terms dilute and concentrated (in terms of amount of substance), and weak and strong (in terms of the degree of ionisation) in relation to acids • describe neutrality and relative acidity in terms of the effect on hydrogen ion concentration and the numerical value of pH (whole numbers only)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3.1",
+    "content": "When an ionic compound is melted or dissolved in water, the ions are free to move about within the liquid or solution. These liquids and solutions are able to conduct electricity and are called electrolytes. Passing an electric current through electrolytes causes the ions to move to the electrodes. Positively charged ions move to the negative electrode (the cathode), and negatively charged ions move to the positive electrode (the anode). Ions are discharged at the electrodes producing elements. This process is called electrolysis. (HT only) Throughout Section 4.4.3 Higher Tier students should be able to write half equations for the reactions occurring at the electrodes during electrolysis, and may be required to complete and balance supplied half equations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3.2",
+    "content": "When a simple ionic compound (e.g., lead bromide) is electrolysed in the molten state using inert electrodes, the metal (lead) is produced at the cathode and the non-metal (bromine) is produced at the anode. Students should be able to predict the products of the electrolysis of binary ionic compounds in the molten state."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3.3",
+    "content": "Metals can be extracted from molten compounds using electrolysis. Electrolysis is used if the metal is too reactive to be extracted by reduction with carbon or if the metal reacts with carbon. Large amounts of energy are used in the extraction process to melt the compounds and to produce the electrical current. Aluminium is manufactured by the electrolysis of a molten mixture of aluminium oxide and cryolite using carbon as the positive electrode (anode). Students should be able to: • explain why a mixture is used as the electrolyte • explain why the positive electrode must be continually replaced."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3.4",
+    "content": "The ions discharged when an aqueous solution is electrolysed using inert electrodes depend on the relative reactivity of the elements involved. At the negative electrode (cathode), hydrogen is produced if the metal is more reactive than hydrogen. At the positive electrode (anode), oxygen is produced unless the solution contains halide ions when the halogen is produced. This happens because in the aqueous solution water molecules break down producing hydrogen ions and hydroxide ions that are discharged. Students should be able to predict the products of the electrolysis of aqueous solutions containing a single ionic compound."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3.5",
+    "content": "Representation of reactions at electrodes as half equations (HT only). During electrolysis, at the cathode (negative electrode), positively charged ions gain electrons and so the reactions are reductions. At the anode (positive electrode), negatively charged ions lose electrons and so the reactions are oxidations. Reactions at electrodes can be represented by half equations, for example: 2H⁺ + 2e⁻ → H₂ and 4OH⁻ → O₂ + 2H₂O + 4e⁻ or 4OH⁻ – 4e⁻ → O₂ + 2H₂O."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1.1",
+    "content": "Energy transfer during exothermic and endothermic reactions. Energy is conserved in chemical reactions. An exothermic reaction transfers energy to the surroundings so the temperature of the surroundings increases. Exothermic reactions include combustion, many oxidation reactions and neutralisation. Everyday uses of exothermic reactions include self-heating cans and hand warmers. An endothermic reaction takes in energy from the surroundings so the temperature of the surroundings decreases. Endothermic reactions include thermal decompositions and the reaction of citric acid and sodium hydrogencarbonate. Some sports injury packs are based on endothermic reactions. Students should be able to: distinguish between exothermic and endothermic reactions on the basis of the temperature change of the surroundings; evaluate uses and applications of exothermic and endothermic reactions given appropriate information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1.2",
+    "content": "Reaction profiles. Chemical reactions can occur only when reacting particles collide with each other and with sufficient energy. The minimum amount of energy that particles must have to react is called the activation energy. Reaction profiles can be used to show the relative energies of reactants and products, the activation energy and the overall energy change of a reaction. Students should be able to: draw simple reaction profiles (energy level diagrams) for exothermic and endothermic reactions showing the relative energies of reactants and products, the activation energy and the overall energy change, with a curved line to show the energy as the reaction proceeds; use reaction profiles to identify reactions as exothermic or endothermic; explain that the activation energy is the energy needed for a reaction to occur."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1.3",
+    "content": "The energy change of reactions (HT only). During a chemical reaction: energy must be supplied to break bonds in the reactants; energy is released when bonds in the products are formed. The energy needed to break bonds and the energy released when bonds are formed can be calculated from bond energies. The difference between the sum of the energy needed to break bonds in the reactants and the sum of the energy released when bonds in the products are formed is the overall energy change of the reaction. In an exothermic reaction, the energy released from forming new bonds is greater than the energy needed to break existing bonds. In an endothermic reaction, the energy needed to break existing bonds is greater than the energy released from forming new bonds. Students should be able to calculate the energy transferred in chemical reactions using bond energies supplied."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.2.1",
+    "content": "Cells and batteries. Cells contain chemicals which react to produce electricity. The voltage produced by a cell is dependent upon a number of factors including the type of electrode and electrolyte. A simple cell can be made by connecting two different metals in contact with an electrolyte. Batteries consist of two or more cells connected together in series to provide a greater voltage. In non-rechargeable cells and batteries the chemical reactions stop when one of the reactants has been used up. Alkaline batteries are non-rechargeable. Rechargeable cells and batteries can be recharged because the chemical reactions are reversed when an external electrical current is supplied. Students should be able to interpret data for relative reactivity of different metals and evaluate the use of cells."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.2.2",
+    "content": "Fuel cells. Fuel cells are supplied by an external source of fuel (e.g., hydrogen) and oxygen or air. The fuel is oxidised electrochemically within the fuel cell to produce a potential difference. The overall reaction in a hydrogen fuel cell involves the oxidation of hydrogen to produce water. Hydrogen fuel cells offer a potential alternative to rechargeable cells and batteries. Students should be able to: evaluate the use of hydrogen fuel cells in comparison with rechargeable cells and batteries; (HT only) write the half equations for the electrode reactions in the hydrogen fuel cell."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.1",
+    "content": "Calculating rates of reactions. The rate of a chemical reaction can be found by measuring the quantity of a reactant used or the quantity of product formed over time. Mean rate of reaction = quantity of reactant used / time taken or quantity of product formed / time taken. The quantity of reactant or product can be measured by the mass in grams or by a volume in cm³. The units of rate of reaction may be given as g/s or cm³/s. For the Higher Tier, students are also required to use quantity of reactants in terms of moles and units for rate of reaction in mol/s. Students should be able to: calculate the mean rate of a reaction from given information about the quantity of a reactant used or the quantity of a product formed and the time taken; draw and interpret graphs showing the quantity of product formed or quantity of reactant used up against time; draw tangents to the curves on these graphs and use the slope of the tangent as a measure of the rate of reaction; (HT only) calculate the gradient of a tangent to the curve on these graphs as a measure of rate of reaction at a specific time."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.2",
+    "content": "Factors which affect the rates of chemical reactions. Factors which affect the rates of chemical reactions include: the concentrations of reactants in solution, the pressure of reacting gases, the surface area of solid reactants, the temperature and the presence of catalysts. Students should be able to recall how changing these factors affects the rate of chemical reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.3",
+    "content": "Collision theory and activation energy. Collision theory explains how various factors affect rates of reactions. According to this theory, chemical reactions can occur only when reacting particles collide with each other and with sufficient energy. The minimum amount of energy that particles must have to react is called the activation energy. Increasing the concentration of reactants in solution, the pressure of reacting gases, and the surface area of solid reactants increases the frequency of collisions and so increases the rate of reaction. Increasing the temperature increases the frequency of collisions and makes the collisions more energetic, and so increases the rate of reaction. Students should be able to: predict and explain using collision theory the effects of changing conditions of concentration, pressure and temperature on the rate of a reaction; predict and explain the effects of changes in the size of pieces of a reacting solid in terms of surface area to volume ratio; use simple ideas about proportionality when using collision theory to explain the effect of a factor on the rate of a reaction."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.1.4",
+    "content": "Catalysts. Catalysts change the rate of chemical reactions but are not used up during the reaction. Different reactions need different catalysts. Enzymes act as catalysts in biological systems. Catalysts increase the rate of reaction by providing a different pathway for the reaction that has a lower activation energy. Students should be able to: identify catalysts in reactions from their effect on the rate of reaction and because they are not included in the chemical equation for the reaction; explain catalytic action in terms of activation energy."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.1",
+    "content": "Reversible reactions. In some chemical reactions, the products of the reaction can react to produce the original reactants. Such reactions are called reversible reactions and are represented: A + B ⇌ C + D. The direction of reversible reactions can be changed by changing the conditions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.2",
+    "content": "Energy changes and reversible reactions. If a reversible reaction is exothermic in one direction, it is endothermic in the opposite direction. The same amount of energy is transferred in each case."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.3",
+    "content": "Equilibrium. When a reversible reaction occurs in apparatus which prevents the escape of reactants and products, equilibrium is reached when the forward and reverse reactions occur at exactly the same rate."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.4",
+    "content": "The effect of changing conditions on equilibrium (HT only). The relative amounts of all the reactants and products at equilibrium depend on the conditions of the reaction. If a system is at equilibrium and a change is made to any of the conditions, then the system responds to counteract the change. The effects of changing conditions on a system at equilibrium can be predicted using Le Chatelier’s Principle. Students should be able to make qualitative predictions about the effect of changes on systems at equilibrium when given appropriate information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.5",
+    "content": "The effect of changing concentration (HT only). If the concentration of one of the reactants or products is changed, the system is no longer at equilibrium and the concentrations of all the substances will change until equilibrium is reached again. If the concentration of a reactant is increased, more products will be formed until equilibrium is reached again. If the concentration of a product is decreased, more reactants will react until equilibrium is reached again. Students should be able to interpret appropriate given data to predict the effect of a change in concentration of a reactant or product on given reactions at equilibrium."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.6",
+    "content": "The effect of temperature changes on equilibrium (HT only). If the temperature of a system at equilibrium is increased: the relative amount of products at equilibrium increases for an endothermic reaction; the relative amount of products at equilibrium decreases for an exothermic reaction. If the temperature of a system at equilibrium is decreased: the relative amount of products at equilibrium decreases for an endothermic reaction; the relative amount of products at equilibrium increases for an exothermic reaction. Students should be able to interpret appropriate given data to predict the effect of a change in temperature on given reactions at equilibrium."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.6.2.7",
+    "content": "The effect of pressure changes on equilibrium (HT only). For gaseous reactions at equilibrium: an increase in pressure causes the equilibrium position to shift towards the side with the smaller number of molecules as shown by the symbol equation for that reaction; a decrease in pressure causes the equilibrium position to shift towards the side with the larger number of molecules as shown by the symbol equation for that reaction. Students should be able to interpret appropriate given data to predict the effect of pressure changes on given reactions at equilibrium."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.1",
+    "content": "Crude oil, hydrocarbons and alkanes. Crude oil is a finite resource found in rocks. Crude oil is the remains of an ancient biomass consisting mainly of plankton that was buried in mud. Crude oil is a mixture of a very large number of compounds. Most of the compounds in crude oil are hydrocarbons, which are molecules made up of hydrogen and carbon atoms only. Most of the hydrocarbons in crude oil are hydrocarbons called alkanes. The general formula for the homologous series of alkanes is CₙH₂ₙ₊₂. The first four members of the alkanes are methane, ethane, propane and butane. Alkane molecules can be represented in forms such as C₂H₆. Students should be able to recognise substances as alkanes given their formulae in these forms."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.2",
+    "content": "The many hydrocarbons in crude oil may be separated into fractions, each of which contains molecules with a similar number of carbon atoms, by fractional distillation. The fractions can be processed to produce fuels and feedstock for the petrochemical industry. Many of the fuels on which we depend for our modern lifestyle, such as petrol, diesel oil, kerosene, heavy fuel oil and liquefied petroleum gases, are produced from crude oil. Many useful materials on which modern life depends are produced by the petrochemical industry, such as solvents, lubricants, polymers, detergents. The vast array of natural and synthetic carbon compounds occur due to the ability of carbon atoms to form families of similar compounds. Students should be able to explain how fractional distillation works in terms of evaporation and condensation. Knowledge of the names of other specific fractions or fuels is not required."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.3",
+    "content": "Some properties of hydrocarbons depend on the size of their molecules, including boiling point, viscosity and flammability. These properties influence how hydrocarbons are used as fuels. Students should be able to recall how boiling point, viscosity and flammability change with increasing molecular size. The combustion of hydrocarbon fuels releases energy. During combustion, the carbon and hydrogen in the fuels are oxidised. The complete combustion of a hydrocarbon produces carbon dioxide and water. Students should be able to write balanced equations for the complete combustion of hydrocarbons with a given formula. Knowledge of trends in properties of hydrocarbons is limited to: boiling points, viscosity, flammability."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.1.4",
+    "content": "Hydrocarbons can be broken down (cracked) to produce smaller, more useful molecules. Cracking can be done by various methods including catalytic cracking and steam cracking. Students should be able to describe in general terms the conditions used for catalytic cracking and steam cracking. The products of cracking include alkanes and another type of hydrocarbon called alkenes. Alkenes are more reactive than alkanes and react with bromine water, which is used as a test for alkenes. Students should be able to recall the colour change when bromine water reacts with an alkene. There is a high demand for fuels with small molecules and so some of the products of cracking are useful as fuels. Alkenes are used to produce polymers and as starting materials for the production of many other chemicals. Students should be able to balance chemical equations as examples of cracking given the formulae of the reactants and products. Students should be able to give examples to illustrate the usefulness of cracking. They should also be able to explain how modern life depends on the uses of hydrocarbons. (For Combined Science: Trilogy and Synergy students do not need to know the formulae or names of individual alkenes.)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.1",
+    "content": "Alkenes are hydrocarbons with a double carbon-carbon bond. The general formula for the homologous series of alkenes is CₙH₂ₙ. Alkene molecules are unsaturated because they contain two fewer hydrogen atoms than the alkane with the same number of carbon atoms. The first four members of the homologous series of alkenes are ethene, propene, butene and pentene. Alkene molecules can be represented in the following forms: C₃H₆ or displayed formulae. Students do not need to know the names of individual alkenes other than ethene, propene, butene and pentene."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.2",
+    "content": "Alkenes are hydrocarbons with the functional group C=C. It is the generality of reactions of functional groups that determine the reactions of organic compounds. Alkenes react with oxygen in combustion reactions in the same way as other hydrocarbons, but they tend to burn in air with smoky flames because of incomplete combustion. Alkenes react with hydrogen, water and the halogens, by the addition of atoms across the carbon-carbon double bond so that the double bond becomes a single carbon-carbon bond. Students should be able to: describe the reactions and conditions for the addition of hydrogen, water and halogens to alkenes; draw fully displayed structural formulae of the first four members of the alkenes and the products of their addition reactions with hydrogen, water, chlorine, bromine and iodine."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.3",
+    "content": "Alcohols contain the functional group –OH. Methanol, ethanol, propanol and butanol are the first four members of a homologous series of alcohols. Alcohols can be represented in the following forms: CH₃CH₂OH or displayed formulae. Students should be able to: describe what happens when any of the first four alcohols react with sodium, burn in air, are added to water, react with an oxidising agent; recall the main uses of these alcohols. Aqueous solutions of ethanol are produced when sugar solutions are fermented using yeast. Students should know the conditions used for fermentation of sugar using yeast. Students should be able to recognise alcohols from their names or from given formulae. Students do not need to know the names of individual alcohols other than methanol, ethanol, propanol and butanol. Students are not expected to write balanced chemical equations for the reactions of alcohols other than for combustion reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.2.4",
+    "content": "Carboxylic acids have the functional group –COOH. The first four members of a homologous series of carboxylic acids are methanoic acid, ethanoic acid, propanoic acid and butanoic acid. The structures of carboxylic acids can be represented in the following forms: CH₃COOH or displayed formulae. Students should be able to: describe what happens when any of the first four carboxylic acids react with carbonates, dissolve in water, react with alcohols; (HT only) explain why carboxylic acids are weak acids in terms of ionisation and pH. Students should be able to recognise carboxylic acids from their names or from given formulae. Students do not need to know the names of individual carboxylic acids other than methanoic acid, ethanoic acid, propanoic acid and butanoic acid. Students are not expected to write balanced chemical equations for the reactions of carboxylic acids. Students do not need to know the names of esters other than ethyl ethanoate."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.3.1",
+    "content": "Alkenes can be used to make polymers such as poly(ethene) and poly(propene) by addition polymerisation. In addition polymerisation reactions, many small molecules (monomers) join together to form very large molecules (polymers). For example: displayed formulae of monomers and polymers. In addition polymers the repeating unit has the same atoms as the monomer because no other molecule is formed in the reaction. Students should be able to: recognise addition polymers and monomers from diagrams in the forms shown and from the presence of the functional group C=C in the monomers; draw diagrams to represent the formation of a polymer from a given alkene monomer; relate the repeating unit to the monomer."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.3.2",
+    "content": "Condensation polymerisation involves monomers with two functional groups. When these types of monomers react they join together, usually losing small molecules such as water, and so the reactions are called condensation reactions. The simplest polymers are produced from two different monomers with two of the same functional groups on each monomer. For example: ethanediol and hexanedioic acid polymerise to produce a polyester. Students should be able to explain the basic principles of condensation polymerisation by reference to the functional groups in the monomers and the repeating units in the polymers. (HT only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.3.3",
+    "content": "Amino acids have two different functional groups in a molecule. Amino acids react by condensation polymerisation to produce polypeptides. For example: glycine is H₂NCH₂COOH and polymerises to produce the polypeptide. Different amino acids can be combined in the same chain to produce proteins. (HT only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.7.3.4",
+    "content": "DNA (deoxyribonucleic acid) is a large molecule essential for life. DNA encodes genetic instructions for the development and functioning of living organisms and viruses. Most DNA molecules are two polymer chains, made from four different monomers called nucleotides, in the form of a double helix. Other naturally occurring polymers important for life include proteins, starch and cellulose. Students should be able to name the types of monomers from which these naturally occurring polymers are made."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1.1",
+    "content": "In chemistry, a pure substance is a single element or compound, not mixed with any other substance. Pure elements and compounds melt and boil at specific temperatures. Melting point and boiling point data can be used to distinguish pure substances from mixtures. In everyday language, a pure substance can mean a substance that has had nothing added to it, so it is unadulterated and in its natural state, eg pure milk. Students should be able to use melting point and boiling point data to distinguish pure from impure substances."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1.2",
+    "content": "A formulation is a mixture that has been designed as a useful product. Many products are complex mixtures in which each chemical has a particular purpose. Formulations are made by mixing the components in carefully measured quantities to ensure that the product has the required properties. Formulations include fuels, cleaning agents, paints, medicines, alloys, fertilisers and foods. Students should be able to identify formulations given appropriate information. Students do not need to know the names of components in proprietary products."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.1.3",
+    "content": "Chromatography can be used to separate mixtures and can give information to help identify substances. Chromatography involves a stationary phase and a mobile phase. Separation depends on the distribution of substances between the phases. The ratio of the distance moved by a compound (centre of spot from origin) to the distance moved by the solvent can be expressed as its Rf value: Rf = distance moved by substance / distance moved by solvent. Different compounds have different Rf values in different solvents, which can be used to help identify the compounds. The compounds in a mixture may separate into different spots depending on the solvent but a pure compound will produce a single spot in all solvents. Students should be able to: explain how paper chromatography separates mixtures; suggest how chromatographic methods can be used for distinguishing pure substances from impure substances; interpret chromatograms and determine Rf values from chromatograms."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.1",
+    "content": "The test for hydrogen uses a burning splint held at the open end of a test tube of the gas. Hydrogen burns rapidly with a pop sound."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.2",
+    "content": "The test for oxygen uses a glowing splint inserted into a test tube of the gas. The splint relights in oxygen."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.3",
+    "content": "The test for carbon dioxide uses an aqueous solution of calcium hydroxide (lime water). When carbon dioxide is shaken with or bubbled through limewater the limewater turns milky (cloudy)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.2.4",
+    "content": "The test for chlorine uses litmus paper. When damp litmus paper is put into chlorine gas the litmus paper is bleached and turns white."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.1",
+    "content": "Flame tests can be used to identify some metal ions (cations). Lithium, sodium, potassium, calcium and copper compounds produce distinctive colours in flame tests: lithium compounds result in a crimson flame; sodium compounds result in a yellow flame; potassium compounds result in a lilac flame; calcium compounds result in an orange-red flame; copper compounds result in a green flame. If a sample containing a mixture of ions is used some flame colours can be masked. Students should be able to identify species from the results of the tests."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.2",
+    "content": "Sodium hydroxide solution can be used to identify some metal ions (cations). Solutions of aluminium, calcium and magnesium ions form white precipitates when sodium hydroxide solution is added but only the aluminium hydroxide precipitate dissolves in excess sodium hydroxide solution. Solutions of copper(II), iron(II) and iron(III) ions form coloured precipitates when sodium hydroxide solution is added. Copper(II) forms a blue precipitate, iron(II) a green precipitate and iron(III) a brown precipitate. Students should be able to write balanced equations for the reactions to produce the insoluble hydroxides. Students are not expected to write equations for the production of sodium aluminate."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.3",
+    "content": "Carbonates react with dilute acids to form carbon dioxide gas. Carbon dioxide can be identified with limewater."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.4",
+    "content": "Halide ions in solution produce precipitates with silver nitrate solution in the presence of dilute nitric acid. Silver chloride is white, silver bromide is cream and silver iodide is yellow."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.5",
+    "content": "Sulfate ions in solution produce a white precipitate with barium chloride solution in the presence of dilute hydrochloric acid."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.6",
+    "content": "Elements and compounds can be detected and identified using instrumental methods. Instrumental methods are accurate, sensitive and rapid. Students should be able to state advantages of instrumental methods compared with the chemical tests in this specification."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.8.3.7",
+    "content": "Flame emission spectroscopy is an example of an instrumental method used to analyse metal ions in solutions. The sample is put into a flame and the light given out is passed through a spectroscope. The output is a line spectrum that can be analysed to identify the metal ions in the solution and measure their concentrations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.1",
+    "content": "The proportions of different gases in the atmosphere: • about four-fifths (approximately 80%) nitrogen • about one-fifth (approximately 20%) oxygen • small proportions of various other gases, including carbon dioxide, water vapour and noble gases. Students should be able to use ratios, fractions and percentages."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.2",
+    "content": "Theories about what was in the Earth’s early atmosphere and how the atmosphere was formed have changed and developed over time. One theory suggests intense volcanic activity released gases that formed the early atmosphere and water vapour that condensed to form the oceans. The early atmosphere may have consisted mainly of carbon dioxide with little or no oxygen gas, similar to Mars and Venus today. Volcanoes also produced nitrogen, and there may have been small proportions of methane and ammonia. Carbon dioxide dissolved in the oceans, reducing its atmospheric levels. Students should be able to interpret evidence and evaluate different theories about the Earth’s early atmosphere given appropriate information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.3",
+    "content": "Algae and plants produced the oxygen in the atmosphere by photosynthesis. Algae first produced oxygen about 2.7 billion years ago, leading to an increase in atmospheric oxygen levels, enabling animals to evolve."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.1.4",
+    "content": "Algae and plants decreased carbon dioxide levels by photosynthesis. Carbon dioxide was also reduced by the formation of sedimentary rocks and fossil fuels. Students should be able to: • describe the main changes in the atmosphere over time and their likely causes • describe and explain the formation of deposits of limestone, coal, crude oil and natural gas."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2.1",
+    "content": "Greenhouse gases (water vapour, carbon dioxide, methane) maintain temperatures on Earth high enough to support life. Students should be able to describe the greenhouse effect in terms of the interaction of short and long wavelength radiation with matter."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2.2",
+    "content": "Human activities increase greenhouse gases (carbon dioxide and methane). Students should recall two human activities that increase each gas. Many scientists believe human activities will cause global temperature increases and climate change, but modelling is complex, leading to simplified or biased media representations. Students should be able to: • evaluate the quality of evidence in reports about global climate change • describe uncertainties in the evidence base • recognise the importance of peer review and communication of results."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2.3",
+    "content": "An increase in average global temperature is a major cause of climate change. Students should be able to: • describe briefly four potential effects of global climate change • discuss the scale, risk and environmental implications of global climate change."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.2.4",
+    "content": "The carbon footprint is the total amount of carbon dioxide and other greenhouse gases emitted over a product, service, or event’s life cycle. Students should be able to: • describe actions to reduce emissions of carbon dioxide and methane • give reasons why actions may be limited."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3.1",
+    "content": "Combustion of fuels is a major source of atmospheric pollutants. Gases released may include carbon dioxide, water vapour, carbon monoxide, sulfur dioxide, and oxides of nitrogen. Solid particles and unburned hydrocarbons may also form particulates. Students should be able to: • describe how carbon monoxide, soot (carbon particles), sulfur dioxide, and oxides of nitrogen are produced by burning fuels • predict combustion products given fuel composition and conditions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.9.3.2",
+    "content": "Atmospheric pollutants have harmful effects: • Carbon monoxide is toxic, colourless, and odourless. • Sulfur dioxide and oxides of nitrogen cause respiratory problems and acid rain. • Particulates cause global dimming and health problems. Students should be able to describe and explain these problems."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1.1",
+    "content": "Humans use Earth’s resources for warmth, shelter, food, and transport. Natural resources, supplemented by agriculture, provide food, timber, clothing, and fuels. Finite resources are processed to provide energy and materials. Chemistry improves agricultural and industrial processes for sustainable development. Students should be able to: • state examples of natural products supplemented or replaced by agricultural and synthetic products • distinguish between finite and renewable resources • extract and interpret resource information from charts, graphs, and tables • use orders of magnitude to evaluate data significance."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1.2",
+    "content": "Potable water is safe to drink but not chemically pure. In the UK, potable water is produced by choosing a fresh water source, filtering, and sterilising (using chlorine, ozone, or UV light). Desalination of salty water is energy-intensive. Students should be able to: • distinguish between potable and pure water • describe differences in treating ground water and salty water • explain steps in producing potable water. Required practical 8: Analysis and purification of water samples, including pH, dissolved solids, and distillation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1.3",
+    "content": "Waste water treatment includes screening, grit removal, sedimentation, anaerobic digestion of sludge, and aerobic biological treatment of effluent. Students should comment on the relative ease of obtaining potable water from waste, ground, and salt water."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.1.4",
+    "content": "New methods of extracting copper from low-grade ores include phytomining and bioleaching. Phytomining uses plants to absorb metal compounds; bioleaching uses bacteria to produce leachate solutions. Copper can be obtained from solutions by displacement or electrolysis. Students should evaluate alternative biological methods of metal extraction given appropriate information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.2.1",
+    "content": "Life cycle assessments (LCAs) evaluate environmental impact at stages: raw material extraction, manufacturing, use, and disposal. Quantifying pollutant effects requires value judgements. Students should carry out simple comparative LCAs for plastic and paper shopping bags and interpret LCAs given appropriate information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.2.2",
+    "content": "Reducing, reusing, and recycling materials minimises resource use, energy, waste, and environmental impact. Metals, glass, and plastics are produced from limited raw materials. Students should evaluate ways of reducing the use of limited resources given appropriate information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3.1",
+    "content": "Corrosion is the destruction of materials by chemical reactions with the environment. Rusting requires air and water. Corrosion prevention includes coatings (greasing, painting, electroplating) or sacrificial protection (e.g., zinc galvanising iron). Students should: • describe experiments showing air and water are necessary for rusting • explain sacrificial protection in terms of reactivity."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3.2",
+    "content": "Alloys are commonly used metals. Examples: • Bronze (copper and tin) • Brass (copper and zinc) • Gold alloys (with silver, copper, zinc) • Steels (iron with carbon and other metals) • Aluminium alloys (low density). Students should: • recall uses of specified alloys • interpret and evaluate alloy compositions and uses given information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3.3",
+    "content": "Glass types: soda-lime (sand, sodium carbonate, limestone) and borosilicate (sand, boron trioxide). Clay ceramics are shaped and heated in a furnace. Polymer properties depend on monomers and production conditions (e.g., LD and HD poly(ethene)). Thermosoftening polymers melt when heated; thermosetting polymers do not. Students should: • explain how LD and HD poly(ethene) are produced • explain differences between thermosoftening and thermosetting polymers."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 3.6",
+    "content": "Interpret an instrumental result (e.g., flame emission spectroscopy) given appropriate data in chart or tabular form with a reference set."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.3",
+    "content": "Students should be able to recall some examples of composites. Students should be able to, given appropriate information: • compare quantitatively the physical properties of glass and clay ceramics, polymers, composites and metals • explain how the properties of materials are related to their uses and select appropriate materials. Compare the properties of thermosetting and thermosoftening polymers."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.4.1",
+    "content": "The Haber process is used to manufacture ammonia, which can be used to produce nitrogen-based fertilisers. The raw materials for the Haber process are nitrogen and hydrogen. Students should be able to recall a source for the nitrogen and a source for the hydrogen used in the Haber process. The purified gases are passed over a catalyst of iron at a high temperature (about 450°C) and a high pressure (about 200 atmospheres). Some of the hydrogen and nitrogen reacts to form ammonia. The reaction is reversible so some of the ammonia produced breaks down into nitrogen and hydrogen: nitrogen + hydrogen ⇌ ammonia. On cooling, the ammonia liquefies and is removed. The remaining hydrogen and nitrogen are recycled. (HT only) Students should be able to: • interpret graphs of reaction conditions versus rate • apply the principles of dynamic equilibrium in reversible reactions and dynamic equilibrium to the Haber process • explain the trade-off between rate of production and position of equilibrium • explain how the commercially used conditions for the Haber process are related to the availability and cost of raw materials and energy supplies, control of equilibrium position and rate."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.10.4.2",
+    "content": "Compounds of nitrogen, phosphorus and potassium are used as fertilisers to improve agricultural productivity. NPK fertilisers contain compounds of all three elements. Industrial production of NPK fertilisers can be achieved using a variety of raw materials in several integrated processes. NPK fertilisers are formulations of various salts containing appropriate percentages of the elements. Ammonia can be used to manufacture ammonium salts and nitric acid. Potassium chloride, potassium sulfate and phosphate rock are obtained by mining, but phosphate rock cannot be used directly as a fertiliser. Phosphate rock is treated with nitric acid or sulfuric acid to produce soluble salts that can be used as fertilisers. Students should be able to: • recall the names of the salts produced when phosphate rock is treated with nitric acid, sulfuric acid and phosphoric acid • compare the industrial production of fertilisers with laboratory preparations of the same compounds, given appropriate information."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 2.4",
+    "content": "carry out experiments appropriately having due regard for the correct manipulation of apparatus, the accuracy of measurements and health and safety considerations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 2.5",
+    "content": "recognise when to apply a knowledge of sampling techniques to ensure any samples collected are representative."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 2.6",
+    "content": "make and record observations and measurements using a range of apparatus and methods."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "WS 2.7",
+    "content": "evaluate methods and suggest possible improvements and further investigations."
+  }
+]

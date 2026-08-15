@@ -10,7 +10,7 @@ import Link from "next/link";
 import { PaywallOverlay } from "@/components/ui/paywall";
 import { useUser } from "@clerk/nextjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { PremiumGate } from "@/components/premium-gate";
+
 import { useSubscription, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { supabase } from "@/lib/supabase";
 import pptxgen from "pptxgenjs";
@@ -29,7 +29,7 @@ export default function PresentationBuilderPage() {
   const [error, setError] = useState<string | null>(null);
   
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const { tier, isLoaded, deductCredits } = useSubscription();
+  const { tier, isLoaded, deductCredits , assistant } = useSubscription();
   const tierRank = TIER_RANK[tier] || 0;
   const { user } = useUser();
 
@@ -54,13 +54,13 @@ export default function PresentationBuilderPage() {
       const res = await fetch("/api/presentation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic, slideCount, extraContext, tierRank }),
+        body: JSON.stringify({ topic, slideCount, extraContext, tierRank, model: assistant }),
       });
       const data = await res.json();
       if (data.status === "success") {
         setSlides(data.data);
         setCurrentSlideIndex(0);
-        deductCredits(100, slideCount * 100, "Apollo V4 Flash", "other");
+        deductCredits(100, slideCount * 100, assistant, "other");
         
         if (user) {
           await supabase.from("explore_history").insert({
@@ -108,7 +108,7 @@ export default function PresentationBuilderPage() {
   };
 
   return (
-    <PremiumGate featureName="Presentation Builder">
+
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
       <div className={cn(tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && "opacity-20 pointer-events-none blur-[2px]")}>
       {/* Header */}
@@ -268,6 +268,6 @@ export default function PresentationBuilderPage() {
       )}
       </div>
     </div>
-    </PremiumGate>
+
   );
 }

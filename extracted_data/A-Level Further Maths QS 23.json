@@ -1,0 +1,170 @@
+[
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "7.5.1",
+    "content": "Differentiation of hyperbolic functions: second derivatives of sinh x and cosh x."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "7.5.2",
+    "content": "Differentiation of combinations of trigonometric and hyperbolic functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "6.1.1",
+    "content": "Limits: evaluation of limits involving algebraic, exponential, logarithmic, and trigonometric functions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "5.1.1",
+    "content": "Determinants of 3x3 matrices and their properties, including the effect of elementary row and column operations on the determinant."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "4.2.1",
+    "content": "Inverse hyperbolic functions: definitions, domains, and ranges of arsinh x, arcosh x, and artanh x."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "5.3.1",
+    "content": "Matrix transformations: effect of matrices on curves and regions, including the use of matrices to represent linear transformations."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "5.3.2",
+    "content": "Finding equations of transformed curves, including asymptotes."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.3.1",
+    "content": "Complex numbers: representation in Cartesian form (a + bi) and polar form (r(cos θ + i sin θ) or re^(iθ))."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.3.2",
+    "content": "Operations with complex numbers: addition, subtraction, multiplication, division, and finding roots."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.4.1",
+    "content": "Geometrical representation of complex numbers: loci in the Argand diagram, including circles, half-lines, and regions."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "2.2.1",
+    "content": "Summation of series: methods for summing finite series, including the use of known results for Σr, Σr^2, and Σr^3."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "5.2.1",
+    "content": "Inverse matrices: properties of inverse matrices, including (AB)^(-1) = B^(-1)A^(-1) and (A^T)^(-1) = (A^(-1))^T."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "5.2.2",
+    "content": "Finding the inverse of 2x2 matrices and conditions for the existence of an inverse."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.3.3",
+    "content": "De Moivre’s theorem: application to find powers and roots of complex numbers and to derive trigonometric identities."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.4.2",
+    "content": "Regions in the Argand diagram defined by inequalities involving modulus and argument."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Cartesian and vector equations of lines in 3D, including finding the equation of a line through two points."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "Scalar product: use to find the angle between two lines and to determine if lines are perpendicular."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.2.2",
+    "content": "Conditions for lines to intersect or be coplanar in 3D."
+  },
+  {
+    "subject": "Further Mathematics",
+    "level": "A-Level",
+    "topicCode": "6.3.1",
+    "content": "Proof by induction: application to divisibility problems and series."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Understand and use the sum and product of the roots of quadratic equations (α + β and αβ)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1.2",
+    "content": "Form quadratic equations with given roots, including roots involving surds or complex numbers."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "Use de Moivre’s theorem to derive trigonometric identities, including expressions for sin(nθ) and cos(nθ)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.2.2",
+    "content": "Sum finite trigonometric series using complex numbers and de Moivre’s theorem."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "4.1.1",
+    "content": "Analyse the behaviour of functions, including identifying stationary points without calculus (e.g., completing the square for quadratic functions)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "4.3.1",
+    "content": "Evaluate definite integrals of polynomial and rational functions, including the use of substitution and partial fractions."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "5.4.1",
+    "content": "Model damped harmonic motion using second-order differential equations, including cases with air resistance."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "5.4.2",
+    "content": "Solve second-order differential equations of the form m(d²x/dt²) + R(dx/dt) + kx = mg, including finding general and particular solutions."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "5.4.3",
+    "content": "Interpret and solve problems involving simple harmonic motion (SHM) and damped oscillations, including determining constants from initial conditions."
+  }
+]

@@ -1,0 +1,938 @@
+[
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.1",
+    "content": "Monomers and polymers. The variety of life, both past and present, is extensive, but the biochemical basis of life is similar for all living things. Monomers are the smaller units from which larger molecules are made. Polymers are molecules made from a large number of monomers joined together. Monosaccharides, amino acids and nucleotides are examples of monomers. A condensation reaction joins two molecules together with the formation of a chemical bond and involves the elimination of a molecule of water. A hydrolysis reaction breaks a chemical bond between two molecules and involves the use of a water molecule."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.2",
+    "content": "Carbohydrates. Monosaccharides are the monomers from which larger carbohydrates are made. Glucose, galactose and fructose are common monosaccharides. A condensation reaction between two monosaccharides forms a glycosidic bond. Disaccharides are formed by the condensation of two monosaccharides: maltose is a disaccharide formed by condensation of two glucose molecules, sucrose is a disaccharide formed by condensation of a glucose molecule and a fructose molecule, lactose is a disaccharide formed by condensation of a glucose molecule and a galactose molecule. Glucose has two isomers, α-glucose and β-glucose, with structures. Polysaccharides are formed by the condensation of many glucose units. Glycogen and starch are formed by the condensation of α-glucose. Cellulose is formed by the condensation of β-glucose."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.3",
+    "content": "Lipids. Triglycerides and phospholipids are two groups of lipid. Triglycerides are formed by the condensation of one molecule of glycerol and three molecules of fatty acid. A condensation reaction between glycerol and a fatty acid (RCOOH) forms an ester bond. The R-group of a fatty acid may be saturated or unsaturated. In phospholipids, one of the fatty acids of a triglyceride is substituted by a phosphate-containing group. The different properties of triglycerides and phospholipids related to their different structures. The emulsion test for lipids."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.4",
+    "content": "Proteins. Amino acids are the monomers from which proteins are made. The general structure of an amino acid as: where NH2 represents an amine group, COOH represents a carboxyl group and R represents a side chain. The twenty amino acids that are common in all organisms differ only in their side group. A condensation reaction between two amino acids forms a peptide bond. Dipeptides are formed by the condensation of two amino acids. Polypeptides are formed by the condensation of many amino acids. A functional protein may contain one or more polypeptides. The role of hydrogen bonds, ionic bonds and disulfide bridges in the structure of proteins. Proteins have a variety of functions within all living organisms. The relationship between primary, secondary, tertiary and quaternary structure, and protein function. The biuret test for proteins."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.4.1",
+    "content": "General properties of proteins. Amino acids are the monomers from which proteins are made. The general structure of an amino acid as: where NH2 represents an amine group, COOH represents a carboxyl group and R represents a side chain. The twenty amino acids that are common in all organisms differ only in their side group. A condensation reaction between two amino acids forms a peptide bond. Dipeptides are formed by the condensation of two amino acids. Polypeptides are formed by the condensation of many amino acids. A functional protein may contain one or more polypeptides. The role of hydrogen bonds, ionic bonds and disulfide bridges in the structure of proteins. Proteins have a variety of functions within all living organisms. The relationship between primary, secondary, tertiary and quaternary structure, and protein function. The biuret test for proteins."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.4.2",
+    "content": "Many proteins are enzymes. Each enzyme lowers the activation energy of the reaction it catalyses. The induced-fit model of enzyme action. The properties of an enzyme relate to the tertiary structure of its active site and its ability to combine with complementary substrate(s) to form an enzyme-substrate complex. The specificity of enzymes. The effects of the following factors on the rate of enzyme-controlled reactions – enzyme concentration, substrate concentration, concentration of competitive and of non-competitive inhibitors, pH and temperature."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.5",
+    "content": "Nucleic acids are important information-carrying molecules. The structure of DNA and RNA."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.5.1",
+    "content": "Structure of DNA and RNA."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2",
+    "content": "Cells."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3",
+    "content": "Organisms exchange substances with their environment."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4",
+    "content": "Genetic information, variation and relationships between organisms."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5",
+    "content": "Energy transfers in and between organisms."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6",
+    "content": "Organisms respond to changes in their internal and external environments."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7",
+    "content": "Genetics, populations, evolution and ecosystems."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8",
+    "content": "The control of gene expression."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.5.2",
+    "content": "The semi-conservative replication of DNA ensures genetic continuity between generations of cells. The process of semi-conservative replication of DNA in terms of: unwinding of the double helix, breakage of hydrogen bonds between complementary bases in the polynucleotide strands, the role of DNA helicase in unwinding DNA and breaking its hydrogen bonds, attraction of new DNA nucleotides to exposed bases on template strands and base pairing, the role of DNA polymerase in the condensation reaction that joins adjacent nucleotides."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.6",
+    "content": "A single molecule of adenosine triphosphate (ATP) is a nucleotide derivative and is formed from a molecule of ribose, a molecule of adenine and three phosphate groups. Hydrolysis of ATP to adenosine diphosphate (ADP) and an inorganic phosphate group (Pi) is catalysed by the enzyme ATP hydrolase."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.7",
+    "content": "Water is a major component of cells. It has several properties that are important in biology. In particular, water: is a metabolite in many metabolic reactions, including condensation and hydrolysis reactions, is an important solvent in which metabolic reactions occur, has a relatively high heat capacity, buffering changes in temperature, has a relatively large latent heat of vaporisation, providing a cooling effect with little loss of water through evaporation, has strong cohesion between water molecules; this supports columns of water in the tube-like transport cells of plants and produces surface tension where water meets air."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.1.8",
+    "content": "Inorganic ions occur in solution in the cytoplasm and body fluids of organisms, some in high concentrations and others in very low concentrations. Each type of ion has a specific role, depending on its properties."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2",
+    "content": "All life on Earth exists as cells. These have basic features in common. Differences between cells are due to the addition of extra features. This provides indirect evidence for evolution. All cells arise from other cells, by binary fission in prokaryotic cells and by mitosis and meiosis in eukaryotic cells."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "The cell theory is a unifying concept in biology. The structure of eukaryotic cells, restricted to the structure and function of: cell-surface membrane, nucleus (containing chromosomes, consisting of protein-bound, linear DNA, and one or more nucleoli), mitochondria, chloroplasts (in plants and algae), Golgi apparatus and Golgi vesicles, lysosomes (a membrane-bound organelle that releases hydrolytic enzymes), ribosomes, rough endoplasmic reticulum and smooth endoplasmic reticulum, cell wall (in plants, algae and fungi), cell vacuole (in plants)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.1.1",
+    "content": "The structure of eukaryotic cells, restricted to the structure and function of: cell-surface membrane, nucleus (containing chromosomes, consisting of protein-bound, linear DNA, and one or more nucleoli), mitochondria, chloroplasts (in plants and algae), Golgi apparatus and Golgi vesicles, lysosomes (a membrane-bound organelle that releases hydrolytic enzymes), ribosomes, rough endoplasmic reticulum and smooth endoplasmic reticulum, cell wall (in plants, algae and fungi), cell vacuole (in plants)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.1.2",
+    "content": "Prokaryotic cells are much smaller than eukaryotic cells. They also differ from eukaryotic cells in having: cytoplasm that lacks membrane-bound organelles, smaller ribosomes, no nucleus; instead they have a single circular DNA molecule that is free in the cytoplasm and is not associated with proteins, a cell wall that contains murein, a glycoprotein."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.1.3",
+    "content": "The principles and limitations of optical microscopes, transmission electron microscopes and scanning electron microscopes. Measuring the size of an object viewed with an optical microscope. The difference between magnification and resolution."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.2",
+    "content": "Within multicellular organisms, not all cells retain the ability to divide. Eukaryotic cells that do retain the ability to divide show a cell cycle. DNA replication occurs during the interphase of the cell cycle. Mitosis is the part of the cell cycle in which a eukaryotic cell divides to produce two daughter cells, each with the identical copies of DNA produced by the parent cell during DNA replication."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.3",
+    "content": "The basic structure of all cell membranes, including cell-surface membranes and the membranes around the cell organelles of eukaryotes, is the same. The arrangement and any movement of phospholipids, proteins, glycoproteins and glycolipids in the fluid-mosaic model of membrane structure."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.4",
+    "content": "Each type of cell has specific molecules on its surface that identify it. These molecules include proteins and enable the immune system to identify: pathogens, cells from other organisms of the same species, abnormal body cells, toxins."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3",
+    "content": "The internal environment of a cell or organism is different from its external environment. The exchange of substances between the internal and external environments takes place at exchange surfaces."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.1",
+    "content": "The relationship between the size of an organism or structure and its surface area to volume ratio. Changes to body shape and the development of systems in larger organisms as adaptations that facilitate exchange as this ratio reduces."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.2",
+    "content": "Adaptations of gas exchange surfaces, shown by gas exchange: across the body surface of a single-celled organism, in the tracheal system of an insect (tracheae, tracheoles and spiracles), across the gills of fish (gill lamellae and filaments including the counter-current principle), by the leaves of dicotyledonous plants (mesophyll and stomata)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.3",
+    "content": "During digestion, large biological molecules are hydrolysed to smaller molecules that can be absorbed across cell membranes. Digestion in mammals of: carbohydrates by amylases and membrane-bound disaccharidases, lipids by lipase, including the action of bile salts, proteins by endopeptidases, exopeptidases and membrane-bound dipeptidases."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.4",
+    "content": "Mass transport"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.4.1",
+    "content": "Mass transport in animals"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.3.4.2",
+    "content": "Mass transport in plants"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4",
+    "content": "Genetic information, variation and relationships between organisms"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "DNA, genes and chromosomes"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4.2",
+    "content": "DNA and protein synthesis"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4.3",
+    "content": "Genetic diversity can arise as a result of mutation or during meiosis"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4.4",
+    "content": "Genetic diversity and adaptation"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4.5",
+    "content": "Species and taxonomy"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4.6",
+    "content": "Biodiversity within a community"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.4.7",
+    "content": "Investigating diversity"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5",
+    "content": "Energy transfers in and between organisms"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Photosynthesis"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5.2",
+    "content": "Respiration"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5.3",
+    "content": "In any ecosystem, plants synthesise organic compounds from atmospheric, or aquatic, carbon dioxide. Most of the sugars synthesised by plants are used by the plant as respiratory substrates. The rest are used to make other groups of biological molecules. These biological molecules form the biomass of the plants. Biomass can be measured in terms of mass of carbon or dry mass of tissue per given area. The chemical energy store in dry biomass can be estimated using calorimetry. Gross primary production (GPP) is the chemical energy store in plant biomass, in a given area or volume. Net primary production (NPP) is the chemical energy store in plant biomass after respiratory losses to the environment have been taken into account, ie NPP = GPP – R where GPP represents gross production and R represents respiratory losses to the environment. This net primary production is available for plant growth and reproduction. It is also available to other trophic levels in the ecosystem, such as herbivores and decomposers. The net production of consumers (N), such as animals, can be calculated as: N = I – (F + R) where I represents the chemical energy store in ingested food, F represents the chemical energy lost to the environment in faeces and urine and R represents the respiratory losses to the environment. Primary and secondary productivity is the rate of primary or secondary production, respectively. It is measured as biomass in a given area in a given time eg kJ ha–1 year–1."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5.4",
+    "content": "Nutrients are recycled within natural ecosystems, exemplified by the nitrogen cycle and the phosphorus cycle. Microorganisms play a vital role in recycling chemical elements such as phosphorus and nitrogen. The role of saprobionts in decomposition. The role of mycorrhizae in facilitating the uptake of water and inorganic ions by plants. The role of bacteria in the nitrogen cycle in sufficient detail to illustrate the processes of saprobiotic nutrition, ammonification, nitrification, nitrogen fixation and denitrification."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6",
+    "content": "A stimulus is a change in the internal or external environment. A receptor detects a stimulus. A coordinator formulates a suitable response to a stimulus. An effector produces a response. Receptors are specific to one type of stimulus. Nerve cells pass electrical impulses along their length. A nerve impulse is specific to a target cell only because it releases a chemical messenger directly onto it, producing a response that is usually rapid, short-lived and localised."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.1",
+    "content": "Organisms increase their chance of survival by responding to changes in their environment."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.1.1",
+    "content": "In flowering plants, specific growth factors move from growing regions to other tissues, where they regulate growth in response to directional stimuli. The effect of different concentrations of indoleacetic acid (IAA) on cell elongation in the roots and shoots of flowering plants as an explanation of gravitropism and phototropism in flowering plants. Taxes and kineses as simple responses that can maintain a mobile organism in a favourable environment. The protective effect of a simple reflex, exemplified by a three-neurone simple reflex."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.1.2",
+    "content": "The Pacinian corpuscle should be used as an example of a receptor to illustrate that receptors respond only to specific stimuli, stimulation of a receptor leads to the establishment of a generator potential. The basic structure of a Pacinian corpuscle. Deformation of stretch-mediated sodium ion channels in a Pacinian corpuscle leads to the establishment of a generator potential."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.1.3",
+    "content": "Myogenic stimulation of the heart and transmission of a subsequent wave of electrical activity. The roles of the sinoatrial node (SAN), atrioventricular node (AVN) and Purkyne tissue in the bundle of His. The roles and locations of chemoreceptors and pressure receptors and the roles of the autonomic nervous system and effectors in controlling heart rate."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.2",
+    "content": "The structure of a myelinated motor neurone. The establishment of a resting potential in terms of differential membrane permeability, electrochemical gradients and the movement of sodium ions and potassium ions. Changes in membrane permeability lead to depolarisation and the generation of an action potential. The all-or-nothing principle. The passage of an action potential along non-myelinated and myelinated axons, resulting in nerve impulses."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.2.1",
+    "content": "The structure of a myelinated motor neurone. The establishment of a resting potential in terms of differential membrane permeability, electrochemical gradients and the movement of sodium ions and potassium ions. Changes in membrane permeability lead to depolarisation and the generation of an action potential."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.2.2",
+    "content": "The detailed structure of a synapse and of a neuromuscular junction. The sequence of events involved in transmission across a cholinergic synapse in sufficient detail to explain unidirectionality, temporal and spatial summation, inhibition by inhibitory synapses."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.3",
+    "content": "Muscles act in antagonistic pairs against an incompressible skeleton. Gross and microscopic structure of skeletal muscle. The ultrastructure of a myofibril. The roles of actin, myosin, calcium ions and ATP in myofibril contraction. The roles of calcium ions and tropomyosin in the cycle of actinomyosin bridge formation."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.4",
+    "content": "Homeostasis in mammals involves physiological control systems that maintain the internal environment within restricted limits. The importance of maintaining a stable core temperature and stable blood pH in relation to enzyme activity. The importance of maintaining a stable blood glucose concentration in terms of availability of respiratory substrate and of the water potential of blood."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.4.1",
+    "content": "Homeostasis in mammals involves physiological control systems that maintain the internal environment within restricted limits. The importance of maintaining a stable core temperature and stable blood pH in relation to enzyme activity. The importance of maintaining a stable blood glucose concentration in terms of availability of respiratory substrate and of the water potential of blood. Negative feedback restores systems to their original level."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.4.2",
+    "content": "The factors that influence blood glucose concentration. The role of the liver in glycogenesis, glycogenolysis and gluconeogenesis. The action of insulin by attaching to receptors on the surfaces of target cells, controlling the uptake of glucose by regulating the inclusion of channel proteins in the surface membranes of target cells, activating enzymes involved in the conversion of glucose to glycogen."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.6.4.3",
+    "content": "Osmoregulation as control of the water potential of the blood. The roles of the hypothalamus, posterior pituitary and antidiuretic hormone (ADH) in osmoregulation. The structure of the nephron and its role in the formation of glomerular filtrate, reabsorption of glucose and water by the proximal convoluted tubule, maintaining a gradient of sodium ions in the medulla by the loop of Henle, reabsorption of water by the distal convoluted tubule and collecting ducts."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7",
+    "content": "The theory of evolution underpins modern Biology. All new species arise from an existing species. This results in different species sharing a common ancestry, as represented in phylogenetic classification. Common ancestry can explain the similarities between all living organisms, such as common chemistry, physiological pathways, cell structure, DNA as the genetic material and a ‘universal’ genetic code."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.1",
+    "content": "The genotype is the genetic constitution of an organism. The phenotype is the expression of this genetic constitution and its interaction with the environment. There may be many alleles of a single gene. Alleles may be dominant, recessive or codominant. In a diploid organism, the alleles at a specific locus may be either homozygous or heterozygous."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.2",
+    "content": "Species exist as one or more populations. A population as a group of organisms of the same species occupying a particular space at a particular time that can potentially interbreed. The concepts of gene pool and allele frequency. The Hardy–Weinberg principle provides a mathematical model, which predicts that allele frequencies will not change from generation to generation."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.3",
+    "content": "Individuals within a population of a species may show a wide range of variation in phenotype. This is due to genetic and environmental factors. Two forces affect genetic variation in populations: genetic drift and natural selection. Genetic drift can cause changes in allele frequency in small populations. Natural selection occurs when alleles that enhance the fitness of the individuals that carry them rise in frequency."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.4",
+    "content": "Populations of different species form a community. A community and the non-living components of its environment together form an ecosystem. Ecosystems can range in size from the very small to the very large."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.1",
+    "content": "Alteration of the sequence of bases in DNA can alter the structure of proteins"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.2.1",
+    "content": "Most of a cell’s DNA is not translated"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.2.2",
+    "content": "Regulation of transcription and translation"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.2.3",
+    "content": "Gene expression and cancer"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.3",
+    "content": "Using genome projects"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.4.1",
+    "content": "Recombinant DNA technology"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.4.2",
+    "content": "Differences in DNA between individuals of the same species can be exploited for identification and diagnosis of heritable conditions"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.4.3",
+    "content": "Genetic fingerprinting"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "4.1",
+    "content": "Courses based on these specifications should encourage students to: develop essential knowledge and understanding of different areas of the subject and how they relate to each other"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "4.2",
+    "content": "Assessment objectives (AOs) are set by Ofqual and are the same across all AS and A-level Biology specifications and all exam boards."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "4.3",
+    "content": "The marks awarded on the papers will be scaled to meet the weighting of the"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 0.1",
+    "content": "Recognise and make use of appropriate units in calculations"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 0.2",
+    "content": "Recognise and use expressions in decimal and standard form"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 0.3",
+    "content": "Use ratios, fractions and percentages"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 0.4",
+    "content": "Estimate results"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 0.5",
+    "content": "Use calculators to find and use power, exponential and logarithmic functions"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.1",
+    "content": "Use an appropriate number of significant figures"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.2",
+    "content": "Find arithmetic means"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.3",
+    "content": "Construct and interpret frequency tables and diagrams, bar charts and histograms"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.4",
+    "content": "Understand simple probability"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.5",
+    "content": "Understand the principles of sampling as applied to scientific data"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.6",
+    "content": "Understand the terms mean, median and mode"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.7",
+    "content": "Use a scatter diagram to identify a correlation between two variables"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.8",
+    "content": "Make order of magnitude calculations"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.9",
+    "content": "Select and use a statistical test"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.10",
+    "content": "Understand measures of dispersion, including standard deviation and range"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 1.11",
+    "content": "Identify uncertainties in measurements and use simple techniques to determine uncertainty when data are combined"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 2.1",
+    "content": "Understand and use the symbols: =, <, <<, >>, >, ∝, ."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 2.2",
+    "content": "Change the subject of an equation"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 2.3",
+    "content": "Substitute numerical values into algebraic equations using appropriate units for physical quantities"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 2.4",
+    "content": "Solve algebraic equations"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 2.5",
+    "content": "Use logarithms in relation to quantities that range over several orders of magnitude"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 3.1",
+    "content": "Translate information between graphical, numerical and algebraic forms"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 3.2",
+    "content": "Plot two variables from experimental or other data"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 3.3",
+    "content": "Understand that y=mx+c represents a linear relationship"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 3.4",
+    "content": "Determine the intercept of a graph"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 3.5",
+    "content": "Calculate rate of change from a graph showing a linear relationship"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 3.6",
+    "content": "Draw and use the slope of a tangent to a curve as a measure of rate of change"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "MS 4.1",
+    "content": "Calculate the circumferences, surface areas and volumes of regular shapes"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT a",
+    "content": "Use appropriate apparatus to record a range of quantitative measurements (to include mass, time, volume, temperature, length and pH)"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT b",
+    "content": "Use appropriate instrumentation to record quantitative measurements, such as a colorimeter or potometer"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT c",
+    "content": "Use laboratory glassware apparatus for a variety of experimental techniques to include serial dilutions"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT d",
+    "content": "Use of light microscope at high power and low power, including use of a graticule"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT e",
+    "content": "Produce scientific drawing from observation with annotations"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT f",
+    "content": "Use qualitative reagents to identify biological molecules"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT g",
+    "content": "Separate biological compounds using thin layer/paper chromatography or electrophoresis"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT h",
+    "content": "Safely and ethically use organisms to measure: plant or animal responses, physiological functions"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT i",
+    "content": "Use microbiological aseptic techniques, including the use of agar plates and broth"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT j",
+    "content": "Safely use instruments for dissection of an animal organ, or plant organ"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT k",
+    "content": "Use sampling techniques in fieldwork"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "AT l",
+    "content": "Use ICT such as computer modelling, or data logger to collect data, or use software to process data"
+  },
+  {
+    "subject": "Biology",
+    "level": "AS",
+    "topicCode": "7.2.1",
+    "content": "Investigation into the effect of a named variable on the rate of an enzyme-controlled reaction"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 1.1",
+    "content": "Solve problems set in practical contexts"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 1.2",
+    "content": "Apply scientific knowledge to practical contexts"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 2.1",
+    "content": "Comment on experimental design and evaluate scientific methods"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 2.2",
+    "content": "Present data in appropriate ways"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 2.3",
+    "content": "Evaluate results and draw conclusions with reference to measurement uncertainties and errors"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 2.4",
+    "content": "Identify variables including those that must be controlled"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 3.1",
+    "content": "Plot and interpret graphs"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 3.2",
+    "content": "Process and analyse data using appropriate mathematical skills as exemplified in the mathematical appendix for each science"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 3.3",
+    "content": "Consider margins of error, accuracy and precision of data"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "PS 4.1",
+    "content": "Know and understand how to use a wide range of experimental and practical instruments, equipment and techniques appropriate to the knowledge and understanding included in the specification"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT a",
+    "content": "Use appropriate apparatus to record a range of quantitative measurements (to include mass, time, volume, temperature, length and pH)"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT b",
+    "content": "Use appropriate instrumentation to record quantitative measurements, such as a colorimeter or potometer"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT c",
+    "content": "Use laboratory glassware apparatus for a variety of experimental techniques to include serial dilutions"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT d",
+    "content": "Use of light microscope at high power and low power, including use of a graticule"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT e",
+    "content": "Produce scientific drawing from observation with annotations"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT f",
+    "content": "Use qualitative reagents to identify biological molecules"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT g",
+    "content": "Separate biological compounds using thin layer/paper chromatography or electrophoresis"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT h",
+    "content": "Safely and ethically use organisms to measure: plant or animal responses, physiological functions"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT i",
+    "content": "Use microbiological aseptic techniques, including the use of agar plates and broth"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT j",
+    "content": "Safely use instruments for dissection of an animal organ, or plant organ"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT k",
+    "content": "Use sampling techniques in fieldwork"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "AT l",
+    "content": "Use ICT such as computer modelling, or data logger to collect data, or use software to process data"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.1",
+    "content": "Investigation into the effect of a named variable on the rate of an enzyme-controlled reaction"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.2",
+    "content": "Preparation of stained squashes of cells from plant root tips; set-up and use of an optical microscope to identify the stages of mitosis in these stained squashes and calculation of a mitotic index"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.3",
+    "content": "Production of a dilution series of a solute to produce a calibration curve with which to identify the water potential of plant tissue"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.4",
+    "content": "Investigation into the effect of a named variable on the permeability of cell-surface membranes"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.5",
+    "content": "Dissection of animal or plant gas exchange or mass transport system or of organ within such a system"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.6",
+    "content": "Use of aseptic techniques to investigate the effect of antimicrobial substances on microbial growth"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.7",
+    "content": "Use of chromatography to investigate the pigments isolated from leaves of different plants, eg leaves from shade-tolerant and shade-intolerant plants or leaves of different colours"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.8",
+    "content": "Investigation into the effect of a named factor on the rate of dehydrogenase activity in extracts of chloroplasts"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.9",
+    "content": "Investigation into the effect of a named variable on the rate of respiration of cultures of single-celled organisms"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.10",
+    "content": "Investigation into the effect of an environmental variable on the movement of an animal using either a choice chamber or a maze"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.11",
+    "content": "Production of a dilution series of a glucose solution and use of colorimetric techniques to produce a calibration curve with which to identify the concentration of glucose in an unknown ‘urine’ sample"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.2.12",
+    "content": "Investigation into the effect of a named environmental factor on the distribution of a given species"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.4.1",
+    "content": "Follows written procedures"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.4.2",
+    "content": "Applies investigative approaches and methods when using instruments and equipment"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.4.3",
+    "content": "Safely uses a range of practical equipment and materials"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.4.4",
+    "content": "Makes and records observations"
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "8.4.5",
+    "content": "Researches, references and reports"
+  }
+]

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { usePersistentState } from "./use-persistent-state";
 
-export type Tier = "Free" | "Core" | "Pro" | "Premium" | "Maximum";
+export type Tier = "Guest" | "Free" | "Core" | "Pro" | "Premium" | "Maximum";
 
 // ============================================================================
 // 🛑 FREE ACCESS MODE (Soft Bypass)
@@ -9,17 +9,19 @@ export type Tier = "Free" | "Core" | "Pro" | "Premium" | "Maximum";
 // Users will still consume their normal tier credits and hit daily limits.
 // Set back to `false` when you want the paywalls to reappear.
 // ============================================================================
-export const FREE_ACCESS_MODE = true;
+export const FREE_ACCESS_MODE = false;
 
 export const TIER_ALLOWANCES: Record<Tier, number> = {
-  Free: 5_000,
-  Core: 24_000,
-  Pro: 80_000,
-  Premium: 150_000,
-  Maximum: 300_000,
+  Guest: 11_000,
+  Free: 40_000,
+  Core: 70_000,
+  Pro: 150_000,
+  Premium: 300_000,
+  Maximum: 450_000,
 };
 
 export const TIER_RANK: Record<Tier, number> = {
+  Guest: -1,
   Free: 0,
   Core: 1,
   Pro: 2,
@@ -28,24 +30,34 @@ export const TIER_RANK: Record<Tier, number> = {
 };
 
 export type ModelType = 
-  | "Polaris 1" 
-  | "Bastion 3.5 Flash" 
-  | "Bastion 3.5 Pro"
-  | "Apollo V4 Flash" 
-  | "Apollo V4 Pro" 
-  | "Atlas 4.5 Flash"
-  | "Atlas 5 Pro"
-  | "Tavily Search";
+  | "Llama 70B" 
+  | "Gemini 3.5 Flash-Lite"
+  | "Gemini 3.6 Flash" 
+  | "Gemini 3.5 Pro"
+  | "Deepseek-V4-Flash" 
+  | "Deepseek-V4-Pro" 
+  | "Claude 4.5 Haiku"
+  | "Claude 3.5 Sonnet"
+  | "GPT Luna"
+  | "GPT Terra"
+  | "Mistral Large"
+  | "Tavily Search"
+  | "Mistral Embed";
 
 export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> = {
-  "Polaris 1": { input: 0.5, output: 0.5 },        // Llama - Super Cheap
-  "Bastion 3.5 Flash": { input: 2, output: 2 }, // Gemini Flash
-  "Bastion 3.5 Pro": { input: 4, output: 4 },   // Gemini Pro
-  "Apollo V4 Flash": { input: 3, output: 3 },   // Deepseek Flash
-  "Apollo V4 Pro": { input: 6, output: 6 },     // Deepseek Pro
-  "Atlas 4.5 Flash": { input: 10, output: 10 }, // Claude Haiku
-  "Atlas 5 Pro": { input: 20, output: 20 },     // Claude Sonnet - Most Expensive
-  "Tavily Search": { input: 70, output: 70 },   // Web Search (Expensive API)
+  "Llama 70B": { input: 0.5, output: 0.5 },
+  "Gemini 3.5 Flash-Lite": { input: 1, output: 1 },
+  "Gemini 3.6 Flash": { input: 2, output: 2 },
+  "Gemini 3.5 Pro": { input: 4, output: 4 },
+  "Deepseek-V4-Flash": { input: 3, output: 3 },
+  "Deepseek-V4-Pro": { input: 5, output: 5 },
+  "Claude 4.5 Haiku": { input: 10, output: 10 },
+  "Claude 3.5 Sonnet": { input: 20, output: 20 },
+  "GPT Luna": { input: 5, output: 5 },
+  "GPT Terra": { input: 15, output: 15 },
+  "Mistral Large": { input: 3, output: 3 },
+  "Tavily Search": { input: 70, output: 70 },
+  "Mistral Embed": { input: 168, output: 168 },
 };
 
 type SubscriptionState = {
@@ -54,8 +66,27 @@ type SubscriptionState = {
   lastReset: string;
 };
 
+export function getTierModels(tier: Tier): { heavy: ModelType, judge: ModelType, assistant: ModelType } {
+  const heavy: ModelType = "Deepseek-V4-Flash";
+  const judge: ModelType = "Claude 4.5 Haiku";
+  let assistant: ModelType = "Llama 70B"; // Free / Guest tier
+  
+  if (tier === "Core") {
+    assistant = "Mistral Large";
+  } else if (tier === "Pro") {
+    assistant = "Gemini 3.5 Pro";
+  } else if (tier === "Premium") {
+    assistant = "Deepseek-V4-Pro";
+  } else if (tier === "Maximum") {
+    assistant = "Claude 3.5 Sonnet";
+  }
+  
+  return { heavy, judge, assistant };
+}
+
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
+import { useModelPreferences } from "./use-model-preferences";
 
 export function useSubscription() {
   const { user, isLoaded: clerkLoaded } = useUser();
@@ -87,11 +118,16 @@ export function useSubscription() {
 
   // Sync tier from Clerk public metadata AND sync credits from Supabase
   useEffect(() => {
-    if (clerkLoaded && user) {
-      const dbTier = (user.publicMetadata.tier as Tier) || "Free";
-      const today = new Date().toISOString().split("T")[0];
+    if (clerkLoaded) {
+      if (user) {
+        let dbTier: Tier = "Free"; // Temporarily set to Free for testing
+        const email = user.primaryEmailAddress?.emailAddress?.toLowerCase() || "";
+        // if (email.includes("kyrus") || email.includes("johnsmith") || email.includes("john")) {
+        //   dbTier = "Maximum"; // Creator gets 150k
+        // }
+        const today = new Date().toISOString().split("T")[0];
 
-      let isMounted = true;
+        let isMounted = true;
       supabase.from("user_usage")
         .select("credits_used, last_reset")
         .eq("user_id", user.id)
@@ -129,7 +165,16 @@ export function useSubscription() {
         });
 
       return () => { isMounted = false; };
+      } else {
+        setState((prev) => {
+          if (prev.tier !== "Guest") {
+            return { ...prev, tier: "Guest" };
+          }
+          return prev;
+        });
+      }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clerkLoaded, user?.id]);
 
   const safeCreditsUsed = state.creditsUsed && !isNaN(state.creditsUsed) ? state.creditsUsed : 0;
@@ -137,9 +182,16 @@ export function useSubscription() {
   const creditsRemaining = Math.max(0, dailyLimit - safeCreditsUsed);
 
   // Pre-check for cost
-  // In unrestricted mode, we just track tokens, so canAfford is always true.
   const canAfford = (wordCount: number, model: ModelType): boolean => {
-    return true;
+    let costConfig = MODEL_COSTS[model] || { input: 1, output: 1 };
+    
+    // Roughly estimate tokens from word count (e.g. 1.3 tokens per word)
+    const estimatedTokens = Math.ceil(wordCount * 1.3);
+    // Rough estimate just for the pre-check (actual usage is deducted post-generation)
+    const estimatedCost = Math.ceil(estimatedTokens * costConfig.input);
+    
+    // As long as they have enough to cover the prompt, let them proceed (it will deduct into the negative if it overruns).
+    return creditsRemaining >= estimatedCost;
   };
 
   const deductCredits = (inputTokens: number, outputTokens: number, model: ModelType, feature: "chat" | "other" = "other") => {
@@ -180,6 +232,9 @@ export function useSubscription() {
     }));
   };
 
+  const defaultModels = getTierModels(state.tier);
+  const { preferences } = useModelPreferences();
+
   return {
     tier: state.tier,
     creditsUsed: Math.ceil(safeCreditsUsed),
@@ -188,6 +243,10 @@ export function useSubscription() {
     canAfford,
     deductCredits,
     upgradeTo,
-    isLoaded
+    isLoaded,
+    assistant: preferences.generation !== "default" ? preferences.generation : defaultModels.assistant,
+    heavy: preferences.heavy !== "default" ? preferences.heavy : defaultModels.heavy,
+    judge: preferences.judge !== "default" ? preferences.judge : defaultModels.judge,
+    grading: preferences.grading !== "default" ? preferences.grading : "Claude 4.5 Haiku" // Default math/essay grading
   };
 }

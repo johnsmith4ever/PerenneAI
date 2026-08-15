@@ -1,0 +1,158 @@
+[
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Describe how stimulation of a Pacinian corpuscle produces a generator potential."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Explain the all-or-nothing principle in the context of action potentials and generator potentials."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Define the refractory period and explain its significance in nerve impulse transmission."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.4",
+    "content": "Investigate the effect of different sugars on the rate of respiration in yeast, including control of variables."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.4",
+    "content": "Calculate the rate of carbon dioxide production in yeast respiration and present answers in standard form."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.4",
+    "content": "Explain why the rate of respiration differs between glucose and maltose in yeast."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.4",
+    "content": "Evaluate the accuracy of methods used to measure the rate of respiration in yeast."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.5.2",
+    "content": "Describe the link reaction in aerobic respiration, including the conversion of pyruvate to acetyl CoA."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.2.1",
+    "content": "Compare the structure of prokaryotic and eukaryotic cells, including the presence of membrane-bound organelles, DNA association with proteins, ribosome size, and flagella."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.2",
+    "content": "Investigate the effect of antibiotics on bacterial growth, including the use of serial dilutions and colony counting."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.2",
+    "content": "Calculate the mean number of bacteria in an undiluted culture using serial dilution data."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.2",
+    "content": "Calculate the number of bacterial generations using exponential growth formulas."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.2",
+    "content": "Explain why bacteria may grow in the presence of antibiotics, including the role of resistance and experimental error."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.4",
+    "content": "Explain the process of cell differentiation, including the role of stem cell growth factor receptor (SCFR) and signal transduction."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.4",
+    "content": "Describe how stem cells can be used to repair damaged tissue, such as infarcted cardiac tissue."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.4",
+    "content": "Analyse experimental data on the effect of stem cell transplants on ventricular blood pressure in rats."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.4",
+    "content": "Explain the role of specific proteins (e.g., Connexin-43 and GATA-4) in the function of cardiomyocytes."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.5",
+    "content": "Investigate the effect of environmental factors (e.g., temperature) on biodiversity, including the use of species richness and the index of diversity."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.5",
+    "content": "Calculate the index of diversity using the formula: d = N(N-1) / Σn(n-1)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.5",
+    "content": "Explain how species richness and index of diversity can provide different insights into biodiversity."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.5",
+    "content": "Evaluate the validity of conclusions drawn from biodiversity data."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.1",
+    "content": "Describe the types of cells that can stimulate an immune response."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.1",
+    "content": "Explain the cellular and humoral immune responses, including the measurement of ear swelling and antibody concentration."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.1",
+    "content": "Analyse data on immune responses in healthy and autoimmune mice, including the use of standard deviations."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.8.1",
+    "content": "Evaluate the role of oestrogen in autoimmune diseases, such as systemic lupus erythematosus (SLE) and rheumatoid arthritis (RA)."
+  },
+  {
+    "subject": "Biology",
+    "level": "A-Level",
+    "topicCode": "3.7.2",
+    "content": "Apply the Hardy-Weinberg principle to populations and explain why it may not hold true for populations with certain genetic traits."
+  }
+]

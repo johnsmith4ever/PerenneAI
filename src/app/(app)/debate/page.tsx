@@ -9,10 +9,10 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { usePersistentState } from "@/hooks/use-persistent-state";
-import { ProGate } from "@/components/pro-gate";
+
 
 export default function DebatePage() {
-  const { canAfford, deductCredits, isLoaded } = useSubscription();
+  const { canAfford, deductCredits, isLoaded, assistant } = useSubscription();
   const [topic, setTopic] = usePersistentState("debate_topic", "");
   const [stance, setStance] = usePersistentState<"Affirmative" | "Against">("debate_stance", "Affirmative");
   const [useResearch, setUseResearch] = usePersistentState("debate_research", false);
@@ -55,7 +55,7 @@ export default function DebatePage() {
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
     
-    if (!canAfford(1000, "Apollo V4 Flash")) {
+    if (!canAfford(1000, "Deepseek-V4-Flash")) {
       alert("Insufficient credits.");
       return;
     }
@@ -69,14 +69,14 @@ export default function DebatePage() {
       const res = await fetch("/api/debate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages, useResearch, topic, stance })
+        body: JSON.stringify({ messages: newMessages, useResearch, topic, stance, model: assistant })
       });
       
       const data = await res.json();
       if (data.status === "success") {
         setMessages([...newMessages, { role: "assistant", content: data.text }]);
         if (data.usage) {
-          deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, "Apollo V4 Flash");
+          deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, assistant);
         }
         if (data.usedTavily) {
           deductCredits(25, 25, "Tavily Search"); // roughly 3500 flat fee for web search
@@ -98,25 +98,26 @@ export default function DebatePage() {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in pb-12">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard">
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-          </Link>
+
           <div>
-            <p className="label-title">Study Tools</p>
-            <h1 className="page-title">Debate Partner</h1>
+            <p className="label-title">Debate Partner</p>
+            <h1 className="page-title">{isDebating ? "Active Debate Session" : "Setup Debate"}</h1>
           </div>
         </div>
         {isDebating && (
-          <Button variant="outline" size="sm" className="gap-2" onClick={saveToHistory} disabled={isSaving || hasSaved}>
-            {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : hasSaved ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Save className="w-4 h-4" />}
-            {hasSaved ? "Saved to History" : "Save Debate"}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" onClick={() => setIsDebating(false)}>
+              Leave / New Debate
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2" onClick={saveToHistory} disabled={isSaving || hasSaved}>
+              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : hasSaved ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Save className="w-4 h-4" />}
+              {hasSaved ? "Saved to History" : "Save Debate"}
+            </Button>
+          </div>
         )}
       </div>
 
-      <ProGate featureName="Live AI Debate Partner">
+
       {!isDebating ? (
         <div className="p-8 rounded-2xl border border-border bg-card shadow-sm space-y-6">
           <div>
@@ -227,7 +228,7 @@ export default function DebatePage() {
           </div>
         </div>
       )}
-      </ProGate>
+
     </div>
   );
 }

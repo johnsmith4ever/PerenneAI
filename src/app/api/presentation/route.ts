@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
-import { deepseek } from "@ai-sdk/deepseek";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
+import { generateGeminiText } from "@/lib/gemini-fallback";
+import { generateAssistantText } from "@/lib/assistant-router";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
     }
 
-    const { topic, slideCount = 5, extraContext, tierRank = 0 } = await req.json();
+    const { topic, slideCount = 5, extraContext, tierRank = 0 , model } = await req.json();
 
     if (tierRank < 1) {
       return NextResponse.json({ status: "error", message: "Presentation Builder requires Core plan or above." }, { status: 403 });
@@ -26,8 +27,9 @@ export async function POST(req: Request) {
       promptContext = `\nExtra Details/Context/Passage to base the presentation on:\n${extraContext}\n`;
     }
 
-    const { text } = await generateText({
-      model: deepseek("deepseek-chat"),
+    const { text } = await generateAssistantText({
+      model: model || "Gemini 3.6 Flash",
+      system: "You are an expert presentation maker.",
       prompt: `Create a ${slideCount}-slide presentation outline on the topic: "${topic}".
       ${promptContext}
       You MUST respond with ONLY a raw JSON array and nothing else. Do not use markdown formatting like \`\`\`json.

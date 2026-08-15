@@ -1,49 +1,124 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Clock, Loader2, ArrowLeft, CheckCircle2, AlertTriangle, Save } from "lucide-react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
+import { Clock, Loader2, ArrowLeft, CheckCircle2, AlertTriangle, Save, Target, X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
+import ReactMarkdown from "react-markdown";
+import { MemoizedQuestionText } from "@/components/memoized-question-text";
 
 export default function ExamSimPage() {
-  const { canAfford, deductCredits, isLoaded } = useSubscription();
-  const [topic, setTopic] = useState("");
-  const [difficulty, setDifficulty] = useState("A-Level");
-  const [timeLimit, setTimeLimit] = useState(10); // minutes
+  const { canAfford, deductCredits, isLoaded, heavy, judge, assistant, grading } = useSubscription();
+  const [isAQA, setIsAQA] = usePersistentState("exam_sim_isAQA", true);
+  const [subject, setSubject] = usePersistentState("exam_sim_subject", "Biology");
+  const [topic, setTopic] = usePersistentState("exam_sim_topic", "");
+  const [year, setYear] = usePersistentState("exam_sim_year", "GCSE");
+  const [difficulty, setDifficulty] = usePersistentState("exam_sim_diff", "Foundation");
+  const [testSize, setTestSize] = usePersistentState("exam_sim_size", "Medium");
+  const [weakPoints, setWeakPoints] = useState<any[]>([]);
+  const [showQuitModal, setShowQuitModal] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const t = params.get("topic");
+      const m = params.get("mode");
+      if (t) setTopic(t);
+      if (m === "aqa") setIsAQA(true);
+      else if (m === "freestyle") setIsAQA(false);
+    }
+  }, []);
+
+  const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
+
+  useEffect(() => {
+    if (!isAQA || !topic.trim()) {
+      setAqaStatus(null);
+      return;
+    }
+
+    setAqaStatus("checking");
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/search-aqa", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: topic, subject })
+        });
+        const data = await res.json();
+        if (data.status === "success" && data.results && data.results.length === 0) {
+          setAqaStatus("not_found");
+        } else {
+          setAqaStatus("found");
+        }
+      } catch (e) {
+        setAqaStatus(null);
+      }
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [topic, subject, isAQA]);
   
-  const [examState, setExamState] = useState<"setup" | "generating" | "taking" | "grading" | "results">("setup");
-  const [questions, setQuestions] = useState<string[]>([]);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [results, setResults] = useState<{marks: number, feedback: string}[]>([]);
+  const [examState, setExamState] = usePersistentState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("exam_sim_state", "setup");
+  const [questions, setQuestions] = usePersistentState<string[]>("exam_sim_questions", []);
+  const [answers, setAnswers] = usePersistentState<string[]>("exam_sim_answers", []);
+  const [results, setResults] = usePersistentState<{marks: number, feedback: string, max_marks?: number}[]>("exam_sim_results", []);
   
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = usePersistentState("exam_sim_timeLeft", 0);
 
   const { user } = useUser();
   const [isSaving, setIsSaving] = useState(false);
-  const [hasSaved, setHasSaved] = useState(false);
+  const [hasSaved, setHasSaved] = usePersistentState("exam_sim_saved", false);
 
-  const saveToHistory = async () => {
-    if (!user || questions.length === 0) return;
+  useEffect(() => {
+    if (user) {
+      supabase.from("quiz_history").select("*").eq("user_id", user.id).then(({ data }) => {
+        if (data) {
+          const wp: any[] = [];
+          data.forEach(exam => {
+            if (exam.questions) {
+              exam.questions.forEach((q: any) => {
+                if (q.grading && !q.grading.correct) wp.push({ topic: exam.topic, question: q.question, feedback: q.grading.feedback });
+              });
+            }
+          });
+          setWeakPoints(wp);
+        }
+      });
+    }
+  }, [user]);
+
+  const saveToHistory = async (latestResults: any[] = results) => {
+    if (!user || questions.length === 0 || latestResults.length === 0) return;
     setIsSaving(true);
     try {
-      const scorePct = Math.round((results.reduce((acc, curr) => acc + curr.marks, 0) / (questions.length * 10)) * 100) || 0;
+      const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
       const { error } = await supabase.from("quiz_history").insert({
         user_id: user.id,
         topic: topic || "Exam Simulator",
-        questions: questions.map((q, i) => ({
-          question: q,
-          user_answer: answers[i] || "Skipped",
-          grading: {
-            marks_awarded: results[i].marks,
-            marks_available: 10,
-            feedback: results[i].feedback,
-            correct: results[i].marks >= 5
+        questions: questions.map((q, i) => {
+          const maxMarks = latestResults[i].max_marks || 10;
+          const res: any = {
+            question: q,
+            user_answer: answers[i] || "Skipped",
+            grading: {
+              marks_awarded: latestResults[i].marks,
+              marks_available: maxMarks,
+              feedback: latestResults[i].feedback,
+              correct: latestResults[i].marks >= (maxMarks / 2)
+            }
+          };
+          if (i === 0) {
+            res._quizSettings = { subject, difficulty, testSize, isAQA };
           }
-        })),
+          return res;
+        }),
         score: scorePct
       });
       if (error) throw error;
@@ -66,48 +141,80 @@ export default function ExamSimPage() {
 
   const handleStart = async () => {
     if (!topic.trim()) return;
-    if (!canAfford(1000, "Apollo V4 Flash")) {
+    if (!canAfford(1000, "Deepseek-V4-Flash")) {
       alert("Insufficient credits.");
       return;
     }
 
+    if (isAQA && topic !== "My Past Weak Points") {
+      setExamState("generating");
+      try {
+        const checkRes = await fetch("/api/check-aqa-topic", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic, subject })
+        });
+        const checkData = await checkRes.json();
+        if (!checkData.exists) {
+          setExamState("setup");
+          alert("This topic does not exist in the AQA syllabus database. Please try a different topic or use Freestyle Mode.");
+          return;
+        }
+      } catch (e) {
+        console.error("Failed to check AQA topic", e);
+      }
+    }
+
     setExamState("generating");
     try {
+      const body: any = { action: "generate_questions", topic, difficulty, isAQA, testSize, subject, year, heavyModel: heavy, judgeModel: grading };
+      if (topic === "My Past Weak Points") {
+        body.weakPoints = weakPoints.map(wp => `Topic: ${wp.topic}. Q: ${wp.question}. Failed because: ${wp.feedback}`).join("\n");
+      }
+
       const res = await fetch("/api/exam-sim", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "generate_questions", topic, difficulty })
+        body: JSON.stringify(body)
       });
       const data = await res.json();
       if (data.status === "success") {
-        setQuestions(data.questions);
-        setAnswers(new Array(data.questions.length).fill(""));
+        const stringifiedQuestions = data.questions.map((q: any) => {
+          let str = typeof q === "string" ? q : (q.question ? `${q.question}${q.marks ? ` [${q.marks} marks]` : ''}` : JSON.stringify(q));
+          str = str.replace(/([^\n])\s*(\([a-e]\)|[a-e]\)|\([ivx]+\)|[ivx]+\))\s+/gi, '$1\n$2 ');
+          return str.trim();
+        });
+        setQuestions(stringifiedQuestions);
+        setAnswers(new Array(stringifiedQuestions.length).fill(""));
+        const timeLimit = testSize === "Small" ? 15 : testSize === "Medium" ? 30 : 60;
         setTimeLeft(timeLimit * 60);
         setExamState("taking");
-        if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, "Apollo V4 Flash");
+        if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, heavy);
       } else {
-        alert("Failed to generate exam.");
+        alert("Exam generation failed: " + (data.message || "Unknown error"));
         setExamState("setup");
       }
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      alert("Exam generation crashed: " + (e.message || "Network error"));
       setExamState("setup");
     }
   };
 
   const handleSubmit = async () => {
+    setShowQuitModal(false);
     setExamState("grading");
     try {
       const res = await fetch("/api/exam-sim", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "grade_answers", topic, difficulty, questions, answers })
+        body: JSON.stringify({ action: "grade_answers", topic, difficulty, questions, answers, judgeModel: grading })
       });
       const data = await res.json();
       if (data.status === "success") {
         setResults(data.results);
         setExamState("results");
-        if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, "Apollo V4 Flash");
+        saveToHistory(data.results); // Automatically save to history
+        if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, grading);
       } else {
         alert("Grading failed.");
         setExamState("setup");
@@ -124,78 +231,146 @@ export default function ExamSimPage() {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in pb-12">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/quiz">
-            <Button variant="ghost" size="icon" className="rounded-full">
+          {examState === "taking" && (
+            <Button variant="ghost" size="icon" onClick={() => setShowQuitModal(true)}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
-          </Link>
+          )}
           <div>
             <p className="label-title">Study Tools</p>
-            <h1 className="page-title">Quiz Maker</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="page-title m-0">Exam Simulator</h1>
+            <span className="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider whitespace-nowrap mt-1">AQA Syllabus</span>
+          </div>
           </div>
         </div>
         {examState === "taking" && (
-          <div className="flex items-center gap-2 bg-red-500/10 text-red-500 px-4 py-2 rounded-xl border border-red-500/20 font-bold tabular-nums tracking-wider text-xl shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-            <Clock className="w-5 h-5" />
-            {Math.floor(timeLeft / 60).toString().padStart(2, "0")}:{(timeLeft % 60).toString().padStart(2, "0")}
+          <div className="fixed top-24 right-8 z-50 flex items-center gap-3 bg-background/40 backdrop-blur-xl px-6 py-3 rounded-full border border-border/50 font-bold tabular-nums tracking-widest text-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)]">
+            <Clock className={cn("w-6 h-6", timeLeft < 60 ? "text-red-500 animate-pulse" : "text-primary")} />
+            <span className={cn(timeLeft < 60 ? "text-red-500" : "text-foreground")}>
+              {Math.floor(timeLeft / 60).toString().padStart(2, "0")}:{(timeLeft % 60).toString().padStart(2, "0")}
+            </span>
           </div>
         )}
       </div>
 
-      {examState === "setup" && (
-        <div className="flex p-1 bg-secondary rounded-xl">
-          <Link href="/quiz" className="flex-1 py-2 text-sm font-semibold rounded-lg text-muted-foreground hover:text-foreground text-center">
-            Standard Quiz
-          </Link>
-          <button className="flex-1 py-2 text-sm font-semibold rounded-lg bg-background text-foreground shadow-sm">
-            Exam Simulator
-          </button>
-        </div>
-      )}
 
       {examState === "setup" && (
-        <div className="p-8 rounded-2xl border border-border bg-card shadow-sm space-y-6">
-          <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Exam Topic</label>
-            <input
-              type="text"
-              className="w-full rounded-xl border border-border bg-transparent px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-              placeholder="e.g. Thermodynamics, WW2 History..."
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-            />
+        <div className="p-8 rounded-3xl border border-border/50 bg-card/50 backdrop-blur-xl shadow-2xl space-y-8 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-500 to-purple-500"></div>
+          
+          <div className="flex bg-muted/50 p-1 rounded-2xl border border-border">
+            <button 
+              className={cn("flex-1 py-3 text-sm font-bold rounded-xl transition-all", isAQA ? "bg-background shadow-sm text-blue-500" : "text-muted-foreground hover:text-foreground")}
+              onClick={() => setIsAQA(true)}
+            >
+              AQA Standards Mode
+            </button>
+            <button 
+              className={cn("flex-1 py-3 text-sm font-bold rounded-xl transition-all", !isAQA ? "bg-background shadow-sm text-amber-500" : "text-muted-foreground hover:text-foreground")}
+              onClick={() => setIsAQA(false)}
+            >
+              General / Freestyle Mode
+            </button>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+
+          <div>
+            <label className="block text-sm font-semibold text-foreground mb-3 uppercase tracking-wider opacity-70">
+              Exam Topic
+            </label>
+            <div className="flex flex-col md:flex-row gap-4">
+              {isAQA && (
+                <select 
+                  className="w-full md:w-1/3 rounded-2xl border border-border bg-background/50 backdrop-blur-sm px-6 py-4 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-inner font-medium text-foreground cursor-pointer"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                >
+                  <option>Biology</option>
+                  <option>Chemistry</option>
+                  <option>Physics</option>
+                  <option>Geography</option>
+                </select>
+              )}
+              <input
+                type="text"
+                className="w-full flex-1 rounded-2xl border border-border bg-background/50 backdrop-blur-sm px-6 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-inner"
+                placeholder={isAQA ? "e.g. Cell Division, Poetry..." : "e.g. Thermodynamics..."}
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+              />
+            </div>
+            {isAQA && aqaStatus === "not_found" && (
+              <div className="bg-red-500/20 px-4 py-2 mt-3 rounded-lg text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-2 border border-red-500/20">
+                <Target className="w-4 h-4" />
+                Not in official AQA database
+              </div>
+            )}
+            {isAQA && aqaStatus === "found" && (
+              <div className="bg-emerald-500/20 px-4 py-2 mt-3 rounded-lg text-xs font-bold text-emerald-500 uppercase tracking-wider flex items-center gap-2 border border-emerald-500/20">
+                <CheckCircle2 className="w-4 h-4" />
+                AQA Database Clearance: Found
+              </div>
+            )}
+            {!isAQA && <p className="text-xs text-amber-500 mt-2 font-medium tracking-wide">* Does not follow official AQA standards.</p>}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">Difficulty</label>
+              <label className="block text-sm font-semibold text-foreground mb-3 uppercase tracking-wider opacity-70">Year</label>
               <select 
-                className="w-full rounded-xl border border-border bg-card px-4 py-3 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                className="w-full rounded-2xl border border-border bg-background/50 backdrop-blur-sm px-6 py-4 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-inner font-medium text-foreground cursor-pointer"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+              >
+                <option>KS3</option>
+                <option>GCSE</option>
+                <option>A-Level</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-foreground mb-3 uppercase tracking-wider opacity-70">Difficulty</label>
+              <select 
+                className="w-full rounded-2xl border border-border bg-background/50 backdrop-blur-sm px-6 py-4 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-inner font-medium text-foreground cursor-pointer"
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
               >
-                <option>GCSE</option>
-                <option>A-Level</option>
-                <option>University Level</option>
-                <option>Expert</option>
+                <option>Foundation</option>
+                <option>Higher</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">Time Limit (Minutes)</label>
+              <label className="block text-sm font-semibold text-foreground mb-3 uppercase tracking-wider opacity-70">Test Size</label>
               <select 
-                className="w-full rounded-xl border border-border bg-card px-4 py-3 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                value={timeLimit}
-                onChange={(e) => setTimeLimit(parseInt(e.target.value))}
+                className="w-full rounded-2xl border border-border bg-background/50 backdrop-blur-sm px-6 py-4 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-inner font-medium text-foreground cursor-pointer"
+                value={testSize}
+                onChange={(e) => setTestSize(e.target.value)}
               >
-                <option value={5}>5 Minutes (Blitz)</option>
-                <option value={10}>10 Minutes</option>
-                <option value={15}>15 Minutes</option>
-                <option value={30}>30 Minutes</option>
+                <option value="Small">Small (15 mins)</option>
+                <option value="Medium">Medium (30 mins)</option>
+                <option value="Large">Large (60 mins)</option>
               </select>
             </div>
           </div>
-          <Button className="w-full gap-2" size="lg" onClick={handleStart} disabled={!topic.trim()}>
-            <AlertTriangle className="w-4 h-4" /> Start Strict Exam
+          <Button className="w-full gap-2 py-6 text-lg font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-2xl mt-4" size="lg" onClick={handleStart} disabled={!topic.trim()}>
+            <AlertTriangle className="w-5 h-5" /> Start Strict Exam
           </Button>
+
+          {weakPoints.length > 0 && (
+            <div className="mt-8 pt-8 border-t border-border/50">
+               <h3 className="text-lg font-bold text-foreground mb-4 font-serif flex items-center gap-2">
+                 <AlertTriangle className="w-5 h-5 text-red-500" />
+                 Target Weak Points
+               </h3>
+               <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                 We've analyzed your past exam history and identified <strong className="text-foreground">{weakPoints.length}</strong> concepts you previously struggled with. 
+                 Taking a targeted exam will force the AI to grill you exclusively on these exact weak points.
+               </p>
+               <Link href="/weak-areas" className="block w-full">
+                 <Button variant="secondary" className="w-full gap-2 py-5 font-bold rounded-2xl">
+                   Go to Weak Areas
+                 </Button>
+               </Link>
+            </div>
+          )}
         </div>
       )}
 
@@ -215,21 +390,62 @@ export default function ExamSimPage() {
           </div>
           
           <div className="space-y-6">
-            {questions.map((q, i) => (
-              <div key={i} className="p-6 rounded-2xl border border-border bg-card shadow-sm space-y-4">
-                <h3 className="font-bold text-lg leading-relaxed"><span className="text-muted-foreground mr-2">Q{i+1}.</span>{q}</h3>
-                <textarea
-                  className="w-full rounded-xl border border-border bg-transparent px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none min-h-[150px]"
-                  placeholder="Type your answer here..."
-                  value={answers[i]}
-                  onChange={(e) => {
-                    const newAns = [...answers];
-                    newAns[i] = e.target.value;
-                    setAnswers(newAns);
-                  }}
-                />
+            {questions.map((q, i) => {
+              const mcqRegex = /(^\s*[A-Da-d][\)\.])|(^\s*\|\s*[A-Da-d]\s*\|)/m;
+              const isMCQ = mcqRegex.test(q);
+
+              return (
+              <div key={i} className="p-8 rounded-3xl border border-border/40 bg-card/40 backdrop-blur-lg shadow-xl space-y-6 relative group hover:border-primary/30 transition-colors">
+                <div className="absolute -left-px top-8 w-2 h-12 bg-primary rounded-r-full shadow-[0_0_15px_rgba(var(--primary),0.5)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="font-bold text-xl leading-relaxed pl-2 font-serif flex gap-3">
+                  <span className="text-primary text-2xl font-sans opacity-50 shrink-0">Q{i+1}</span>
+                  <MemoizedQuestionText text={q} id={`exam-sim-test-q-${i}`} />
+                </div>
+                
+                {isMCQ ? (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    {["A", "B", "C", "D"].map((letter) => {
+                      const isSelected = answers[i] === letter;
+                      return (
+                        <button
+                          key={letter}
+                          onClick={() => {
+                            const newAns = [...answers];
+                            newAns[i] = letter;
+                            setAnswers(newAns);
+                          }}
+                          className={cn(
+                            "w-full p-4 rounded-xl border-2 transition-all flex items-center justify-center gap-3 font-bold text-lg",
+                            isSelected 
+                              ? "bg-primary/10 border-primary text-foreground shadow-sm" 
+                              : "bg-background/40 border-border/50 hover:bg-muted/50 hover:border-border text-muted-foreground hover:text-foreground"
+                          )}
+                        >
+                          <div className={cn(
+                            "w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors",
+                            isSelected ? "border-primary bg-primary" : "border-muted-foreground"
+                          )}>
+                            {isSelected && <Check className="w-3.5 h-3.5 text-background" />}
+                          </div>
+                          {letter}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <textarea
+                    className="w-full rounded-2xl border border-border/50 bg-background/40 backdrop-blur-md px-6 py-5 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary resize-none min-h-[180px] text-base leading-relaxed shadow-inner"
+                    placeholder="Draft your brilliant response here..."
+                    value={answers[i]}
+                    onChange={(e) => {
+                      const newAns = [...answers];
+                      newAns[i] = e.target.value;
+                      setAnswers(newAns);
+                    }}
+                  />
+                )}
               </div>
-            ))}
+            )})}
           </div>
 
           <Button size="lg" className="w-full" onClick={handleSubmit}>
@@ -251,31 +467,40 @@ export default function ExamSimPage() {
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-2">Exam Results</h2>
             <p className="text-xl font-medium text-muted-foreground">
-              Total Score: {results.reduce((acc, curr) => acc + curr.marks, 0)} / {questions.length * 10}
+              Total Score: {results.reduce((acc, curr) => acc + curr.marks, 0)} / {results.reduce((acc, curr) => acc + (curr.max_marks || 10), 0)}
             </p>
           </div>
 
           <div className="space-y-6">
-            {questions.map((q, i) => (
-              <div key={i} className="p-6 rounded-2xl border border-border bg-card shadow-sm space-y-4">
-                <div className="flex justify-between items-start gap-4">
-                  <h3 className="font-bold text-lg leading-relaxed"><span className="text-muted-foreground mr-2">Q{i+1}.</span>{q}</h3>
-                  <div className={cn("px-3 py-1 rounded-full text-sm font-bold shrink-0", results[i].marks >= 7 ? "bg-emerald-500/10 text-emerald-500" : results[i].marks >= 4 ? "bg-amber-500/10 text-amber-500" : "bg-red-500/10 text-red-500")}>
-                    {results[i].marks} / 10
+            {questions.map((q, i) => {
+              const marks = results[i].marks;
+              const maxMarks = results[i].max_marks || 10;
+              const pct = maxMarks > 0 ? marks / maxMarks : 0;
+              return (
+              <div key={i} className="p-8 rounded-3xl border border-border/40 bg-card/40 backdrop-blur-lg shadow-xl space-y-6">
+                <div className="flex justify-between items-start gap-6">
+                  <div className="font-bold text-xl leading-relaxed font-serif flex gap-3">
+                    <span className="text-primary text-2xl font-sans opacity-50 shrink-0">Q{i+1}</span>
+                    <MemoizedQuestionText text={q} id={`exam-sim-res-q-${i}`} />
+                  </div>
+                  <div className={cn("px-4 py-2 rounded-2xl text-lg font-bold shrink-0 shadow-inner backdrop-blur-md border", pct >= 0.7 ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : pct >= 0.4 ? "bg-amber-500/10 text-amber-500 border-amber-500/20" : "bg-red-500/10 text-red-500 border-red-500/20")}>
+                    {marks} / {maxMarks}
                   </div>
                 </div>
                 
-                <div className="bg-muted/50 p-4 rounded-xl text-sm italic border border-border/50">
-                  <span className="block not-italic font-semibold text-xs uppercase text-muted-foreground mb-1">Your Answer:</span>
+                <div className="bg-muted/30 p-5 rounded-2xl text-[15px] italic border border-border/50 shadow-inner">
+                  <span className="block not-italic font-semibold text-xs uppercase text-muted-foreground mb-2 tracking-wider">Your Answer:</span>
                   {answers[i] || "Skipped."}
                 </div>
 
-                <div className={cn("p-4 rounded-xl text-sm border", results[i].marks >= 7 ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-900 dark:text-emerald-100" : "bg-red-500/5 border-red-500/20 text-red-900 dark:text-red-100")}>
-                  <span className="block font-semibold text-xs uppercase opacity-70 mb-1">Examiner Feedback:</span>
-                  <p className="leading-relaxed whitespace-pre-wrap">{results[i].feedback}</p>
+                <div className={cn("p-6 rounded-2xl text-[15px] border shadow-sm", pct >= 0.7 ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-900 dark:text-emerald-100" : "bg-red-500/5 border-red-500/20 text-red-900 dark:text-red-100")}>
+                  <span className="block font-semibold text-xs uppercase opacity-70 mb-2 tracking-wider">Examiner Feedback:</span>
+                  <div className="leading-relaxed [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>li]:mb-1 [&>strong]:font-bold [&>strong]:text-current">
+                    <ReactMarkdown>{results[i].feedback}</ReactMarkdown>
+                  </div>
                 </div>
               </div>
-            ))}
+            )})}
           </div>
 
           <div className="flex gap-4 mt-8">
@@ -285,12 +510,54 @@ export default function ExamSimPage() {
             <Button 
               className="w-full flex-1 gap-2" 
               size="lg" 
-              onClick={saveToHistory}
+              onClick={() => saveToHistory()}
               disabled={isSaving || hasSaved}
             >
               {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : hasSaved ? <CheckCircle2 className="w-4 h-4" /> : <Save className="w-4 h-4" />}
               {hasSaved ? "Saved to History" : "Save to History"}
             </Button>
+          </div>
+        </div>
+      )}
+      {examState === "forfeited" && (
+        <div className="flex flex-col items-center text-center max-w-lg mx-auto py-20 animate-in zoom-in-95 duration-500">
+          <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/20">
+            <AlertTriangle className="w-12 h-12 text-red-500" />
+          </div>
+          <h2 className="text-3xl font-bold font-serif mb-4 text-foreground">Exam Forfeited</h2>
+          <p className="text-muted-foreground mb-8 text-lg">
+            You left the exam tab during a timed session. In a real exam, this is strictly prohibited. Your current session has been terminated.
+          </p>
+          <Button size="lg" onClick={() => setExamState("setup")} className="w-full">
+            Return to Setup
+          </Button>
+        </div>
+      )}
+      {showQuitModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-card w-full max-w-md rounded-3xl border border-border shadow-2xl overflow-hidden relative p-6">
+            <Button variant="ghost" size="icon" onClick={() => setShowQuitModal(false)} className="absolute right-4 top-4 text-muted-foreground hover:text-foreground">
+              <X className="w-5 h-5" />
+            </Button>
+            <h3 className="text-xl font-bold text-foreground mb-2 font-serif flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-500" />
+              Leave Exam?
+            </h3>
+            <p className="text-sm text-muted-foreground mb-6">You are currently taking a strict exam. Do you want to submit your answers early for grading, or quit without saving?</p>
+            
+            <div className="space-y-3">
+              <Button size="lg" className="w-full justify-between" onClick={handleSubmit}>
+                <span>Submit & Grade Early</span>
+                <CheckCircle2 className="w-4 h-4 opacity-70" />
+              </Button>
+              <Button size="lg" variant="outline" className="w-full justify-between text-red-500" onClick={() => { setShowQuitModal(false); setExamState("setup"); }}>
+                <span>Quit without saving</span>
+                <ArrowLeft className="w-4 h-4 opacity-70" />
+              </Button>
+              <Button size="lg" variant="ghost" className="w-full" onClick={() => setShowQuitModal(false)}>
+                Cancel
+              </Button>
+            </div>
           </div>
         </div>
       )}

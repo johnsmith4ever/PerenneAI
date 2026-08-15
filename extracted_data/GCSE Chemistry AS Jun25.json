@@ -1,0 +1,302 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.3",
+    "content": "Atomic structure: Plum pudding model (a ball of positive charge with electrons embedded). Rutherford's nuclear model (mass concentrated at the centre/nucleus, nucleus is positive/charged, most of the atom is empty space, electrons orbit the nucleus). Bohr's model (electrons orbit the nucleus at specific distances/energy levels/shells)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.5",
+    "content": "Atoms, elements and compounds: Relative sizes of atoms and nuclei (~100,000 times larger diameter for the atom compared to the nucleus). Isotopes: Atoms with the same number of protons but different numbers of neutrons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.6",
+    "content": "Relative atomic mass and isotopes: Calculation of relative atomic mass from isotopic abundances."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.7",
+    "content": "Electronic structure: Representation of electrons in shells (e.g., using symbols like ×, ∘, −, e⁻)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.1",
+    "content": "Development of the periodic table: Early attempts to classify elements (e.g., by Newlands and Mendeleev). Formation of hydrogen halides (e.g., HAt)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.2",
+    "content": "Development of the periodic table: Mendeleev's decision to leave gaps for undiscovered elements and predictions based on properties."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.3",
+    "content": "Trends in the periodic table: Position of metals and non-metals. Trends in reactivity (e.g., Group 0 elements' lack of reactivity due to full outer shells)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.4",
+    "content": "Group 0 (Noble gases): Full outer shell of electrons leading to stable electronic structures and lack of reactivity."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.5",
+    "content": "Transition metals: Properties such as higher melting/boiling points, density, hardness, strength, lower reactivity, formation of coloured compounds, variable ion charges, and catalytic activity."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.2.6",
+    "content": "Group 7 (Halogens): Trends in physical properties (e.g., melting/boiling points). Trends in reactivity (decreasing down the group due to increased atomic radius, shielding, and reduced nuclear attraction). Formation of hydrogen halides (e.g., HBr). Displacement reactions (e.g., Br₂ + 2KI → I₂ + 2KBr)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.3.1",
+    "content": "Properties of transition metals compared to Group 1 metals (e.g., higher melting points, density, hardness, and lower reactivity)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.3.2",
+    "content": "Typical properties of transition metals (e.g., coloured compounds, catalytic activity, variable ion charges)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.1",
+    "content": "Chemical bonds: Ionic bonding (transfer of electrons from metals to non-metals to form positive and negative ions)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.2",
+    "content": "Ionic compounds: Formation of ions through electron transfer (e.g., calcium losing electrons and sulfur gaining electrons to form Ca²⁺ and S²⁻)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.3",
+    "content": "Formulae of ionic compounds: Writing formulae for ionic compounds (e.g., CaS for calcium sulfide)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.4",
+    "content": "Giant ionic lattices: Structure and properties of ionic compounds (e.g., high melting/boiling points due to strong electrostatic forces)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.1",
+    "content": "States of matter: Particle models and changes of state (e.g., solids, liquids, gases)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.4",
+    "content": "Properties of small molecules: Weak intermolecular forces, lack of overall electric charge, and low melting/boiling points."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.5",
+    "content": "Polymers: Stronger intermolecular forces compared to small molecules (e.g., poly(ethene) vs methane)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.6",
+    "content": "Giant covalent structures: Examples such as graphite (layers of hexagonal rings, delocalised electrons, covalent bonds)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.7",
+    "content": "Properties of metals and alloys: Melting points and metallic bonding."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.8",
+    "content": "Properties of metals: Electrical conductivity and malleability."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.3.2",
+    "content": "Graphite: Structure (giant covalent, layers of hexagonal rings, delocalised electrons) and properties."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.4.1",
+    "content": "Nanoscience: Surface area to volume ratio of nanoparticles and their applications."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.1",
+    "content": "Conservation of mass: Sum of relative formula masses on both sides of a balanced chemical equation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.2",
+    "content": "Relative formula mass: Calculation of relative formula mass (Mᵣ) for compounds."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.3.2",
+    "content": "Atom economy: Calculation of atom economy for reactions (e.g., % atom economy = (Mᵣ of desired product / total Mᵣ of reactants) × 100). Importance of atom economy for sustainable development and economic reasons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.1",
+    "content": "Redox reactions: Identification of reduction (loss of oxygen) and oxidation (gain of oxygen)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.2",
+    "content": "Reactivity series: Reactivity of metals (e.g., carbon is more reactive than tin)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.1.3",
+    "content": "Extraction of metals: Reduction of metal oxides using carbon (e.g., SnO₂ + 2C → Sn + 2CO)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.4.2",
+    "content": "Nanoparticles have a higher surface area to volume ratio."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.3",
+    "content": "Strong electrostatic forces between oppositely charged ions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.2.3",
+    "content": "Strong electrostatic forces between oppositely charged ions (e.g., aluminium ions and oxide ions) act in all directions in the giant structure, requiring a lot of energy to break."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3.3",
+    "content": "Cryolite is used in the electrolysis of aluminium oxide to lower the melting point of the mixture."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.1",
+    "content": "Half-equation for the oxidation of oxide ions: 2 O²⁻ → O₂ + 4 e⁻."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3.2",
+    "content": "Electrolysis of aluminium oxide involves the oxidation of oxide ions at the anode."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.3.5",
+    "content": "The positive electrode (anode) in aluminium electrolysis is made of carbon/graphite, which reacts with oxygen to produce carbon dioxide."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.2.2",
+    "content": "Comparison of fuels (e.g., hydrazine vs hydrogen) in terms of storage, transport, voltage output, and catalyst requirements."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.2.1.4",
+    "content": "Covalent bonding in molecules, including the representation of bonded and non-bonded electron pairs (e.g., in nitrogen molecules)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.5.1.3",
+    "content": "Bond energy calculations, including breaking and forming bonds in chemical reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.4",
+    "content": "Role of hydroxide ions (OH⁻) in chemical reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.5",
+    "content": "Titration techniques, including the use of indicators, pH probes, and accurate measurement methods (e.g., burette readings). Required Practical Activity (RPA) 2."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.5",
+    "content": "Calculations involving moles, concentration, and titration data."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.6",
+    "content": "Comparison of strong and weak acids, including differences in hydrogen ion concentration."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.1.1.2",
+    "content": "Methods for producing pure substances, including dissolving, filtration, evaporation, and crystallisation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.4.2.3",
+    "content": "Practical techniques for preparing soluble salts (e.g., reacting iodine with zinc). Required Practical Activity (RPA) 1."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.1.1",
+    "content": "Calculations involving relative formula mass and moles."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.1",
+    "content": "Use of moles to balance equations and calculate reacting masses."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.2.2",
+    "content": "Percentage yield calculations in chemical reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "GCSE",
+    "topicCode": "4.3.3.1",
+    "content": "Empirical and molecular formula calculations."
+  }
+]

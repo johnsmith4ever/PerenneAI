@@ -1,17 +1,16 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
-import { deepseek } from "@ai-sdk/deepseek";
+import { createAnthropic } from "@ai-sdk/anthropic";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
+import { generateUniversalText } from "@/lib/universal-router";
 
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
+    // Guest bypass allowed: userId can be null
 
-    const { question, userAnswer, subject, topic } = await req.json();
+    const { question, userAnswer, subject, topic, judgeModel } = await req.json();
 
     const prompt = `
     You are an expert AI grader for a quiz.
@@ -37,8 +36,9 @@ export async function POST(req: Request) {
     }
     `;
 
-    const { text: rawJson, usage } = await generateText({
-      model: deepseek("deepseek-chat"),
+    const { text: rawJson, usage } = await generateUniversalText({
+      model: judgeModel || "Claude 4.5 Haiku",
+      system: "You are an expert AI grader.",
       temperature: 0.2,
       prompt: prompt,
     });
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     const cleanJson = rawJson.replace(/```json\n|```json|```/g, '').trim();
     const verdict = JSON.parse(cleanJson);
 
-    trackUsage(userId, "grade-answer").catch(console.error);
+    if (userId) trackUsage(userId, "grade-answer").catch(console.error);
 
     return NextResponse.json({ status: "success", data: verdict, usage });
   } catch (error: any) {

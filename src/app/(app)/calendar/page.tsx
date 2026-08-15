@@ -29,7 +29,7 @@ type Schedule = {
 };
 
 export default function CalendarPage() {
-  const { deductCredits, canAfford, isLoaded: subLoaded } = useSubscription();
+  const { deductCredits, canAfford, isLoaded: subLoaded , assistant } = useSubscription();
   const [schedule, setSchedule] = useLocalStorage<Schedule | null>("sm_schedule", null);
   const [agentPrompt, setAgentPrompt] = useState("");
   const [agentLoading, setAgentLoading] = useState(false);
@@ -181,7 +181,7 @@ export default function CalendarPage() {
     e.preventDefault();
     if (!agentPrompt || !subLoaded) return;
     
-    if (!canAfford(200, "Bastion 3.5 Flash")) {
+    if (!canAfford(200, "Gemini 3.6 Flash")) {
       alert("You do not have enough daily credits to redesign your schedule. Please try again tomorrow or upgrade your plan.");
       return;
     }
@@ -196,7 +196,7 @@ export default function CalendarPage() {
       });
       const data = await res.json();
       if (data.status === "success") {
-        deductCredits(100, 300, "Bastion 3.5 Flash", "other");
+        deductCredits(100, 300, "Gemini 3.6 Flash", "other");
         setSchedule({ ...currentSchedule, days: data.data });
         setAgentPrompt("");
       } else {

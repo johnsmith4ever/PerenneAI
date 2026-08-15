@@ -1,0 +1,248 @@
+[
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO1.1a",
+    "content": "Select routine procedures"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO1.1b",
+    "content": "Correctly carry out routine procedures"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO1.2",
+    "content": "Accurately recall facts, terminology and definitions"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.1",
+    "content": "Construct rigorous mathematical arguments (including proofs)"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.2a",
+    "content": "Make deductions"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.2b",
+    "content": "Make inferences"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.3",
+    "content": "Assess the validity of mathematical arguments"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.4",
+    "content": "Explain their reasoning"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO2.5",
+    "content": "Use mathematical language and notation correctly"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.1a",
+    "content": "Translate problems in mathematical contexts into mathematical processes"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.1b",
+    "content": "Translate problems in non-mathematical contexts into mathematical processes"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.2a",
+    "content": "Interpret solutions to problems in their original context"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.2b",
+    "content": "Where appropriate, evaluate the accuracy and limitations of solutions to problems"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.3",
+    "content": "Translate situations in context into mathematical models"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.4",
+    "content": "Use mathematical models"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.5a",
+    "content": "Evaluate the outcomes of modelling in context"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.5b",
+    "content": "Recognise the limitations of models"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "AO3.5c",
+    "content": "Where appropriate, explain how to refine models"
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1b",
+    "content": "Uses given initial conditions to find their constant of integration. This must be done before substituting values into an expression."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.4",
+    "content": "Obtains a fully correct expression for a variable (e.g., v). Coefficients can be unsimplified. Condone omission of constant."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.4",
+    "content": "Completes reasoned argument by substituting values into an equation to show a result. Must include at least one intermediate step after substituting."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1a",
+    "content": "States or uses a given formula (e.g., F = μR)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1b",
+    "content": "Forms a three-term equation using given values and relationships (e.g., F = ma)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.3",
+    "content": "Forms fully correct equation with all values substituted correctly to obtain a result."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1b",
+    "content": "Adds forces together correctly (e.g., vector addition)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1a",
+    "content": "Uses F = ma and substitutes given values to form equations. Obtains two correct equations or a correct linear equation in a variable."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1b",
+    "content": "Completes reasoned argument with at least one intermediate step to obtain a result (e.g., mass or reaction force)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "2.1",
+    "content": "Resolves forces or moments correctly to find a result (e.g., reaction forces)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "2.4",
+    "content": "Evaluates a claim or scenario using reasoning and calculations (e.g., symmetry or force changes)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1b",
+    "content": "Obtains correct speed or magnitude of a vector using given components."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1a",
+    "content": "Uses trigonometric ratios (e.g., tan) to find angles between vectors or directions."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "2.1",
+    "content": "Completes a reasoned argument to find an angle using vector components."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "2.2a",
+    "content": "Deduces time taken for motion using given conditions."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1a",
+    "content": "Obtains an expression for displacement using given vector components and time."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1a",
+    "content": "Resolves forces into components (e.g., using cosine or sine)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.3",
+    "content": "Uses Newton’s Second Law (F = ma) to form equations for systems or components."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.4",
+    "content": "Obtains a correct pair of equations of motion for connected objects."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.5b",
+    "content": "States appropriate modelling assumptions (e.g., rod is rigid or horizontal)."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.1b",
+    "content": "Resolves forces or components to find acceleration or tension."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "1.1b",
+    "content": "Selects and uses an appropriate equation of constant acceleration to find distance or time."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-Level",
+    "topicCode": "3.2a",
+    "content": "Obtains a result using equations of motion (e.g., distance travelled)."
+  }
+]

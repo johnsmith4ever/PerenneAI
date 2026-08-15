@@ -1,0 +1,218 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1",
+    "content": "Marking of lists: This applies to questions requiring a set number of responses, but for which students have provided extra responses. The general ‘List’ principle to be followed in such a situation is that ‘right + wrong = wrong’."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.2",
+    "content": "Marking procedure for calculations: Full marks should be awarded for a correct numerical answer, without any working shown, unless the question states ‘Show your working’ or ‘justify your answer’."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.3",
+    "content": "Errors carried forward, consequential marking and arithmetic errors: Allowances for errors carried forward are most likely to be restricted to calculation questions and should be shown by the abbreviation ECF or consequential in the marking scheme."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.4",
+    "content": "Equations: In questions requiring students to write equations, state symbols are generally ignored unless otherwise stated in the ‘Comments’ column."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.5",
+    "content": "Oxidation states: In general, the sign for an oxidation state will be assumed to be positive unless specifically shown to be negative."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.6",
+    "content": "Interpretation of ‘it’: Answers using the word ‘it’ should be given credit only if it is clear that the ‘it’ refers to the correct subject."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.7",
+    "content": "Phonetic spelling: The phonetic spelling of correct scientific terminology should be credited unless there is a possible confusion with another technical term or if the question requires correct IUPAC nomenclature."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.8",
+    "content": "Brackets: (.....) are used to indicate information which is not essential for the mark to be awarded but is included to help the examiner identify the sense of the answer required."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.9",
+    "content": "Ignore / Insufficient / Do not allow: Ignore or insufficient is used when the information given is irrelevant to the question or not enough to gain the marking point."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.10",
+    "content": "Marking crossed out work: Crossed out work that has not been replaced should be marked as if it were not crossed out, if possible."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.11",
+    "content": "Reagents: The command word “Identify”, allows the student to choose to use either the name or the formula of a reagent in their answer."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.12",
+    "content": "Organic structures: Where students are asked to draw organic structures, unless a specific type is required in the question and stated in the mark scheme, these may be given as displayed, structural or skeletal formulas or a combination of all three as long as the result is unambiguous."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.13",
+    "content": "Organic names: As a general principle, non-IUPAC names or incorrect spelling or incomplete names should not gain credit."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.14",
+    "content": "Organic reaction mechanisms: Curly arrows should originate either from a lone pair of electrons or from a bond."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.15",
+    "content": "Extended responses: For questions marked using a ‘Levels of Response’ mark scheme: Level of response mark schemes are broken down into three levels, each of which has a descriptor."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "1.3",
+    "content": "Amount of Na, C, O, calculation of concentration of MnO4–"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "1.4",
+    "content": "Meniscus curved with the bottom of the curve on the horizontal line"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "1.5",
+    "content": "Burette fill level, wearing gloves, using a funnel"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "1.6",
+    "content": "Colourless to pink/pale purple color change"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "1.7",
+    "content": "Removing funnel, filling jet, preventing air bubbles"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "1.8",
+    "content": "Levels of Response marking, covering all stages of a reaction"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "2.1",
+    "content": "Calculation of glycine concentration"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "2.2",
+    "content": "Using a UV lamp or ninhydrin for detection"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "2.3",
+    "content": "Amino acid affinity for stationary and mobile phases"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1",
+    "content": "Crystallization process, filtering, and washing"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.2",
+    "content": "Toxicity of HCN, properties of KCN"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.3",
+    "content": "Nucleophilic attack mechanism"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "4.1",
+    "content": "Reaction between NaBr and H2SO4, formation of NaHSO4"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "4.2",
+    "content": "Removal of hydroxide and carbonate ions using HNO3"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "5",
+    "content": "Calculation of Ka, pH, and concentrations of HCOOH and HCOO–"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "6.1",
+    "content": "Flask not clamped, sealed system"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "6.2",
+    "content": "Adding sulfuric acid"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "6.3",
+    "content": "Direction of water flow through condenser"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "6.4",
+    "content": "Preventing 'bumping' during distillation"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "6.5",
+    "content": "Fractional distillation, calculation of propan-1-ol and propanoic acid"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "6.6",
+    "content": "Adding sodium carbonate, observing effervescence"
+  }
+]

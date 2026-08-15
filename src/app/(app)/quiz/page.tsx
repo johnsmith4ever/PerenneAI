@@ -1,23 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useUser } from "@clerk/nextjs";
+import { useCurriculum } from "@/hooks/use-curriculum";
 import { supabase } from "@/lib/supabase";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
-import { Sparkles, ArrowLeft, Calculator, BookOpen, GraduationCap, CheckCircle2, ListChecks, BarChart, Settings2, FileText, ChevronRight, XCircle, Loader2, Save } from "lucide-react";
+import { Sparkles, Brain, Clock, ChevronRight, CheckCircle2, XCircle, FileText, Zap, BookOpen, AlertCircle, RefreshCw, ArrowLeft, Calculator, GraduationCap, ListChecks, BarChart, Settings2, Loader2, Save, Target } from "lucide-react";
+import { MemoizedQuestionText } from "@/components/memoized-question-text";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type QuizType = "Calculation" | "Word-Heavy" | null;
 type QuizMode = "setup" | "taking" | "grading" | "results";
 
-const years = [7, 8, 9, 10, 11, 12, 13];
-const calculationSubjects = ["Maths", "Physics", "Chemistry"];
+const years: { label: string; value: string }[] = [
+  { label: "Year 7", value: "7" },
+  { label: "Year 8", value: "8" },
+  { label: "Year 9", value: "9" },
+  { label: "GCSE", value: "GCSE" },
+  { label: "A-Level", value: "A-Level" },
+];
+const calculationSubjects = ["Physics", "Chemistry"];
 const wordHeavySubjects = ["Chemistry", "Biology", "Geography", "RE", "Physics"];
-const difficulties = ["Easy", "Medium", "Hard", "Challenge"];
+const difficulties = ["Easy", "Medium", "Hard", "Impossible"];
 
 const questionDefinitions: Record<string, string> = {
   // Calculation Types
@@ -39,13 +48,14 @@ const calcQTypes = ["Short Numerical Answer", "Long Answer (Multi-step)", "True/
 const wordQTypes = ["MC", "Short Answer", "Long Answer (Explain)", "Case Study", "Definition"];
 
 export default function QuizPage() {
-  // Subscription
-  const { tier, canAfford, deductCredits, isLoaded: subLoaded } = useSubscription();
+  const { user } = useUser();
+  const { curriculumLevel } = useCurriculum();
+  const { tier, deductCredits, canAfford, isLoaded, assistant, heavy, judge, grading } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
 
   // Setup State
   const [step, setStep] = usePersistentState<Step>("quiz_step", 1);
-  const [year, setYear] = usePersistentState<number | null>("quiz_year", null);
+  const [year, setYear] = usePersistentState<string | null>("quiz_year", null);
   const [quizType, setQuizType] = usePersistentState<QuizType>("quiz_type", null);
   const [subject, setSubject] = usePersistentState<string | null>("quiz_subject", null);
   const [questionTypes, setQuestionTypes] = usePersistentState<string[]>("quiz_qtypes", []);
@@ -53,6 +63,37 @@ export default function QuizPage() {
   const [questionCount, setQuestionCount] = usePersistentState<number>("quiz_count", 10);
   const [topic, setTopic] = usePersistentState<string>("quiz_topic", "");
   const [imageContext, setImageContext] = usePersistentState<string | null>("quiz_img", null);
+  const [usePremiumModel, setUsePremiumModel] = usePersistentState<boolean>("quiz_premium_model", false);
+  const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
+
+  useEffect(() => {
+    if (!topic.trim()) {
+      setAqaStatus(null);
+      return;
+    }
+
+    setAqaStatus("checking");
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/search-aqa", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: topic, subject: subject })
+        });
+        const data = await res.json();
+        if (data.status === "success" && data.results && data.results.length === 0) {
+          setAqaStatus("not_found");
+        } else {
+          setAqaStatus("found");
+        }
+      } catch (e) {
+        setAqaStatus(null);
+      }
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [topic, subject]);
   
   // App Mode State
   const [quizMode, setQuizMode] = usePersistentState<QuizMode>("quiz_mode", "setup");
@@ -63,7 +104,6 @@ export default function QuizPage() {
   const [quizRedoMode, setQuizRedoMode] = usePersistentState<"new" | "exact" | null>("quiz_redo_mode", null);
   const [quizOldQuestions, setQuizOldQuestions] = usePersistentState<any[] | null>("quiz_old_questions", null);
   
-  const { user } = useUser();
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
 
@@ -75,9 +115,44 @@ export default function QuizPage() {
   // Grading State
   const [gradingResults, setGradingResults] = usePersistentState<Record<number, any>>("quiz_results", {});
 
+  useEffect(() => {
+    if (typeof window === "undefined" || !user) return;
+    const params = new URLSearchParams(window.location.search);
+    const t = params.get("topic");
+    const retest = params.get("retest");
+
+    if (t && retest === "true") {
+      supabase.from("quiz_history").select("questions").eq("user_id", user.id).eq("topic", t).order("created_at", { ascending: false }).limit(1).then(({ data }) => {
+        if (data && data.length > 0 && data[0].questions && data[0].questions.length > 0) {
+          const settings = data[0].questions[0]._quizSettings;
+          if (settings) {
+            setTopic(t);
+            if (settings.year) setYear(settings.year);
+            if (settings.subject) setSubject(settings.subject);
+            if (settings.quizType) setQuizType(settings.quizType);
+            if (settings.difficulty) setDifficulty(settings.difficulty);
+            if (settings.questionCount) setQuestionCount(settings.questionCount);
+            if (settings.questionTypes) setQuestionTypes(settings.questionTypes);
+            setStep(8);
+          }
+        }
+      });
+    }
+  }, [user]);
+
   const resetQuiz = () => {
     setQuizMode("setup");
     setStep(1);
+    setYear(null);
+    setQuizType(null);
+    setSubject(null);
+    setQuestionTypes([]);
+    setDifficulty(null);
+    setQuestionCount(10);
+    setTopic("");
+    setImageContext(null);
+    setQuizRedoMode(null);
+    setQuizOldQuestions(null);
     setGeneratedQuiz([]);
     setCurrentQuestionIndex(0);
     setUserAnswers({});
@@ -93,11 +168,24 @@ export default function QuizPage() {
       const { error } = await supabase.from("quiz_history").insert({
         user_id: user.id,
         topic: topic || "Untitled Quiz",
-        questions: generatedQuiz.map((q, i) => ({
-          ...q,
-          user_answer: userAnswers[i]?.text || "Skipped",
-          grading: gradingResults[i]
-        })),
+        questions: generatedQuiz.map((q, i) => {
+          const res = {
+            ...q,
+            user_answer: userAnswers[i]?.text || "Skipped",
+            grading: gradingResults[i]
+          };
+          if (i === 0) {
+            res._quizSettings = {
+              year,
+              subject,
+              quizType,
+              difficulty,
+              questionCount,
+              questionTypes
+            };
+          }
+          return res;
+        }),
         score: scorePct
       });
       if (error) throw error;
@@ -147,10 +235,13 @@ export default function QuizPage() {
       questionDefinitions: selectedDefinitions,
       quizRedoMode: quizRedoMode,
       oldQuestions: quizRedoMode === "exact" ? quizOldQuestions : null,
+      curriculumLevel: curriculumLevel,
+      heavyModel: heavy,
+      judgeModel: grading
     };
 
-    if (!subLoaded) return;
-    if (!canAfford(3000, "Apollo V4 Flash")) {
+    if (!isLoaded) return;
+    if (!canAfford(3000, "Deepseek-V4-Flash")) {
       alert("You do not have enough daily credits to generate a quiz. Please try again tomorrow or upgrade your plan.");
       return;
     }
@@ -164,7 +255,7 @@ export default function QuizPage() {
             .from("quiz_history")
             .select("questions")
             .eq("user_id", user?.id)
-            .eq("topic", topic || "Untitled Quiz");
+            .ilike("topic", topic || "Untitled Quiz");
 
           if (pastQuizzes && pastQuizzes.length > 0) {
             pastQuizzes.forEach(quiz => {
@@ -191,7 +282,7 @@ export default function QuizPage() {
       if (res.status === 400 && data.status === "flagged") {
         alert("Logic Review Flagged: " + data.message);
       } else if (data.status === "success") {
-        if (data.usage) deductCredits(data.usage.inputTokens, data.usage.outputTokens, "Apollo V4 Flash");
+        if (data.usage) deductCredits(data.usage.inputTokens, data.usage.outputTokens, heavy);
         setGeneratedQuiz(data.data);
         setQuizMode("taking");
         setCurrentQuestionIndex(0);
@@ -265,7 +356,7 @@ export default function QuizPage() {
         };
       } else {
         // Complex AI grading required
-        if (!canAfford(1000, "Bastion 3.5 Flash")) {
+        if (!canAfford(1000, "Gemini 3.6 Flash")) {
           results[i] = { correct: false, marks_awarded: 0, marks_available: maxMarks, feedback: "Insufficient credits to grade this answer." };
           continue;
         }
@@ -278,12 +369,13 @@ export default function QuizPage() {
               question: q.question,
               userAnswer: ans.text,
               subject,
-              topic
+              topic,
+              judgeModel: grading
             })
           });
           const data = await res.json();
           if (data.status === "success") {
-            if (data.usage) deductCredits(data.usage.inputTokens, data.usage.outputTokens, "Bastion 3.5 Flash");
+            if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, grading);
             results[i] = { ...data.data, marks_available: maxMarks };
             // Ensure marks awarded don't exceed max marks (API might return out of 10)
             if (data.data.marks_awarded > maxMarks) {
@@ -321,7 +413,7 @@ export default function QuizPage() {
         </div>
 
         <div className="p-8 rounded-xl border border-border bg-card shadow-sm">
-          <h2 className="text-xl font-semibold text-foreground mb-6 leading-relaxed">{q.question}</h2>
+          <MemoizedQuestionText text={q.question} id={`quiz-test-q-${currentQuestionIndex}`} className="text-xl font-semibold text-foreground mb-6 leading-relaxed" />
 
           {q.options && q.options.length > 0 ? (
             <div className="space-y-3">
@@ -405,7 +497,7 @@ export default function QuizPage() {
                   </div>
                 </div>
                 
-                <p className="font-medium text-foreground mb-4">{q.question}</p>
+                <MemoizedQuestionText text={q.question} id={`quiz-res-q-${i}`} className="font-medium text-foreground mb-4" />
                 
                 <div className="space-y-4 text-sm">
                   <div className="bg-muted/50 dark:bg-muted/20 p-4 rounded-lg border border-border/50">
@@ -419,10 +511,10 @@ export default function QuizPage() {
                     <span className="block text-xs font-semibold uppercase mb-1 text-foreground/70">Feedback:</span>
                     <p className="text-foreground leading-relaxed">{res.feedback}</p>
                     
-                    {res.model_answer && (
+                    {(res.model_answer || q.answer) && (
                       <div className="mt-3 pt-3 border-t border-border/50">
                         <span className="block text-xs font-semibold uppercase mb-1 text-foreground/70">Model Answer:</span>
-                        <p className="text-foreground/90 italic leading-relaxed text-sm">{res.model_answer}</p>
+                        <p className="text-foreground/90 italic leading-relaxed text-sm">{res.model_answer || q.answer}</p>
                       </div>
                     )}
 
@@ -477,11 +569,11 @@ export default function QuizPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {years.map((y) => (
                 <button
-                  key={y}
-                  onClick={() => { setYear(y); handleNextStep(); }}
-                  className={cn("p-4 rounded-xl border text-center transition-all hover:border-primary hover:bg-primary/5", year === y ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border bg-card")}
+                  key={y.value}
+                  onClick={() => { setYear(y.value); handleNextStep(); }}
+                  className={cn("p-4 rounded-xl border text-center transition-all hover:border-primary hover:bg-primary/5", year === y.value ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border bg-card")}
                 >
-                  <span className="font-medium">Year {y}</span>
+                  <span className="font-medium">{y.label}</span>
                 </button>
               ))}
             </div>
@@ -639,7 +731,22 @@ export default function QuizPage() {
             </div>
             <div className="mb-8">
               <label htmlFor="topic" className="block text-sm font-medium text-foreground mb-2">Enter your topic below</label>
-              <textarea id="topic" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. The Krebs Cycle, Quadratic Equations..." className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all mb-6" rows={4} />
+              <textarea id="topic" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. The Krebs Cycle, Quadratic Equations..." className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all mb-2" rows={4} />
+              
+              {aqaStatus === "not_found" && (
+                <div className="bg-red-500/20 px-4 py-2 mb-6 rounded-lg text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-2 border border-red-500/20">
+                  <Target className="w-4 h-4" />
+                  Not in official AQA database (Soft Warning - You can still proceed)
+                </div>
+              )}
+              {aqaStatus === "found" && (
+                <div className="bg-emerald-500/20 px-4 py-2 mb-6 rounded-lg text-xs font-bold text-emerald-500 uppercase tracking-wider flex items-center gap-2 border border-emerald-500/20">
+                  <CheckCircle2 className="w-4 h-4" />
+                  AQA Database Clearance: Found
+                </div>
+              )}
+              {!aqaStatus && <div className="mb-6"></div>}
+
               <label className="block text-sm font-medium text-foreground mb-2">Attach Reference Image (Optional)</label>
               <div className="flex items-center gap-4">
                 <input type="file" accept="image/*" onChange={handleImageUpload} className="text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer" />
@@ -666,7 +773,7 @@ export default function QuizPage() {
                 <h3 className="font-semibold text-foreground">Quiz Summary</h3>
               </div>
               <div className="p-4 space-y-3 text-sm">
-                <div className="flex justify-between"><span className="text-muted-foreground">Level:</span><span className="font-medium">Year {year}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">Level:</span><span className="font-medium">{year}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">Subject:</span><span className="font-medium">{subject} ({quizType})</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">Difficulty:</span><span className="font-medium">{difficulty}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">Length:</span><span className="font-medium">{questionCount} Questions</span></div>
@@ -679,6 +786,25 @@ export default function QuizPage() {
                 </div>
               </div>
             </div>
+
+            {/* HIDDEN FOR TESTING STAGE: Will reveal when payment plans launch */}
+            {/* <PremiumGate featureName="Claude Haiku Generation">
+              <div className="flex items-center justify-between p-4 rounded-xl border border-cyan-500/30 bg-cyan-500/5 mb-8">
+                <div>
+                  <h4 className="font-semibold text-foreground flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-cyan-500" /> Premium AI Model
+                  </h4>
+                  <p className="text-sm text-muted-foreground mt-1">Use Claude Haiku for ultra-accurate question generation.</p>
+                </div>
+                <button
+                  onClick={() => setUsePremiumModel(!usePremiumModel)}
+                  className={cn("relative inline-flex h-6 w-11 items-center rounded-full transition-colors", usePremiumModel ? "bg-cyan-500" : "bg-muted")}
+                >
+                  <span className={cn("inline-block h-4 w-4 transform rounded-full bg-white transition-transform", usePremiumModel ? "translate-x-6" : "translate-x-1")} />
+                </button>
+              </div>
+            </PremiumGate> */}
+
             <Button className="w-full gap-2" size="lg" onClick={handleGenerate} disabled={isGenerating}>
               {isGenerating ? "AI is processing (this may take a moment)..." : <><Sparkles className="w-4 h-4" /> Generate Quiz via AI</>}
             </Button>
@@ -695,7 +821,10 @@ export default function QuizPage() {
             Study tools
             {quizMode === "setup" && step > 1 && <span className="text-muted-foreground/50 text-[10px] font-medium tracking-wider uppercase">• Step {step} of 8</span>}
           </p>
-          <h1 className="page-title">Quiz Maker</h1>
+          <div className="flex items-center gap-3">
+          <h1 className="page-title m-0">Quiz Maker</h1>
+          <span className="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider whitespace-nowrap mt-1">AQA Syllabus</span>
+        </div>
           <p className="text-sm text-muted-foreground mt-1">
             {quizMode === "setup" ? "Customise your quiz settings below to get started." : "Good luck!"}
           </p>
@@ -708,17 +837,6 @@ export default function QuizPage() {
         )}
       </div>
 
-      {/* Tabs */}
-      {quizMode === "setup" && step === 1 && (
-        <div className="flex p-1 bg-secondary rounded-xl">
-          <button className="flex-1 py-2 text-sm font-semibold rounded-lg bg-background text-foreground shadow-sm">
-            Standard Quiz
-          </button>
-          <Link href="/quiz/exam-sim" className="flex-1 py-2 text-sm font-semibold rounded-lg text-muted-foreground hover:text-foreground text-center">
-            Exam Simulator
-          </Link>
-        </div>
-      )}
 
       {quizMode === "setup" && step < 8 && (
         <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden mt-6">

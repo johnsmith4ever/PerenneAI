@@ -1,0 +1,440 @@
+[
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.1",
+    "content": "The chemical properties of elements depend on their atomic structure and in particular on the arrangement of electrons around the nucleus. The arrangement of electrons in orbitals is linked to the way in which elements are organised in the Periodic Table."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.1.1",
+    "content": "Appreciate that knowledge and understanding of atomic structure has evolved over time. Protons, neutrons and electrons: relative charge and relative mass. An atom consists of a nucleus containing protons and neutrons surrounded by electrons."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.1.2",
+    "content": "Mass number (A) and atomic (proton) number (Z). Students should be able to: determine the number of fundamental particles in atoms and ions using mass number, atomic number and charge, explain the existence of isotopes."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.1.3",
+    "content": "Electron configurations of atoms and ions up to Z = 36 in terms of shells and sub-shells (orbitals) s, p and d. Ionisation energies."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.2",
+    "content": "When chemists measure out an amount of a substance, they use an amount in moles. The mole is a useful quantity because one mole of a substance always contains the same number of entities of the substance."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.2.1",
+    "content": "Relative atomic mass and relative molecular mass in terms of 12C. The term relative formula mass will be used for ionic compounds."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.2.2",
+    "content": "The Avogadro constant as the number of particles in a mole. The mole as applied to electrons, atoms, molecules, ions, formulas and equations. The concentration of a substance in solution, measured in mol dm–3."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.2.3",
+    "content": "The ideal gas equation pV = nRT with the variables in SI units. Students should be able to: use the equation in calculations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.2.4",
+    "content": "Empirical formula is the simplest whole number ratio of atoms of each element in a compound. Molecular formula is the actual number of atoms of each element in a compound. The relationship between empirical formula and molecular formula."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS and A-level",
+    "topicCode": "3.1.2.5",
+    "content": "Equations (full and ionic). Percentage atom economy is: molecular mass of desired product sum of molecular masses of all reactants × 100"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "AS",
+    "topicCode": "2.2",
+    "content": "Assessments Paper 1: What's assessed - Relevant physical chemistry topics (sections 3.1.1 to 3.1.4, 3.1.6 and 3.1.7) - Inorganic chemistry (section 3.2.1 to 3.2.3) - Relevant practical skills"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "2.3",
+    "content": "Assessments Paper 1: What's assessed - Relevant physical chemistry topics (sections 3.1.1 to 3.1.4, 3.1.6 to 3.1.8 and 3.1.10 to 3.1.12) - Inorganic chemistry (section 3.2) - Relevant practical skills"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.3",
+    "content": "Bonding"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.4",
+    "content": "Energetics"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.5",
+    "content": "Kinetics"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.6",
+    "content": "Chemical equilibria, Le Chatelier’s principle and Kc"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.7",
+    "content": "Oxidation, reduction and redox equations"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.8",
+    "content": "Thermodynamics (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.9",
+    "content": "Rate equations (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.10",
+    "content": "Equilibrium constant Kp for homogeneous systems (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.11",
+    "content": "Electrode potentials and electrochemical cells (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.1.12",
+    "content": "Acids and bases (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.2.1",
+    "content": "Periodicity"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.2.2",
+    "content": "Group 2, the alkaline earth metals"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.2.3",
+    "content": "Group 7(17), the halogens"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.2.4",
+    "content": "Properties of Period 3 elements and their oxides (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.2.5",
+    "content": "Transition metals (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.2.6",
+    "content": "Reactions of ions in aqueous solution (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.1",
+    "content": "Introduction to organic chemistry"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.2",
+    "content": "Alkanes"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.3",
+    "content": "Halogenoalkanes"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.4",
+    "content": "Alkenes"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.5",
+    "content": "Alcohols"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.6",
+    "content": "Organic analysis"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.7",
+    "content": "Optical isomerism (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.8",
+    "content": "Aldehydes and ketones (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.9",
+    "content": "Carboxylic acids and derivatives (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.10",
+    "content": "Aromatic chemistry (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.11",
+    "content": "Amines (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.12",
+    "content": "Polymers (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.13",
+    "content": "Amino acids, proteins and DNA (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.14",
+    "content": "Organic synthesis (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.15",
+    "content": "Nuclear magnetic resonance spectroscopy (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-level",
+    "topicCode": "3.3.16",
+    "content": "Chromatography (A-level only)"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.3.1",
+    "content": "Ionic bonding involves electrostatic attraction between oppositely charged ions in a lattice. The formulas of compound ions, eg sulfate, hydroxide, nitrate, carbonate and ammonium. Students should be able to predict the charge on a simple ion using the position of the element in the Periodic Table and construct formulas for ionic compounds."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.3.2",
+    "content": "A single covalent bond contains a shared pair of electrons. Multiple bonds contain multiple pairs of electrons. A co-ordinate (dative covalent) bond contains a shared pair of electrons with both electrons supplied by one atom. Students should be able to represent a covalent bond using a line and a co-ordinate bond using an arrow."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.3.3",
+    "content": "Metallic bonding involves attraction between delocalised electrons and positive ions arranged in a lattice."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.3.4",
+    "content": "The four types of crystal structure: ionic, metallic, macromolecular (giant covalent), molecular. The structures of the following crystals as examples of these four types of crystal structure: diamond, graphite, ice, iodine, magnesium, sodium chloride. Students should be able to relate the melting point and conductivity of materials to the type of structure and the bonding present, explain the energy changes associated with changes of state, and draw diagrams to represent these structures involving specified numbers of particles."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.3.5",
+    "content": "Bonding pairs and lone (non-bonding) pairs of electrons as charge clouds that repel each other. Pairs of electrons in the outer shell of atoms arrange themselves as far apart as possible to minimise repulsion. Lone pair–lone pair repulsion is greater than lone pair–bond pair repulsion, which is greater than bond pair–bond pair repulsion. The effect of electron pair repulsion on bond angles. Students should be able to explain the shapes of, and bond angles in, simple molecules and ions with up to six electron pairs (including lone pairs of electrons) surrounding the central atom."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.3.6",
+    "content": "Electronegativity as the power of an atom to attract the pair of electrons in a covalent bond. The electron distribution in a covalent bond between elements with different electronegativities will be unsymmetrical. This produces a polar covalent bond, and may cause a molecule to have a permanent dipole. Students should be able to use partial charges to show that a bond is polar and explain why some molecules with polar bonds do not have a permanent dipole."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.3.7",
+    "content": "Forces between molecules: permanent dipole–dipole forces, induced dipole–dipole (van der Waals, dispersion, London) forces, hydrogen bonding. The melting and boiling points of molecular substances are influenced by the strength of these intermolecular forces. The importance of hydrogen bonding in the low density of ice and the anomalous boiling points of compounds. Students should be able to explain the existence of these forces between familiar and unfamiliar molecules and explain how melting and boiling points are influenced by these intermolecular forces."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.4.1",
+    "content": "Reactions can be endothermic or exothermic. Enthalpy change (∆H) is the heat energy change measured under conditions of constant pressure. Standard enthalpy changes refer to standard conditions, ie 100 kPa and a stated temperature (eg ∆H˚298). Students should be able to define standard enthalpy of combustion (∆cH˚) and define standard enthalpy of formation (∆fH˚)."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.4.2",
+    "content": "The heat change, q, in a reaction is given by the equation q = mc∆T where m is the mass of the substance that has a temperature change ∆T and a specific heat capacity c. Students should be able to use this equation to calculate the molar enthalpy change for a reaction and use this equation in related calculations."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.4.3",
+    "content": "Hess’s law. Students should be able to use Hess’s law to perform calculations, including calculation of enthalpy changes for reactions from enthalpies of combustion or from enthalpies of formation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.4.4",
+    "content": "Mean bond enthalpy. Students should be able to define the term mean bond enthalpy, use mean bond enthalpies to calculate an approximate value of ∆H for reactions in the gaseous phase, and explain why values from mean bond enthalpy calculations differ from those determined using Hess’s law."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.5.1",
+    "content": "Reactions can only occur when collisions take place between particles having sufficient energy. This energy is called the activation energy. Students should be able to define the term activation energy and explain why most collisions do not lead to a reaction."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.5.2",
+    "content": "Maxwell–Boltzmann distribution of molecular energies in gases. Students should be able to draw and interpret distribution curves for different temperatures."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.5.3",
+    "content": "Meaning of the term rate of reaction. The qualitative effect of temperature changes on the rate of reaction. Students should be able to use the Maxwell–Boltzmann distribution to explain why a small temperature increase can lead to a large increase in rate."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.5.4",
+    "content": "The qualitative effect of changes in concentration on collision frequency. The qualitative effect of a change in the pressure of a gas on collision frequency. Students should be able to explain how a change in concentration or a change in pressure influences the rate of a reaction."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.5.5",
+    "content": "A catalyst is a substance that increases the rate of a chemical reaction without being changed in chemical composition or amount. Catalysts work by providing an alternative reaction route of lower activation energy. Students should be able to use a Maxwell–Boltzmann distribution to help explain how a catalyst increases the rate of a reaction involving a gas."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.6.1",
+    "content": "Many chemical reactions are reversible. In a reversible reaction at equilibrium: forward and reverse reactions proceed at equal rates, the concentrations of reactants and products remain constant. Le Chatelier’s principle. Students should be able to use Le Chatelier’s principle to predict qualitatively the effect of changes in temperature, pressure and concentration on the position of equilibrium in homogeneous reactions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.6.2",
+    "content": "The equilibrium constant Kc is deduced from the equation for a reversible reaction. The concentration, in mol dm–3, of a species X involved in the expression for Kc is represented by [X]. Students should be able to construct an expression for Kc for a homogeneous system in equilibrium, calculate a value for Kc from the equilibrium concentrations for a homogeneous system at constant temperature, and perform calculations involving Kc."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.7",
+    "content": "Oxidation is the process of electron loss and oxidising agents are electron acceptors. Reduction is the process of electron gain and reducing agents are electron donors. The rules for assigning oxidation states. Students should be able to work out the oxidation state of an element in a compound or ion from the formula, write half-equations identifying the oxidation and reduction processes in redox reactions, and combine half-equations to give an overall redox equation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.8.1",
+    "content": "Lattice enthalpy can be defined as either enthalpy of lattice dissociation or enthalpy of lattice formation. Born–Haber cycles are used to calculate lattice enthalpies using the following data: enthalpy of formation, ionisation energy, enthalpy of atomisation, bond enthalpy, electron affinity. Students should be able to define each of the above terms and lattice enthalpy, construct Born–Haber cycles to calculate lattice enthalpies using these enthalpy changes, and construct Born–Haber cycles to calculate one of the other enthalpy changes."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3.1.8.2",
+    "content": "∆H, whilst important, is not sufficient to explain feasible change. The concept of increasing disorder (entropy change, ∆S). ∆S accounts for the above deficiency, illustrated by physical changes and chemical changes. The balance between entropy and enthalpy determines the feasibility of a reaction given by the relationship: ∆G = ∆H – T∆S (derivation not required). For a reaction to be feasible, the value of ∆G must be zero or negative."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "PS 4.1",
+    "content": "Know and understand how to use a wide range of experimental and practical instruments, equipment and techniques appropriate to the knowledge and understanding included in the specification"
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "8.4.1",
+    "content": "The assessment of practical skills is a compulsory requirement of the course of study for A-level qualifications in biology, chemistry and physics. It will appear on all students’ certificates as a separately reported result, alongside the overall grade for the qualification. The arrangements for the assessment of practical skills will be common to all awarding organisations. These arrangements will include: a minimum of 12 practical activities to be carried out by each student which, together, meet the requirements of Appendices 5b (Practical skills identified for direct assessment and developed through teaching and learning) and 5c (Use of apparatus and techniques) from the prescribed subject content, published by the Department for Education (DfE). The required practical activities will be defined by each awarding organisation."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "8.4.2",
+    "content": "CompetencyPractical mastery. In order to be awarded a Pass a student must, by the end of the practical science assessment, consistently and routinely meet the criteria in respect of each competency listed below. A student may demonstrate the competencies in any practical activity undertaken as part of that assessment throughout the course of study. Students may undertake practical activities in groups. However, the evidence generated by each student must demonstrate that he or she independently meets the criteria outlined below in respect of each competency."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "1",
+    "content": "Follows written procedures. (a) Correctly follows written instructions to carry out experimental techniques or procedures."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "2",
+    "content": "Applies investigative approaches and methods when using instruments and equipment. (a) Correctly uses appropriate instrumentation, apparatus and materials (including ICT) to carry out investigative activities, experimental techniques and procedures with minimal assistance or prompting. (b) Carries out techniques or procedures methodically, in sequence and in combination, identifying practical issues and making adjustments where necessary. (c) Identifies and controls significant quantitative variables where applicable, and plans approaches to take account of variables that cannot readily be controlled. (d) Selects appropriate equipment and measurement strategies in order to ensure suitably accurate results."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "3",
+    "content": "Safely uses a range of practical equipment and materials. (a) Identifies hazards and assesses risks associated with those hazards, making safety adjustments as necessary, when carrying out experimental techniques and procedures in the lab or field. (b) Uses appropriate safety equipment and approaches to minimise risks with minimal prompting."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "4",
+    "content": "Makes and records observations. (a) Makes accurate observations relevant to the experimental or investigative procedure. (b) Obtains accurate, precise and sufficient data for experimental and investigative procedures and records this methodically using appropriate units and conventions."
+  },
+  {
+    "subject": "Chemistry",
+    "level": "A-Level",
+    "topicCode": "5",
+    "content": "Researches, references and reports. (a) Uses appropriate software and/or tools to process data, carry out research and report findings. (b) Cites sources of information demonstrating that research has taken place, supporting planning and conclusions."
+  }
+]

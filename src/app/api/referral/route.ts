@@ -18,25 +18,8 @@ export async function POST(req: Request) {
 
     const normalizedCode = code.trim().toUpperCase();
 
-    // Check for specific referral codes
-    if (normalizedCode === "PERENNE2026") {
-      const client = await clerkClient();
-      const user = await client.users.getUser(userId);
-      const currentTier = user.publicMetadata.tier as string;
+    // No active promo codes at the moment
 
-      // Only upgrade if they are on Free (don't downgrade someone on Pro or Maximum)
-      if (currentTier === "Free" || !currentTier) {
-        await client.users.updateUserMetadata(userId, {
-          publicMetadata: {
-            tier: "Core"
-          }
-        });
-        await updateUserTierInSupabase(userId, "Core");
-        return NextResponse.json({ status: "success", message: "Referral applied! Upgraded to Core Tier." });
-      } else {
-        return NextResponse.json({ status: "error", message: "You are already on a higher or equal tier." }, { status: 400 });
-      }
-    }
 
     return NextResponse.json({ status: "error", message: "Invalid or expired referral code." }, { status: 400 });
 

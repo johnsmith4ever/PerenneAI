@@ -1,0 +1,236 @@
+[
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "6.01.1",
+    "content": "Interpret the roots of quadratic equations and determine the set of values for which a quadratic inequality holds."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "6.02.1",
+    "content": "Calculate definite integrals and use properties of integrals to find unknown values."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "7.01.1",
+    "content": "Understand and use the equation of a circle, including finding the radius."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "6.03.1",
+    "content": "Differentiate functions involving powers of x, including negative and fractional indices."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "6.03.2",
+    "content": "Find the equation of a tangent to a curve at a given point."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "6.03.3",
+    "content": "Determine the nature of stationary points on a curve."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "4.01.1",
+    "content": "Use arithmetic sequences and series, including finding the nth term and solving problems involving sums."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "4.01.2",
+    "content": "Solve problems involving arithmetic sequences in real-world contexts."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "5.07.1",
+    "content": "Model exponential growth and decay using logarithms and interpret real-world data."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "5.07.2",
+    "content": "Use logarithmic graphs to determine constants in exponential models."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "5.07.3",
+    "content": "Calculate percentage increases using exponential models."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "5.07.4",
+    "content": "Make predictions using exponential models and assess their reliability."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "6.04.1",
+    "content": "Work with composite functions, including finding their expressions and domains."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "6.04.2",
+    "content": "Find the inverse of a function and verify the result."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "5.05.1",
+    "content": "Prove and use trigonometric identities, including cosecant, secant, and cotangent."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "5.05.2",
+    "content": "Solve equations involving trigonometric identities and determine the range of values for which solutions exist."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "5.05.3",
+    "content": "Find exact values of trigonometric functions given specific conditions."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "4.03.1",
+    "content": "Use the binomial expansion for expressions with fractional or negative indices."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "4.03.2",
+    "content": "Apply the binomial expansion to approximate values and understand the limitations of the expansion."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "2.01.1",
+    "content": "Expand and simplify algebraic expressions, including squared terms."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "2.01.2",
+    "content": "Use counterexamples to disprove statements."
+  },
+  {
+    "subject": "Mathematics",
+    "level": "A-level",
+    "topicCode": "2.02.1",
+    "content": "Use proof by contradiction to establish mathematical truths."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.4.1",
+    "content": "Understand and use the concept of tension in strings, wires, and rods, including problems involving inextensible wires and rods."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.5.1",
+    "content": "Interpret and analyse displacement-time and velocity-time graphs for motion in a straight line, including identifying correct graphs based on given conditions."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.5.2",
+    "content": "Apply the equations of motion for constant acceleration in a straight line, including vertical motion under gravity."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.5.2",
+    "content": "Derive and use relationships involving time, velocity, and acceleration for motion under constant acceleration due to gravity."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.5.3",
+    "content": "Calculate displacement and height using kinematic equations for motion under gravity."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.6.1",
+    "content": "Analyse motion with variable acceleration, including deriving velocity from acceleration and solving for constants using given conditions."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.7.1",
+    "content": "Apply Newton's laws of motion to problems involving forces, friction, and acceleration on horizontal surfaces."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.7.2",
+    "content": "Calculate the coefficient of friction and the resultant driving force acting on a particle moving on a rough surface."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.8.1",
+    "content": "Resolve forces in two perpendicular directions (i and j components) and use Newton's second law to find unknown forces or constants."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.9.1",
+    "content": "Analyse the equilibrium of rigid bodies under the action of parallel forces, including calculating reaction forces and moments."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.9.2",
+    "content": "Solve problems involving the equilibrium of a uniform plank supported at two points, including changes in support positions."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.10.1",
+    "content": "Use vectors to represent velocity and position in two dimensions, including calculating speed and angles between vectors."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.10.2",
+    "content": "Determine the position vector of a particle moving in a triangular path with constant speed."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.11.1",
+    "content": "Apply Newton's laws to connected particles, including calculating resistance forces and tension in connecting rods."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.11.2",
+    "content": "Analyse the motion of connected particles before and after a string breaks, including calculating deceleration and stopping distance."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.12.1",
+    "content": "Model projectile motion, including calculating the trajectory, time of flight, and horizontal distance travelled."
+  },
+  {
+    "subject": "Mechanics",
+    "level": "A-Level",
+    "topicCode": "3.12.2",
+    "content": "Solve problems involving the interception of a projectile by a moving object with constant acceleration."
+  }
+]
