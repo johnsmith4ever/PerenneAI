@@ -33,8 +33,8 @@ export async function generateUniversalText({
 }) {
   const finalMessages = messages || [{ role: "user", content: prompt }];
 
-  if (model === "Claude 4.5 Haiku" || model === "Claude 5 Pro") {
-    const claudeModelName = model === "Claude 5 Pro" ? "claude-3-5-sonnet-20241022" : "claude-haiku-4-5-20251001";
+  if (model === "Claude 4.5 Haiku" || model === "Claude 3.5 Sonnet") {
+    const claudeModelName = model === "Claude 3.5 Sonnet" ? "claude-3-5-sonnet-20241022" : "claude-haiku-4-5-20251001";
     const { text, usage } = await generateText({
       model: anthropic(claudeModelName),
       system,

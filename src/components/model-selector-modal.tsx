@@ -8,12 +8,15 @@ import { cn } from "@/lib/utils";
 
 const ALL_MODELS: (ModelType | "default")[] = [
   "default",
+  "Llama 70B",
+  "Mistral Large",
+  "Gemini 3.5 Flash-Lite",
   "Gemini 3.6 Flash",
   "Gemini 3.5 Pro",
   "Deepseek-V4-Flash",
   "Deepseek-V4-Pro",
   "Claude 4.5 Haiku",
-  "Claude 5 Pro",
+  "Claude 3.5 Sonnet",
   "GPT Luna",
   "GPT Terra"
 ];
