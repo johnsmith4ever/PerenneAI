@@ -5,6 +5,7 @@ import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
 import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Zap, BrainCircuit, Eye, EyeOff, MessageSquare, MoreHorizontal, Lock, PanelLeft, Trash2 } from "lucide-react";
+import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -46,6 +47,7 @@ type ChatSession = {
 export default function AssistantPage() {
   const { user } = useUser();
   const { tier, canAfford, deductCredits, isLoaded: subLoaded , assistant } = useSubscription();
+  const { openUpgradeModal } = useUpgradeModal();
   const { curriculumLevel, setCurriculumLevel, curriculumSubject, setCurriculumSubject } = useCurriculum();
   const tierRank = TIER_RANK[tier] ?? 0;
 
@@ -53,7 +55,8 @@ export default function AssistantPage() {
     return MODELS.map(m => {
       let isLocked = false;
       const name = m.displayName;
-      if (name.includes("Mistral") && tierRank < TIER_RANK.Core) isLocked = true;
+      if (name === "Mistral Large" && tierRank < TIER_RANK.Core) isLocked = true;
+      if (name === "GPT OSS" && tierRank < TIER_RANK.Core) isLocked = true;
       if (name.includes("Gemini") && tierRank < TIER_RANK.Pro) isLocked = true;
       if (name.includes("Deepseek") && tierRank < TIER_RANK.Premium) isLocked = true;
       if (name.includes("Claude") && tierRank < TIER_RANK.Maximum) isLocked = true;
@@ -231,7 +234,7 @@ export default function AssistantPage() {
     // Pre-call check
     const totalWordCount = messages.reduce((acc, m) => acc + m.content.split(/\s+/).length, 0) + userMessage.content.split(/\s+/).length;
     if (!canAfford(totalWordCount, activeModel.displayName as ModelType)) {
-      setMessages([...messages, userMessage, { role: "assistant", content: "⚠️ You do not have enough daily credits to send this message. Please wait until tomorrow or upgrade your plan." }]);
+      openUpgradeModal("You do not have enough daily credits to use this model. Please wait until tomorrow or upgrade your plan.");
       setInputText("");
       return;
     }
@@ -563,11 +566,11 @@ export default function AssistantPage() {
                       <button
                         onClick={() => {
                           if (model.isLocked) {
-                            alert("This premium AI model is restricted to a higher tier. Please upgrade your subscription to unlock it.");
-                          } else {
-                            setActiveModel(model);
-                            setIsModelSelectorOpen(false);
+                            openUpgradeModal(`The ${model.displayName} AI model is restricted to a higher tier.`);
+                            return;
                           }
+                          setActiveModel(model);
+                          setIsModelSelectorOpen(false);
                         }}
                         onMouseEnter={() => setHoveredModel(model.displayName)}
                         onMouseLeave={() => setHoveredModel(null)}

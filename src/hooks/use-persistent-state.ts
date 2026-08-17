@@ -7,7 +7,7 @@ export function usePersistentState<T>(key: string, initialValue: T) {
   const [state, setState] = useState<T>(initialValue);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // On mount, check if there's a saved value in localStorage
+  // On mount or key change, check if there's a saved value in localStorage
   useEffect(() => {
     try {
       const item = window.localStorage.getItem(key);
@@ -18,9 +18,13 @@ export function usePersistentState<T>(key: string, initialValue: T) {
         } else {
           setState(parsed);
         }
+      } else {
+        // Reset to initial value if the key changed and there's no stored data
+        setState(initialValue);
       }
     } catch (error) {
       console.warn(`Error reading localStorage key "${key}":`, error);
+      setState(initialValue);
     }
     setIsLoaded(true);
     const handleStorage = (e: StorageEvent) => {

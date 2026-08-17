@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Leaderboard } from "@/components/leaderboard";
 import { GamificationWrapper } from "@/components/gamification-wrapper";
+import { useUpgradeModal } from "@/components/upgrade-modal";
 
 type Post = {
   id: string;
@@ -22,6 +23,7 @@ type Post = {
 
 export default function CommunityPage() {
   const { user } = useUser();
+  const { openUpgradeModal } = useUpgradeModal();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
@@ -72,7 +74,7 @@ export default function CommunityPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return alert("You must be logged in to post.");
+    if (!user) return openUpgradeModal("You must be signed in to create posts on the Community board.", "Sign In / Register", "/sign-in");
     if (!form.title || !form.content) return;
     
     setIsSubmitting(true);
