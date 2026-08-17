@@ -2,6 +2,16 @@ import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { generateGeminiText } from "./gemini-fallback";
+import { createMistral } from "@ai-sdk/mistral";
+
+const groq = createOpenAI({
+  baseURL: "https://api.groq.com/openai/v1",
+  apiKey: process.env.GROQ_API_KEY,
+});
+
+const mistral = createMistral({
+  apiKey: process.env.MISTRAL_API_KEY_2,
+});
 
 const deepseek = createOpenAI({
   baseURL: "https://api.deepseek.com/v1",
@@ -65,6 +75,24 @@ export async function generateUniversalText({
   } else if (model === "Deepseek-V4-Flash" || model === "Deepseek V4 Flash") {
     const { text, usage } = await generateText({
       model: deepseek.chat("deepseek-chat"),
+      system,
+      messages: finalMessages,
+      temperature,
+      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
+    });
+    return { text, usage };
+  } else if (model === "Llama 70B") {
+    const { text, usage } = await generateText({
+      model: groq.chat("llama-3.3-70b-versatile"),
+      system,
+      messages: finalMessages,
+      temperature,
+      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
+    });
+    return { text, usage };
+  } else if (model === "Mistral Large") {
+    const { text, usage } = await generateText({
+      model: mistral.chat("mistral-large-latest"),
       system,
       messages: finalMessages,
       temperature,

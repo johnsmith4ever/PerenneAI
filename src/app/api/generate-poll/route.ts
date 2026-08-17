@@ -14,7 +14,7 @@ export async function GET() {
   try {
     // Generate a fresh poll using Llama 3
     const { text } = await generateText({
-      model: groq("llama-3.1-8b-instant"),
+      model: groq("llama-3.3-70b-versatile"),
       prompt: `Generate a 'Question of the Day' poll for a web app. It should be engaging, perhaps philosophical, funny, or pop-culture related. Ensure there are exactly 5 options. 
       You MUST respond with ONLY a raw JSON object and nothing else. No markdown formatting, no backticks.
       Format: {"question": "...", "options": ["...", "...", "...", "...", "..."]}`,

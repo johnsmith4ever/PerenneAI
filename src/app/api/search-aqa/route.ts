@@ -7,9 +7,6 @@ import { supabase } from "@/lib/supabase";
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
 
     const { query, subject } = await req.json();
 
