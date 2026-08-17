@@ -44,12 +44,16 @@ export default function HistoryPage() {
   const [essays, setEssays] = useState<any[]>([]);
   const [explore, setExplore] = useState<any[]>([]);
   const [exploreFilter, setExploreFilter] = useState<string>("all");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ type: string; data: any; topic: string } | null>(null);
 
   useEffect(() => {
+    // Wait for Clerk to fully resolve before doing anything
+    if (!userLoaded) return;
+    // If user is a guest, don't fetch — just show the gate
     if (!user) return;
     
+    let isMounted = true;
     const fetchHistory = async () => {
       setLoading(true);
       
@@ -60,6 +64,7 @@ export default function HistoryPage() {
         fetchUserHistoryAction("explore_history"),
       ]);
       
+      if (!isMounted) return;
       if (quizRes) setQuizzes(quizRes);
       if (flashRes) setFlashcards(flashRes);
       if (essayRes) setEssays(essayRes);
@@ -69,7 +74,8 @@ export default function HistoryPage() {
     };
     
     fetchHistory();
-  }, [user]);
+    return () => { isMounted = false; };
+  }, [user, userLoaded]);
 
   const handleDelete = async (table: string, id: string) => {
     await deleteHistoryAction(table as any, id);

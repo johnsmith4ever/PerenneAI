@@ -60,24 +60,22 @@ export default function WeakAreasPage() {
 
         if (quizRes) {
           quizRes.forEach(q => {
-            let source: "Exam Sim" | "Quiz" | "Maths Solver" | "Flashcards" = "Exam Sim";
+            // Determine source — Maths prefix is definitive; otherwise check _quizSettings;
+            // if neither, default to "Quiz" (NOT "Exam Sim") since most saved quizzes come from the quiz page
+            let source: "Exam Sim" | "Quiz" | "Maths Solver" | "Flashcards" = "Quiz";
+            const settings = q.questions?.[0]?._quizSettings;
             if (q.topic?.startsWith("Maths: ")) {
               source = "Maths Solver";
-            } else if (q.questions && q.questions[0] && q.questions[0]._quizSettings) {
-              const settings = q.questions[0]._quizSettings;
-              if (settings.quizType !== undefined) {
-                source = "Quiz";
-              } else if (settings.testSize !== undefined) {
-                source = "Exam Sim";
-              }
-            } else if (q.topic?.includes("Quiz")) {
-              source = "Quiz";
+            } else if (settings) {
+              source = settings.quizType !== undefined ? "Quiz" : settings.testSize !== undefined ? "Exam Sim" : "Quiz";
             }
+
+            // Determine subject — _quizSettings.subject is most reliable when present
             let parsedSubject = "Other";
             if (q.topic?.startsWith("Maths: ")) {
               parsedSubject = "Maths";
-            } else if (q.questions && q.questions[0] && q.questions[0]._quizSettings?.subject) {
-              parsedSubject = q.questions[0]._quizSettings.subject;
+            } else if (settings?.subject) {
+              parsedSubject = settings.subject;
             } else {
               parsedSubject = inferSubject(q.topic);
             }
@@ -91,8 +89,8 @@ export default function WeakAreasPage() {
             
             if (source === "Maths Solver") {
               const quizErrorRate = 100 - (q.score || 0);
-              area.failedCount += quizErrorRate; // Repurposing failedCount as sum of error percentages
-              area.totalCount += 1; // Repurposing totalCount as number of quizzes
+              area.failedCount += quizErrorRate;
+              area.totalCount += 1;
               
               q.questions?.forEach((qq: any) => {
                 const grading = qq.grading || {};
@@ -106,8 +104,10 @@ export default function WeakAreasPage() {
               });
             } else {
               q.questions?.forEach((qq: any) => {
+                // Only count graded questions — skip ungraded ones
+                if (!qq.grading) return;
                 area.totalCount++;
-                if (qq.grading && !qq.grading.correct) {
+                if (!qq.grading.correct) {
                   area.failedCount++;
                   area.details.push({ question: qq.question, feedback: qq.grading.feedback });
                 }

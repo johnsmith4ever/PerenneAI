@@ -45,7 +45,7 @@ type ChatSession = {
 };
 
 export default function AssistantPage() {
-  const { user } = useUser();
+  const { user, isLoaded: userLoaded } = useUser();
   const { tier, canAfford, deductCredits, isLoaded: subLoaded , assistant } = useSubscription();
   const { openUpgradeModal } = useUpgradeModal();
   const { curriculumLevel, setCurriculumLevel, curriculumSubject, setCurriculumSubject } = useCurriculum();
@@ -79,12 +79,12 @@ export default function AssistantPage() {
   const [extraTopicDetails, setExtraTopicDetails] = useState("");
   const [inputText, setInputText] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [chats, setChats, chatsLoaded] = usePersistentState<ChatSession[]>(
-    user?.id ? `assistant_chats_${user.id}` : "assistant_chats",
-    []
-  );
+  // Use plain useState for chats — source of truth is Supabase chat_history, not user_state.
+  // usePersistentState was causing a race: key changed from "assistant_chats_undefined" to
+  // "assistant_chats_user_xxx" after Clerk resolved, wiping the in-memory list.
+  const [chats, setChats] = useState<ChatSession[]>([]);
+  const [chatsLoaded, setChatsLoaded] = useState(false);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
-  const activeIdLoaded = true;
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
   const [editChatTitle, setEditChatTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -130,46 +130,34 @@ export default function AssistantPage() {
     }
   }, [subLoaded, availableModels, activeModel]);
 
-  // Sync messages from local storage on load
+  // Load chats from Supabase on mount — ONLY after Clerk has fully resolved the user.
+  // This replaces the old usePersistentState approach which had a key race condition.
   useEffect(() => {
-    if (chatsLoaded && activeIdLoaded && activeChatId && messages.length === 0) {
-      const active = chats.find((c) => c.id === activeChatId);
-      if (active) {
-        setMessages(active.messages);
-      }
+    if (!userLoaded) return; // Wait for Clerk — don't hydrate with undefined user
+    if (!user) {
+      setChatsLoaded(true); // Guest: no chats to load
+      return;
     }
-  }, [chatsLoaded, activeIdLoaded, activeChatId]); // Only runs effectively on first load since messages will then be > 0
 
-  // Fetch from Supabase on mount to sync recent chats across devices/incognito
-  useEffect(() => {
-    if (user?.id && chatsLoaded) {
-      let isMounted = true;
-      fetchUserHistoryAction("chat_history", "id, title, messages, updated_at", 30)
-        .then((data: any) => {
-          if (data && isMounted) {
-            const loadedChats = data.map((d: any) => ({
-              id: d.id,
-              title: d.title,
-              messages: d.messages,
-              updatedAt: new Date(d.updated_at).getTime()
-            }));
-            
-            // Merge local and remote so we don't wipe out offline chats
-            setChats(prev => {
-              const map = new Map<string, ChatSession>();
-              // Add local chats first
-              prev.forEach(c => map.set(c.id, c));
-              // Overwrite with remote chats (since remote is more permanent)
-              loadedChats.forEach((c: any) => map.set(c.id, c));
-              // Sort by updated time
-              return Array.from(map.values()).sort((a, b) => b.updatedAt - a.updatedAt);
-            });
-          }
-        });
-        return () => { isMounted = false; };
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id, chatsLoaded]);
+    let isMounted = true;
+    fetchUserHistoryAction("chat_history", "id, title, messages, updated_at", 50)
+      .then((data: any) => {
+        if (!isMounted) return;
+        const loadedChats: ChatSession[] = (data || []).map((d: any) => ({
+          id: d.id,
+          title: d.title,
+          messages: d.messages,
+          updatedAt: new Date(d.updated_at).getTime()
+        })).sort((a: ChatSession, b: ChatSession) => b.updatedAt - a.updatedAt);
+        setChats(loadedChats);
+        setChatsLoaded(true);
+      })
+      .catch((e) => {
+        console.error("Failed to load chats", e);
+        setChatsLoaded(true); // Don't block UI on error
+      });
+    return () => { isMounted = false; };
+  }, [user?.id, userLoaded]);
 
   const handleNewChat = () => {
     setActiveChatId(null);
