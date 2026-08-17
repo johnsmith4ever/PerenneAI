@@ -12,7 +12,7 @@ import { useUser } from "@clerk/nextjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
 import { useSubscription, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import pptxgen from "pptxgenjs";
 
 type Slide = {
@@ -63,7 +63,7 @@ export default function PresentationBuilderPage() {
         deductCredits(100, slideCount * 100, assistant, "other");
         
         if (user) {
-          await supabase.from("explore_history").insert({
+          await insertHistoryAction("explore_history", {
             user_id: user.id,
             topic: topic,
             type: "presentation",

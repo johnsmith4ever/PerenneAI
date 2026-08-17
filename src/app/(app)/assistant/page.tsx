@@ -8,7 +8,7 @@ import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Za
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { useUser } from "@clerk/nextjs";
 
 type ChatMode = "Standard" | "Strict Syllabus" | "Quick Answer";
@@ -94,14 +94,13 @@ export default function AssistantPage() {
   const saveChatToSupabase = async (chatId: string, title: string, msgs: Message[]) => {
     if (!user) return;
     try {
-      const { error } = await supabase.from("chat_history").upsert({
+      await upsertChatAction({
         id: chatId,
         user_id: user.id,
         title: title,
         messages: msgs,
         updated_at: new Date().toISOString()
-      }, { onConflict: "id" });
-      if (error) console.error("Supabase chat save error:", error);
+      });
     } catch (e) {
       console.error("Failed to save chat to supabase", e);
     }
@@ -128,14 +127,10 @@ export default function AssistantPage() {
   useEffect(() => {
     if (user?.id && chatsLoaded) {
       let isMounted = true;
-      supabase.from("chat_history")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("updated_at", { ascending: false })
-        .limit(30)
-        .then(({ data, error }) => {
-          if (!error && data && isMounted) {
-            const loadedChats = data.map(d => ({
+      fetchUserHistoryAction("chat_history", "id, title, messages, updated_at", 30)
+        .then((data: any) => {
+          if (data && isMounted) {
+            const loadedChats = data.map((d: any) => ({
               id: d.id,
               title: d.title,
               messages: d.messages,
@@ -148,7 +143,7 @@ export default function AssistantPage() {
               // Add local chats first
               prev.forEach(c => map.set(c.id, c));
               // Overwrite with remote chats (since remote is more permanent)
-              loadedChats.forEach(c => map.set(c.id, c));
+              loadedChats.forEach((c: any) => map.set(c.id, c));
               // Sort by updated time
               return Array.from(map.values()).sort((a, b) => b.updatedAt - a.updatedAt);
             });
@@ -194,7 +189,7 @@ export default function AssistantPage() {
     }
     if (user) {
       try {
-        await supabase.from("chat_history").delete().eq("id", id).eq("user_id", user.id);
+        await deleteHistoryAction("chat_history", id);
       } catch (e) {
         console.error("Failed to delete chat", e);
       }

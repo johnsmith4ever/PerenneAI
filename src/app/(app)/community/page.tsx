@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { MessageSquare, Plus, Loader2, ThumbsUp, User as UserIcon, AlertTriangle, Lightbulb, Trash2 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchCommunityPostsAction } from "@/actions/supabase";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Leaderboard } from "@/components/leaderboard";
@@ -39,12 +39,9 @@ export default function CommunityPage() {
 
   const fetchPosts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('community_posts')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const data = await fetchCommunityPostsAction();
         
-      if (error) throw error;
+      
       // Filter out the old test post that couldn't be deleted via DB
       const filtered = (data || []).filter(post => post.id !== "7eed7303-3e36-4785-b6a1-bc27c93b164a");
       setPosts(filtered);
@@ -79,7 +76,7 @@ export default function CommunityPage() {
     
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from('community_posts').insert({
+      await insertHistoryAction("community_posts", {
         user_id: user.id,
         author_name: user.firstName || "Anonymous Student",
         title: form.title,
@@ -88,7 +85,7 @@ export default function CommunityPage() {
         upvotes: 1
       });
       
-      if (error) throw error;
+      
       
       setForm({ title: "", content: "", type: "feature" });
       setShowModal(false);
@@ -103,8 +100,8 @@ export default function CommunityPage() {
   const handleDelete = async (postId: string) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
     try {
-      const { error } = await supabase.from('community_posts').delete().eq('id', postId);
-      if (error) throw error;
+      await deleteHistoryAction('community_posts', postId);
+      
       fetchPosts();
     } catch (e: any) {
       alert("Failed to delete post: " + e.message);

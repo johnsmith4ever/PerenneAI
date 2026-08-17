@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useUser } from "@clerk/nextjs";
 import { useCurriculum } from "@/hooks/use-curriculum";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { Sparkles, Brain, Clock, ChevronRight, CheckCircle2, XCircle, FileText, Zap, BookOpen, AlertCircle, RefreshCw, ArrowLeft, Calculator, GraduationCap, ListChecks, BarChart, Settings2, Loader2, Save, Target } from "lucide-react";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
@@ -122,7 +122,7 @@ export default function QuizPage() {
     const retest = params.get("retest");
 
     if (t && retest === "true") {
-      supabase.from("quiz_history").select("questions").eq("user_id", user.id).eq("topic", t).order("created_at", { ascending: false }).limit(1).then(({ data }) => {
+      fetchUserHistoryAction("quiz_history", "questions", 1, { topic: t }).then((data: any) => {
         if (data && data.length > 0 && data[0].questions && data[0].questions.length > 0) {
           const settings = data[0].questions[0]._quizSettings;
           if (settings) {
@@ -165,7 +165,7 @@ export default function QuizPage() {
     if (!user || generatedQuiz.length === 0) return;
     setIsSaving(true);
     try {
-      const { error } = await supabase.from("quiz_history").insert({
+      await insertHistoryAction("quiz_history", {
         user_id: user.id,
         topic: topic || "Untitled Quiz",
         questions: generatedQuiz.map((q, i) => {
@@ -188,7 +188,7 @@ export default function QuizPage() {
         }),
         score: scorePct
       });
-      if (error) throw error;
+      
       setHasSaved(true);
     } catch (e) {
       console.error("Error saving quiz history:", e);
@@ -251,11 +251,7 @@ export default function QuizPage() {
       let pastQuestionsList: string[] = [];
       if (quizRedoMode !== "exact") {
         try {
-          const { data: pastQuizzes } = await supabase
-            .from("quiz_history")
-            .select("questions")
-            .eq("user_id", user?.id)
-            .ilike("topic", topic || "Untitled Quiz");
+          const pastQuizzes = await fetchUserHistoryAction("quiz_history", "questions", 50, { topic: topic });
 
           if (pastQuizzes && pastQuizzes.length > 0) {
             pastQuizzes.forEach(quiz => {
@@ -397,7 +393,16 @@ export default function QuizPage() {
   // --- Renderers ---
 
   if (quizMode === "taking") {
+    if (!generatedQuiz || generatedQuiz.length === 0) {
+      return (
+        <div className="flex h-[80vh] items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      );
+    }
+    
     const q = generatedQuiz[currentQuestionIndex];
+    if (!q) return null;
     return (
       <div className="max-w-3xl mx-auto py-12 space-y-8 animate-in fade-in relative">
         {/* Start Over Button - Top Right */}
@@ -705,10 +710,10 @@ export default function QuizPage() {
             </div>
             <div className="px-4 py-12 flex flex-col items-center">
               <span className="text-5xl font-bold text-foreground mb-8">{questionCount}</span>
-              <input type="range" min="5" max={tierRank < TIER_RANK.Core ? 5 : 20} step="1" value={questionCount} onChange={(e) => setQuestionCount(parseInt(e.target.value))} className="w-full max-w-sm accent-primary" />
+              <input type="range" min="5" max="20" step="1" value={questionCount} onChange={(e) => setQuestionCount(parseInt(e.target.value))} className="w-full max-w-sm accent-primary" />
               <div className="w-full max-w-sm flex justify-between mt-3 text-xs text-muted-foreground font-medium">
                 <span>5</span>
-                <span>{tierRank < TIER_RANK.Core ? "5 (Free Limit)" : "20"}</span>
+                <span>20</span>
               </div>
             </div>
             <div className="mt-auto flex justify-end">

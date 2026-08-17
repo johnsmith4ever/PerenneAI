@@ -10,7 +10,6 @@ const ALL_MODELS: (ModelType | "default")[] = [
   "default",
   "Mistral Small",
   "Mistral Large",
-  "GPT OSS",
   "Gemini 3.5 Flash-Lite",
   "Gemini 3.6 Flash",
   "Gemini 3.5 Pro",

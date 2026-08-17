@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 
 
@@ -90,7 +90,7 @@ export default function ScheduleMakerPage() {
         setSelectedDay(0);
         
         if (user) {
-          await supabase.from("explore_history").insert({
+          await insertHistoryAction("explore_history", {
             user_id: user.id,
             topic: goal || "Untitled Schedule",
             type: "schedule",

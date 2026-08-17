@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE, getTierModels } from "@/hooks/use-subscription";
 import { 
   Upload, FileText, ArrowRight, Image as ImageIcon, 
@@ -496,7 +496,7 @@ Do not use markdown. Output pure JSON.`;
     if (!user || !gradingResult) return;
     setIsSaving(true);
     try {
-      const { error } = await supabase.from("essay_history").insert({
+      await insertHistoryAction("essay_history", {
         user_id: user.id,
         source_passage: gradingConfig.passage || "Image uploaded",
         student_submission: gradingAnswers.map((a, i) => `Paragraph ${i+1}:\nQ: ${a.question}\nA: ${a.answer}`).join("\n\n"),
@@ -506,7 +506,7 @@ Do not use markdown. Output pure JSON.`;
         key_issues: gradingResult.key_issues,
         improvement_points: gradingResult.improvement_points
       });
-      if (error) throw error;
+      
       setHasSaved(true);
     } catch (e) {
       console.error("Error saving essay history:", e);

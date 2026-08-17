@@ -34,8 +34,6 @@ function getModel(displayName: string) {
       return mistral.chat("mistral-small-latest");
     case "Mistral Large":
       return mistral.chat("mistral-large-latest");
-    case "GPT OSS":
-      return groq.chat("openai/gpt-oss-120b");
     case "Gemini 3.6 Flash":
       return deepseek.chat("deepseek-v4-flash"); // Should be intercepted by Gemini fallback
     case "Gemini 3.5 Pro":

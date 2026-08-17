@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Clock, BookOpen, PenLine, FileText, ChevronRight, Loader2, Trash2, X, Globe, Lock, ArrowRight, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -54,16 +54,16 @@ export default function HistoryPage() {
       setLoading(true);
       
       const [quizRes, flashRes, essayRes, exploreRes] = await Promise.all([
-        supabase.from("quiz_history").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
-        supabase.from("flashcards_history").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
-        supabase.from("essay_history").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
-        supabase.from("explore_history").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
+        fetchUserHistoryAction("quiz_history"),
+        fetchUserHistoryAction("flashcards_history"),
+        fetchUserHistoryAction("essay_history"),
+        fetchUserHistoryAction("explore_history"),
       ]);
       
-      if (quizRes.data) setQuizzes(quizRes.data);
-      if (flashRes.data) setFlashcards(flashRes.data);
-      if (essayRes.data) setEssays(essayRes.data);
-      if (exploreRes.data) setExplore(exploreRes.data);
+      if (quizRes) setQuizzes(quizRes);
+      if (flashRes) setFlashcards(flashRes);
+      if (essayRes) setEssays(essayRes);
+      if (exploreRes) setExplore(exploreRes);
       
       setLoading(false);
     };
@@ -72,7 +72,7 @@ export default function HistoryPage() {
   }, [user]);
 
   const handleDelete = async (table: string, id: string) => {
-    await supabase.from(table).delete().eq("id", id);
+    await deleteHistoryAction(table as any, id);
     if (table === "quiz_history") setQuizzes(prev => prev.filter(q => q.id !== id));
     if (table === "flashcards_history") setFlashcards(prev => prev.filter(f => f.id !== id));
     if (table === "essay_history") setEssays(prev => prev.filter(e => e.id !== id));

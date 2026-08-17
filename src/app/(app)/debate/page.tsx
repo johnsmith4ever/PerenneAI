@@ -7,7 +7,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 
 
@@ -29,13 +29,13 @@ export default function DebatePage() {
     if (!user || messages.length === 0) return;
     setIsSaving(true);
     try {
-      const { error } = await supabase.from("explore_history").insert({
+      await insertHistoryAction("explore_history", {
         user_id: user.id,
         type: "debate",
         topic: topic || "Debate",
         data: messages
       });
-      if (error) throw error;
+      
       setHasSaved(true);
     } catch (e) {
       console.error("Error saving debate history:", e);

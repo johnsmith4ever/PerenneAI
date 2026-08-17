@@ -12,7 +12,7 @@ import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks
 import { ThemeToggle } from "@/components/theme-toggle";
 
 import { useClerk, useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { useRouter } from "next/navigation";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -285,7 +285,7 @@ function palette(depth: number) {
         if (data.data) {
           setRoot(data.data);
           if (user) {
-            await supabase.from("explore_history").insert({
+            await insertHistoryAction("explore_history", {
               user_id: user.id,
               topic: analysis.title || "Untitled Mindmap",
               type: "mindmap",

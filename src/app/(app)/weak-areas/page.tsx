@@ -5,7 +5,7 @@ import { Target, Brain, BookOpen, AlertTriangle, ArrowRight, Loader2, PlayCircle
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { cn } from "@/lib/utils";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from "recharts";
 
@@ -52,14 +52,14 @@ export default function WeakAreasPage() {
     async function fetchData() {
       try {
         const [quizRes, essayRes] = await Promise.all([
-          supabase.from("quiz_history").select("*").eq("user_id", user?.id).order("created_at", { ascending: false }),
-          supabase.from("essay_history").select("*").eq("user_id", user?.id).order("created_at", { ascending: false })
+          fetchUserHistoryAction("quiz_history"),
+          fetchUserHistoryAction("essay_history")
         ]);
 
         const topicMap = new Map<string, WeakArea>();
 
-        if (quizRes.data) {
-          quizRes.data.forEach(q => {
+        if (quizRes) {
+          quizRes.forEach(q => {
             let source: "Exam Sim" | "Quiz" | "Maths Solver" | "Flashcards" = "Exam Sim";
             if (q.topic?.startsWith("Maths: ")) {
               source = "Maths Solver";
@@ -130,12 +130,12 @@ export default function WeakAreasPage() {
 
         setWeakAreas(calculated);
 
-        if (essayRes.data && essayRes.data.length > 0) {
+        if (essayRes && essayRes.length > 0) {
           let totalScore = 0;
           const issueCounts = new Map<string, number>();
           const improvementCounts = new Map<string, number>();
           
-          essayRes.data.forEach(e => {
+          essayRes.forEach(e => {
             totalScore += e.final_score || 0;
             if (Array.isArray(e.key_issues)) {
               e.key_issues.forEach((issue: string) => {
@@ -149,7 +149,7 @@ export default function WeakAreasPage() {
             }
           });
 
-          const averageScore = Math.round(totalScore / essayRes.data.length);
+          const averageScore = Math.round(totalScore / essayRes.length);
           const commonIssues = Array.from(issueCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
           const commonImprovements = Array.from(improvementCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
 

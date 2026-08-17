@@ -10,7 +10,7 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
 
 import ReactMarkdown from "react-markdown";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction } from "@/actions/supabase";
 
 declare global {
   namespace JSX {
@@ -148,7 +148,7 @@ export default function MathSolverPage() {
     try {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
       // We save this into quiz_history so it shows up in Weak Areas just like exams!
-      const { error } = await supabase.from("quiz_history").insert({
+      await insertHistoryAction("quiz_history", {
         user_id: user.id,
         topic: `Maths: ${topic || "Mixed"}`,
         questions: questions.map((q, i) => {
@@ -166,7 +166,6 @@ export default function MathSolverPage() {
         }),
         score: scorePct
       });
-      if (error) throw error;
       setHasSaved(true);
     } catch (e) {
       console.error("Error saving math history:", e);

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import {
   Sparkles,
   RotateCcw,
@@ -265,7 +265,7 @@ export default function FlashcardsPage() {
     if (!user || allCards.length === 0) return;
     setIsSaving(true);
     try {
-      const { error } = await supabase.from("flashcards_history").insert({
+      await insertHistoryAction("flashcards_history", {
         user_id: user.id,
         title: deckTitle || "Untitled Deck",
         topic: topic || "Generated Deck",
@@ -274,7 +274,7 @@ export default function FlashcardsPage() {
           failed: wrongCards.some(wc => wc.term === c.term)
         }))
       });
-      if (error) throw error;
+      
       setHasSaved(true);
     } catch (e) {
       console.error("Error saving flashcard history:", e);

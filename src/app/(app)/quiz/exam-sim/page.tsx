@@ -8,7 +8,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
-import { supabase } from "@/lib/supabase";
+import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import ReactMarkdown from "react-markdown";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 
@@ -78,10 +78,10 @@ export default function ExamSimPage() {
 
   useEffect(() => {
     if (user) {
-      supabase.from("quiz_history").select("*").eq("user_id", user.id).then(({ data }) => {
+      fetchUserHistoryAction("quiz_history").then((data) => {
         if (data) {
           const wp: any[] = [];
-          data.forEach(exam => {
+          data.forEach((exam: any) => {
             if (exam.questions) {
               exam.questions.forEach((q: any) => {
                 if (q.grading && !q.grading.correct) wp.push({ topic: exam.topic, question: q.question, feedback: q.grading.feedback });
@@ -99,7 +99,7 @@ export default function ExamSimPage() {
     setIsSaving(true);
     try {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
-      const { error } = await supabase.from("quiz_history").insert({
+      await insertHistoryAction("quiz_history", {
         user_id: user.id,
         topic: topic || "Exam Simulator",
         questions: questions.map((q, i) => {
@@ -121,7 +121,7 @@ export default function ExamSimPage() {
         }),
         score: scorePct
       });
-      if (error) throw error;
+      
       setHasSaved(true);
     } catch (e) {
       console.error("Error saving exam history:", e);

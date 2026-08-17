@@ -4,7 +4,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { createMistral } from "@ai-sdk/mistral";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-server";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
 
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     if (!FREE_ACCESS_MODE && tierRank < TIER_RANK.Pro) {
       const today = new Date();
       today.setUTCHours(0,0,0,0);
-      const { count } = await supabase
+      const { count } = await supabaseAdmin
         .from("explore_history")
         .select("*", { count: 'exact', head: true })
         .eq("user_id", userId)
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         
         const threshold = subject === "Mathematics" || subject === "Maths" ? 0.70 : 0.70;
 
-        const { data: specs, error: specError } = await supabase.rpc("match_aqa_specs", {
+        const { data: specs, error: specError } = await supabaseAdmin.rpc("match_aqa_specs", {
           query_embedding: embedding,
           match_threshold: threshold,
           match_count: 3,
@@ -179,7 +179,7 @@ Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSO
 
     // Save history so we can enforce rate limits
     if (userId) {
-      supabase.from("explore_history").insert({
+      supabaseAdmin.from("explore_history").insert({
         user_id: userId,
         topic: "Note Summary",
         type: "note_summary",
