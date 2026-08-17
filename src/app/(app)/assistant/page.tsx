@@ -77,14 +77,14 @@ export default function AssistantPage() {
   const [isSidebarOpen, setIsSidebarOpen] = usePersistentState<boolean>("assistant_sidebar_open", true);
   const [hoveredModel, setHoveredModel] = useState<string | null>(null);
   const [extraTopicDetails, setExtraTopicDetails] = useState("");
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = usePersistentState<string>("assistant_input_text", "");
   const [messages, setMessages] = useState<Message[]>([]);
   // Use plain useState for chats — source of truth is Supabase chat_history, not user_state.
   // usePersistentState was causing a race: key changed from "assistant_chats_undefined" to
   // "assistant_chats_user_xxx" after Clerk resolved, wiping the in-memory list.
   const [chats, setChats] = useState<ChatSession[]>([]);
   const [chatsLoaded, setChatsLoaded] = useState(false);
-  const [activeChatId, setActiveChatId] = useState<string | null>(null);
+  const [activeChatId, setActiveChatId] = usePersistentState<string | null>("assistant_active_chat_id", null);
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
   const [editChatTitle, setEditChatTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);

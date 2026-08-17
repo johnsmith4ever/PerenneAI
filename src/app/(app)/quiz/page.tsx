@@ -95,8 +95,7 @@ export default function QuizPage() {
     return () => clearTimeout(timer);
   }, [topic, subject]);
   
-  // App Mode State
-  const [quizMode, setQuizMode] = usePersistentState<QuizMode>("quiz_mode", "setup");
+  const [quizMode, setQuizMode, quizModeLoaded] = usePersistentState<QuizMode>("quiz_mode", "setup");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedQuiz, setGeneratedQuiz] = usePersistentState<any[]>("quiz_generated", []);
   
@@ -391,6 +390,13 @@ export default function QuizPage() {
   };
 
   // --- Renderers ---
+  if (!isLoaded || !quizModeLoaded) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   if (quizMode === "taking") {
     if (!generatedQuiz || generatedQuiz.length === 0) {
