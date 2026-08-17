@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
-import { createOpenAI } from "@ai-sdk/openai";
+import { createMistral } from "@ai-sdk/mistral";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
 
-const groq = createOpenAI({
-  baseURL: "https://api.groq.com/openai/v1",
-  apiKey: process.env.GROQ_API_KEY,
+const mistral = createMistral({
+  apiKey: process.env.MISTRAL_API_KEY_2,
 });
 
 export async function POST(req: Request) {
@@ -18,10 +17,10 @@ export async function POST(req: Request) {
     if (!text) return NextResponse.json({ title: "New Chat" });
 
     const { text: title } = await generateText({
-      model: groq.chat("openai/gpt-oss-120b"),
+      model: mistral.chat("mistral-small-latest"),
       system: "You are an expert summarizer. Your task is to generate a short, concise title (maximum 5 words) for a chat based on the user's first message. You must respond ONLY with the raw title. Do not include quotes, punctuation, prefixes like 'Title:' or any conversational filler.",
       prompt: text,
-      maxOutputTokens: 10,
+      maxTokens: 10,
       temperature: 0.2,
     });
 

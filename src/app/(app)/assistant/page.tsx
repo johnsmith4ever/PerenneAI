@@ -306,8 +306,9 @@ export default function AssistantPage() {
       }
     }
 
-    // Build system prompt based on mode — kept minimal
-    const identity = "Your name is Perenne. If the user greets you or asks who you are, respond: \"Hi, I'm Perenne — your AI study assistant. I can help you build flashcards, generate quizzes, answer questions, or grade and give feedback on your writing. What do you need help with today?\"";
+    // Build system prompt based on mode
+    const GREETING_RESPONSE = "Hi, I'm Perenne — your AI study assistant, built specifically around the AQA specification so everything I help you with actually maps to what you'll be tested on. I can generate flashcards from your notes or a topic, build you a quiz or run a full exam simulator with AQA-style questions, grade your essays with feedback tied to real AQA assessment objectives like AO1 and AO2, and answer questions or walk through topics with you directly. I also track your weak areas automatically based on your quiz and essay history, so you always know what's worth revising next, and I've got extra tools like mind maps, a math solver, presentations, and debate practice depending on how you like to study. Everything's tied to your account too, so you can start something on one device and pick it back up wherever you are. What do you need help with today?";
+    const identity = `You are Perenne, an AI study assistant built specifically for UK students around the AQA specification. You answer every question the user asks fully and accurately. ONLY if the user directly greets you or asks who you are or what you can do, respond with exactly: "${GREETING_RESPONSE}" — do NOT use this response for any other type of question.`;
     let systemPrompt = "";
     if (chatMode === "Quick Answer") {
       systemPrompt = identity + "\nBe brief. Key facts only.";

@@ -46,7 +46,7 @@ export type ModelType =
   | "Mistral Embed";
 
 export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> = {
-  "Mistral Small": { input: 0.5, output: 0.5 },
+  "Mistral Small": { input: 1.0, output: 1.0 },
   "GPT OSS": { input: 1, output: 1 },
   "Gemini 3.5 Flash-Lite": { input: 1, output: 1 },
   "Gemini 3.6 Flash": { input: 2, output: 2 },
@@ -57,7 +57,7 @@ export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> =
   "Claude 3.5 Sonnet": { input: 20, output: 20 },
   "GPT Luna": { input: 5, output: 5 },
   "GPT Terra": { input: 15, output: 15 },
-  "Mistral Large": { input: 3, output: 3 },
+  "Mistral Large": { input: 6, output: 6 },
   "Tavily Search": { input: 70, output: 70 },
   "Mistral Embed": { input: 168, output: 168 },
 };
