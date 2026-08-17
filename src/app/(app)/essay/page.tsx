@@ -70,7 +70,7 @@ export default function EssayPage() {
   const { user } = useUser();
   const { tier, deductCredits, canAfford, isLoaded, assistant, heavy, judge, grading } = useSubscription();
   const { curriculumLevel, curriculumSubject } = useCurriculum();
-  const [role, setRole] = usePersistentState<Role>("essay_role", null);
+  const [role, setRole, roleLoaded] = usePersistentState<Role>("essay_role", null);
   const tierRank = TIER_RANK[tier] ?? 0;
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
@@ -664,6 +664,14 @@ Do not use markdown code blocks. Output pure JSON.`;
       setGradingStatus("error");
     }
   };
+
+  if (!roleLoaded) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   if (!role) {
     return (

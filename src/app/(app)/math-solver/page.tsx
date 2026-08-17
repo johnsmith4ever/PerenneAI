@@ -71,9 +71,8 @@ export default function MathSolverPage() {
   }, []);
 
 
-  
-  const [role, setRole] = usePersistentState<"practice" | "grading" | null>("math_role", null);
-  const [examState, setExamState] = usePersistentState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("math_examstate", "setup");
+  const [role, setRole, roleLoaded] = usePersistentState<"practice" | "grading" | null>("math_role", null);
+  const [examState, setExamState, examStateLoaded] = usePersistentState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("math_examstate", "setup");
   
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -378,6 +377,14 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
       setExamState("setup");
     }
   };
+
+  if (!roleLoaded || !examStateLoaded) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   if (!role) {
     return (

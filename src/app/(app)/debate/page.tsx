@@ -16,7 +16,7 @@ export default function DebatePage() {
   const [topic, setTopic] = usePersistentState("debate_topic", "");
   const [stance, setStance] = usePersistentState<"Affirmative" | "Against">("debate_stance", "Affirmative");
   const [useResearch, setUseResearch] = usePersistentState("debate_research", false);
-  const [isDebating, setIsDebating] = usePersistentState("debate_active", false);
+  const [isDebating, setIsDebating, isDebatingLoaded] = usePersistentState("debate_active", false);
   const [messages, setMessages] = usePersistentState<{ role: "user" | "assistant"; content: string }[]>("debate_messages", []);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +92,13 @@ export default function DebatePage() {
     }
   };
 
-  if (!isLoaded) return null;
+  if (!isLoaded || !isDebatingLoaded) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in pb-12">
