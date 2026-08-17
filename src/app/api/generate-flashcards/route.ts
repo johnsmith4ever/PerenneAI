@@ -117,7 +117,7 @@ Respond with ONLY a JSON object, no markdown, no explanation:
       textUsage = result.usage;
     } else {
       const result = await generateText({
-        model: groq.chat("llama-3.3-70b-versatile"),
+        model: groq.chat("openai/gpt-oss-120b"),
         system: sysPrompt,
         prompt: userPrompt
       });

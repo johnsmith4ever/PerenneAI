@@ -30,7 +30,8 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Bento Box Grid */}
+      {/* Bento Box Grid - only shown to signed-in users */}
+      {user && (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Link href="/weak-areas" className="group block rounded-3xl bg-red-500/5 border border-red-500/20 p-8 hover:bg-red-500/10 transition-all backdrop-blur-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -72,6 +73,7 @@ export default async function DashboardPage() {
           </div>
         </Link>
       </div>
+      )}
       
       <AqaTextbookSearch />
       

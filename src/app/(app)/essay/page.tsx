@@ -211,7 +211,7 @@ export default function EssayPage() {
 
   const handleGenerateExercise = async () => {
     if (!isLoaded) return;
-    if (!canAfford(3000, "Llama 70B")) {
+    if (!canAfford(3000, "Mistral Small")) {
       alert("You do not have enough daily credits to generate an essay setup. Please try again tomorrow or upgrade your plan.");
       return;
     }

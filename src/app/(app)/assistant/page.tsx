@@ -18,9 +18,9 @@ type ModelDefinition = {
 };
 
 const MODELS: ModelDefinition[] = [
-  { displayName: "Llama 70B", realProvider: "Llama 3.3 70B (Groq)" },
   { displayName: "Mistral Small", realProvider: "Mistral Small (Mistral)" },
   { displayName: "Mistral Large", realProvider: "Mistral Large (Mistral)" },
+  { displayName: "GPT OSS", realProvider: "GPT OSS 120B (Groq)" },
   { displayName: "Gemini 3.5 Flash-Lite", realProvider: "Gemini 3.5 Flash-Lite" },
   { displayName: "Gemini 3.6 Flash", realProvider: "Gemini 2.5 Flash-Lite" },
   { displayName: "Gemini 3.5 Pro", realProvider: "Gemini 3.6 Flash" },
@@ -443,6 +443,11 @@ export default function AssistantPage() {
                 Recent Chats
               </p>
             </div>
+            {!user && (
+              <div className="px-4 py-3 bg-amber-500/5 border-b border-amber-500/20">
+                <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">Guest mode: chats won't be saved across sessions.</p>
+              </div>
+            )}
             
             <div className="flex-1 overflow-y-auto flex flex-col">
               {chats.length === 0 ? (

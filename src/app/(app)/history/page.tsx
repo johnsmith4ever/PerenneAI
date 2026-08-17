@@ -9,6 +9,7 @@ import { MemoizedQuestionText } from "@/components/memoized-question-text";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
+import Link from "next/link";
 
 
 
@@ -28,9 +29,14 @@ const TABS: { id: Tab, label: string }[] = [
 
 export default function HistoryPage() {
   const router = useRouter();
-  const { user } = useUser();
-  const { tier, isLoaded: subLoaded , assistant } = useSubscription();
+  const { user, isLoaded: userLoaded } = useUser();
+  const { tier, isLoaded: subLoaded } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
+  void subLoaded; // suppress unused warning
+
+  // Guest block
+  const isGuest = userLoaded && !user;
+
   const [activeTab, setActiveTab] = useState<Tab>("quizzes");
   
   const [quizzes, setQuizzes] = useState<any[]>([]);
@@ -102,11 +108,25 @@ export default function HistoryPage() {
     }
   };
 
+  // Early return for guests - all hooks already declared above
+  if (isGuest) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6 animate-in fade-in">
+        <div className="w-20 h-20 rounded-full bg-purple-500/10 flex items-center justify-center mb-6 border border-purple-500/20">
+          <Lock className="w-10 h-10 text-purple-400" />
+        </div>
+        <h1 className="text-3xl font-serif font-bold text-foreground mb-3">Sign In Required</h1>
+        <p className="text-muted-foreground max-w-sm mb-8">Your study history is saved to your account. Sign in to view your past sessions, quizzes, flashcards, and more.</p>
+        <Link href="/sign-in" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-600 text-white font-bold transition-all shadow-lg">
+          Sign In to View History
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto pb-12 animate-in fade-in relative">
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
-
-
 
       {selectedItem ? (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
@@ -540,7 +560,6 @@ export default function HistoryPage() {
           </div>
         )}
       </div>
-
       </>
       )}
     </div>

@@ -192,11 +192,16 @@ export default function WeakAreasPage() {
       </div>
 
       {!user ? (
-         <div className="p-8 border border-border rounded-3xl bg-card text-center">
-           <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-           <h2 className="text-xl font-bold mb-2">Sign in to track weak areas</h2>
-           <p className="text-muted-foreground">Guest users do not have access to long-term performance tracking.</p>
-         </div>
+        <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-6 animate-in fade-in">
+          <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-6 border border-red-500/20">
+            <Target className="w-10 h-10 text-red-400" />
+          </div>
+          <h1 className="text-3xl font-serif font-bold text-foreground mb-3">Sign In Required</h1>
+          <p className="text-muted-foreground max-w-sm mb-8">Your weak areas and performance data are tracked to your account. Sign in to see where to focus your revision.</p>
+          <Link href="/sign-in" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold transition-all shadow-lg">
+            Sign In to View Weak Areas
+          </Link>
+        </div>
       ) : (
         <div className="space-y-8">
           <div className="flex flex-wrap gap-2 mb-4">

@@ -67,6 +67,14 @@ const GrowingBranchIcon = ({ level, className }: { level: number, className?: st
   );
 };
 
+const TIER_STYLES: Record<string, { badge?: string; badgeColor?: string; glowColor: string; glowColor2: string; borderHover: string; borderActive: string }> = {
+  Free:    { glowColor: "rgba(251,191,36,0.12)",  glowColor2: "rgba(251,191,36,0.06)",  borderHover: "hover:border-amber-500/40",  borderActive: "border-amber-600/50" },
+  Core:    { badge: "Saver",       badgeColor: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30", glowColor: "rgba(16,185,129,0.10)",  glowColor2: "rgba(16,185,129,0.05)",  borderHover: "hover:border-emerald-500/40", borderActive: "border-emerald-600/50" },
+  Pro:     { badge: "Best Value",  badgeColor: "bg-purple-500/15 text-purple-400 border-purple-500/30",  glowColor: "rgba(168,85,247,0.10)",  glowColor2: "rgba(168,85,247,0.05)",  borderHover: "hover:border-purple-500/40",  borderActive: "border-purple-600/50" },
+  Premium: { glowColor: "rgba(59,130,246,0.10)",  glowColor2: "rgba(59,130,246,0.05)",  borderHover: "hover:border-blue-500/40",   borderActive: "border-blue-600/50" },
+  Maximum: { badge: "No Limits",   badgeColor: "bg-red-500/15 text-red-400 border-red-500/30",           glowColor: "rgba(239,68,68,0.10)",   glowColor2: "rgba(239,68,68,0.05)",   borderHover: "hover:border-red-500/40",    borderActive: "border-red-600/50" },
+};
+
 const TIERS: { id: Tier; name: string; tagline: string; priceText: string; priceDetail: string; credits: string; featureHeader: string; features: string[]; iconLevel: number }[] = [
   {
     id: "Free",
@@ -198,17 +206,25 @@ export default function SubscriptionsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {TIERS.map((t) => {
           const isCurrent = t.id === tier;
+          const style = TIER_STYLES[t.id] ?? TIER_STYLES.Free;
           return (
             <div key={t.id} className={cn(
               "rounded-[24px] border flex flex-col transition-all duration-300 relative overflow-hidden group",
-              isCurrent ? "bg-[#1c1c1c] border-neutral-700 shadow-xl" : "bg-[#171717] border-neutral-800 hover:border-neutral-700"
+              isCurrent ? `bg-[#1c1c1c] ${style.borderActive} shadow-xl` : `bg-[#171717] border-neutral-800 ${style.borderHover}`
             )}>
-              {/* Smooth gold ambient glow (Remove or comment out to reverse) */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.12)_0%,transparent_60%)] pointer-events-none mix-blend-screen" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.06)_0%,transparent_100%)] pointer-events-none" />
+              {/* Per-plan ambient glow */}
+              <div className="absolute inset-0 pointer-events-none mix-blend-screen" style={{ background: `radial-gradient(circle at top left, ${style.glowColor} 0%, transparent 60%)` }} />
+              <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(circle at top left, ${style.glowColor} 0%, transparent 100%)` }} />
 
               <div className="p-8 pb-6 flex flex-col flex-1 relative z-10">
-                <GrowingBranchIcon level={t.iconLevel} className="w-8 h-8 text-neutral-400 mb-6 font-light" />
+                <div className="flex items-start justify-between mb-6">
+                  <GrowingBranchIcon level={t.iconLevel} className="w-8 h-8 text-neutral-400 font-light" />
+                  {style.badge && (
+                    <span className={cn("text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border", style.badgeColor)}>
+                      {style.badge}
+                    </span>
+                  )}
+                </div>
                 <h3 className="text-3xl font-semibold text-white mb-1 tracking-tight">{t.name}</h3>
                 <p className="text-sm text-neutral-400 mb-8 font-medium h-[40px]">{t.tagline}</p>
                 

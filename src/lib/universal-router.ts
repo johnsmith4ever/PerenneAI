@@ -81,9 +81,18 @@ export async function generateUniversalText({
       ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
     });
     return { text, usage };
-  } else if (model === "Llama 70B") {
+  } else if (model === "GPT OSS") {
     const { text, usage } = await generateText({
-      model: groq.chat("llama-3.3-70b-versatile"),
+      model: groq.chat("openai/gpt-oss-120b"),
+      system,
+      messages: finalMessages,
+      temperature,
+      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
+    });
+    return { text, usage };
+  } else if (model === "Mistral Small") {
+    const { text, usage } = await generateText({
+      model: mistral.chat("mistral-small-latest"),
       system,
       messages: finalMessages,
       temperature,

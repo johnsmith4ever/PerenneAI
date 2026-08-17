@@ -30,8 +30,12 @@ const deepseek = createOpenAI({
 // CRITICAL: use provider.chat() not provider() — provider() uses Responses API which Groq/DeepSeek don't support
 function getModel(displayName: string) {
   switch (displayName) {
-    case "Llama 70B":
-      return groq.chat("llama-3.3-70b-versatile");
+    case "Mistral Small":
+      return mistral.chat("mistral-small-latest");
+    case "Mistral Large":
+      return mistral.chat("mistral-large-latest");
+    case "GPT OSS":
+      return groq.chat("openai/gpt-oss-120b");
     case "Gemini 3.6 Flash":
       return deepseek.chat("deepseek-v4-flash"); // Should be intercepted by Gemini fallback
     case "Gemini 3.5 Pro":
@@ -45,7 +49,7 @@ function getModel(displayName: string) {
     case "Claude 3.5 Sonnet":
       return anthropic.chat("claude-3-5-sonnet-20241022");
     default:
-      return groq.chat("llama-3.3-70b-versatile");
+      return mistral.chat("mistral-small-latest");
   }
 }
 

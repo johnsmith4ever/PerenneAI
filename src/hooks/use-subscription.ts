@@ -30,7 +30,8 @@ export const TIER_RANK: Record<Tier, number> = {
 };
 
 export type ModelType = 
-  | "Llama 70B" 
+  | "Mistral Small" 
+  | "GPT OSS"
   | "Gemini 3.5 Flash-Lite"
   | "Gemini 3.6 Flash" 
   | "Gemini 3.5 Pro"
@@ -45,7 +46,8 @@ export type ModelType =
   | "Mistral Embed";
 
 export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> = {
-  "Llama 70B": { input: 0.5, output: 0.5 },
+  "Mistral Small": { input: 0.5, output: 0.5 },
+  "GPT OSS": { input: 1, output: 1 },
   "Gemini 3.5 Flash-Lite": { input: 1, output: 1 },
   "Gemini 3.6 Flash": { input: 2, output: 2 },
   "Gemini 3.5 Pro": { input: 4, output: 4 },
@@ -69,10 +71,10 @@ type SubscriptionState = {
 export function getTierModels(tier: Tier): { heavy: ModelType, judge: ModelType, assistant: ModelType } {
   const heavy: ModelType = "Deepseek-V4-Flash";
   const judge: ModelType = "Claude 4.5 Haiku";
-  let assistant: ModelType = "Llama 70B"; // Free / Guest tier
+  let assistant: ModelType = "Mistral Small"; // Free / Guest tier
   
   if (tier === "Core") {
-    assistant = "Mistral Large";
+    assistant = "Mistral Large"; // Also implies GPT OSS is unlocked
   } else if (tier === "Pro") {
     assistant = "Gemini 3.5 Pro";
   } else if (tier === "Premium") {

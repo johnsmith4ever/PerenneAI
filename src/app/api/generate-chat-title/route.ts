@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     if (!text) return NextResponse.json({ title: "New Chat" });
 
     const { text: title } = await generateText({
-      model: groq.chat("llama-3.3-70b-versatile"),
+      model: groq.chat("openai/gpt-oss-120b"),
       system: "You are an expert summarizer. Your task is to generate a short, concise title (maximum 5 words) for a chat based on the user's first message. You must respond ONLY with the raw title. Do not include quotes, punctuation, prefixes like 'Title:' or any conversational filler.",
       prompt: text,
       maxOutputTokens: 10,
