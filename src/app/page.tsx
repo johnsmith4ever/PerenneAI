@@ -2,8 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, BrainCircuit, GraduationCap, MessagesSquare, CheckCircle2, Calendar, LayoutTemplate } from "lucide-react";
-import { MouseTrackingBackground } from "@/components/ui/mouse-tracking-bg";
+import { ArrowRight, BrainCircuit, GraduationCap, MessagesSquare, CheckCircle2, Calendar, LayoutTemplate, ShieldCheck, Zap } from "lucide-react";
 
 export default async function RootPage() {
   const { userId } = await auth();
@@ -14,158 +13,154 @@ export default async function RootPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col font-sans selection:bg-amber-500/20 overflow-hidden relative">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-purple-500/20">
       
-      {/* Global Ambient Background */}
-      <MouseTrackingBackground active={true} />
-      
-      <div className="fixed inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
-
-      {/* Navbar */}
-      <nav className="w-full max-w-6xl mx-auto px-6 py-6 flex items-center justify-between relative z-20">
+      {/* Clean Navbar */}
+      <nav className="w-full max-w-6xl mx-auto px-6 py-6 flex items-center justify-between border-b border-slate-100">
         <div className="flex items-center gap-3">
-          <img src="/logo.svg" alt="Perenne Logo" className="logo-img w-8 h-8 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)] invert" />
-          <span className="font-serif font-black text-2xl tracking-widest text-white uppercase">Perenne</span>
+          <img src="/logo.svg" alt="Perenne Logo" className="logo-img w-8 h-8 opacity-90" />
+          <span className="font-serif font-black text-2xl tracking-widest text-slate-900 uppercase">Perenne</span>
         </div>
-        <div className="flex items-center gap-4">
-          {userId ? (
-            <Link href="/dashboard">
-              <Button className="rounded-full px-6 bg-white text-black hover:bg-slate-200 font-bold shadow-[0_0_20px_rgba(245,158,11,0.2)]">Welcome Back</Button>
-            </Link>
-          ) : (
-            <>
-              <Link href="/dashboard" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                Try as Guest
-              </Link>
-              <Link href="/sign-in" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                Sign In
-              </Link>
-              <Link href="/get-started">
-                <Button className="rounded-full px-6 bg-white text-black hover:bg-slate-200 font-bold shadow-[0_0_20px_rgba(245,158,11,0.2)]">Get Started</Button>
-              </Link>
-            </>
-          )}
-        </div>
+        {/* Intentionally left blank: No auth links here per the plan */}
       </nav>
 
-      <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-12 md:py-24 space-y-32 relative z-10">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-12 md:py-24 space-y-32">
 
         {/* Hero Section */}
-        <section className="text-center space-y-8 max-w-4xl mx-auto pt-12 md:pt-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-amber-500 text-sm font-semibold backdrop-blur-md mb-4 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            <Sparkles className="w-4 h-4" /> The Ultimate AQA Study Engine
-          </div>
-          <h1 className="text-5xl md:text-7xl font-serif font-black tracking-tight text-white leading-[1.1] animate-in fade-in zoom-in-95 duration-1000 delay-150 fill-mode-both">
-            Outsmart the <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 drop-shadow-sm">AQA Specification.</span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto font-medium animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300 fill-mode-both">
-            Stop guessing what will be on the test. Perenne's elite suite of AI tools extracts the exact knowledge you need to ace your AQA exams, aligned flawlessly to the syllabus.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 fill-mode-both">
-            <Link href="/dashboard">
-              <Button size="lg" className="h-14 rounded-full px-8 text-base bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold shadow-[0_0_40px_rgba(245,158,11,0.3)] hover:shadow-[0_0_60px_rgba(245,158,11,0.5)] transition-all flex items-center gap-2 group border-0">
-                <Sparkles className="w-5 h-5 text-amber-100" />
-                Try it out
-              </Button>
-            </Link>
-          </div>
-        </section>
-
-        {/* Feature Highlights Section */}
-        <section className="space-y-16 relative z-10">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">Your Tools</h2>
-            <p className="text-slate-400 text-lg">Everything you need to dominate your studies, in one place.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-sm hover:bg-white/10 transition-colors group">
-              <div className="w-14 h-14 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-6 border border-amber-500/30 group-hover:scale-110 transition-transform">
-                <BrainCircuit className="w-7 h-7 text-amber-400" />
-              </div>
-              <h3 className="text-xl font-serif font-bold text-white mb-3">Note Summarizer</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Paste your chaotic lecture notes and watch them instantly transform into structured, perfectly formatted study guides and ELI10 analogies.
-              </p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-sm hover:bg-white/10 transition-colors group">
-              <div className="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 border border-orange-500/30 group-hover:scale-110 transition-transform">
-                <GraduationCap className="w-7 h-7 text-orange-400" />
-              </div>
-              <h3 className="text-xl font-serif font-bold text-white mb-3">AQA Essay Grader</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Get brutal, accurate feedback on your essays rigorously matched to the AQA mark schemes. See paragraph-by-paragraph rewrites.
-              </p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-sm hover:bg-white/10 transition-colors group">
-              <div className="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center mb-6 border border-red-500/30 group-hover:scale-110 transition-transform">
-                <MessagesSquare className="w-7 h-7 text-red-400" />
-              </div>
-              <h3 className="text-xl font-serif font-bold text-white mb-3">Curriculum Chat</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Chat with our advanced models to break down complex topics, test your knowledge, or just talk through a difficult concept.
-              </p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-sm hover:bg-white/10 transition-colors group">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-6 border border-emerald-500/30 group-hover:scale-110 transition-transform">
-                <CheckCircle2 className="w-7 h-7 text-emerald-400" />
-              </div>
-              <h3 className="text-xl font-serif font-bold text-white mb-3">Adaptive Quizzes</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Generate quizzes tailored to your subject and year group with instant marking to find your weak spots immediately.
-              </p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-sm hover:bg-white/10 transition-colors group">
-              <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 border border-blue-500/30 group-hover:scale-110 transition-transform">
-                <Calendar className="w-7 h-7 text-blue-400" />
-              </div>
-              <h3 className="text-xl font-serif font-bold text-white mb-3">Schedule Maker</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Use AI to generate optimal revision schedules leading up to your exams, balancing difficult subjects and spacing out your learning.
-              </p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-sm hover:bg-white/10 transition-colors group">
-              <div className="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 border border-purple-500/30 group-hover:scale-110 transition-transform">
-                <LayoutTemplate className="w-7 h-7 text-purple-400" />
-              </div>
-              <h3 className="text-xl font-serif font-bold text-white mb-3">Instant Flashcards</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Turn any topic or set of notes into ready-to-study flashcards in seconds. Export them directly to Anki or study them right here.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Pricing Teaser Section */}
-        <section className="text-center space-y-6 max-w-3xl mx-auto pt-12 relative z-10">
-          <div className="p-10 rounded-3xl bg-amber-500/10 border border-amber-500/20 backdrop-blur-md shadow-2xl">
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-white mb-4">World-Class AI, for less than a cup of coffee.</h2>
-            <p className="text-slate-300 text-lg leading-relaxed mb-8">
-              Perenne charges a fraction of what other generic AI services demand, while giving you access to the exact same cutting-edge models (Claude 3.5 Sonnet, DeepSeek Pro, Gemini Flash). Why pay $20/month elsewhere when you can get the ultimate study engine built specifically for students for less than your morning latte?
+        <section className="flex flex-col md:flex-row items-center justify-between gap-12 pt-8 md:pt-16">
+          
+          <div className="flex-1 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <h1 className="text-5xl md:text-7xl font-serif font-black tracking-tight text-slate-900 leading-[1.1]">
+              Outsmart the <br />
+              <span className="text-purple-600">AQA Exams.</span>
+            </h1>
+            <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-lg font-medium">
+              Stop guessing what will be on the test. Perenne's elite suite of AI tools extracts the exact knowledge you need to ace your AQA exams, aligned flawlessly to the syllabus.
             </p>
-            <Link href="/get-started">
-              <Button size="lg" className="rounded-full px-8 h-12 bg-amber-500 hover:bg-amber-400 text-black font-bold shadow-[0_0_30px_rgba(245,158,11,0.2)] hover:shadow-[0_0_40px_rgba(245,158,11,0.4)] transition-all">
-                Start Studying For Free
-              </Button>
-            </Link>
+            <div className="pt-4">
+              <Link href="/get-started">
+                <Button size="lg" className="h-16 rounded-full px-10 text-xl bg-slate-900 hover:bg-slate-800 text-white font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-3 group border-0">
+                  Try it out
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Why Us Box */}
+          <div className="flex-1 w-full max-w-md animate-in fade-in slide-in-from-right-8 duration-1000 delay-300">
+            <div className="bg-slate-50 border border-slate-200 p-8 rounded-3xl shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-6 opacity-5">
+                <ShieldCheck className="w-32 h-32" />
+              </div>
+              <h2 className="text-2xl font-serif font-bold text-slate-900 mb-6 relative z-10">Why us?</h2>
+              
+              <ul className="space-y-6 relative z-10">
+                <li className="flex items-start gap-4">
+                  <div className="mt-1 w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-lg">AQA Specifics Only</h3>
+                    <p className="text-slate-600 leading-relaxed">We don't waste time on generic fluff. Every generated question, essay grade, and note is rigorously mapped to the official AQA mark schemes.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-4">
+                  <div className="mt-1 w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-lg">Cheaper than Coffee</h3>
+                    <p className="text-slate-600 leading-relaxed">Don't bleed money on $20/month AI subscriptions. Get access to the exact same premium AI models (Claude, DeepSeek) for a fraction of the cost.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </section>
+
+        {/* Feature Highlights Section (Clean Grid) */}
+        <section className="space-y-16 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+          <div className="text-left space-y-4 max-w-2xl">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-900">Your Study Tools</h2>
+            <p className="text-slate-600 text-lg">Everything you need to dominate your studies, in one clean dashboard.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <div className="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow group">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center mb-6 group-hover:bg-indigo-100 transition-colors">
+                <BrainCircuit className="w-6 h-6 text-indigo-600" />
+              </div>
+              <h3 className="text-xl font-serif font-bold text-slate-900 mb-2">Note Summarizer</h3>
+              <p className="text-slate-600 leading-relaxed text-sm">
+                Paste your chaotic lecture notes and watch them instantly transform into structured, perfectly formatted study guides.
+              </p>
+            </div>
+
+            <div className="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow group">
+              <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center mb-6 group-hover:bg-rose-100 transition-colors">
+                <GraduationCap className="w-6 h-6 text-rose-600" />
+              </div>
+              <h3 className="text-xl font-serif font-bold text-slate-900 mb-2">AQA Essay Grader</h3>
+              <p className="text-slate-600 leading-relaxed text-sm">
+                Get brutal, accurate feedback rigorously matched to AQA mark schemes with paragraph-by-paragraph rewrites.
+              </p>
+            </div>
+
+            <div className="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow group">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mb-6 group-hover:bg-amber-100 transition-colors">
+                <MessagesSquare className="w-6 h-6 text-amber-600" />
+              </div>
+              <h3 className="text-xl font-serif font-bold text-slate-900 mb-2">Curriculum Chat</h3>
+              <p className="text-slate-600 leading-relaxed text-sm">
+                Chat with advanced models to break down complex topics, test your knowledge, or just talk through a difficult concept.
+              </p>
+            </div>
+
+            <div className="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow group">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6 group-hover:bg-emerald-100 transition-colors">
+                <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+              </div>
+              <h3 className="text-xl font-serif font-bold text-slate-900 mb-2">Adaptive Quizzes</h3>
+              <p className="text-slate-600 leading-relaxed text-sm">
+                Generate quizzes tailored to your subject and year group with instant marking to find your weak spots.
+              </p>
+            </div>
+
+            <div className="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow group">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
+                <Calendar className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-serif font-bold text-slate-900 mb-2">Schedule Maker</h3>
+              <p className="text-slate-600 leading-relaxed text-sm">
+                Use AI to generate optimal revision schedules leading up to your exams, spacing out your learning.
+              </p>
+            </div>
+
+            <div className="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow group">
+              <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-6 group-hover:bg-purple-100 transition-colors">
+                <LayoutTemplate className="w-6 h-6 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-serif font-bold text-slate-900 mb-2">Instant Flashcards</h3>
+              <p className="text-slate-600 leading-relaxed text-sm">
+                Turn any topic or set of notes into ready-to-study flashcards in seconds. Export them directly to Anki.
+              </p>
+            </div>
+
           </div>
         </section>
 
       </main>
 
       {/* Footer */}
-      <footer className="w-full border-t border-white/10 mt-24 bg-black/40 backdrop-blur-md relative z-20">
+      <footer className="w-full border-t border-slate-100 mt-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left space-y-2">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
-              <img src="/logo.svg" alt="Perenne Logo" className="logo-img w-5 h-5 opacity-70 invert" />
-              <span className="font-serif font-black text-white/80 tracking-widest uppercase">Perenne</span>
+              <img src="/logo.svg" alt="Perenne Logo" className="logo-img w-5 h-5 opacity-50" />
+              <span className="font-serif font-black text-slate-500 tracking-widest uppercase">Perenne</span>
             </div>
             <p className="text-sm text-slate-500">© 2026 Perenne.</p>
             <p className="text-sm text-slate-500">Built for students who'd rather understand it than just get through it.</p>
