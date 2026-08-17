@@ -229,7 +229,7 @@ export default function ScheduleMakerPage() {
                   )}
                 </Button>
                 <p className="text-center text-[10px] text-slate-500 mt-3 font-medium uppercase tracking-widest">
-                  Uses DeepSeek Flash • Costs Credits
+                  Uses AI • Costs Credits
                 </p>
               </div>
             </div>

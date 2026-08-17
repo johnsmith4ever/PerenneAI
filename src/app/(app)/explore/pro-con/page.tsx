@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { PaywallOverlay } from "@/components/ui/paywall";
+
 import { useUser } from "@clerk/nextjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -79,15 +79,7 @@ export default function ProConPage() {
   return (
 
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in pb-12 relative">
-      {subLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && (
-        <PaywallOverlay 
-          tierRequired="Pro"
-          title="Pro/Con Generator Locked"
-          description="Upgrade to the Pro plan to access the advanced Pro/Con evaluation tool."
-        />
-      )}
-      
-      <div className={cn(tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && "opacity-20 pointer-events-none blur-[2px]")}>
+      <div>
         {/* Header */}
       <div>
 

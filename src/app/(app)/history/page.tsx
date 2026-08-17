@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 
-import { PaywallOverlay } from "@/components/ui/paywall";
+
 
 type Tab = "quizzes" | "flashcards" | "essays" | "presentation" | "math_solver" | "mindmap" | "schedule" | "note_summary" | "debate";
 
@@ -106,13 +106,7 @@ export default function HistoryPage() {
     <div className="max-w-4xl mx-auto pb-12 animate-in fade-in relative">
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
-      {subLoaded && tierRank < TIER_RANK.Core && (
-        <PaywallOverlay 
-          tierRequired="Core"
-          title="History Locked"
-          description="Upgrade to the Core plan to view your past study sessions, generated quizzes, flashcards, and graded essays."
-        />
-      )}
+
 
       {selectedItem ? (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">

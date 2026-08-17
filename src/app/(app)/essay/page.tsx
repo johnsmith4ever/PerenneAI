@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
-import { PaywallOverlay } from "@/components/ui/paywall";
+
 
 type Role = "student" | "teacher" | null;
 type SourceType = "ai" | "real" | null;
@@ -679,15 +679,7 @@ Do not use markdown code blocks. Output pure JSON.`;
           </p>
         </div>
 
-        {isLoaded && tierRank < TIER_RANK.Core && !FREE_ACCESS_MODE && (
-          <PaywallOverlay 
-            tierRequired="Core"
-            title="Essay Tool Locked"
-            description="Upgrade to the Core plan to access custom AI writing exercises and detailed essay grading."
-          />
-        )}
-        
-        <div className={cn("grid md:grid-cols-2 gap-6 max-w-2xl", tierRank < TIER_RANK.Core && !FREE_ACCESS_MODE && "opacity-20 pointer-events-none blur-[2px]")}>
+        <div className="grid md:grid-cols-2 gap-6 max-w-2xl">
           <button 
             onClick={() => {
               setRole("student");

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { PaywallOverlay } from "@/components/ui/paywall";
+
 import { useUser } from "@clerk/nextjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -251,17 +251,9 @@ export default function PresentationBuilderPage() {
           </div>
 
           <div className="flex justify-center mt-6">
-            {isLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE ? (
-              <PaywallOverlay 
-                tierRequired="Pro"
-                title="Download Locked"
-                description="Upgrade to the Pro plan to export your presentation as a PowerPoint file."
-              />
-            ) : (
-              <Button onClick={downloadPptx} className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl shadow-lg">
-                Download PowerPoint (.pptx)
-              </Button>
-            )}
+            <Button onClick={downloadPptx} className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl shadow-lg">
+              Download PowerPoint (.pptx)
+            </Button>
           </div>
 
         </div>

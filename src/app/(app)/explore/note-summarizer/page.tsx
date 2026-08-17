@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
-import { PaywallOverlay } from "@/components/ui/paywall";
+
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -167,7 +167,7 @@ export default function NoteSummarizerPage() {
           <span className="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider whitespace-nowrap mt-1">AQA Syllabus</span>
         </div>
         <p className="text-sm text-muted-foreground mt-2 max-w-xl leading-relaxed font-sans" style={{ fontFamily: 'Anthropic Sans, var(--font-inter), sans-serif' }}>
-          Powered by Deepseek. Paste your chaotic notes or just a topic, and we'll break it down so simply even a 5-year-old could pass the test.
+          Powered by AI. Paste your chaotic notes or just a topic, and we'll break it down so simply even a 5-year-old could pass the test.
         </p>
       </div>
 
@@ -252,13 +252,6 @@ export default function NoteSummarizerPage() {
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                 {loading ? "Summarizing..." : "Summarize"}
             </Button>
-            {mode === "understand" && subLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && (
-              <div className="absolute inset-0 z-10 bg-background/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center text-center p-6 border border-border">
-                <Lock className="w-6 h-6 text-amber-500 mb-2" />
-                <h3 className="font-bold mb-1">Understand Mode Locked</h3>
-                <p className="text-xs text-muted-foreground mb-4">Upgrade to Pro for Deepseek analogies and ELI5 explanations.</p>
-              </div>
-            )}
           </div>
         </div>
 

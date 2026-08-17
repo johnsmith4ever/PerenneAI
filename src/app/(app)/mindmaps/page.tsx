@@ -236,14 +236,11 @@ function palette(depth: number) {
   };
   const onMouseUp = () => setIsDragging(false);
 
-  // ── DeepSeek analysis ──────────────────────────────────────────────────────
+  // ── AI analysis ──────────────────────────────────────────────────────
   const handleAnalyze = async () => {
     const textToAnalyze = inputMode === "notes" ? analysisInput : topic;
     if (!textToAnalyze.trim()) return;
-    if (!FREE_ACCESS_MODE && TIER_RANK[tier] < TIER_RANK["Core"]) {
-      router.push("/subscriptions");
-      return;
-    }
+
     const model: ModelType = assistant;
     setIsAnalyzing(true);
     try {
@@ -395,7 +392,7 @@ function palette(depth: number) {
             <div>
               <p className="label-title mb-1" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Visual Organiser</p>
               <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-merriweather), serif" }}>Mindmaps</h1>
-              <p className="text-xs text-muted-foreground mt-1 leading-relaxed pr-4">DeepSeek reasons through your topic. You build the map — or let Gemini do it.</p>
+              <p className="text-xs text-muted-foreground mt-1 leading-relaxed pr-4">AI reasons through your topic. You build the map — or let Gemini do it.</p>
             </div>
           </div>
 
@@ -403,14 +400,6 @@ function palette(depth: number) {
           <div className="flex-1 overflow-y-auto p-4 space-y-5">
 
             {/* Input */}
-            {subLoaded && TIER_RANK[tier] < TIER_RANK.Core && !FREE_ACCESS_MODE ? (
-              <div className="p-4 rounded-xl border border-border bg-background/50 flex flex-col items-center text-center">
-                <Lock className="w-5 h-5 text-primary mb-2" />
-                <h3 className="text-sm font-bold text-foreground">Analysis Locked</h3>
-                <p className="text-xs text-muted-foreground mb-4">Upgrade to Core to use DeepSeek analysis.</p>
-                <Button size="sm" className="w-full" onClick={() => router.push("/subscriptions")}>Upgrade</Button>
-              </div>
-            ) : (
               <div className="space-y-4">
                 <div className="flex bg-muted p-1 rounded-lg">
                   <button onClick={() => setInputMode("topic")} className={cn("flex-1 text-xs py-1.5 rounded-md font-medium transition-all", inputMode === "topic" ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")}>Topic Mode</button>
@@ -463,10 +452,9 @@ function palette(depth: number) {
 
                 <Button className="w-full gap-2" onClick={handleAnalyze} disabled={isAnalyzing || (inputMode === "notes" ? !analysisInput.trim() : !topic.trim())}>
                   {isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-                  {isAnalyzing ? "Analysing…" : "Analyse with DeepSeek"}
+                  {isAnalyzing ? "Analysing…" : "Analyse with AI"}
                 </Button>
               </div>
-            )}
 
             {/* Analysis Output */}
             {analysis && (
