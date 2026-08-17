@@ -93,11 +93,13 @@ export async function deleteHistoryAction(table: HistoryTable, id: string) {
 export async function fetchUserHistoryAction(table: HistoryTable, columns: string = "*", limit?: number, matchParams?: any) {
   const userId = await requireAuth();
   
+  const sortColumn = table === "chat_history" ? "updated_at" : "created_at";
+  
   let query = supabaseAdmin
     .from(table)
     .select(columns)
     .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .order(sortColumn, { ascending: false });
     
   if (matchParams) {
     query = query.match(matchParams);

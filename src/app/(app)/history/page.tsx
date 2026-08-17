@@ -57,20 +57,24 @@ export default function HistoryPage() {
     const fetchHistory = async () => {
       setLoading(true);
       
-      const [quizRes, flashRes, essayRes, exploreRes] = await Promise.all([
-        fetchUserHistoryAction("quiz_history"),
-        fetchUserHistoryAction("flashcards_history"),
-        fetchUserHistoryAction("essay_history"),
-        fetchUserHistoryAction("explore_history"),
-      ]);
-      
-      if (!isMounted) return;
-      if (quizRes) setQuizzes(quizRes);
-      if (flashRes) setFlashcards(flashRes);
-      if (essayRes) setEssays(essayRes);
-      if (exploreRes) setExplore(exploreRes);
-      
-      setLoading(false);
+      try {
+        const [quizRes, flashRes, essayRes, exploreRes] = await Promise.all([
+          fetchUserHistoryAction("quiz_history"),
+          fetchUserHistoryAction("flashcards_history"),
+          fetchUserHistoryAction("essay_history"),
+          fetchUserHistoryAction("explore_history"),
+        ]);
+        
+        if (!isMounted) return;
+        if (quizRes) setQuizzes(quizRes);
+        if (flashRes) setFlashcards(flashRes);
+        if (essayRes) setEssays(essayRes);
+        if (exploreRes) setExplore(exploreRes);
+      } catch (err) {
+        console.error("Failed to fetch history:", err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
     };
     
     fetchHistory();
