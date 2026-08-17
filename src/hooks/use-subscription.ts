@@ -190,7 +190,7 @@ export function useSubscription() {
     // Roughly estimate tokens from word count (e.g. 1.3 tokens per word)
     const estimatedTokens = Math.ceil(wordCount * 1.3);
     // Rough estimate just for the pre-check (actual usage is deducted post-generation)
-    const estimatedCost = Math.ceil(estimatedTokens * costConfig.input);
+    const estimatedCost = Math.ceil(estimatedTokens * (costConfig.input / 1000));
     
     // As long as they have enough to cover the prompt, let them proceed (it will deduct into the negative if it overruns).
     return creditsRemaining >= estimatedCost;
@@ -201,7 +201,8 @@ export function useSubscription() {
     
     const safeInput = inputTokens || 0;
     const safeOutput = outputTokens || 0;
-    const cost = Math.ceil((safeInput * costConfig.input) + (safeOutput * costConfig.output));
+    // Costs are defined per 1k tokens. Divide by 1000 to get the correct absolute cost.
+    const cost = Math.ceil((safeInput * (costConfig.input / 1000)) + (safeOutput * (costConfig.output / 1000)));
     
     setState((prev) => {
       const currentCredits = prev.creditsUsed && !isNaN(prev.creditsUsed) ? prev.creditsUsed : 0;

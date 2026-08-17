@@ -338,7 +338,7 @@ export default function AssistantPage() {
           deductCredits(data.usage.inputTokens, data.usage.outputTokens, activeModel.displayName as ModelType, "chat");
         }
         // Deduct Mistral embedding cost when RAG is triggered
-        if (chatMode === "Standard" || chatMode === "Strict Syllabus") {
+        if ((chatMode === "Standard" || chatMode === "Strict Syllabus") && curriculumLevel !== "Casual") {
           deductCredits(150, 0, "Mistral Embed", "chat");
         }
         
