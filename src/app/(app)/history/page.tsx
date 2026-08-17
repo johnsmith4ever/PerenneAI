@@ -366,7 +366,7 @@ export default function HistoryPage() {
         </div>
       ) : (
         <>
-      <div className={cn("mb-8", tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
+      <div className="mb-8">
         <p className="label-title mb-1.5 flex items-center gap-2">
           Account
         </p>
@@ -379,7 +379,7 @@ export default function HistoryPage() {
         </p>
       </div>
 
-      <div className={cn("flex items-center gap-6 border-b border-border mb-8 overflow-x-auto scrollbar-hide", tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
+      <div className="flex items-center gap-6 border-b border-border mb-8 overflow-x-auto scrollbar-hide">
         {TABS.map(tab => (
           <button
             key={tab.id}
@@ -395,7 +395,7 @@ export default function HistoryPage() {
             )}
           </button>
         ))}
-      </div>      <div className={cn("mt-8", tierRank < TIER_RANK.Core && "opacity-20 pointer-events-none blur-[2px]")}>
+      </div>      <div className="mt-8">
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />

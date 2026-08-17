@@ -12,6 +12,7 @@ export function usePersistentState<T>(baseKey: string, initialValue: T) {
   const [state, setState] = useState<T>(initialValue);
   const [isLoaded, setIsLoaded] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hasPendingCloudSave = useRef(false);
 
   // 1. Hydration Effect (Load from Supabase if logged in, else LocalStorage)
   useEffect(() => {
@@ -84,13 +85,23 @@ export function usePersistentState<T>(baseKey: string, initialValue: T) {
       if (e.detail.key === key) setState(JSON.parse(e.detail.value));
     };
 
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasPendingCloudSave.current) {
+        e.preventDefault();
+        e.returnValue = "You have unsaved study progress syncing to the cloud. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    };
+
     window.addEventListener("storage", handleStorage);
     window.addEventListener("local-storage", handleCustomStorage as EventListener);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
       isMounted = false;
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener("local-storage", handleCustomStorage as EventListener);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [key, userLoaded, user, baseKey]);
 
@@ -116,9 +127,12 @@ export function usePersistentState<T>(baseKey: string, initialValue: T) {
       
       // Async Sync to Supabase if logged in
       if (user) {
+        hasPendingCloudSave.current = true;
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
-          syncUserStateAction(baseKey, state).catch(e => console.error("Failed to sync state to Supabase", e));
+          syncUserStateAction(baseKey, state)
+            .then(() => { hasPendingCloudSave.current = false; })
+            .catch(e => { console.error("Failed to sync state to Supabase", e); hasPendingCloudSave.current = false; });
         }, 1000); // 1 second debounce for rapid UI updates
       }
     }

@@ -91,8 +91,23 @@ export default function AssistantPage() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const hasPendingChatSave = useRef(false);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasPendingChatSave.current) {
+        e.preventDefault();
+        e.returnValue = "Your chat is currently saving. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
   const saveChatToSupabase = async (chatId: string, title: string, msgs: Message[]) => {
     if (!user) return;
+    hasPendingChatSave.current = true;
     try {
       await upsertChatAction({
         id: chatId,
@@ -103,6 +118,8 @@ export default function AssistantPage() {
       });
     } catch (e) {
       console.error("Failed to save chat to supabase", e);
+    } finally {
+      hasPendingChatSave.current = false;
     }
   };
 
