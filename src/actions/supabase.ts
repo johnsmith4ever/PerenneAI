@@ -19,12 +19,20 @@ async function requireAuth() {
 export async function syncUserStateAction(key: string, value: any) {
   const userId = await requireAuth();
   
-  const { error } = await supabaseAdmin.from("user_state").upsert({
-    user_id: userId,
-    key,
-    value,
-    updated_at: new Date().toISOString()
-  });
+  let error;
+
+  if (value === null || value === undefined) {
+    const res = await supabaseAdmin.from("user_state").delete().eq("user_id", userId).eq("key", key);
+    error = res.error;
+  } else {
+    const res = await supabaseAdmin.from("user_state").upsert({
+      user_id: userId,
+      key,
+      value,
+      updated_at: new Date().toISOString()
+    });
+    error = res.error;
+  }
 
   if (error) {
     console.error("Failed to sync state:", error);
