@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useSubscription, Tier } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Check, ArrowLeft, Zap, Sparkles, X, AlertCircle } from "lucide-react";
+import { Check, ArrowLeft, Zap, Sparkles, X, AlertCircle, Lock } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 
 const GrowingBranchIcon = ({ level, className }: { level: number, className?: string }) => {
   return (
@@ -134,10 +135,35 @@ const TIERS: { id: Tier; name: string; tagline: string; priceText: string; price
 ];
 
 export default function SubscriptionsPage() {
+  const { user, isLoaded: userLoaded } = useUser();
   const { tier, creditsUsed, dailyLimit, isLoaded } = useSubscription();
   const [showDevModal, setShowDevModal] = useState<Tier | null>(null);
 
-  if (!isLoaded) return null;
+  if (!isLoaded || !userLoaded) return null;
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col font-sans">
+        <header className="border-b p-4 flex items-center justify-between">
+          <Link href="/dashboard" className="flex items-center gap-2 hover:bg-muted p-2 rounded-lg transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-bold">Back</span>
+          </Link>
+          <span className="font-serif font-black text-xl tracking-widest text-primary uppercase">Perenne</span>
+        </header>
+        <div className="flex-1 flex flex-col items-center justify-center max-w-md mx-auto text-center p-6 space-y-6">
+          <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center border border-destructive/20 mb-2">
+            <Lock className="w-8 h-8 text-destructive" />
+          </div>
+          <h2 className="text-2xl font-black">Sign in required</h2>
+          <p className="text-muted-foreground">You cannot view or manage subscriptions while using Perenne in Guest mode.</p>
+          <Link href="/sign-in">
+            <Button className="w-full font-bold">Sign In to Continue</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const rawPercent = Math.min(100, (creditsUsed / dailyLimit) * 100);
   const displayPercent = rawPercent > 0 && rawPercent < 0.1 ? "<0.1" : rawPercent.toFixed(1);

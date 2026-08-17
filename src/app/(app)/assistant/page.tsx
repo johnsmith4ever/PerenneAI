@@ -76,7 +76,10 @@ export default function AssistantPage() {
   const [extraTopicDetails, setExtraTopicDetails] = useState("");
   const [inputText, setInputText] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [chats, setChats, chatsLoaded] = usePersistentState<ChatSession[]>("assistant_chats", []);
+  const [chats, setChats, chatsLoaded] = usePersistentState<ChatSession[]>(
+    user?.id ? `assistant_chats_${user.id}` : "assistant_chats",
+    []
+  );
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const activeIdLoaded = true;
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
