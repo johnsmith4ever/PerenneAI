@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useSubscription, Tier } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Check, ArrowLeft, Zap, Sparkles, X, AlertCircle, Lock } from "lucide-react";
+import { Check, ArrowLeft, Zap, Sparkles, X, AlertCircle, Lock, Crown } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 
 const GrowingBranchIcon = ({ level, className }: { level: number, className?: string }) => {
@@ -68,12 +68,12 @@ const GrowingBranchIcon = ({ level, className }: { level: number, className?: st
   );
 };
 
-const TIER_STYLES: Record<string, { badge?: string; badgeColor?: string; glowColor: string; glowColor2: string; borderHover: string; borderActive: string }> = {
-  Free:    { glowColor: "rgba(251,191,36,0.12)",  glowColor2: "rgba(251,191,36,0.06)",  borderHover: "hover:border-amber-500/40",  borderActive: "border-amber-600/50" },
-  Core:    { badge: "Saver",       badgeColor: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30", glowColor: "rgba(16,185,129,0.10)",  glowColor2: "rgba(16,185,129,0.05)",  borderHover: "hover:border-emerald-500/40", borderActive: "border-emerald-600/50" },
-  Pro:     { badge: "Best Value",  badgeColor: "bg-purple-500/15 text-purple-400 border-purple-500/30",  glowColor: "rgba(168,85,247,0.10)",  glowColor2: "rgba(168,85,247,0.05)",  borderHover: "hover:border-purple-500/40",  borderActive: "border-purple-600/50" },
-  Premium: { glowColor: "rgba(59,130,246,0.10)",  glowColor2: "rgba(59,130,246,0.05)",  borderHover: "hover:border-blue-500/40",   borderActive: "border-blue-600/50" },
-  Maximum: { badge: "No Limits",   badgeColor: "bg-red-500/15 text-red-400 border-red-500/30",           glowColor: "rgba(239,68,68,0.10)",   glowColor2: "rgba(239,68,68,0.05)",   borderHover: "hover:border-red-500/40",    borderActive: "border-red-600/50" },
+const TIER_STYLES: Record<string, { badge?: string; badgeColor?: string; glowColor: string; buttonClass: string; borderHover: string; borderActive: string; accentColor: string }> = {
+  Free:    { glowColor: "rgba(251,191,36,0.15)",  buttonClass: "bg-white text-black hover:bg-neutral-200", borderHover: "hover:border-amber-500/50",  borderActive: "border-amber-500", accentColor: "text-amber-500" },
+  Core:    { badge: "Saver",       badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", glowColor: "rgba(16,185,129,0.15)", buttonClass: "bg-emerald-500 text-white hover:bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.3)]",  borderHover: "hover:border-emerald-500/50", borderActive: "border-emerald-500", accentColor: "text-emerald-500" },
+  Pro:     { badge: "Best Value",  badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/20",  glowColor: "rgba(168,85,247,0.15)", buttonClass: "bg-purple-500 text-white hover:bg-purple-600 shadow-[0_0_15px_rgba(168,85,247,0.3)]",  borderHover: "hover:border-purple-500/50",  borderActive: "border-purple-500", accentColor: "text-purple-500" },
+  Premium: { glowColor: "rgba(59,130,246,0.15)",  buttonClass: "bg-blue-500 text-white hover:bg-blue-600 shadow-[0_0_15px_rgba(59,130,246,0.3)]", borderHover: "hover:border-blue-500/50",   borderActive: "border-blue-500", accentColor: "text-blue-500" },
+  Maximum: { badge: "No Limits",   badgeColor: "bg-red-500/10 text-red-400 border-red-500/20",           glowColor: "rgba(239,68,68,0.15)",  buttonClass: "bg-red-500 text-white hover:bg-red-600 shadow-[0_0_15px_rgba(239,68,68,0.3)]", borderHover: "hover:border-red-500/50",    borderActive: "border-red-500", accentColor: "text-red-500" },
 };
 
 const TIERS: { id: Tier; name: string; tagline: string; priceText: string; priceDetail: string; credits: string; featureHeader: string; features: string[]; iconLevel: number }[] = [
@@ -169,150 +169,175 @@ export default function SubscriptionsPage() {
   const displayPercent = rawPercent > 0 && rawPercent < 0.1 ? "<0.1" : rawPercent.toFixed(1);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pt-12 pb-24 relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#050505] pt-12 pb-24 relative overflow-hidden font-sans">
+      {/* Immersive Background Effects */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-500/5 rounded-[100%] blur-[120px] pointer-events-none"></div>
+
       {/* Back Button */}
-      <Link href="/dashboard" className="absolute top-8 left-8 text-neutral-400 hover:text-white transition-colors flex items-center gap-2 font-medium">
-        <ArrowLeft className="w-5 h-5" />
-        <span>Back to App</span>
+      <Link href="/dashboard" className="absolute top-8 left-8 text-neutral-400 hover:text-white transition-colors flex items-center gap-2 font-medium z-50 bg-[#0a0a0a]/50 p-2 pr-4 rounded-full backdrop-blur-md border border-white/5 shadow-lg hover:bg-white/10">
+        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+          <ArrowLeft className="w-4 h-4" />
+        </div>
+        <span className="text-sm font-semibold tracking-wide">Dashboard</span>
       </Link>
 
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 animate-in fade-in">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
         
         {/* Header */}
-        <div className="mb-10 relative flex flex-col items-center text-center">
-          <div className="absolute w-[200px] h-[200px] bg-amber-500/10 rounded-full blur-[80px] top-0 left-1/2 -translate-x-1/2 pointer-events-none z-0"></div>
+        <div className="mb-14 relative flex flex-col items-center text-center">
           <div className="relative z-10">
-            <p className="text-amber-500 font-bold uppercase tracking-widest text-xs mb-2 flex items-center justify-center gap-2">
-              <Sparkles className="w-3 h-3" /> Subscriptions Locked
-            </p>
-            <h1 className="text-4xl font-serif font-black text-white tracking-tight flex items-center gap-3">
-              Subscriptions & Usage
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 font-bold uppercase tracking-widest text-[10px] mb-6 shadow-[0_0_20px_rgba(245,158,11,0.1)]">
+              <Crown className="w-3 h-3" /> Account Status
+            </div>
+            <h1 className="text-5xl md:text-6xl font-serif font-black text-white tracking-tight mb-4 drop-shadow-sm">
+              Your Subscriptions
             </h1>
-            <p className="text-slate-400 mt-2 max-w-xl mx-auto">
-              Monitor your AI generation limits below. Note: Upgrades and downgrades are temporarily disabled while we test our systems.
+            <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
+              Unlock the full power of Perenne AI. Monitor your daily usage, explore advanced reasoning models, and scale your study tools exactly as you need them.
             </p>
           </div>
         </div>
       
-      {/* Cinematic Usage Card */}
-      <div className="rounded-3xl border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-xl p-8 shadow-2xl flex flex-col mb-12 relative overflow-hidden group">
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
-        
-        <div className="relative z-10">
-          <h2 className="text-xl font-serif font-bold text-white mb-6 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center border border-amber-500/30">
-              <Zap className="w-5 h-5 text-amber-500" />
-            </div>
-            Daily AI Usage
-          </h2>
+        {/* Cinematic Usage Card */}
+        <div className="max-w-4xl mx-auto rounded-[2rem] border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-2xl p-8 md:p-10 shadow-2xl flex flex-col mb-16 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent pointer-events-none z-0"></div>
           
-          <div className="mb-2">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-bold text-slate-300 tracking-wide">{creditsUsed.toLocaleString()} / {dailyLimit.toLocaleString()} Credits</span>
-              <span className={cn("text-lg font-black", rawPercent > 90 ? "text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]" : "text-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]")}>
-                {displayPercent}%
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
+            <div className="flex-1">
+              <h2 className="text-2xl font-serif font-bold text-white mb-2 flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.4)]">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                Daily Compute Usage
+              </h2>
+              <p className="text-sm text-slate-400 font-medium mb-6">Credits reset every 24 hours. Complex models (like Deepseek V4 Pro) consume credits faster per query.</p>
+              
+              <div className="w-full bg-[#171717] rounded-full h-5 border border-white/5 overflow-hidden shadow-inner relative">
+                <div 
+                  className={cn("h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden", rawPercent > 90 ? "bg-gradient-to-r from-red-600 to-red-400 shadow-[0_0_20px_rgba(239,68,68,0.8)]" : "bg-gradient-to-r from-amber-600 to-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.8)]")} 
+                  style={{ width: `${rawPercent}%` }}
+                >
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] -translate-x-full animate-[shimmer_2s_infinite]"></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="shrink-0 flex flex-col items-start md:items-end md:pl-8 md:border-l border-white/10">
+              <span className="text-sm font-bold text-slate-400 tracking-wider uppercase mb-1">Consumption</span>
+              <div className="flex items-baseline gap-2">
+                <span className={cn("text-5xl font-black tracking-tighter drop-shadow-md", rawPercent > 90 ? "text-red-400" : "text-amber-400")}>
+                  {displayPercent}%
+                </span>
+              </div>
+              <span className="text-xs font-semibold text-slate-500 mt-2 bg-white/5 px-2 py-1 rounded-md">
+                {creditsUsed.toLocaleString()} / {dailyLimit.toLocaleString()}
               </span>
             </div>
-            <div className="w-full bg-white/5 rounded-full h-4 mb-3 border border-white/10 overflow-hidden shadow-inner">
-              <div 
-                className={cn("h-full rounded-full transition-all duration-500 ease-out", rawPercent > 90 ? "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)]" : "bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.8)]")} 
-                style={{ width: `${rawPercent}%` }}
-              ></div>
-            </div>
-            <p className="text-xs text-slate-500 font-medium">Credits reset every 24 hours. Advanced reasoning models cost more credits per query.</p>
           </div>
         </div>
-      </div>
 
-      <div className="mb-12 text-center">
-        <h2 className="text-4xl font-serif text-white mb-2 tracking-tight">Plans that grow with you</h2>
-      </div>
-
-      {/* Pricing Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-        {TIERS.map((t) => {
-          const isCurrent = t.id === tier;
-          const style = TIER_STYLES[t.id] ?? TIER_STYLES.Free;
-          return (
-            <div key={t.id} className={cn(
-              "rounded-[24px] border flex flex-col transition-all duration-300 relative overflow-hidden group",
-              isCurrent ? `bg-[#1c1c1c] ${style.borderActive} shadow-xl` : `bg-[#171717] border-neutral-800 ${style.borderHover}`
-            )}>
-              {/* Per-plan ambient glow */}
-              <div className="absolute inset-0 pointer-events-none mix-blend-screen" style={{ background: `radial-gradient(circle at top left, ${style.glowColor} 0%, transparent 60%)` }} />
-              <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(circle at top left, ${style.glowColor} 0%, transparent 100%)` }} />
-
-              <div className="p-8 pb-6 flex flex-col flex-1 relative z-10">
-                <div className="flex items-start justify-between mb-6">
-                  <GrowingBranchIcon level={t.iconLevel} className="w-8 h-8 text-neutral-400 font-light" />
-                  {style.badge && (
-                    <span className={cn("text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border", style.badgeColor)}>
-                      {style.badge}
-                    </span>
-                  )}
-                </div>
-                <h3 className="text-3xl font-semibold text-white mb-1 tracking-tight">{t.name}</h3>
-                <p className="text-sm text-neutral-400 mb-8 font-medium h-[40px]">{t.tagline}</p>
+        {/* Pricing Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-[1400px] mx-auto">
+          {TIERS.map((t) => {
+            const isCurrent = t.id === tier;
+            const style = TIER_STYLES[t.id] ?? TIER_STYLES.Free;
+            
+            return (
+              <div key={t.id} className={cn(
+                "rounded-[28px] flex flex-col transition-all duration-500 relative overflow-hidden group hover:-translate-y-2 hover:shadow-2xl",
+                isCurrent ? `bg-[#121212] border-2 ${style.borderActive} z-10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] scale-[1.02]` : `bg-[#0c0c0c] border border-white/10 ${style.borderHover} opacity-90 hover:opacity-100`
+              )}>
+                {/* Immersive glow */}
+                <div className="absolute inset-0 pointer-events-none mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: `radial-gradient(circle at top, ${style.glowColor} 0%, transparent 70%)` }} />
                 
-                <div className="flex flex-col items-start gap-1 mb-8 h-[64px]">
-                  <span className="text-4xl font-bold tracking-tight text-white leading-none">{t.priceText}</span>
-                  {t.priceDetail ? (
-                    <span className="text-[11px] text-neutral-500 leading-tight whitespace-pre-wrap">{t.priceDetail}</span>
-                  ) : (
-                    <span className="text-[11px] text-transparent leading-tight whitespace-pre-wrap">No cost</span>
-                  )}
+                {/* Active Indicator */}
+                {isCurrent && (
+                  <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-50" style={{ color: style.accentColor }} />
+                )}
+
+                <div className="p-8 pb-8 flex flex-col flex-1 relative z-10">
+                  <div className="flex items-start justify-between mb-8">
+                    <div className={cn("p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md", style.accentColor)}>
+                      <GrowingBranchIcon level={t.iconLevel} className="w-7 h-7 font-light" />
+                    </div>
+                    {style.badge && (
+                      <span className={cn("text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border shadow-sm backdrop-blur-md", style.badgeColor)}>
+                        {style.badge}
+                      </span>
+                    )}
+                  </div>
+                  
+                  <h3 className="text-3xl font-black text-white mb-2 tracking-tight drop-shadow-sm">{t.name}</h3>
+                  <p className="text-sm text-neutral-400 mb-8 font-medium h-[40px] leading-relaxed">{t.tagline}</p>
+                  
+                  <div className="flex flex-col items-start gap-1.5 mb-10 h-[64px]">
+                    <span className="text-[2.75rem] font-black tracking-tighter text-white leading-none drop-shadow-sm">{t.priceText}</span>
+                    {t.priceDetail ? (
+                      <span className="text-xs text-neutral-500 font-medium leading-snug whitespace-pre-wrap">{t.priceDetail}</span>
+                    ) : (
+                      <span className="text-xs text-transparent leading-snug whitespace-pre-wrap">No cost</span>
+                    )}
+                  </div>
+
+                  <Button 
+                    onClick={() => !isCurrent && setShowDevModal(t.id)}
+                    disabled={isCurrent && t.id === "Free"}
+                    className={cn(
+                      "w-full rounded-2xl py-6 font-bold text-sm transition-all duration-300 relative overflow-hidden", 
+                      isCurrent 
+                        ? "bg-white/5 border border-white/10 text-white cursor-default" 
+                        : style.buttonClass
+                    )}
+                  >
+                    <span className="relative z-10">{isCurrent ? `Current Plan` : `Upgrade to ${t.name}`}</span>
+                  </Button>
                 </div>
 
-                <Button 
-                  onClick={() => !isCurrent && setShowDevModal(t.id)}
-                  disabled={isCurrent && t.id === "Free"}
-                  className={cn(
-                    "w-full rounded-xl py-6 font-medium text-sm transition-all", 
-                    isCurrent 
-                      ? "bg-transparent border border-neutral-700 text-white hover:bg-neutral-800 hover:text-white" 
-                      : "bg-white text-black hover:bg-neutral-200"
-                  )}
-                >
-                  {isCurrent ? `Use ${t.name} plan` : `Get ${t.name} plan`}
+                <div className="border-t border-white/5 p-8 flex-1 bg-[#050505]/50 backdrop-blur-xl relative z-10">
+                  <p className="text-[11px] uppercase tracking-widest font-bold text-neutral-500 mb-5">{t.featureHeader}</p>
+                  <ul className="space-y-4">
+                    {t.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3 text-sm text-neutral-300 leading-tight font-medium">
+                        <div className={cn("mt-0.5 rounded-full p-0.5 bg-white/5 border border-white/10", style.accentColor)}>
+                          <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                        </div>
+                        <span className="drop-shadow-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Dev Modal */}
+        {showDevModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
+            <div className="bg-[#0a0a0a] border border-white/10 rounded-[2rem] p-10 max-w-md w-full relative shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300 overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+              
+              <button onClick={() => setShowDevModal(null)} className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors bg-white/5 p-2 rounded-full hover:bg-white/10 z-10">
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center mb-8 border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.2)] relative z-10">
+                <AlertCircle className="w-10 h-10 text-blue-400" />
+              </div>
+              
+              <div className="relative z-10">
+                <h3 className="text-3xl font-serif font-black text-white tracking-tight mb-4">Development Phase</h3>
+                <p className="text-slate-400 leading-relaxed mb-10 font-medium">
+                  Stripe checkout is currently in development mode. No real money or payment methods are required at this time. To upgrade to the <strong className="text-white px-2 py-0.5 bg-white/10 rounded-md mx-1">{showDevModal}</strong> plan, please use the admin dashboard or wait for the full release.
+                </p>
+                <Button onClick={() => setShowDevModal(null)} className="w-full bg-white text-black hover:bg-neutral-200 py-7 text-base font-black rounded-2xl shadow-xl hover:scale-[1.02] transition-transform">
+                  Got it, thanks!
                 </Button>
               </div>
-
-              <div className="border-t border-neutral-800 p-8 pt-6 flex-1 bg-[#171717] rounded-b-[24px]">
-                <p className="text-sm text-neutral-300 mb-4 font-medium">{t.featureHeader}</p>
-                <ul className="space-y-3.5">
-                  {t.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3 text-[13px] text-neutral-400 leading-tight">
-                      <Check className="w-4 h-4 text-neutral-500 shrink-0 mt-0.5" strokeWidth={2} />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </div>
-          );
-        })}
-      </div>
-
-      {/* Dev Modal */}
-      {showDevModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-[#0f0f0f] border border-white/10 rounded-3xl p-8 max-w-md w-full relative shadow-2xl animate-in zoom-in-95">
-            <button onClick={() => setShowDevModal(null)} className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors">
-              <X className="w-5 h-5" />
-            </button>
-            <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20">
-              <AlertCircle className="w-8 h-8 text-blue-500" />
-            </div>
-            <h3 className="text-2xl font-serif font-black text-white tracking-tight mb-3">Development Phase</h3>
-            <p className="text-slate-400 leading-relaxed mb-8">
-              Stripe checkout is currently in development mode. No real money or payment methods are required at this time. To upgrade to the <strong className="text-white">{showDevModal}</strong> plan, please use the admin dashboard or wait for the full release.
-            </p>
-            <Button onClick={() => setShowDevModal(null)} className="w-full bg-white text-black hover:bg-slate-200 py-6 font-bold rounded-xl">
-              Got it, thanks!
-            </Button>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );
