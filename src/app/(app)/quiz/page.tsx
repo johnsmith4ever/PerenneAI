@@ -191,6 +191,7 @@ export default function QuizPage() {
       });
       
       setHasSaved(true);
+      alert("Quiz saved to your account history!");
     } catch (e) {
       console.error("Error saving quiz history:", e);
     } finally {

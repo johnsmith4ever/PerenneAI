@@ -49,7 +49,7 @@ export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> =
   "Mistral Small": { input: 3.0, output: 3.0 },
   "GPT OSS": { input: 1, output: 1 },
   "Gemini 3.5 Flash-Lite": { input: 1, output: 1 },
-  "Gemini 3.6 Flash": { input: 2, output: 2 },
+  "Gemini 3.6 Flash": { input: 2.5, output: 2.5 },
   "Gemini 3.5 Pro": { input: 4, output: 4 },
   "Deepseek-V4-Flash": { input: 3, output: 3 },
   "Deepseek-V4-Pro": { input: 5, output: 5 },

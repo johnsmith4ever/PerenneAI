@@ -139,8 +139,8 @@ export default function FlashcardsPage() {
       });
       const data = await res.json();
       if (data.status === "success") {
-        if (data.textUsage) deductCredits(data.textUsage.inputTokens, data.textUsage.outputTokens, modelUsed);
-        if (data.imageUsage) deductCredits(data.imageUsage.inputTokens, data.imageUsage.outputTokens, "Gemini 3.6 Flash");
+        if (data.textUsage) deductCredits(data.textUsage.inputTokens ?? data.textUsage.promptTokens ?? 0, data.textUsage.outputTokens ?? data.textUsage.completionTokens ?? 0, modelUsed);
+        if (data.imageUsage) deductCredits(data.imageUsage.inputTokens ?? data.imageUsage.promptTokens ?? 0, data.imageUsage.outputTokens ?? data.imageUsage.completionTokens ?? 0, "Gemini 3.6 Flash");
         setAllCards(data.data);
         const finalTitle = data.title || topic || "Flashcard Deck";
         setDeckTitle(finalTitle);
@@ -300,6 +300,7 @@ export default function FlashcardsPage() {
       });
       
       setHasSaved(true);
+      alert("Flashcards saved to your account history!");
     } catch (e) {
       console.error("Error saving flashcard history:", e);
     } finally {
