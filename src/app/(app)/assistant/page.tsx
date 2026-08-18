@@ -805,15 +805,6 @@ export default function AssistantPage() {
                   <Paperclip className="w-4 h-4" />
                   <span className="text-xs font-medium">Attach</span>
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setUseWebFallback(!useWebFallback)}
-                  className={cn("gap-1.5 transition-colors rounded-lg", useWebFallback ? "text-purple-600 bg-purple-500/10 hover:bg-purple-500/20" : "text-muted-foreground hover:bg-muted")}
-                >
-                  <Globe className="w-4 h-4" />
-                  <span className="text-xs font-medium hidden sm:inline">Web Fallback</span>
-                </Button>
               </div>
               <Button
                 size="icon"
