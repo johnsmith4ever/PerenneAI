@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Bot, User, Send, Loader2, ArrowLeft, ShieldAlert, Save, CheckCircle2 } from "lucide-react";
+import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -12,6 +13,7 @@ import { usePersistentState } from "@/hooks/use-persistent-state";
 
 
 export default function DebatePage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const { canAfford, deductCredits, isLoaded, assistant } = useSubscription();
   const [topic, setTopic] = usePersistentState("debate_topic", "");
   const [stance, setStance] = usePersistentState<"Affirmative" | "Against">("debate_stance", "Affirmative");
@@ -56,7 +58,7 @@ export default function DebatePage() {
     if (!input.trim() || isLoading) return;
     
     if (!canAfford(1000, "Deepseek-V4-Flash")) {
-      alert("Insufficient credits.");
+      openUpgradeModal("Insufficient credits.", "Upgrade Plan", "/subscriptions");
       return;
     }
 

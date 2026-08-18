@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useUpgradeModal } from "@/components/upgrade-modal";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useUser } from "@clerk/nextjs";
@@ -66,6 +67,7 @@ interface GradingResult {
 }
 
 export default function EssayPage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const router = useRouter();
   const { user } = useUser();
   const { tier, deductCredits, canAfford, isLoaded, assistant, heavy, judge, grading } = useSubscription();
@@ -212,7 +214,7 @@ export default function EssayPage() {
   const handleGenerateExercise = async () => {
     if (!isLoaded) return;
     if (!canAfford(3000, "Mistral Small")) {
-      alert("You do not have enough daily credits to generate an essay setup. Please try again tomorrow or upgrade your plan.");
+      openUpgradeModal("You do not have enough daily credits to generate an essay setup. Please try again tomorrow or upgrade your plan.", "Upgrade Plan", "/subscriptions");
       return;
     }
 
@@ -372,7 +374,7 @@ export default function EssayPage() {
     if (!isLoaded) return;
     const markerModel: ModelType = grading;
     if (!canAfford(4000, markerModel)) {
-      alert("You do not have enough daily credits to grade this essay. Please try again tomorrow.");
+      openUpgradeModal("You do not have enough daily credits to grade this essay. Please try again tomorrow.", "Upgrade Plan", "/subscriptions");
       return;
     }
     try {
@@ -522,7 +524,7 @@ Do not use markdown. Output pure JSON.`;
     // swallow output into reasoning blocks, causing "No response received" empty text errors.
     const markerModel: ModelType = heavy;
     if (!canAfford(4000, markerModel)) {
-      alert("You do not have enough daily credits to grade this essay. Please try again tomorrow or upgrade your plan.");
+      openUpgradeModal("You do not have enough daily credits to grade this essay. Please try again tomorrow or upgrade your plan.", "Upgrade Plan", "/subscriptions");
       return;
     }
 

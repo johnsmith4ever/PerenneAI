@@ -3,6 +3,7 @@
 import React, { useState, useEffect, memo } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Brain, Loader2, ArrowLeft, CheckCircle2, Save, Sparkles, Sigma, PenTool, BookOpenCheck, Upload, ArrowRight, Target, Clock, AlertTriangle } from "lucide-react";
+import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ declare global {
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 
 export default function MathSolverPage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const { canAfford, deductCredits, heavy, judge, assistant, grading } = useSubscription();
   const [topic, setTopic] = usePersistentState("math_topic", "");
   const [difficulty, setDifficulty] = usePersistentState("math_diff", "Intermediate");
@@ -176,7 +178,7 @@ export default function MathSolverPage() {
   const handleStart = async () => {
     if (!topic.trim()) return;
     if (!canAfford(1000, "Deepseek-V4-Flash")) {
-      alert("Insufficient credits.");
+      openUpgradeModal("Insufficient credits.", "Upgrade Plan", "/subscriptions");
       return;
     }
 
@@ -315,7 +317,7 @@ export default function MathSolverPage() {
 
   const handleGrade = async () => {
     if (!canAfford(3000, "Gemini 3.6 Flash")) {
-      alert("Insufficient credits to grade this math problem.");
+      openUpgradeModal("Insufficient credits to grade this math problem.", "Upgrade Plan", "/subscriptions");
       return;
     }
     setExamState("grading");

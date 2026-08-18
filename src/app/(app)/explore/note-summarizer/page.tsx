@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target, Lock, Mail, Save, CheckCircle2 } from "lucide-react";
+import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,7 @@ type SummarizerData = {
 };
 
 export default function NoteSummarizerPage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const { tier, canAfford, deductCredits, isLoaded: subLoaded , assistant } = useSubscription();
   const tierRank = TIER_RANK[tier] ?? 0;
 
@@ -115,7 +117,7 @@ export default function NoteSummarizerPage() {
     const modelUsed: ModelType = assistant;
 
     if (!canAfford(1500, modelUsed)) {
-      alert("You do not have enough daily credits to summarize these notes. Please try again tomorrow or upgrade your plan.");
+      openUpgradeModal("You do not have enough daily credits to summarize these notes. Please try again tomorrow or upgrade your plan.", "Upgrade Plan", "/subscriptions");
       return;
     }
 

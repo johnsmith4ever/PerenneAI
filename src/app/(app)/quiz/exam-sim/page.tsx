@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Clock, Loader2, ArrowLeft, CheckCircle2, AlertTriangle, Save, Target, X, Check } from "lucide-react";
+import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ import ReactMarkdown from "react-markdown";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 
 export default function ExamSimPage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const { canAfford, deductCredits, isLoaded, heavy, judge, assistant, grading } = useSubscription();
   const [isAQA, setIsAQA] = usePersistentState("exam_sim_isAQA", true);
   const [subject, setSubject] = usePersistentState("exam_sim_subject", "Biology");
@@ -142,7 +144,7 @@ export default function ExamSimPage() {
   const handleStart = async () => {
     if (!topic.trim()) return;
     if (!canAfford(1000, "Deepseek-V4-Flash")) {
-      alert("Insufficient credits.");
+      openUpgradeModal("Insufficient credits.", "Upgrade Plan", "/subscriptions");
       return;
     }
 

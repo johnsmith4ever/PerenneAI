@@ -7,6 +7,7 @@ import { useCurriculum } from "@/hooks/use-curriculum";
 import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { Sparkles, Brain, Clock, ChevronRight, CheckCircle2, XCircle, FileText, Zap, BookOpen, AlertCircle, RefreshCw, ArrowLeft, Calculator, GraduationCap, ListChecks, BarChart, Settings2, Loader2, Save, Target } from "lucide-react";
+import { useUpgradeModal } from "@/components/upgrade-modal";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -48,6 +49,7 @@ const calcQTypes = ["Short Numerical Answer", "Long Answer (Multi-step)", "True/
 const wordQTypes = ["MC", "Short Answer", "Long Answer (Explain)", "Case Study", "Definition"];
 
 export default function QuizPage() {
+  const { openUpgradeModal } = useUpgradeModal();
   const { user } = useUser();
   const { curriculumLevel } = useCurriculum();
   const { tier, deductCredits, canAfford, isLoaded, assistant, heavy, judge, grading } = useSubscription();
@@ -241,7 +243,7 @@ export default function QuizPage() {
 
     if (!isLoaded) return;
     if (!canAfford(3000, "Deepseek-V4-Flash")) {
-      alert("You do not have enough daily credits to generate a quiz. Please try again tomorrow or upgrade your plan.");
+      openUpgradeModal("You do not have enough daily credits to generate a quiz. Please try again tomorrow or upgrade your plan.", "Upgrade Plan", "/subscriptions");
       return;
     }
 
