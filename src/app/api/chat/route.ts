@@ -114,7 +114,7 @@ export async function POST(req: Request) {
         } else {
           // No content found in DB
           if (chatMode === "Strict Syllabus") {
-            return NextResponse.json({ status: "success", text: "This content doesn't exist in the database.", usage: { inputTokens: 0, outputTokens: 0 } });
+            return NextResponse.json({ status: "success", text: "I'm built specifically around the AQA specification, so I'm not able to help with that — it falls outside what AQA actually covers. I want to keep everything I give you accurate to real AQA content and mark schemes rather than guessing at other exam boards or unrelated topics. If you're studying a different exam board, I might not be the right fit for that just yet. Is there something AQA-related I can help you with instead?", usage: { inputTokens: 0, outputTokens: 0 } });
           } else if (chatMode === "Standard") {
             finalSystemPrompt += `\n\nNote for AI: No specific syllabus content was found in the database for this query. You must append a short disclaimer to your answer stating: "Note: This answer is generated from general knowledge as this is not in the AQA database."`;
           }
