@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
-import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Zap, BrainCircuit, Eye, EyeOff, MessageSquare, MoreHorizontal, Lock, PanelLeft, Trash2 } from "lucide-react";
+import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Zap, BrainCircuit, Eye, EyeOff, MessageSquare, MoreHorizontal, Lock, PanelLeft, Trash2, Globe } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -75,6 +75,7 @@ export default function AssistantPage() {
   const [activeModel, setActiveModel] = useState<ModelDefinition>(MODELS[0]);
   const [isModelSelectorOpen, setIsModelSelectorOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = usePersistentState<boolean>("assistant_sidebar_open", true);
+  const [useWebFallback, setUseWebFallback] = usePersistentState<boolean>("assistant_use_web_fallback", false);
   const [hoveredModel, setHoveredModel] = useState<string | null>(null);
   const [extraTopicDetails, setExtraTopicDetails] = useState("");
   const [inputText, setInputText] = usePersistentState<string>("assistant_input_text", "");
@@ -262,12 +263,17 @@ export default function AssistantPage() {
       .then(r => r.json())
       .then(d => {
         if (d.title) {
+          let latestMessages = newMessages;
           setChats(prev => {
-            const updated = prev.map(c => c.id === currentId ? { ...c, title: d.title } : c);
-            const active = updated.find(c => c.id === currentId);
-            if (active) saveChatToSupabase(currentId!, active.title, active.messages);
-            return updated;
+            return prev.map(c => {
+              if (c.id === currentId) {
+                latestMessages = c.messages;
+                return { ...c, title: d.title };
+              }
+              return c;
+            });
           });
+          saveChatToSupabase(currentId!, d.title, latestMessages);
         }
       })
       .catch(() => {});
@@ -275,9 +281,9 @@ export default function AssistantPage() {
       if (messages.length === 0) {
         // Chat was created from "New Chat" button, so generate a real title for the first message
         setChats(prev => {
-          const updated = prev.map(c => c.id === currentId ? { ...c, title: "Generating title...", messages: newMessages, updatedAt: Date.now() } : c);
-          return updated;
+          return prev.map(c => c.id === currentId ? { ...c, title: "Generating title...", messages: newMessages, updatedAt: Date.now() } : c);
         });
+        saveChatToSupabase(currentId, "Generating title...", newMessages);
         
         fetch("/api/generate-chat-title", {
           method: "POST",
@@ -287,22 +293,32 @@ export default function AssistantPage() {
         .then(r => r.json())
         .then(d => {
           if (d.title) {
+            let latestMessages = newMessages;
             setChats(prev => {
-              const updated = prev.map(c => c.id === currentId ? { ...c, title: d.title } : c);
-              const active = updated.find(c => c.id === currentId);
-              if (active) saveChatToSupabase(currentId!, active.title, active.messages);
-              return updated;
+              return prev.map(c => {
+                if (c.id === currentId) {
+                  latestMessages = c.messages;
+                  return { ...c, title: d.title };
+                }
+                return c;
+              });
             });
+            saveChatToSupabase(currentId!, d.title, latestMessages);
           }
         })
         .catch(() => {});
       } else {
+        let activeTitle = "New Chat";
         setChats(prev => {
-          const updated = prev.map(c => c.id === currentId ? { ...c, messages: newMessages, updatedAt: Date.now() } : c);
-          const active = updated.find(c => c.id === currentId);
-          if (active) saveChatToSupabase(currentId!, active.title, active.messages);
-          return updated;
+          return prev.map(c => {
+            if (c.id === currentId) {
+              activeTitle = c.title;
+              return { ...c, messages: newMessages, updatedAt: Date.now() };
+            }
+            return c;
+          });
         });
+        saveChatToSupabase(currentId, activeTitle, newMessages);
       }
     }
 
@@ -329,6 +345,7 @@ export default function AssistantPage() {
           curriculumLevel,
           curriculumSubject,
           chatMode,
+          useWebFallback,
         }),
       });
 
@@ -338,8 +355,11 @@ export default function AssistantPage() {
           deductCredits(data.usage.inputTokens, data.usage.outputTokens, activeModel.displayName as ModelType, "chat");
         }
         // Deduct Mistral embedding cost when RAG is triggered
-        if ((chatMode === "Standard" || chatMode === "Strict Syllabus") && curriculumLevel !== "Casual") {
+        if (chatMode === "Standard" || chatMode === "Strict Syllabus") {
           deductCredits(150, 0, "Mistral Embed", "chat");
+        }
+        if (data.tavilyUsed) {
+          deductCredits(100, 100, "Tavily Search", "chat");
         }
         
         const assistantMessage: Message = {
@@ -349,27 +369,47 @@ export default function AssistantPage() {
         };
         const finalMessages = [...newMessages, assistantMessage];
         setMessages(finalMessages);
+        
+        let activeTitle = "New Chat";
         setChats(prev => {
-          const updated = prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c);
-          const active = updated.find(c => c.id === currentId);
-          if (active) saveChatToSupabase(currentId!, active.title, active.messages);
-          return updated;
+          return prev.map(c => {
+            if (c.id === currentId) {
+              activeTitle = c.title;
+              return { ...c, messages: finalMessages, updatedAt: Date.now() };
+            }
+            return c;
+          });
         });
+        saveChatToSupabase(currentId!, activeTitle, finalMessages);
       } else {
         const finalMessages = [...newMessages, { role: "assistant" as const, content: "Sorry, an error occurred: " + (data.message || "Unknown error") }];
         setMessages(finalMessages);
+        let activeTitle = "New Chat";
         setChats(prev => {
-          const updated = prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c);
-          return updated;
+          return prev.map(c => {
+            if (c.id === currentId) {
+              activeTitle = c.title;
+              return { ...c, messages: finalMessages, updatedAt: Date.now() };
+            }
+            return c;
+          });
         });
+        saveChatToSupabase(currentId!, activeTitle, finalMessages);
       }
     } catch (e: any) {
       const finalMessages = [...newMessages, { role: "assistant" as const, content: "Failed to reach the server. Please check your connection." }];
       setMessages(finalMessages);
+      let activeTitle = "New Chat";
       setChats(prev => {
-        const updated = prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c);
-        return updated;
+        return prev.map(c => {
+          if (c.id === currentId) {
+            activeTitle = c.title;
+            return { ...c, messages: finalMessages, updatedAt: Date.now() };
+          }
+          return c;
+        });
       });
+      saveChatToSupabase(currentId!, activeTitle, finalMessages);
     } finally {
       setIsLoading(false);
     }
@@ -709,7 +749,7 @@ export default function AssistantPage() {
                   onClick={() => setIsCurriculumSelectorOpen(!isCurriculumSelectorOpen)}
                   className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-border bg-card shadow-sm hover:bg-muted/50 transition-colors text-[13px] font-medium text-foreground group"
                 >
-                  {(curriculumLevel as string) === "General" ? "Casual Mode" : curriculumLevel}
+                  {curriculumLevel}
                   <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground transition-transform", isCurriculumSelectorOpen && "rotate-180")} />
                 </button>
 
@@ -719,7 +759,7 @@ export default function AssistantPage() {
                       <p className="text-[10px] font-semibold tracking-wider uppercase text-muted-foreground px-2">Select Curriculum</p>
                     </div>
                     <div className="p-1.5 flex flex-col gap-0.5">
-                      {(["Casual", "GCSE", "A-Level"] as any[]).map((level) => (
+                      {(["KS3", "GCSE", "A-Level"] as any[]).map((level) => (
                         <button
                           key={level}
                           onClick={() => {
@@ -733,7 +773,7 @@ export default function AssistantPage() {
                               : "text-foreground hover:bg-muted"
                           )}
                         >
-                          <span className="truncate">{level === "Casual" ? "Casual Mode" : level}</span>
+                          <span className="truncate">{level}</span>
                           {curriculumLevel === level && <Check className="w-4 h-4 shrink-0" />}
                         </button>
                       ))}
@@ -749,9 +789,9 @@ export default function AssistantPage() {
               className="w-full max-h-32 min-h-[60px] resize-none bg-transparent px-5 py-4 text-sm placeholder:text-muted-foreground focus:outline-none"
               placeholder={
                 chatMode === "Strict Syllabus"
-                  ? "Ask a question you want to deeply understand..."
+                  ? "Answers strictly from AQA specification"
                   : chatMode === "Quick Answer"
-                    ? "What do you need a quick answer for?"
+                    ? "Short, key facts only"
                     : "Ask anything or paste an image..."
               }
               rows={1}
@@ -760,10 +800,21 @@ export default function AssistantPage() {
               onKeyDown={handleKeyDown}
             />
             <div className="flex items-center justify-between px-3 pb-3">
-              <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:bg-muted transition-colors rounded-lg">
-                <Paperclip className="w-4 h-4" />
-                <span className="text-xs font-medium">Attach</span>
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:bg-muted transition-colors rounded-lg">
+                  <Paperclip className="w-4 h-4" />
+                  <span className="text-xs font-medium">Attach</span>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setUseWebFallback(!useWebFallback)}
+                  className={cn("gap-1.5 transition-colors rounded-lg", useWebFallback ? "text-purple-600 bg-purple-500/10 hover:bg-purple-500/20" : "text-muted-foreground hover:bg-muted")}
+                >
+                  <Globe className="w-4 h-4" />
+                  <span className="text-xs font-medium hidden sm:inline">Web Fallback</span>
+                </Button>
+              </div>
               <Button
                 size="icon"
                 className="w-8 h-8 rounded-lg bg-foreground text-background shadow-sm hover:opacity-90 disabled:opacity-30"

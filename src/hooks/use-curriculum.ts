@@ -2,7 +2,7 @@
 
 import { usePersistentState } from "./use-persistent-state";
 
-export type CurriculumLevel = "Casual" | "KS3" | "GCSE" | "A-Level";
+export type CurriculumLevel = "KS3" | "GCSE" | "A-Level";
 export type CurriculumSubject = "Biology" | "Chemistry" | "Physics" | "Geography" | "English Language" | "English Literature";
 
 export function useCurriculum() {

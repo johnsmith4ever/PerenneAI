@@ -4,8 +4,9 @@ import { createMistral } from "@ai-sdk/mistral";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
 
+const mistralKey = Math.random() > 0.5 ? process.env.MISTRAL_API_KEY : process.env.MISTRAL_API_KEY_2;
 const mistral = createMistral({
-  apiKey: process.env.MISTRAL_API_KEY_2,
+  apiKey: mistralKey,
 });
 
 export async function POST(req: Request) {

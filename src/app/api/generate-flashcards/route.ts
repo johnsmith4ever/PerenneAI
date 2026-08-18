@@ -57,7 +57,7 @@ export async function POST(req: Request) {
 
     // Implement RAG Context if Syllabus mode
     let ragContext = "";
-    if (curriculumLevel && curriculumLevel !== "Casual" && topic) {
+    if (curriculumLevel && topic) {
       try {
         const { createMistral } = await import("@ai-sdk/mistral");
         const { embed } = await import("ai");
