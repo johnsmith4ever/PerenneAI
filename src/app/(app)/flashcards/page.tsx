@@ -72,6 +72,7 @@ export default function FlashcardsPage() {
   const [studyCards, setStudyCards] = usePersistentState<Flashcard[]>("flashcards_study", []);
   const [mode, setMode] = usePersistentState<AppMode>("flashcards_mode", "input");
   const [deckTitle, setDeckTitle] = usePersistentState("flashcards_title", "");
+  const [isDatabaseMatch, setIsDatabaseMatch] = usePersistentState<boolean | null>("flashcards_db_match", null);
 
   // Study state
   const [currentIndex, setCurrentIndex] = usePersistentState("flashcards_index", 0);
@@ -142,6 +143,7 @@ export default function FlashcardsPage() {
         if (data.imageUsage) deductCredits(data.imageUsage.inputTokens, data.imageUsage.outputTokens, "Gemini 3.6 Flash");
         setAllCards(data.data);
         setDeckTitle(data.title || topic || "Flashcard Deck");
+        setIsDatabaseMatch(data.isDatabaseMatch ?? null);
         setHasSaved(false);
         startStudyRound(data.data);
       } else {
@@ -679,6 +681,13 @@ export default function FlashcardsPage() {
             <h1 className="font-serif text-xl font-bold text-foreground tracking-tight leading-tight text-center truncate max-w-sm">
               {deckTitle}
             </h1>
+            {isDatabaseMatch === false && (
+              <div className="mt-1 flex justify-center">
+                <span className="px-2 py-0.5 rounded bg-yellow-500/10 border border-yellow-500/30 text-[10px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">
+                  Not in Database
+                </span>
+              </div>
+            )}
             <p className="text-xs text-muted-foreground">
               {currentIndex + 1}&nbsp;/&nbsp;{studyCards.length}
               {roundNumber > 1 && (

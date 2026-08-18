@@ -57,6 +57,7 @@ export async function POST(req: Request) {
 
     // Implement RAG Context if Syllabus mode
     let ragContext = "";
+    let foundSpecs = false;
     if (curriculumLevel && topic) {
       try {
         const { createMistral } = await import("@ai-sdk/mistral");
@@ -80,6 +81,7 @@ export async function POST(req: Request) {
         });
 
         if (!specError && specs && specs.length > 0) {
+          foundSpecs = true;
           const contextObj = specs.map((s: any) => ({
             topicCode: s.topic_code,
             specificationRequirement: s.content
@@ -147,7 +149,7 @@ Respond with ONLY a JSON object, no markdown, no explanation:
 
     if (userId) trackUsage(userId, "generate-flashcards").catch(console.error);
 
-    return NextResponse.json({ status: "success", data: cards, title, textUsage, imageUsage });
+    return NextResponse.json({ status: "success", data: cards, title, isDatabaseMatch: foundSpecs, textUsage, imageUsage });
   } catch (error: any) {
     console.error("Flashcard API Error:", error);
     return NextResponse.json({ status: "error", message: error.message || "Unknown error" }, { status: 500 });
