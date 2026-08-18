@@ -389,6 +389,11 @@ export default function QuizPage() {
 
     setGradingResults(results);
     setQuizMode("results");
+
+    const totalMaxMarks = generatedQuiz.reduce((acc, q) => acc + getMarksAvailable(q.type, quizType), 0);
+    const earnedMarks = Object.values(results).reduce((acc: number, r: any) => acc + (r.marks_awarded || 0), 0);
+    const scorePct = Math.round((earnedMarks / totalMaxMarks) * 100) || 0;
+    saveToHistory(scorePct).catch(console.error);
   };
 
   // --- Renderers ---

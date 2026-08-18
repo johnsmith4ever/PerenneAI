@@ -152,6 +152,19 @@ export default function AssistantPage() {
         })).sort((a: ChatSession, b: ChatSession) => b.updatedAt - a.updatedAt);
         setChats(loadedChats);
         setChatsLoaded(true);
+
+        // Hydrate the active chat's messages into the UI
+        const savedActiveId = window.localStorage.getItem(`assistant_active_chat_id_${user.id}`);
+        const parsedActiveId = savedActiveId ? JSON.parse(savedActiveId) : null;
+        
+        const targetChat = parsedActiveId ? loadedChats.find((c: ChatSession) => c.id === parsedActiveId) : null;
+        if (targetChat) {
+          setMessages(targetChat.messages);
+        } else if (loadedChats.length > 0 && !parsedActiveId) {
+           // Optionally load the most recent chat if no active chat is set
+           // setMessages(loadedChats[0].messages);
+           // setActiveChatId(loadedChats[0].id);
+        }
       })
       .catch((e) => {
         console.error("Failed to load chats", e);

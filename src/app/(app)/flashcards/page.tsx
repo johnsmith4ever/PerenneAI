@@ -142,10 +142,21 @@ export default function FlashcardsPage() {
         if (data.textUsage) deductCredits(data.textUsage.inputTokens, data.textUsage.outputTokens, modelUsed);
         if (data.imageUsage) deductCredits(data.imageUsage.inputTokens, data.imageUsage.outputTokens, "Gemini 3.6 Flash");
         setAllCards(data.data);
-        setDeckTitle(data.title || topic || "Flashcard Deck");
+        const finalTitle = data.title || topic || "Flashcard Deck";
+        setDeckTitle(finalTitle);
         setIsDatabaseMatch(data.isDatabaseMatch ?? null);
         setHasSaved(false);
         startStudyRound(data.data);
+
+        // Auto-save to history
+        if (user) {
+          insertHistoryAction("flashcards_history", {
+            user_id: user.id,
+            title: finalTitle,
+            topic: topic || "Generated Deck",
+            cards: data.data.map((c: any) => ({ ...c, failed: false }))
+          }).then(() => setHasSaved(true)).catch(console.error);
+        }
       } else {
         alert("Error: " + data.message);
       }
@@ -257,10 +268,21 @@ export default function FlashcardsPage() {
     const validCards = manualCards.filter(c => c.term.trim() && c.definition.trim());
     if (validCards.length < 1) return;
     setAllCards(validCards);
-    setDeckTitle(manualDeckTitle.trim() || "My Deck");
+    const finalTitle = manualDeckTitle.trim() || "My Deck";
+    setDeckTitle(finalTitle);
     setRoundNumber(1);
     setHasSaved(false);
     startStudyRound(validCards);
+
+    // Auto-save to history
+    if (user) {
+      insertHistoryAction("flashcards_history", {
+        user_id: user.id,
+        title: finalTitle,
+        topic: "Manual Deck",
+        cards: validCards.map((c: any) => ({ ...c, failed: false }))
+      }).then(() => setHasSaved(true)).catch(console.error);
+    }
   };
 
   const saveToHistory = async () => {
