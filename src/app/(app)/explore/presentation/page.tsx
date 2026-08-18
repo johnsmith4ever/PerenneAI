@@ -63,12 +63,14 @@ export default function PresentationBuilderPage() {
         deductCredits(100, slideCount * 100, assistant, "other");
         
         if (user) {
+          /* Removed history save per user request
           await insertHistoryAction("explore_history", {
             user_id: user.id,
             topic: topic,
             type: "presentation",
             data: data.data
           });
+          */
         }
       } else {
         setError(data.message || "Failed to generate.");

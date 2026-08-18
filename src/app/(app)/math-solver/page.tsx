@@ -148,7 +148,7 @@ export default function MathSolverPage() {
     setIsSaving(true);
     try {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
-      // We save this into quiz_history so it shows up in Weak Areas just like exams!
+      /* Removed history save per user request
       await insertHistoryAction("quiz_history", {
         user_id: user.id,
         topic: `Maths: ${topic || "Mixed"}`,
@@ -167,6 +167,7 @@ export default function MathSolverPage() {
         }),
         score: scorePct
       });
+      */
       setHasSaved(true);
     } catch (e) {
       console.error("Error saving math history:", e);

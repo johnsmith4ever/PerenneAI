@@ -13,17 +13,13 @@ import Link from "next/link";
 
 
 
-type Tab = "quizzes" | "flashcards" | "essays" | "presentation" | "math_solver" | "mindmap" | "schedule" | "note_summary" | "debate";
+type Tab = "quizzes" | "flashcards" | "essays" | "mindmap" | "note_summary";
 
 const TABS: { id: Tab, label: string }[] = [
   { id: "quizzes", label: "Quizzes" },
   { id: "flashcards", label: "Flashcards" },
   { id: "essays", label: "Essays" },
-  { id: "presentation", label: "Presentations" },
-  { id: "math_solver", label: "Maths Solutions" },
-  { id: "debate", label: "Debates" },
   { id: "mindmap", label: "Mindmaps" },
-  { id: "schedule", label: "Schedules" },
   { id: "note_summary", label: "Note Summaries" }
 ];
 
@@ -69,7 +65,12 @@ export default function HistoryPage() {
         if (quizRes) setQuizzes(quizRes);
         if (flashRes) setFlashcards(flashRes);
         if (essayRes) setEssays(essayRes);
-        if (exploreRes) setExplore(exploreRes);
+        if (exploreRes) {
+          const filteredExplore = exploreRes.filter((e: any) => 
+            !["presentation", "schedule", "debate", "math", "math_solution"].includes(e.type)
+          );
+          setExplore(filteredExplore);
+        }
       } catch (err) {
         console.error("Failed to fetch history:", err);
       } finally {
@@ -258,107 +259,6 @@ export default function HistoryPage() {
               </div>
             )}
 
-            {selectedItem.type === "debate" && Array.isArray(selectedItem.data) && (
-              <div className="space-y-4">
-                {selectedItem.data.map((msg: any, i: number) => (
-                  <div key={i} className={cn("p-4 rounded-xl max-w-[85%]", msg.role === "user" ? "bg-primary text-primary-foreground ml-auto" : "bg-muted text-foreground")}>
-                    <p className="text-sm font-bold mb-1 opacity-70">{msg.role === "user" ? "You" : "Debate Partner"}</p>
-                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {selectedItem.type === "math_solver" && (
-              <div className="space-y-6">
-                 {selectedItem.data.extractedProblem && (
-                   <div className="p-4 bg-muted/50 rounded-xl">
-                     <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">Problem</p>
-                     <p className="text-foreground">{selectedItem.data.extractedProblem}</p>
-                   </div>
-                 )}
-                 {selectedItem.data.finalAnswer && (
-                   <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-center">
-                     <p className="text-sm font-bold text-emerald-600 uppercase tracking-wider mb-2">Final Answer</p>
-                     <p className="text-emerald-700 font-bold text-xl">{selectedItem.data.finalAnswer}</p>
-                   </div>
-                 )}
-                 {selectedItem.data.solution && (
-                   <div>
-                     <h3 className="font-bold text-foreground mb-3">Step-by-Step Solution</h3>
-                     {Array.isArray(selectedItem.data.solution) ? (
-                       <div className="space-y-4">
-                         {selectedItem.data.solution.map((s: any, idx: number) => (
-                           <div key={idx} className="bg-card border border-border p-4 rounded-lg">
-                             <h4 className="font-bold text-sm text-foreground mb-1">Step {s.step}: {s.title}</h4>
-                             <p className="text-sm text-muted-foreground whitespace-pre-wrap">{s.content}</p>
-                           </div>
-                         ))}
-                       </div>
-                     ) : (
-                       <div className="text-sm text-muted-foreground whitespace-pre-wrap bg-card border border-border p-4 rounded-lg">
-                         {selectedItem.data.solution}
-                       </div>
-                     )}
-                   </div>
-                 )}
-              </div>
-            )}
-
-            {selectedItem.type === "presentation" && Array.isArray(selectedItem.data) && (
-              <div className="space-y-6">
-                {selectedItem.data.map((slide: any, idx: number) => (
-                  <div key={idx} className="bg-card border border-border p-6 rounded-xl shadow-sm">
-                    <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Slide {idx + 1}</p>
-                    <h3 className="font-bold text-foreground text-xl mb-4">{slide.title}</h3>
-                    <ul className="list-disc pl-5 space-y-2">
-                      {slide.bulletPoints?.map((bp: string, i: number) => (
-                        <li key={i} className="text-sm text-muted-foreground">{bp}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {selectedItem.type === "schedule" && selectedItem.data.days && (
-              <div className="space-y-8">
-                {selectedItem.data.days.map((day: any, dIdx: number) => (
-                  <div key={dIdx} className="space-y-4">
-                    <h3 className="font-bold text-lg text-foreground border-b border-border pb-2">{day.day}</h3>
-                    <div className="space-y-3">
-                      {day.blocks?.map((block: any, bIdx: number) => (
-                        <div key={bIdx} className={cn("p-4 rounded-xl border flex gap-4 relative overflow-hidden", block.type === "study" ? "bg-card border-border" : "bg-muted/50 border-transparent")}>
-                          {block.type === "study" && <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>}
-                          <div className="shrink-0 text-right w-16">
-                            <p className="text-sm font-bold text-foreground">{block.startTime}</p>
-                            <p className="text-xs text-muted-foreground">{block.endTime}</p>
-                          </div>
-                          <div className="flex-1">
-                            <h4 className="font-bold text-sm text-foreground mb-1">{block.title}</h4>
-                            <p className="text-sm text-muted-foreground mb-2">{block.details}</p>
-                            
-                            {block.microTargets && block.microTargets.length > 0 && (
-                              <ul className="list-disc pl-5 space-y-1 mt-2">
-                                {block.microTargets.map((target: string, tIdx: number) => (
-                                  <li key={tIdx} className="text-xs text-muted-foreground">{target}</li>
-                                ))}
-                              </ul>
-                            )}
-                            
-                            {block.pomodoro && (
-                              <div className="mt-3 inline-block px-2 py-1 rounded bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
-                                Pomodoro: {block.pomodoro}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
 
             {/* Fallback for mindmap that is too complex to render easily */}
             {["mindmap"].includes(selectedItem.type) && (
@@ -536,7 +436,7 @@ export default function HistoryPage() {
               )
             )}
 
-            {["presentation", "math_solver", "mindmap", "schedule", "note_summary", "debate"].includes(activeTab) && (
+            {["mindmap", "note_summary"].includes(activeTab) && (
               explore.filter((item) => item.type === activeTab || (activeTab === "note_summary" && item.type === "note_summary_saved")).length === 0 ? (
                 <div className="p-12 text-center rounded-xl border border-border bg-card">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 text-primary">

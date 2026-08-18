@@ -90,12 +90,14 @@ export default function ScheduleMakerPage() {
         setSelectedDay(0);
         
         if (user) {
+          /* Removed history save per user request
           await insertHistoryAction("explore_history", {
             user_id: user.id,
             topic: goal || "Untitled Schedule",
             type: "schedule",
             data: data.data
           });
+          */
         }
       } else {
         console.error("Failed to generate schedule:", data.message);

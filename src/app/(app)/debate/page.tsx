@@ -31,12 +31,14 @@ export default function DebatePage() {
     if (!user || messages.length === 0) return;
     setIsSaving(true);
     try {
+      /* Removed history save per user request
       await insertHistoryAction("explore_history", {
         user_id: user.id,
         type: "debate",
         topic: topic || "Debate",
         data: messages
       });
+      */
       
       setHasSaved(true);
     } catch (e) {
