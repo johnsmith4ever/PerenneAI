@@ -117,6 +117,7 @@ export default function AssistantPage() {
         messages: msgs,
         updated_at: new Date().toISOString()
       });
+      window.localStorage.setItem(`assistant_chats_updated_${user.id}`, Date.now().toString());
     } catch (e) {
       console.error("Failed to save chat to supabase", e);
     } finally {
@@ -131,15 +132,8 @@ export default function AssistantPage() {
     }
   }, [subLoaded, availableModels, activeModel]);
 
-  // Load chats from Supabase on mount — ONLY after Clerk has fully resolved the user.
-  // This replaces the old usePersistentState approach which had a key race condition.
-  useEffect(() => {
-    if (!userLoaded) return; // Wait for Clerk — don't hydrate with undefined user
-    if (!user) {
-      setChatsLoaded(true); // Guest: no chats to load
-      return;
-    }
-
+  // Load chats from Supabase. We extract this into a function so it can be called on mount AND on cross-tab sync.
+  const loadChatsFromCloud = () => {
     let isMounted = true;
     fetchUserHistoryAction("chat_history", "id, title, messages, updated_at", 50)
       .then((data: any) => {
@@ -152,16 +146,34 @@ export default function AssistantPage() {
         })).sort((a: ChatSession, b: ChatSession) => b.updatedAt - a.updatedAt);
         setChats(loadedChats);
         setChatsLoaded(true);
-
-        // The activeChatId state is now managed by usePersistentState which syncs to Supabase.
-        // We handle populating the messages for the active chat in a separate useEffect below.
       })
       .catch((e) => {
         console.error("Failed to load chats", e);
         setChatsLoaded(true); // Don't block UI on error
       });
     return () => { isMounted = false; };
+  };
+
+  useEffect(() => {
+    if (!userLoaded) return;
+    if (!user) {
+      setChatsLoaded(true);
+      return;
+    }
+    const cleanup = loadChatsFromCloud();
+    return cleanup;
   }, [user?.id, userLoaded]);
+
+  // Sync across tabs by listening to storage events and refetching cloud data
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === `assistant_chats_updated_${user?.id}`) {
+        loadChatsFromCloud();
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [user?.id]);
 
   // Sync messages into the UI when activeChatId changes (e.g. from cloud hydration on a new device)
   useEffect(() => {
@@ -209,6 +221,7 @@ export default function AssistantPage() {
     if (user) {
       try {
         await deleteHistoryAction("chat_history", id);
+        window.localStorage.setItem(`assistant_chats_updated_${user.id}`, Date.now().toString());
       } catch (e) {
         console.error("Failed to delete chat", e);
       }
