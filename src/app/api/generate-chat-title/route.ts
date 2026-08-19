@@ -1,13 +1,6 @@
 import { NextResponse } from "next/server";
-import { generateText } from "ai";
-import { createMistral } from "@ai-sdk/mistral";
 import { auth } from "@clerk/nextjs/server";
 import { trackUsage } from "@/lib/usage";
-
-const mistralKey = Math.random() > 0.5 ? process.env.MISTRAL_API_KEY : process.env.MISTRAL_API_KEY_2;
-const mistral = createMistral({
-  apiKey: mistralKey,
-});
 
 export async function POST(req: Request) {
   try {
@@ -17,8 +10,9 @@ export async function POST(req: Request) {
     const { text } = await req.json();
     if (!text) return NextResponse.json({ title: "New Chat" });
 
-    const { text: title } = await generateText({
-      model: mistral.chat("mistral-small-latest"),
+    const { generateMistralText } = await import("@/lib/mistral-fallback");
+    const { text: title } = await generateMistralText({
+      modelName: "mistral-small-latest",
       system: "You are an expert summarizer. Your task is to generate a short, concise title (maximum 5 words) for a chat based on the user's first message. You must respond ONLY with the raw title. Do not include quotes, punctuation, prefixes like 'Title:' or any conversational filler.",
       prompt: text,
       maxOutputTokens: 10,
