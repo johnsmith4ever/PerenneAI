@@ -365,7 +365,12 @@ export default function AssistantPage() {
       const data = await res.json();
       if (data.status === "success") {
         if (data.usage) {
-          deductCredits(data.usage.inputTokens, data.usage.outputTokens, activeModel.displayName as ModelType, "chat");
+          deductCredits(
+            data.usage.inputTokens ?? data.usage.promptTokens ?? 0, 
+            data.usage.outputTokens ?? data.usage.completionTokens ?? 0, 
+            activeModel.displayName as ModelType, 
+            "chat"
+          );
         }
         // Deduct Mistral embedding cost when RAG is triggered
         if (chatMode === "Standard" || chatMode === "Strict Syllabus") {

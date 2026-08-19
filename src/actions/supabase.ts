@@ -75,6 +75,9 @@ export async function insertHistoryAction(table: HistoryTable, payload: any) {
     throw new Error(`Insert failed on ${table}`);
   }
   
+  revalidatePath("/history");
+  if (table === "chat_history") revalidatePath("/assistant");
+  
   return data;
 }
 
@@ -88,6 +91,9 @@ export async function deleteHistoryAction(table: HistoryTable, id: string) {
     console.error(`Failed to delete from ${table}:`, error);
     throw new Error(`Delete failed on ${table}`);
   }
+  
+  revalidatePath("/history");
+  if (table === "chat_history") revalidatePath("/assistant");
 }
 
 export async function fetchUserHistoryAction(table: HistoryTable, columns: string = "*", limit?: number, matchParams?: any) {
@@ -178,4 +184,6 @@ export async function upsertChatAction(payload: any) {
     console.error("Failed to upsert chat:", error);
     throw new Error("Failed to upsert chat");
   }
+  
+  revalidatePath("/assistant");
 }
