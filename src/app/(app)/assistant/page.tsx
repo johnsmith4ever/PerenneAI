@@ -521,7 +521,7 @@ export default function AssistantPage() {
                 Recent Chats
               </p>
             </div>
-            {!user && (
+            {userLoaded && !user && (
               <div className="px-4 py-3 bg-amber-500/5 border-b border-amber-500/20">
                 <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">Guest mode: chats won't be saved across sessions.</p>
               </div>
