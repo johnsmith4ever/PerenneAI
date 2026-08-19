@@ -84,6 +84,8 @@ export default function AssistantPage() {
   // usePersistentState was causing a race: key changed from "assistant_chats_undefined" to
   // "assistant_chats_user_xxx" after Clerk resolved, wiping the in-memory list.
   const [chats, setChats] = useState<ChatSession[]>([]);
+  const chatsRef = useRef<ChatSession[]>(chats);
+  useEffect(() => { chatsRef.current = chats; }, [chats]);
   const [chatsLoaded, setChatsLoaded] = useState(false);
   const [activeChatId, setActiveChatId] = usePersistentState<string | null>("assistant_active_chat_id", null);
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
@@ -289,16 +291,9 @@ export default function AssistantPage() {
       .then(r => r.json())
       .then(d => {
         if (d.title) {
-          let latestMessages = newMessages;
-          setChats(prev => {
-            return prev.map(c => {
-              if (c.id === currentId) {
-                latestMessages = c.messages;
-                return { ...c, title: d.title };
-              }
-              return c;
-            });
-          });
+          setChats(prev => prev.map(c => c.id === currentId ? { ...c, title: d.title } : c));
+          const currentChat = chatsRef.current.find(c => c.id === currentId);
+          const latestMessages = currentChat ? currentChat.messages : newMessages;
           saveChatToSupabase(currentId!, d.title, latestMessages);
         }
       })
@@ -319,17 +314,10 @@ export default function AssistantPage() {
         .then(r => r.json())
         .then(d => {
           if (d.title) {
-            let latestMessages = newMessages;
-            setChats(prev => {
-              return prev.map(c => {
-                if (c.id === currentId) {
-                  latestMessages = c.messages;
-                  return { ...c, title: d.title };
-                }
-                return c;
-              });
-            });
-            saveChatToSupabase(currentId!, d.title, latestMessages);
+            setChats(prev => prev.map(c => c.id === currentId ? { ...c, title: d.title } : c));
+          const currentChat = chatsRef.current.find(c => c.id === currentId);
+          const latestMessages = currentChat ? currentChat.messages : newMessages;
+          saveChatToSupabase(currentId!, d.title, latestMessages);
           }
         })
         .catch(() => {});
@@ -401,45 +389,24 @@ export default function AssistantPage() {
         const finalMessages = [...newMessages, assistantMessage];
         setMessages(finalMessages);
         
-        let activeTitle = "New Chat";
-        setChats(prev => {
-          return prev.map(c => {
-            if (c.id === currentId) {
-              activeTitle = c.title;
-              return { ...c, messages: finalMessages, updatedAt: Date.now() };
-            }
-            return c;
-          });
-        });
-        saveChatToSupabase(currentId!, activeTitle, finalMessages);
+        setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c));
+      const currentChat = chatsRef.current.find(c => c.id === currentId);
+      const activeTitle = currentChat ? currentChat.title : "New Chat";
+      saveChatToSupabase(currentId!, activeTitle, finalMessages);
       } else {
         const finalMessages = [...newMessages, { role: "assistant" as const, content: "Sorry, an error occurred: " + (data.message || "Unknown error") }];
         setMessages(finalMessages);
-        let activeTitle = "New Chat";
-        setChats(prev => {
-          return prev.map(c => {
-            if (c.id === currentId) {
-              activeTitle = c.title;
-              return { ...c, messages: finalMessages, updatedAt: Date.now() };
-            }
-            return c;
-          });
-        });
-        saveChatToSupabase(currentId!, activeTitle, finalMessages);
+        setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c));
+      const currentChat = chatsRef.current.find(c => c.id === currentId);
+      const activeTitle = currentChat ? currentChat.title : "New Chat";
+      saveChatToSupabase(currentId!, activeTitle, finalMessages);
       }
     } catch (e: any) {
       const finalMessages = [...newMessages, { role: "assistant" as const, content: "Failed to reach the server. Please check your connection." }];
       setMessages(finalMessages);
-      let activeTitle = "New Chat";
-      setChats(prev => {
-        return prev.map(c => {
-          if (c.id === currentId) {
-            activeTitle = c.title;
-            return { ...c, messages: finalMessages, updatedAt: Date.now() };
-          }
-          return c;
-        });
-      });
+      setChats(prev => prev.map(c => c.id === currentId ? { ...c, messages: finalMessages, updatedAt: Date.now() } : c));
+      const currentChat = chatsRef.current.find(c => c.id === currentId);
+      const activeTitle = currentChat ? currentChat.title : "New Chat";
       saveChatToSupabase(currentId!, activeTitle, finalMessages);
     } finally {
       setIsLoading(false);
