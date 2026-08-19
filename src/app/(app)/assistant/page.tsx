@@ -153,18 +153,8 @@ export default function AssistantPage() {
         setChats(loadedChats);
         setChatsLoaded(true);
 
-        // Hydrate the active chat's messages into the UI
-        const savedActiveId = window.localStorage.getItem(`assistant_active_chat_id_${user.id}`);
-        const parsedActiveId = savedActiveId ? JSON.parse(savedActiveId) : null;
-        
-        const targetChat = parsedActiveId ? loadedChats.find((c: ChatSession) => c.id === parsedActiveId) : null;
-        if (targetChat) {
-          setMessages(targetChat.messages);
-        } else if (loadedChats.length > 0 && !parsedActiveId) {
-           // Optionally load the most recent chat if no active chat is set
-           // setMessages(loadedChats[0].messages);
-           // setActiveChatId(loadedChats[0].id);
-        }
+        // The activeChatId state is now managed by usePersistentState which syncs to Supabase.
+        // We handle populating the messages for the active chat in a separate useEffect below.
       })
       .catch((e) => {
         console.error("Failed to load chats", e);
@@ -172,6 +162,16 @@ export default function AssistantPage() {
       });
     return () => { isMounted = false; };
   }, [user?.id, userLoaded]);
+
+  // Sync messages into the UI when activeChatId changes (e.g. from cloud hydration on a new device)
+  useEffect(() => {
+    if (activeChatId && chats.length > 0 && messages.length === 0) {
+      const chat = chats.find(c => c.id === activeChatId);
+      if (chat && chat.messages.length > 0) {
+        setMessages(chat.messages);
+      }
+    }
+  }, [activeChatId, chats, messages.length]);
 
   const handleNewChat = () => {
     setActiveChatId(null);
