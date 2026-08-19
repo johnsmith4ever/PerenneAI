@@ -2,15 +2,11 @@ import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { generateGeminiText } from "./gemini-fallback";
-import { createMistral } from "@ai-sdk/mistral";
+import { generateMistralText } from "./mistral-fallback";
 
 const groq = createOpenAI({
   baseURL: "https://api.groq.com/openai/v1",
   apiKey: process.env.GROQ_API_KEY,
-});
-
-const mistral = createMistral({
-  apiKey: process.env.MISTRAL_API_KEY_2,
 });
 
 const deepseek = createOpenAI({
@@ -82,23 +78,21 @@ export async function generateUniversalText({
     });
     return { text, usage };
   } else if (model === "Mistral Small") {
-    const { text, usage } = await generateText({
-      model: mistral.chat("mistral-small-latest"),
+    return await generateMistralText({
+      modelName: "mistral-small-latest",
       system,
       messages: finalMessages,
       temperature,
-      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
+      ...(maxOutputTokens ? { maxOutputTokens } : {})
     });
-    return { text, usage };
   } else if (model === "Mistral Large") {
-    const { text, usage } = await generateText({
-      model: mistral.chat("mistral-large-latest"),
+    return await generateMistralText({
+      modelName: "mistral-large-latest",
       system,
       messages: finalMessages,
       temperature,
-      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
+      ...(maxOutputTokens ? { maxOutputTokens } : {})
     });
-    return { text, usage };
   } else {
     // Fallback to Gemini for Guest/Free or if Gemini is specifically requested
     return await generateGeminiText({

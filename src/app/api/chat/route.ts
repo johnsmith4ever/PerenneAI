@@ -164,6 +164,16 @@ export async function POST(req: Request) {
       });
       text = res.text;
       usage = res.usage;
+    } else if (modelName && (modelName.includes("Mistral") || modelName.includes("mistral"))) {
+      const { generateMistralText } = await import("@/lib/mistral-fallback");
+      const res = await generateMistralText({
+        modelName: modelName.includes("Large") ? "mistral-large-latest" : "mistral-small-latest",
+        system: finalSystemPrompt,
+        messages,
+        maxOutputTokens: maxTokens || undefined,
+      });
+      text = res.text;
+      usage = res.usage;
     } else {
       const res = await generateText({
         model,
