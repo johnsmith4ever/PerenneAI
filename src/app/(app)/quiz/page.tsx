@@ -97,7 +97,7 @@ export default function QuizPage() {
     return () => clearTimeout(timer);
   }, [topic, subject]);
   
-  const [quizMode, setQuizMode, quizModeLoaded] = useState<QuizMode>("setup");
+  const [quizMode, setQuizMode] = useState<QuizMode>("setup");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedQuiz, setGeneratedQuiz] = useState<any[]>([]);
   
@@ -398,7 +398,7 @@ export default function QuizPage() {
   };
 
   // --- Renderers ---
-  if (!isLoaded || !quizModeLoaded) {
+  if (!isLoaded) {
     return (
       <div className="flex h-[80vh] items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />

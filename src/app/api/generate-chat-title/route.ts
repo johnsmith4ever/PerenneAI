@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 
 export async function POST(req: Request) {
   try {
@@ -19,8 +18,7 @@ export async function POST(req: Request) {
       temperature: 0.2,
     });
 
-    if (userId) trackUsage(userId, "generate-chat-title").catch(console.error);
-
+    
     return NextResponse.json({ title: title.trim().replace(/^["']|["']$/g, "") });
   } catch (error) {
     console.error("Chat title generation error:", error);

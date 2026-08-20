@@ -4,7 +4,6 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { createMistral } from "@ai-sdk/mistral";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { supabase } from "@/lib/supabase";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateUniversalText } from "@/lib/universal-router";
@@ -113,8 +112,7 @@ Example format:
         throw new Error("Failed to generate math questions. Please try again.");
       }
 
-      trackUsage(userId, "chat").catch(console.error);
-      return NextResponse.json({ status: "success", questions: parsedQuestions, usage });
+            return NextResponse.json({ status: "success", questions: parsedQuestions, usage });
 
     } else if (action === "grade_answers") {
       const gradingPrompt = `You are a strict GCSE Math Examiner and Logic Parser (AQA standard).
@@ -157,8 +155,7 @@ Example output format:
         throw new Error("Failed to parse grading results.");
       }
 
-      trackUsage(userId, "chat").catch(console.error);
-      return NextResponse.json({ status: "success", results: parsedResults, usage });
+            return NextResponse.json({ status: "success", results: parsedResults, usage });
     }
 
     return NextResponse.json({ status: "error", message: "Invalid action" }, { status: 400 });

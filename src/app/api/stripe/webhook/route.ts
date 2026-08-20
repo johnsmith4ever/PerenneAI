@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { clerkClient } from "@clerk/nextjs/server";
 import Stripe from "stripe";
-import { updateUserTierInSupabase } from "@/lib/usage";
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -48,8 +47,7 @@ export async function POST(req: Request) {
     });
 
     // Also update in Supabase
-    await updateUserTierInSupabase(userId, tier);
-  }
+      }
 
   if (event.type === "invoice.payment_succeeded") {
     // Optionally handle successful recurring payments
@@ -80,8 +78,7 @@ export async function POST(req: Request) {
         });
 
         // Also downgrade in Supabase
-        await updateUserTierInSupabase(user.id, "Free");
-      }
+              }
     } catch (e) {
       console.error("Error handling subscription deletion", e);
     }

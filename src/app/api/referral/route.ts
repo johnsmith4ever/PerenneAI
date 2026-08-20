@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { clerkClient, auth } from "@clerk/nextjs/server";
-import { updateUserTierInSupabase } from "@/lib/usage";
 
 export async function POST(req: Request) {
   try {

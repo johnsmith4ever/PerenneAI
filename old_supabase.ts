@@ -29,7 +29,7 @@ export async function createClerkSupabaseClient() {
 // ----------------------------------------------------------------------------
 // Feature Tables Actions
 // ----------------------------------------------------------------------------
-type FeatureTable = "chats" | "usage" | "flashcards" | "maths_questions" | "quizzes" | "exam_sims" | "essay_sims" | "notes" | "mind_maps" | "community_posts";
+type FeatureTable = "chats" | "usage" | "flashcards" | "maths_questions" | "quizzes" | "exam_sims" | "essay_sims" | "notes" | "mind_maps";
 
 export async function insertFeatureAction(table: FeatureTable, payload: any) {
   const supabase = await createClerkSupabaseClient();
@@ -59,16 +59,11 @@ export async function upsertFeatureAction(table: FeatureTable, payload: any) {
   return data;
 }
 
-export async function fetchFeatureAction(table: FeatureTable, columns: string = "*", limit?: number, filters?: Record<string, any>) {
+export async function fetchFeatureAction(table: FeatureTable, columns: string = "*", limit?: number) {
   const supabase = await createClerkSupabaseClient();
   
   let query = supabase.from(table).select(columns).order("updated_at", { ascending: false });
   if (limit) query = query.limit(limit);
-  if (filters) {
-    for (const [key, value] of Object.entries(filters)) {
-      query = query.eq(key, value);
-    }
-  }
   
   const { data, error } = await query;
   if (error) throw new Error(`Fetch failed on ${table}: ${error.message}`);
@@ -84,15 +79,4 @@ export async function deleteFeatureAction(table: FeatureTable, id: string) {
   
   revalidatePath("/history");
   if (table === "chats") revalidatePath("/assistant");
-}
-
-
-// Wrapper for backward compatibility with debate/page.tsx
-export async function upsertChatAction(payload: any) {
-  return upsertFeatureAction("chats", payload);
-}
-
-// Added to satisfy community/page.tsx which imported this function that didn't exist in HEAD
-export async function fetchCommunityPostsAction(): Promise<any[]> {
-  return [];
 }

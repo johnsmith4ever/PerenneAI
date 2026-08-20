@@ -3,7 +3,6 @@ import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
 
@@ -147,8 +146,7 @@ Respond with ONLY a JSON object, no markdown, no explanation:
       return NextResponse.json({ status: "error", message: "No flashcards generated. Try providing more content." }, { status: 500 });
     }
 
-    if (userId) trackUsage(userId, "generate-flashcards").catch(console.error);
-
+    
     return NextResponse.json({ status: "success", data: cards, title, isDatabaseMatch: foundSpecs, textUsage, imageUsage });
   } catch (error: any) {
     console.error("Flashcard API Error:", error);

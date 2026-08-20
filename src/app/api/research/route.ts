@@ -3,7 +3,6 @@ import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 
 const deepseek = createOpenAI({
@@ -118,8 +117,7 @@ Ensure it is structured with headings, bullet points, and clear explanations.`;
       usedModel = "Gemini 3.6 Flash (Gemini)";
     }
 
-    trackUsage(userId, "chat").catch(console.error);
-    
+        
     return NextResponse.json({ 
       status: "success", 
       text: reportText, 

@@ -3,7 +3,6 @@ import { generateText, embed } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createMistral } from "@ai-sdk/mistral";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { supabaseAdmin } from "@/lib/supabase-server";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
@@ -175,8 +174,7 @@ Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSO
     }
 
     // Fire and forget usage tracking
-    if (userId) trackUsage(userId, "summarize-notes").catch(console.error);
-
+    
     // Save history so we can enforce rate limits
     if (userId) {
       supabaseAdmin.from("explore_history").insert({

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";

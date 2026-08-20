@@ -3,7 +3,6 @@ import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { generateUniversalText } from "@/lib/universal-router";
 
 export async function POST(req: Request) {
@@ -95,8 +94,7 @@ You MUST respond with ONLY a valid JSON array (no wrapping object, no markdown f
       return NextResponse.json({ status: "error", message: "AI returned empty results. Please try again." }, { status: 500 });
     }
 
-    if (userId) trackUsage(userId, "generate-quiz").catch(console.error);
-
+    
     return NextResponse.json({ status: "success", data: questions, usage });
 
   } catch (error: any) {

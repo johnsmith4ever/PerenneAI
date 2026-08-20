@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 
 import { Bot, User, Send, Loader2, ArrowLeft, ShieldAlert, Save, CheckCircle2 } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
@@ -17,7 +18,7 @@ export default function DebatePage() {
   const [topic, setTopic] = useState("");
   const [stance, setStance] = useState<"Affirmative" | "Against">("Affirmative");
   const [useResearch, setUseResearch] = useState(false);
-  const [isDebating, setIsDebating, isDebatingLoaded] = useState(false);
+  const [isDebating, setIsDebating] = useState(false);
   const [messages, setMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -95,7 +96,7 @@ export default function DebatePage() {
     }
   };
 
-  if (!isLoaded || !isDebatingLoaded) {
+  if (!isLoaded) {
     return (
       <div className="flex h-[80vh] items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />

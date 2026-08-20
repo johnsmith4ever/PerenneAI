@@ -3,7 +3,6 @@ import { generateText, embed } from "ai";
 import { createMistral } from "@ai-sdk/mistral";
 import { createOpenAI } from "@ai-sdk/openai";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { supabase } from "@/lib/supabase";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
@@ -110,8 +109,7 @@ Rules:
       return NextResponse.json({ status: "error", message: "AI returned malformed analysis." }, { status: 500 });
     }
 
-    trackUsage(userId, "analyze-topic").catch(console.error);
-
+    
     return NextResponse.json({ status: "success", data, usage });
   } catch (error: any) {
     console.error("Analyze Topic API Error:", error);

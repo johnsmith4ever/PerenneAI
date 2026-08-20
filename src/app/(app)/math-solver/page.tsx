@@ -1,5 +1,6 @@
 "use client";
 
+
 import React, { useState, useEffect, memo } from "react";
 import { Brain, Loader2, ArrowLeft, CheckCircle2, Save, Sparkles, Sigma, PenTool, BookOpenCheck, Upload, ArrowRight, Target, Clock, AlertTriangle } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
@@ -72,8 +73,8 @@ export default function MathSolverPage() {
   }, []);
 
 
-  const [role, setRole, roleLoaded] = useState<"practice" | "grading" | null>(null);
-  const [examState, setExamState, examStateLoaded] = useState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("setup");
+  const [role, setRole] = useState<"practice" | "grading" | null>(null);
+  const [examState, setExamState] = useState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("setup");
   
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -380,13 +381,7 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
     }
   };
 
-  if (!roleLoaded || !examStateLoaded) {
-    return (
-      <div className="flex h-[80vh] items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+  
 
   if (!role) {
     return (

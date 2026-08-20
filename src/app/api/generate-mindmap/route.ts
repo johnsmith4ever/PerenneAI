@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
 
@@ -67,8 +66,7 @@ Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSO
     }
 
     // Fire and forget usage tracking
-    trackUsage(userId, "generate-mindmap").catch(console.error);
-
+    
     // Return the first (root) node directly
     const root = Array.isArray(data.mindmap) ? data.mindmap[0] : data.mindmap;
     return NextResponse.json({ status: "success", data: root, usage });

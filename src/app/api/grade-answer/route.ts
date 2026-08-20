@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { generateUniversalText } from "@/lib/universal-router";
 
 export async function POST(req: Request) {
@@ -46,8 +45,7 @@ export async function POST(req: Request) {
     const cleanJson = rawJson.replace(/```json\n|```json|```/g, '').trim();
     const verdict = JSON.parse(cleanJson);
 
-    if (userId) trackUsage(userId, "grade-answer").catch(console.error);
-
+    
     return NextResponse.json({ status: "success", data: verdict, usage });
   } catch (error: any) {
     console.error("Grading API Error:", error);

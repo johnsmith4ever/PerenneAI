@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
 
@@ -104,7 +103,6 @@ Requirements:
     }
 
     // Track usage
-    await trackUsage(userId, "generate-schedule");
 
     return NextResponse.json({
       status: "success",

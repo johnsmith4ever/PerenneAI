@@ -135,7 +135,7 @@ function palette(depth: number) {
   const router = useRouter();
   const { user } = useUser();
 
-  const [root, setRoot, rootLoaded] = useState<MindmapNode>(DEFAULT_ROOT);
+  const [root, setRoot] = useState<MindmapNode>(DEFAULT_ROOT);
   const [zoom, setZoom] = useState(0.65);
   const [panelOpen, setPanelOpen] = useState(false);
 
@@ -204,12 +204,10 @@ function palette(depth: number) {
 
   // Center on first real load
   useEffect(() => {
-    if (rootLoaded) {
-      // Small delay to ensure DOM is painted
-      const t = setTimeout(centerCanvas, 80);
-      return () => clearTimeout(t);
-    }
-  }, [rootLoaded]); // eslint-disable-line react-hooks/exhaustive-deps
+    // Small delay to ensure DOM is painted
+    const t = setTimeout(centerCanvas, 80);
+    return () => clearTimeout(t);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Tree operations ────────────────────────────────────────────────────────
   const addChild  = useCallback((id: string) => setRoot(r => addChildTo(r, id)), [setRoot]);
@@ -375,13 +373,7 @@ function palette(depth: number) {
   };
 
   // ─────────────────────────────────────────────────────────────────────────
-  if (!rootLoaded) {
-    return (
-      <div className="flex h-[calc(100vh-2rem)] w-full items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+  
 
   return (
     <div className="flex h-[calc(100vh-2rem)] w-full overflow-hidden">

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
 
@@ -76,8 +75,7 @@ Do not break character. Do not agree with them easily. Keep your responses conci
       maxOutputTokens: 500,
     });
 
-    trackUsage(userId, "chat").catch(console.error);
-
+    
     return NextResponse.json({ status: "success", text, usage, usedTavily });
   } catch (error: any) {
     console.error("Debate API Error:", error);

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { clerkClient } from "@clerk/nextjs/server";
-import { updateUserTierInSupabase } from "@/lib/usage";
 import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
@@ -26,8 +25,7 @@ export async function POST(req: Request) {
 
     // 2. Update Supabase user_usage to match the new tier
     // This uses the existing usage.ts helper to keep both datastores in sync
-    await updateUserTierInSupabase(userId, newTier);
-
+    
     return NextResponse.json({ status: "success", message: `Upgraded user to ${newTier}` });
   } catch (error: any) {
     console.error("Admin Upgrade POST Error:", error);

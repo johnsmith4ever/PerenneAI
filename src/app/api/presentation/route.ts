@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
 
@@ -53,7 +52,6 @@ export async function POST(req: Request) {
     }
 
     // Deduct credits
-    await trackUsage(userId, "generate-presentation");
 
     return NextResponse.json({ status: "success", data: slides });
   } catch (error: any) {
