@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Clock, Loader2, ArrowLeft, CheckCircle2, AlertTriangle, Save, Target, X, Check } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
@@ -9,19 +8,19 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import ReactMarkdown from "react-markdown";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 
 export default function ExamSimPage() {
   const { openUpgradeModal } = useUpgradeModal();
   const { canAfford, deductCredits, isLoaded, heavy, judge, assistant, grading } = useSubscription();
-  const [isAQA, setIsAQA] = usePersistentState("exam_sim_isAQA", true);
-  const [subject, setSubject] = usePersistentState("exam_sim_subject", "Biology");
-  const [topic, setTopic] = usePersistentState("exam_sim_topic", "");
-  const [year, setYear] = usePersistentState("exam_sim_year", "GCSE");
-  const [difficulty, setDifficulty] = usePersistentState("exam_sim_diff", "Foundation");
-  const [testSize, setTestSize] = usePersistentState("exam_sim_size", "Medium");
+  const [isAQA, setIsAQA] = useState(true);
+  const [subject, setSubject] = useState("Biology");
+  const [topic, setTopic] = useState("");
+  const [year, setYear] = useState("GCSE");
+  const [difficulty, setDifficulty] = useState("Foundation");
+  const [testSize, setTestSize] = useState("Medium");
   const [weakPoints, setWeakPoints] = useState<any[]>([]);
   const [showQuitModal, setShowQuitModal] = useState(false);
 
@@ -67,20 +66,20 @@ export default function ExamSimPage() {
     return () => clearTimeout(timer);
   }, [topic, subject, isAQA]);
   
-  const [examState, setExamState] = usePersistentState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("exam_sim_state", "setup");
-  const [questions, setQuestions] = usePersistentState<string[]>("exam_sim_questions", []);
-  const [answers, setAnswers] = usePersistentState<string[]>("exam_sim_answers", []);
-  const [results, setResults] = usePersistentState<{marks: number, feedback: string, max_marks?: number}[]>("exam_sim_results", []);
+  const [examState, setExamState] = useState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("setup");
+  const [questions, setQuestions] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<string[]>([]);
+  const [results, setResults] = useState<{marks: number, feedback: string, max_marks?: number}[]>([]);
   
-  const [timeLeft, setTimeLeft] = usePersistentState("exam_sim_timeLeft", 0);
+  const [timeLeft, setTimeLeft] = useState(0);
 
   const { user } = useUser();
   const [isSaving, setIsSaving] = useState(false);
-  const [hasSaved, setHasSaved] = usePersistentState("exam_sim_saved", false);
+  const [hasSaved, setHasSaved] = useState(false);
 
   useEffect(() => {
     if (user) {
-      fetchUserHistoryAction("quiz_history").then((data) => {
+      fetchFeatureAction("exam_sims").then((data) => {
         if (data) {
           const wp: any[] = [];
           data.forEach((exam: any) => {
@@ -101,7 +100,7 @@ export default function ExamSimPage() {
     setIsSaving(true);
     try {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
-      await insertHistoryAction("quiz_history", {
+      await insertFeatureAction("exam_sims", {
         user_id: user.id,
         topic: topic || "Exam Simulator",
         questions: questions.map((q, i) => {

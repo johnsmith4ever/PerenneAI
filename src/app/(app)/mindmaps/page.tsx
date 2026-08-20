@@ -7,12 +7,11 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 import { useClerk, useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import { useRouter } from "next/navigation";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -136,7 +135,7 @@ function palette(depth: number) {
   const router = useRouter();
   const { user } = useUser();
 
-  const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_root_v4", DEFAULT_ROOT);
+  const [root, setRoot, rootLoaded] = useState<MindmapNode>(DEFAULT_ROOT);
   const [zoom, setZoom] = useState(0.65);
   const [panelOpen, setPanelOpen] = useState(false);
 
@@ -285,7 +284,7 @@ function palette(depth: number) {
         if (data.data) {
           setRoot(data.data);
           if (user) {
-            await insertHistoryAction("explore_history", {
+            await insertFeatureAction("mind_maps", {
               user_id: user.id,
               topic: analysis.title || "Untitled Mindmap",
               type: "mindmap",

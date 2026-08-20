@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import {
   Sparkles,
   RotateCcw,
@@ -38,19 +37,19 @@ export default function FlashcardsPage() {
   const tierRank = TIER_RANK[tier] ?? 0;
 
   // Input state
-  const [inputTab, setInputTab] = usePersistentState<InputTab>("flashcards_input_tab", "manual");
+  const [inputTab, setInputTab] = useState<InputTab>("manual");
   const [manualDeckTitle, setManualDeckTitle] = useState("");
   const [manualCards, setManualCards] = useState<Flashcard[]>([
     { term: "", definition: "" },
     { term: "", definition: "" },
     { term: "", definition: "" },
   ]);
-  const [topic, setTopic] = usePersistentState("flashcards_topic", "");
-  const [textContent, setTextContent] = usePersistentState("flashcards_text", "");
-  const [imageBase64, setImageBase64] = usePersistentState<string | null>("flashcards_image", null);
-  const [cardCount, setCardCount] = usePersistentState<string>("flashcards_count", "Auto");
-  const [flashcardGenMode, setFlashcardGenMode] = usePersistentState<"Standard" | "Syllabus">("flashcards_gen_mode", "Syllabus");
-  const [extraTopicDetails, setExtraTopicDetails] = usePersistentState("flashcards_extra_details", "");
+  const [topic, setTopic] = useState("");
+  const [textContent, setTextContent] = useState("");
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [cardCount, setCardCount] = useState<string>("Auto");
+  const [flashcardGenMode, setFlashcardGenMode] = useState<"Standard" | "Syllabus">("Syllabus");
+  const [extraTopicDetails, setExtraTopicDetails] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
   const [isSaving, setIsSaving] = useState(false);
@@ -68,27 +67,27 @@ export default function FlashcardsPage() {
   }, []);
 
   // Card state
-  const [allCards, setAllCards] = usePersistentState<Flashcard[]>("flashcards_all", []);
-  const [studyCards, setStudyCards] = usePersistentState<Flashcard[]>("flashcards_study", []);
-  const [mode, setMode] = usePersistentState<AppMode>("flashcards_mode", "input");
-  const [deckTitle, setDeckTitle] = usePersistentState("flashcards_title", "");
-  const [isDatabaseMatch, setIsDatabaseMatch] = usePersistentState<boolean | null>("flashcards_db_match", null);
+  const [allCards, setAllCards] = useState<Flashcard[]>([]);
+  const [studyCards, setStudyCards] = useState<Flashcard[]>([]);
+  const [mode, setMode] = useState<AppMode>("input");
+  const [deckTitle, setDeckTitle] = useState("");
+  const [isDatabaseMatch, setIsDatabaseMatch] = useState<boolean | null>(null);
 
   // Study state
-  const [currentIndex, setCurrentIndex] = usePersistentState("flashcards_index", 0);
-  const [isFlipped, setIsFlipped] = usePersistentState("flashcards_flipped", false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
   const [exitDirection, setExitDirection] = useState<ExitDirection>(null);
-  const [correctCards, setCorrectCards] = usePersistentState<Flashcard[]>("flashcards_correct", []);
-  const [wrongCards, setWrongCards] = usePersistentState<Flashcard[]>("flashcards_wrong", []);
-  const [roundNumber, setRoundNumber] = usePersistentState("flashcards_round", 1);
+  const [correctCards, setCorrectCards] = useState<Flashcard[]>([]);
+  const [wrongCards, setWrongCards] = useState<Flashcard[]>([]);
+  const [roundNumber, setRoundNumber] = useState(1);
   const [shuffleSpin, setShuffleSpin] = useState(false);
 
   // Track progress toggle
-  const [trackProgress, setTrackProgress] = usePersistentState("flashcards_track", true);
+  const [trackProgress, setTrackProgress] = useState(true);
 
   // Edit state
-  const [editCards, setEditCards] = usePersistentState<Flashcard[]>("flashcards_edit", []);
+  const [editCards, setEditCards] = useState<Flashcard[]>([]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -150,7 +149,7 @@ export default function FlashcardsPage() {
 
         // Auto-save to history
         if (user) {
-          insertHistoryAction("flashcards_history", {
+          insertFeatureAction("flashcards", {
             user_id: user.id,
             title: finalTitle,
             topic: topic || "Generated Deck",
@@ -276,7 +275,7 @@ export default function FlashcardsPage() {
 
     // Auto-save to history
     if (user) {
-      insertHistoryAction("flashcards_history", {
+      insertFeatureAction("flashcards", {
         user_id: user.id,
         title: finalTitle,
         topic: "Manual Deck",
@@ -289,7 +288,7 @@ export default function FlashcardsPage() {
     if (!user || allCards.length === 0) return;
     setIsSaving(true);
     try {
-      await insertHistoryAction("flashcards_history", {
+      await insertFeatureAction("flashcards", {
         user_id: user.id,
         title: deckTitle || "Untitled Deck",
         topic: topic || "Generated Deck",

@@ -1,189 +1,82 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
-// Helper to assert auth
-async function requireAuth() {
-  const { userId } = await auth();
-  if (!userId) {
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+// This creates a Supabase client that uses the Clerk token, thus strictly enforcing RLS at the database level.
+export async function createClerkSupabaseClient() {
+  const { getToken } = await auth();
+  const token = await getToken({ template: "supabase" });
+  
+  if (!token) {
     throw new Error("Unauthorized");
   }
-  return userId;
+
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    global: {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      fetch: (url, options) => fetch(url, { ...options, cache: 'no-store' }) // ensure no Next.js caching
+    }
+  });
 }
 
 // ----------------------------------------------------------------------------
-// 1. User State Sync (usePersistentState)
+// Feature Tables Actions
 // ----------------------------------------------------------------------------
-export async function syncUserStateAction(key: string, value: any) {
-  const userId = await requireAuth();
+type FeatureTable = "chats" | "usage" | "flashcards" | "maths_questions" | "quizzes" | "exam_sims" | "essay_sims" | "notes" | "mind_maps";
+
+export async function insertFeatureAction(table: FeatureTable, payload: any) {
+  const supabase = await createClerkSupabaseClient();
+  const { userId } = await auth();
   
-  let error;
-
-  if (value === null || value === undefined) {
-    const res = await supabaseAdmin.from("user_state").delete().eq("user_id", userId).eq("key", key);
-    error = res.error;
-  } else {
-    const res = await supabaseAdmin.from("user_state").upsert({
-      user_id: userId,
-      key,
-      value,
-      updated_at: new Date().toISOString()
-    });
-    error = res.error;
-  }
-
-  if (error) {
-    console.error("Failed to sync state:", error);
-    throw new Error("Failed to sync state");
-  }
-}
-
-export async function fetchUserStateAction(key: string) {
-  const userId = await requireAuth();
+  const securePayload = { ...payload, user_id: userId, updated_at: new Date().toISOString() };
   
-  const { data, error } = await supabaseAdmin
-    .from("user_state")
-    .select("value")
-    .eq("user_id", userId)
-    .eq("key", key)
-    .single();
-    
-  if (error && error.code !== "PGRST116") { // Ignore 'row not found'
-    console.error("Failed to fetch state:", error);
-    return null;
-  }
-  
-  return data?.value || null;
-}
-
-// ----------------------------------------------------------------------------
-// 2. Generic History Actions (quiz_history, flashcards_history, essay_history, explore_history)
-// ----------------------------------------------------------------------------
-type HistoryTable = "quiz_history" | "flashcards_history" | "essay_history" | "explore_history" | "community_posts" | "chat_history";
-
-export async function insertHistoryAction(table: HistoryTable, payload: any) {
-  const userId = await requireAuth();
-  
-  // Force injection of user_id to ensure absolute security
-  const securePayload = { ...payload, user_id: userId };
-
-  const { data, error } = await supabaseAdmin.from(table).insert(securePayload).select().single();
-  if (error) {
-    console.error(`Failed to insert into ${table}:`, error);
-    throw new Error(`Insert failed on ${table}`);
-  }
+  const { data, error } = await supabase.from(table).insert(securePayload).select().single();
+  if (error) throw new Error(`Insert failed on ${table}: ${error.message}`);
   
   revalidatePath("/history");
-  if (table === "chat_history") revalidatePath("/assistant");
+  return data;
+}
+
+export async function upsertFeatureAction(table: FeatureTable, payload: any) {
+  const supabase = await createClerkSupabaseClient();
+  const { userId } = await auth();
+  
+  const securePayload = { ...payload, user_id: userId, updated_at: new Date().toISOString() };
+  
+  const { data, error } = await supabase.from(table).upsert(securePayload).select().single();
+  if (error) throw new Error(`Upsert failed on ${table}: ${error.message}`);
+  
+  revalidatePath("/history");
+  if (table === "chats") revalidatePath("/assistant");
   
   return data;
 }
 
-export async function deleteHistoryAction(table: HistoryTable, id: string) {
-  const userId = await requireAuth();
+export async function fetchFeatureAction(table: FeatureTable, columns: string = "*", limit?: number) {
+  const supabase = await createClerkSupabaseClient();
   
-  // RLS bypass via Admin means we MUST enforce the user_id match here
-  const { error } = await supabaseAdmin.from(table).delete().eq("id", id).eq("user_id", userId);
-  
-  if (error) {
-    console.error(`Failed to delete from ${table}:`, error);
-    throw new Error(`Delete failed on ${table}`);
-  }
-  
-  revalidatePath("/history");
-  if (table === "chat_history") revalidatePath("/assistant");
-}
-
-export async function fetchUserHistoryAction(table: HistoryTable, columns: string = "*", limit?: number, matchParams?: any) {
-  const userId = await requireAuth();
-  
-  const sortColumn = table === "chat_history" ? "updated_at" : "created_at";
-  
-  let query = supabaseAdmin
-    .from(table)
-    .select(columns)
-    .eq("user_id", userId)
-    .order(sortColumn, { ascending: false });
-    
-  if (matchParams) {
-    query = query.match(matchParams);
-  }
-
-  if (limit) {
-    query = query.limit(limit);
-  }
+  let query = supabase.from(table).select(columns).order("updated_at", { ascending: false });
+  if (limit) query = query.limit(limit);
   
   const { data, error } = await query;
-  
-  if (error) {
-    console.error(`Failed to fetch from ${table}:`, error);
-    throw new Error(`Fetch failed on ${table}`);
-  }
+  if (error) throw new Error(`Fetch failed on ${table}: ${error.message}`);
   
   return (data || []) as any[];
 }
 
-export async function fetchCommunityPostsAction() {
-  const { data, error } = await supabaseAdmin
-    .from("community_posts")
-    .select("*")
-    .order("created_at", { ascending: false });
-    
-  if (error) {
-    console.error("Failed to fetch community posts:", error);
-    throw new Error("Failed to fetch community posts");
-  }
+export async function deleteFeatureAction(table: FeatureTable, id: string) {
+  const supabase = await createClerkSupabaseClient();
   
-  return (data || []) as any[];
-}
-
-// ----------------------------------------------------------------------------
-// 3. User Usage Actions
-// ----------------------------------------------------------------------------
-export async function fetchUserUsageAction() {
-  const userId = await requireAuth();
+  const { error } = await supabase.from(table).delete().eq("id", id);
+  if (error) throw new Error(`Delete failed on ${table}: ${error.message}`);
   
-  const { data, error } = await supabaseAdmin
-    .from("user_usage")
-    .select("credits_used, last_reset")
-    .eq("user_id", userId)
-    .single();
-    
-  if (error && error.code !== "PGRST116") {
-    console.error("Failed to fetch user usage:", error);
-    throw new Error("Failed to fetch user usage");
-  }
-  
-  return data;
-}
-
-export async function upsertUserUsageAction(payload: any) {
-  const userId = await requireAuth();
-  
-  const securePayload = { ...payload, user_id: userId };
-  const { error } = await supabaseAdmin.from("user_usage").upsert(securePayload);
-  
-  if (error) {
-    console.error("Failed to upsert user usage:", error);
-    throw new Error("Failed to upsert user usage");
-  }
-}
-
-// ----------------------------------------------------------------------------
-// 4. Chat History Upsert (Assistant)
-// ----------------------------------------------------------------------------
-export async function upsertChatAction(payload: any) {
-  const userId = await requireAuth();
-  
-  const securePayload = { ...payload, user_id: userId };
-  const { error } = await supabaseAdmin.from("chat_history").upsert(securePayload);
-  
-  if (error) {
-    console.error("Failed to upsert chat:", error);
-    throw new Error("Failed to upsert chat");
-  }
-  
-  revalidatePath("/assistant");
+  revalidatePath("/history");
+  if (table === "chats") revalidatePath("/assistant");
 }

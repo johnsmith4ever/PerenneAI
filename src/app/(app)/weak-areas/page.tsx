@@ -5,7 +5,7 @@ import { Target, Brain, BookOpen, AlertTriangle, ArrowRight, Loader2, PlayCircle
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import { cn } from "@/lib/utils";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from "recharts";
 
@@ -52,8 +52,8 @@ export default function WeakAreasPage() {
     async function fetchData() {
       try {
         const [quizRes, essayRes] = await Promise.all([
-          fetchUserHistoryAction("quiz_history"),
-          fetchUserHistoryAction("essay_history")
+          fetchFeatureAction("quizzes"),
+          fetchFeatureAction("essay_sims")
         ]);
 
         const topicMap = new Map<string, WeakArea>();

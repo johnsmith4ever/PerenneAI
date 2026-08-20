@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, memo } from "react";
-import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Brain, Loader2, ArrowLeft, CheckCircle2, Save, Sparkles, Sigma, PenTool, BookOpenCheck, Upload, ArrowRight, Target, Clock, AlertTriangle } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
 
 import ReactMarkdown from "react-markdown";
-import { insertHistoryAction } from "@/actions/supabase";
+import { insertFeatureAction } from "@/actions/supabase";
 
 declare global {
   namespace JSX {
@@ -26,12 +25,12 @@ import { MemoizedQuestionText } from "@/components/memoized-question-text";
 export default function MathSolverPage() {
   const { openUpgradeModal } = useUpgradeModal();
   const { canAfford, deductCredits, heavy, judge, assistant, grading } = useSubscription();
-  const [topic, setTopic] = usePersistentState("math_topic", "");
-  const [difficulty, setDifficulty] = usePersistentState("math_diff", "Intermediate");
-  const [questionType, setQuestionType] = usePersistentState("math_exam_type", "AQA Based Sim");
-  const [year, setYear] = usePersistentState("math_year", "GCSE");
-  const [testSize, setTestSize] = usePersistentState("math_size", "Medium");
-  const [timeLeft, setTimeLeft] = usePersistentState<number | null>("math_time", null);
+  const [topic, setTopic] = useState("");
+  const [difficulty, setDifficulty] = useState("Intermediate");
+  const [questionType, setQuestionType] = useState("AQA Based Sim");
+  const [year, setYear] = useState("GCSE");
+  const [testSize, setTestSize] = useState("Medium");
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const isAQA = questionType === "AQA Based Sim";
   const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
 
@@ -73,8 +72,8 @@ export default function MathSolverPage() {
   }, []);
 
 
-  const [role, setRole, roleLoaded] = usePersistentState<"practice" | "grading" | null>("math_role", null);
-  const [examState, setExamState, examStateLoaded] = usePersistentState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("math_examstate", "setup");
+  const [role, setRole, roleLoaded] = useState<"practice" | "grading" | null>(null);
+  const [examState, setExamState, examStateLoaded] = useState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("setup");
   
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -127,9 +126,9 @@ export default function MathSolverPage() {
     setGradingQuestion("");
     setGradingFeedback(null);
   };
-  const [questions, setQuestions] = usePersistentState<{text: string, marks: number, parts?: string[] | null}[] | any[]>("math_questions", []);
-  const [answers, setAnswers] = usePersistentState<any[]>("math_answers", []);
-  const [results, setResults] = usePersistentState<{marks: number, feedback: string, max_marks?: number}[]>("math_results", []);
+  const [questions, setQuestions] = useState<{text: string, marks: number, parts?: string[] | null}[] | any[]>([]);
+  const [answers, setAnswers] = useState<any[]>([]);
+  const [results, setResults] = useState<{marks: number, feedback: string, max_marks?: number}[]>([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -141,7 +140,7 @@ export default function MathSolverPage() {
   
   const { user } = useUser();
   const [isSaving, setIsSaving] = useState(false);
-  const [hasSaved, setHasSaved] = usePersistentState("math_saved", false);
+  const [hasSaved, setHasSaved] = useState(false);
 
   const saveToHistory = async (latestResults: any[] = results) => {
     if (!user || questions.length === 0 || latestResults.length === 0) return;
@@ -149,7 +148,7 @@ export default function MathSolverPage() {
     try {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
       /* Removed history save per user request
-      await insertHistoryAction("quiz_history", {
+      await insertFeatureAction("maths_questions", {
         user_id: user.id,
         topic: `Maths: ${topic || "Mixed"}`,
         questions: questions.map((q, i) => {

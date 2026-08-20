@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useRef, useEffect, useMemo } from "react";
-import { usePersistentState } from "@/hooks/use-persistent-state";
+
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
 import { Paperclip, Send, Plus, MessagesSquare, ChevronDown, Check, Sparkles, Zap, BrainCircuit, Eye, EyeOff, MessageSquare, MoreHorizontal, Lock, PanelLeft, Trash2, Globe } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertFeatureAction } from "@/actions/supabase";
 import { useUser } from "@clerk/nextjs";
 
 type ChatMode = "Standard" | "Strict Syllabus" | "Quick Answer";
@@ -87,7 +87,7 @@ export default function AssistantPage() {
   const chatsRef = useRef<ChatSession[]>(chats);
   useEffect(() => { chatsRef.current = chats; }, [chats]);
   const [chatsLoaded, setChatsLoaded] = useState(false);
-  const [activeChatId, setActiveChatId] = usePersistentState<string | null>("assistant_active_chat_id", null);
+  const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
   const [editChatTitle, setEditChatTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -112,14 +112,14 @@ export default function AssistantPage() {
     if (!user) return;
     hasPendingChatSave.current = true;
     try {
-      await upsertChatAction({
+      await upsertFeatureAction("chats", {
         id: chatId,
         user_id: user.id,
         title: title,
         messages: msgs,
         updated_at: new Date().toISOString()
       });
-      window.localStorage.setItem(`assistant_chats_updated_${user.id}`, Date.now().toString());
+      // Removed localStorage sync for strict server-side truth
     } catch (e) {
       console.error("Failed to save chat to supabase", e);
     } finally {
@@ -137,7 +137,7 @@ export default function AssistantPage() {
   // Load chats from Supabase. We extract this into a function so it can be called on mount AND on cross-tab sync.
   const loadChatsFromCloud = () => {
     let isMounted = true;
-    fetchUserHistoryAction("chat_history", "id, title, messages, updated_at", 50)
+    fetchFeatureAction("chats", "id, title, messages, updated_at", 50)
       .then((data: any) => {
         if (!isMounted) return;
         const loadedChats: ChatSession[] = (data || []).map((d: any) => ({
@@ -222,8 +222,7 @@ export default function AssistantPage() {
     }
     if (user) {
       try {
-        await deleteHistoryAction("chat_history", id);
-        window.localStorage.setItem(`assistant_chats_updated_${user.id}`, Date.now().toString());
+        await deleteFeatureAction("chats", id);
       } catch (e) {
         console.error("Failed to delete chat", e);
       }

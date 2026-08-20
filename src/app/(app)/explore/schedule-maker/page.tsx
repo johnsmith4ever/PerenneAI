@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useSubscription, ModelType, TIER_RANK } from "@/hooks/use-subscription";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 
 
@@ -91,7 +91,7 @@ export default function ScheduleMakerPage() {
         
         if (user) {
           /* Removed history save per user request
-          await insertHistoryAction("explore_history", {
+          await insertFeatureAction("notes", {
             user_id: user.id,
             topic: goal || "Untitled Schedule",
             type: "schedule",

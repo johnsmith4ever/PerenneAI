@@ -12,7 +12,7 @@ import { useUser } from "@clerk/nextjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
 import { useSubscription, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import pptxgen from "pptxgenjs";
 
 type Slide = {
@@ -64,7 +64,7 @@ export default function PresentationBuilderPage() {
         
         if (user) {
           /* Removed history save per user request
-          await insertHistoryAction("explore_history", {
+          await insertFeatureAction("notes", {
             user_id: user.id,
             topic: topic,
             type: "presentation",

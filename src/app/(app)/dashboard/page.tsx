@@ -97,10 +97,10 @@ async function RecentActivitiesList({ userId }: { userId?: string }) {
   if (!userId) return null;
   
   const [quizRes, flashRes, essayRes, exploreRes] = await Promise.all([
-    supabase.from("quiz_history").select("id, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
-    supabase.from("flashcards_history").select("id, title, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
-    supabase.from("essay_history").select("id, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
-    supabase.from("explore_history").select("id, type, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
+    supabase.from("quizzes").select("id, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
+    supabase.from("flashcards").select("id, title, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
+    supabase.from("essay_sims").select("id, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
+    supabase.from("explore").select("id, type, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
   ]);
 
   const activities: { id: string, title: string, tool_name: string, created_at: string }[] = [];

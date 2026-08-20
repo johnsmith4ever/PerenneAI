@@ -5,7 +5,6 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createMistral } from "@ai-sdk/mistral";
 import { auth } from "@clerk/nextjs/server";
-import { trackUsage } from "@/lib/usage";
 
 const anthropic = createAnthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -187,8 +186,7 @@ export async function POST(req: Request) {
 
     console.log("Chat generation complete. Usage:", usage);
 
-    // Track usage asynchronously without awaiting to avoid delaying response
-    if (userId) trackUsage(userId, "chat").catch(console.error);
+    // Legacy trackUsage removed
 
     return NextResponse.json({
       status: "success",

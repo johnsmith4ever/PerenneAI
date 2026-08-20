@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { MessageSquare, Plus, Loader2, ThumbsUp, User as UserIcon, AlertTriangle, Lightbulb, Trash2 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchCommunityPostsAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchCommunityPostsAction } from "@/actions/supabase";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Leaderboard } from "@/components/leaderboard";
@@ -76,7 +76,7 @@ export default function CommunityPage() {
     
     setIsSubmitting(true);
     try {
-      await insertHistoryAction("community_posts", {
+      await insertFeatureAction("community_posts", {
         user_id: user.id,
         author_name: user.firstName || "Anonymous Student",
         title: form.title,
@@ -100,7 +100,7 @@ export default function CommunityPage() {
   const handleDelete = async (postId: string) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
     try {
-      await deleteHistoryAction('community_posts', postId);
+      await deleteFeatureAction('community_posts', postId);
       
       fetchPosts();
     } catch (e: any) {

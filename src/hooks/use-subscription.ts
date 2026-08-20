@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { usePersistentState } from "./use-persistent-state";
+import { useState } from "react";
+import { fetchFeatureAction, upsertFeatureAction } from "@/actions/supabase";
 
 export type Tier = "Guest" | "Free" | "Core" | "Pro" | "Premium" | "Maximum";
 
@@ -92,11 +93,12 @@ import { useModelPreferences } from "./use-model-preferences";
 
 export function useSubscription() {
   const { user, isLoaded: clerkLoaded } = useUser();
-  const [state, setState, isLoaded] = usePersistentState<SubscriptionState>("user_subscription", {
+  const [state, setState] = useState<SubscriptionState>({
     tier: "Free",
     creditsUsed: 0,
     lastReset: new Date().toISOString().split("T")[0],
   });
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Check for daily reset
   useEffect(() => {
@@ -122,51 +124,41 @@ export function useSubscription() {
   useEffect(() => {
     if (clerkLoaded) {
       if (user) {
-        let dbTier: Tier = "Free"; // Temporarily set to Free for testing
-        const email = user.primaryEmailAddress?.emailAddress?.toLowerCase() || "";
-        // if (email.includes("kyrus") || email.includes("johnsmith") || email.includes("john")) {
-        //   dbTier = "Maximum"; // Creator gets 150k
-        // }
+        let dbTier: Tier = "Free"; 
         const today = new Date().toISOString().split("T")[0];
 
         let isMounted = true;
-      supabase.from("user_usage")
-        .select("credits_used, last_reset")
-        .eq("user_id", user.id)
-        .single()
-        .then(({ data, error }) => {
-          if (!isMounted) return;
-          
-          let remoteCredits = 0;
-          let remoteReset = today;
+        
+        fetchFeatureAction("usage", "credits_used, last_reset", 1)
+          .then((data) => {
+            if (!isMounted) return;
+            
+            let remoteCredits = 0;
+            let remoteReset = today;
 
-          if (!error && data) {
-            remoteCredits = data.credits_used || 0;
-            remoteReset = data.last_reset || today;
-          }
+            if (data && data.length > 0) {
+              remoteCredits = data[0].credits_used || 0;
+              remoteReset = data[0].last_reset || today;
+            }
 
-          // Reset if it's a new day
-          if (remoteReset !== today) {
-            remoteCredits = 0;
-            remoteReset = today;
-            // Optionally we can push the reset to supabase right away
-            supabase.from("user_usage").upsert({ 
-              user_id: user.id, 
-              credits_used: 0, 
-              last_reset: today 
-            }, { onConflict: "user_id" }).then();
-          }
+            // Reset if it's a new day
+            if (remoteReset !== today) {
+              remoteCredits = 0;
+              remoteReset = today;
+              upsertFeatureAction("usage", { credits_used: 0, last_reset: today }).catch(console.error);
+            }
 
-          setState((prev) => {
-            // Keep higher of local vs remote if same day, to prevent overwriting with stale remote data
-            const finalCredits = (prev.lastReset === today && prev.creditsUsed > remoteCredits) 
-                                  ? prev.creditsUsed 
-                                  : remoteCredits;
-            return { tier: dbTier, creditsUsed: finalCredits, lastReset: today };
+            setState((prev) => {
+              return { tier: dbTier, creditsUsed: remoteCredits, lastReset: today };
+            });
+            setIsLoaded(true);
+          })
+          .catch((e) => {
+             console.error("Failed to load usage", e);
+             if (isMounted) setIsLoaded(true);
           });
-        });
 
-      return () => { isMounted = false; };
+        return () => { isMounted = false; };
       } else {
         setState((prev) => {
           if (prev.tier !== "Guest") {
@@ -174,9 +166,9 @@ export function useSubscription() {
           }
           return prev;
         });
+        setIsLoaded(true);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clerkLoaded, user?.id]);
 
   const safeCreditsUsed = state.creditsUsed && !isNaN(state.creditsUsed) ? state.creditsUsed : 0;
@@ -210,15 +202,10 @@ export function useSubscription() {
       
       // Update Supabase directly so stats carry over to other devices/browsers
       if (user) {
-         supabase.from("user_usage")
-           .upsert({ 
-             user_id: user.id, 
-             credits_used: newCredits, 
-             last_reset: prev.lastReset 
-           }, { onConflict: "user_id" })
-           .then(({error}) => {
-             if (error) console.error("Failed to sync usage to supabase:", error);
-           });
+         upsertFeatureAction("usage", {
+           credits_used: newCredits,
+           last_reset: prev.lastReset
+         }).catch(e => console.error("Failed to sync usage to supabase:", e));
       }
 
       return {

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Clock, BookOpen, PenLine, FileText, ChevronRight, Loader2, Trash2, X, Globe, Lock, ArrowRight, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -54,22 +54,21 @@ export default function HistoryPage() {
       setLoading(true);
       
       try {
-        const [quizRes, flashRes, essayRes, exploreRes] = await Promise.all([
-          fetchUserHistoryAction("quiz_history"),
-          fetchUserHistoryAction("flashcards_history"),
-          fetchUserHistoryAction("essay_history"),
-          fetchUserHistoryAction("explore_history"),
+        const [quizRes, flashRes, essayRes, notesRes, mindmapsRes] = await Promise.all([
+          fetchFeatureAction("quizzes"),
+          fetchFeatureAction("flashcards"),
+          fetchFeatureAction("essay_sims"),
+          fetchFeatureAction("notes"),
+          fetchFeatureAction("mind_maps"),
         ]);
         
         if (!isMounted) return;
         if (quizRes) setQuizzes(quizRes);
         if (flashRes) setFlashcards(flashRes);
         if (essayRes) setEssays(essayRes);
-        if (exploreRes) {
-          const filteredExplore = exploreRes.filter((e: any) => 
-            !["presentation", "schedule", "debate", "math", "math_solution"].includes(e.type)
-          );
-          setExplore(filteredExplore);
+        if (notesRes || mindmapsRes) {
+          const combined = [...(notesRes || []), ...(mindmapsRes || [])].sort((a,b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+          setExplore(combined);
         }
       } catch (err) {
         console.error("Failed to fetch history:", err);
@@ -83,11 +82,11 @@ export default function HistoryPage() {
   }, [user, userLoaded]);
 
   const handleDelete = async (table: string, id: string) => {
-    await deleteHistoryAction(table as any, id);
-    if (table === "quiz_history") setQuizzes(prev => prev.filter(q => q.id !== id));
-    if (table === "flashcards_history") setFlashcards(prev => prev.filter(f => f.id !== id));
-    if (table === "essay_history") setEssays(prev => prev.filter(e => e.id !== id));
-    if (table === "explore_history") setExplore(prev => prev.filter(e => e.id !== id));
+    await deleteFeatureAction(table as any, id);
+    if (table === "quizzes") setQuizzes(prev => prev.filter(q => q.id !== id));
+    if (table === "flashcards") setFlashcards(prev => prev.filter(f => f.id !== id));
+    if (table === "essay_sims") setEssays(prev => prev.filter(e => e.id !== id));
+    if (table === "notes" || table === "mind_maps") setExplore(prev => prev.filter(e => e.id !== id));
   };
 
   const formatDate = (dateString: string) => {
@@ -339,7 +338,7 @@ export default function HistoryPage() {
                           )}
                         </div>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("quiz_history", q.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("quizzes", q.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -371,7 +370,7 @@ export default function HistoryPage() {
                           <span>{formatDate(f.created_at)}</span>
                         </div>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("flashcards_history", f.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("flashcards", f.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -404,7 +403,7 @@ export default function HistoryPage() {
                             <span>{formatDate(e.created_at)}</span>
                           </div>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={(ev) => { ev.stopPropagation(); handleDelete("essay_history", e.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button variant="ghost" size="icon" onClick={(ev) => { ev.stopPropagation(); handleDelete("essay_sims", e.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -459,7 +458,7 @@ export default function HistoryPage() {
                             <span>{formatDate(item.created_at)}</span>
                           </div>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("explore_history", item.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("explore", item.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>

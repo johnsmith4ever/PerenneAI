@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Bot, User, Send, Loader2, ArrowLeft, ShieldAlert, Save, CheckCircle2 } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
@@ -8,18 +7,18 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
-import { usePersistentState } from "@/hooks/use-persistent-state";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
+
 
 
 export default function DebatePage() {
   const { openUpgradeModal } = useUpgradeModal();
   const { canAfford, deductCredits, isLoaded, assistant } = useSubscription();
-  const [topic, setTopic] = usePersistentState("debate_topic", "");
-  const [stance, setStance] = usePersistentState<"Affirmative" | "Against">("debate_stance", "Affirmative");
-  const [useResearch, setUseResearch] = usePersistentState("debate_research", false);
-  const [isDebating, setIsDebating, isDebatingLoaded] = usePersistentState("debate_active", false);
-  const [messages, setMessages] = usePersistentState<{ role: "user" | "assistant"; content: string }[]>("debate_messages", []);
+  const [topic, setTopic] = useState("");
+  const [stance, setStance] = useState<"Affirmative" | "Against">("Affirmative");
+  const [useResearch, setUseResearch] = useState(false);
+  const [isDebating, setIsDebating, isDebatingLoaded] = useState(false);
+  const [messages, setMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +31,7 @@ export default function DebatePage() {
     setIsSaving(true);
     try {
       /* Removed history save per user request
-      await insertHistoryAction("explore_history", {
+      await insertFeatureAction("notes", {
         user_id: user.id,
         type: "debate",
         topic: topic || "Debate",

@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
-import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { useUser } from "@clerk/nextjs";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE, getTierModels } from "@/hooks/use-subscription";
 import { 
   Upload, FileText, ArrowRight, Image as ImageIcon, 
@@ -72,7 +71,7 @@ export default function EssayPage() {
   const { user } = useUser();
   const { tier, deductCredits, canAfford, isLoaded, assistant, heavy, judge, grading } = useSubscription();
   const { curriculumLevel, curriculumSubject } = useCurriculum();
-  const [role, setRole, roleLoaded] = usePersistentState<Role>("essay_role", null);
+  const [role, setRole, roleLoaded] = useState<Role>(null);
   const tierRank = TIER_RANK[tier] ?? 0;
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
@@ -81,9 +80,9 @@ export default function EssayPage() {
   const maxParagraphs = 8;
   
   // Student flow state
-  const [essayStep, setEssayStep] = usePersistentState<number>("essay_step", 1);
-  const [sourceType, setSourceType] = usePersistentState<SourceType>("essay_source", null);
-  const [config, setConfig] = usePersistentState<EssayConfig>("essay_config", {
+  const [essayStep, setEssayStep] = useState<number>(1);
+  const [sourceType, setSourceType] = useState<SourceType>(null);
+  const [config, setConfig] = useState<EssayConfig>({
     questionType: "AQA Exam Simulator",
     style: "Modern Texts",
     yearGroup: "GCSE",
@@ -100,13 +99,13 @@ export default function EssayPage() {
     isTimedCustom: false
   });
   
-  const [realImage, setRealImage] = usePersistentState<string | null>("essay_real_img", null);
-  const [ocrText, setOcrText] = usePersistentState<string>("essay_ocr_text", "");
+  const [realImage, setRealImage] = useState<string | null>(null);
+  const [ocrText, setOcrText] = useState<string>("");
 
-  const [generatedPassage, setGeneratedPassage] = usePersistentState<string>("essay_gen_passage", "");
-  const [generatedSummary, setGeneratedSummary] = usePersistentState<string>("essay_gen_summary", "");
-  const [generatedQuestion, setGeneratedQuestion] = usePersistentState<string>("essay_gen_question", "");
-  const [studentAnswers, setStudentAnswers] = usePersistentState<string[]>("essay_student_answers", []);
+  const [generatedPassage, setGeneratedPassage] = useState<string>("");
+  const [generatedSummary, setGeneratedSummary] = useState<string>("");
+  const [generatedQuestion, setGeneratedQuestion] = useState<string>("");
+  const [studentAnswers, setStudentAnswers] = useState<string[]>([]);
   
   const [essayTimeLeft, setEssayTimeLeft] = useState(0);
   const [essayTimerState, setEssayTimerState] = useState<"idle" | "running" | "expired" | "forfeited">("idle");
@@ -140,18 +139,18 @@ export default function EssayPage() {
   const [setupError, setSetupError] = useState(false);
 
   // Teacher flow state
-  const [teacherStep, setTeacherStep] = usePersistentState<number>("essay_teacher_step", 1);
-  const [teacherImage, setTeacherImage] = usePersistentState<string | null>("essay_teacher_img", null);
-  const [gradingConfig, setGradingConfig] = usePersistentState<GradingConfig>("essay_grading_config", {
+  const [teacherStep, setTeacherStep] = useState<number>(1);
+  const [teacherImage, setTeacherImage] = useState<string | null>(null);
+  const [gradingConfig, setGradingConfig] = useState<GradingConfig>({
     structure: "PEEL",
     paragraphs: 1,
     passage: ""
   });
-  const [gradingAnswers, setGradingAnswers] = usePersistentState<GradingAnswer[]>("essay_grading_answers", []);
+  const [gradingAnswers, setGradingAnswers] = useState<GradingAnswer[]>([]);
 
   // Multi-Agent Grading State
-  const [gradingStatus, setGradingStatus] = usePersistentState<GradingStatus>("essay_grading_status", "idle");
-  const [gradingResult, setGradingResult] = usePersistentState<GradingResult | null>("essay_grading_result", null);
+  const [gradingStatus, setGradingStatus] = useState<GradingStatus>("idle");
+  const [gradingResult, setGradingResult] = useState<GradingResult | null>(null);
   
   const handleStartOver = () => {
     setRole(null);
@@ -498,7 +497,7 @@ Do not use markdown. Output pure JSON.`;
     if (!user || !gradingResult) return;
     setIsSaving(true);
     try {
-      await insertHistoryAction("essay_history", {
+      await insertFeatureAction("essay_sims", {
         user_id: user.id,
         source_passage: gradingConfig.passage || "Image uploaded",
         student_submission: gradingAnswers.map((a, i) => `Paragraph ${i+1}:\nQ: ${a.question}\nA: ${a.answer}`).join("\n\n"),

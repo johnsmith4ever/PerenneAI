@@ -92,7 +92,7 @@ export default function NoteSummarizerPage() {
     setIsSaving(true);
     try {
       const { supabase } = await import("@/lib/supabase");
-      const { error } = await supabase.from("explore_history").insert({
+      const { error } = await supabase.from("explore").insert({
         user_id: user.id,
         type: "note_summary_saved",
         topic: saveName || "Note Summary",

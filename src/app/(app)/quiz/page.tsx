@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePersistentState } from "@/hooks/use-persistent-state";
+
 import { useUser } from "@clerk/nextjs";
 import { useCurriculum } from "@/hooks/use-curriculum";
-import { insertHistoryAction, deleteHistoryAction, fetchUserHistoryAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
 import { Sparkles, Brain, Clock, ChevronRight, CheckCircle2, XCircle, FileText, Zap, BookOpen, AlertCircle, RefreshCw, ArrowLeft, Calculator, GraduationCap, ListChecks, BarChart, Settings2, Loader2, Save, Target } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
@@ -56,16 +56,16 @@ export default function QuizPage() {
   const tierRank = TIER_RANK[tier] ?? 0;
 
   // Setup State
-  const [step, setStep] = usePersistentState<Step>("quiz_step", 1);
-  const [year, setYear] = usePersistentState<string | null>("quiz_year", null);
-  const [quizType, setQuizType] = usePersistentState<QuizType>("quiz_type", null);
-  const [subject, setSubject] = usePersistentState<string | null>("quiz_subject", null);
-  const [questionTypes, setQuestionTypes] = usePersistentState<string[]>("quiz_qtypes", []);
-  const [difficulty, setDifficulty] = usePersistentState<string | null>("quiz_diff", null);
-  const [questionCount, setQuestionCount] = usePersistentState<number>("quiz_count", 10);
-  const [topic, setTopic] = usePersistentState<string>("quiz_topic", "");
-  const [imageContext, setImageContext] = usePersistentState<string | null>("quiz_img", null);
-  const [usePremiumModel, setUsePremiumModel] = usePersistentState<boolean>("quiz_premium_model", false);
+  const [step, setStep] = useState<Step>(1);
+  const [year, setYear] = useState<string | null>(null);
+  const [quizType, setQuizType] = useState<QuizType>(null);
+  const [subject, setSubject] = useState<string | null>(null);
+  const [questionTypes, setQuestionTypes] = useState<string[]>([]);
+  const [difficulty, setDifficulty] = useState<string | null>(null);
+  const [questionCount, setQuestionCount] = useState<number>(10);
+  const [topic, setTopic] = useState<string>("");
+  const [imageContext, setImageContext] = useState<string | null>(null);
+  const [usePremiumModel, setUsePremiumModel] = useState<boolean>(false);
   const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
 
   useEffect(() => {
@@ -97,24 +97,24 @@ export default function QuizPage() {
     return () => clearTimeout(timer);
   }, [topic, subject]);
   
-  const [quizMode, setQuizMode, quizModeLoaded] = usePersistentState<QuizMode>("quiz_mode", "setup");
+  const [quizMode, setQuizMode, quizModeLoaded] = useState<QuizMode>("setup");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedQuiz, setGeneratedQuiz] = usePersistentState<any[]>("quiz_generated", []);
+  const [generatedQuiz, setGeneratedQuiz] = useState<any[]>([]);
   
   // Advanced Retake State
-  const [quizRedoMode, setQuizRedoMode] = usePersistentState<"new" | "exact" | null>("quiz_redo_mode", null);
-  const [quizOldQuestions, setQuizOldQuestions] = usePersistentState<any[] | null>("quiz_old_questions", null);
+  const [quizRedoMode, setQuizRedoMode] = useState<"new" | "exact" | null>(null);
+  const [quizOldQuestions, setQuizOldQuestions] = useState<any[] | null>(null);
   
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
 
   // Quiz Taking State
-  const [currentQuestionIndex, setCurrentQuestionIndex] = usePersistentState("quiz_index", 0);
-  const [userAnswers, setUserAnswers] = usePersistentState<Record<number, { skipped: boolean, text: string }>>("quiz_answers", {});
-  const [currentInput, setCurrentInput] = usePersistentState<string>("quiz_input", "");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [userAnswers, setUserAnswers] = useState<Record<number, { skipped: boolean, text: string }>>({});
+  const [currentInput, setCurrentInput] = useState<string>("");
 
   // Grading State
-  const [gradingResults, setGradingResults] = usePersistentState<Record<number, any>>("quiz_results", {});
+  const [gradingResults, setGradingResults] = useState<Record<number, any>>({});
 
   useEffect(() => {
     if (typeof window === "undefined" || !user) return;
@@ -123,7 +123,7 @@ export default function QuizPage() {
     const retest = params.get("retest");
 
     if (t && retest === "true") {
-      fetchUserHistoryAction("quiz_history", "questions", 1, { topic: t }).then((data: any) => {
+      fetchFeatureAction("quizzes", "questions", 1, { topic: t }).then((data: any) => {
         if (data && data.length > 0 && data[0].questions && data[0].questions.length > 0) {
           const settings = data[0].questions[0]._quizSettings;
           if (settings) {
@@ -166,7 +166,7 @@ export default function QuizPage() {
     if (!user || generatedQuiz.length === 0) return;
     setIsSaving(true);
     try {
-      await insertHistoryAction("quiz_history", {
+      await insertFeatureAction("quizzes", {
         user_id: user.id,
         topic: topic || "Untitled Quiz",
         questions: generatedQuiz.map((q, i) => {
@@ -253,7 +253,7 @@ export default function QuizPage() {
       let pastQuestionsList: string[] = [];
       if (quizRedoMode !== "exact") {
         try {
-          const pastQuizzes = await fetchUserHistoryAction("quiz_history", "questions", 50, { topic: topic });
+          const pastQuizzes = await fetchFeatureAction("quizzes", "questions", 50, { topic: topic });
 
           if (pastQuizzes && pastQuizzes.length > 0) {
             pastQuizzes.forEach(quiz => {
