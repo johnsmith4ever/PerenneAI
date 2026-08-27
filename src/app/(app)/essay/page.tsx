@@ -12,7 +12,7 @@ import {
   Cpu, Sparkles, ArrowLeft, PenTool, BookOpenCheck, Loader2, CheckCircle2,
   XCircle, TrendingUp, ChevronDown, Save, Lock, Clock, AlertTriangle, X
 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
