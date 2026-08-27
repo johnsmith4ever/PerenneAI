@@ -1,7 +1,8 @@
+import React from "react";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { ArrowRight, BookOpen, BrainCircuit, Calendar, FileText, FlaskConical, LayoutDashboard, Lightbulb, List, MessageSquare, Network, PenLine, Sparkles, TrendingUp, Zap, Clock } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { ArrowRight, BookOpen, PenLine, FileText, Sparkles, TrendingUp, Clock, Calculator } from "lucide-react";
+import { supabaseAdmin } from "@/lib/supabase-server";
 import { formatDistanceToNow } from "date-fns";
 import { KnowledgeWeb } from "@/components/knowledge-web";
 import { GamificationWrapper } from "@/components/gamification-wrapper";
@@ -83,7 +84,10 @@ export default async function DashboardPage() {
       
       {/* Recent Activity */}
       <div className="pt-2">
-        <h3 className="text-lg font-serif font-bold text-white mb-4">Recent Activity</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-serif font-bold text-white">Recent Activity</h3>
+          <Link href="/history" className="text-xs text-amber-500 hover:text-amber-400 font-bold uppercase tracking-wider transition-colors">View All →</Link>
+        </div>
         <div className="space-y-3">
           <RecentActivitiesList userId={user?.id} />
         </div>
@@ -96,47 +100,35 @@ export default async function DashboardPage() {
 async function RecentActivitiesList({ userId }: { userId?: string }) {
   if (!userId) return null;
   
-  const [quizRes, flashRes, essayRes, exploreRes] = await Promise.all([
-    supabase.from("quizzes").select("id, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
-    supabase.from("flashcards").select("id, title, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
-    supabase.from("essay_sims").select("id, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
-    supabase.from("explore").select("id, type, topic, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
+  const [quizRes, flashRes, essayRes, mathRes] = await Promise.all([
+    supabaseAdmin.from("quizzes").select("id, topic, updated_at").eq("user_id", userId).order("updated_at", { ascending: false }).limit(3),
+    supabaseAdmin.from("flashcards").select("id, title, topic, updated_at").eq("user_id", userId).order("updated_at", { ascending: false }).limit(3),
+    supabaseAdmin.from("essay_sims").select("id, updated_at").eq("user_id", userId).order("updated_at", { ascending: false }).limit(3),
+    supabaseAdmin.from("maths_questions").select("id, topic, updated_at").eq("user_id", userId).order("updated_at", { ascending: false }).limit(3),
   ]);
 
-  const activities: { id: string, title: string, tool_name: string, created_at: string }[] = [];
+  const activities: { id: string, title: string, tool_name: string, ts: string, icon: string }[] = [];
 
-  if (quizRes.data) {
-    quizRes.data.forEach(q => activities.push({
-      id: "quiz_" + q.id, title: q.topic || "Untitled Quiz", tool_name: "Adaptive Quizzes", created_at: q.created_at
-    }));
-  }
-  if (flashRes.data) {
-    flashRes.data.forEach(f => activities.push({
-      id: "flash_" + f.id, title: f.title || f.topic || "Untitled Deck", tool_name: "Flashcards", created_at: f.created_at
-    }));
-  }
-  if (essayRes.data) {
-    essayRes.data.forEach(e => activities.push({
-      id: "essay_" + e.id, title: "Essay Evaluated", tool_name: "Essay Grader", created_at: e.created_at
-    }));
-  }
-  if (exploreRes.data) {
-    exploreRes.data.forEach(e => {
-      let toolName = e.type || "Explore Tool";
-      if (e.type === "schedule") toolName = "Schedule Maker";
-      if (e.type === "note_summary") toolName = "Note Summarizer";
-      if (e.type === "pro_con") toolName = "Pro / Con";
-      if (e.type === "presentation") toolName = "Presentation Builder";
-      if (e.type === "mindmap") toolName = "Mindmap";
-      
-      activities.push({
-        id: "exp_" + e.id, title: e.topic || "Generation", tool_name: toolName, created_at: e.created_at
-      });
-    });
-  }
+  quizRes.data?.forEach(q => activities.push({ id: "quiz_" + q.id, title: q.topic || "Untitled Quiz", tool_name: "Quiz Maker", ts: q.updated_at, icon: "quiz" }));
+  flashRes.data?.forEach(f => activities.push({ id: "flash_" + f.id, title: f.title || f.topic || "Untitled Deck", tool_name: "Flashcards", ts: f.updated_at, icon: "flash" }));
+  essayRes.data?.forEach(e => activities.push({ id: "essay_" + e.id, title: "Essay Evaluated", tool_name: "Essay Practice", ts: e.updated_at, icon: "essay" }));
+  mathRes.data?.forEach(m => activities.push({ id: "math_" + m.id, title: m.topic || "Maths Session", tool_name: "Maths", ts: m.updated_at, icon: "math" }));
 
-  activities.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  activities.sort((a, b) => new Date(b.ts).getTime() - new Date(a.ts).getTime());
   const topActivities = activities.slice(0, 3);
+
+  const iconMap: Record<string, React.ReactNode> = {
+    quiz:  <PenLine className="w-5 h-5 text-emerald-400" />,
+    flash: <BookOpen className="w-5 h-5 text-blue-400" />,
+    essay: <FileText className="w-5 h-5 text-purple-400" />,
+    math:  <Calculator className="w-5 h-5 text-orange-400" />,
+  };
+  const bgMap: Record<string, string> = {
+    quiz:  "bg-emerald-500/10 border-emerald-500/20",
+    flash: "bg-blue-500/10 border-blue-500/20",
+    essay: "bg-purple-500/10 border-purple-500/20",
+    math:  "bg-orange-500/10 border-orange-500/20",
+  };
 
   if (topActivities.length === 0) {
     return (
@@ -149,18 +141,20 @@ async function RecentActivitiesList({ userId }: { userId?: string }) {
   return (
     <>
       {topActivities.map((activity) => (
-        <div key={activity.id} className="flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
-          <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center shrink-0 border border-white/5">
-            <Sparkles className="w-5 h-5 text-amber-500" />
+        <Link key={activity.id} href="/history" className="flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${bgMap[activity.icon] ?? "bg-slate-800 border-white/5"}`}>
+            {iconMap[activity.icon] ?? <Sparkles className="w-5 h-5 text-amber-500" />}
           </div>
-          <div>
-            <p className="text-white text-sm font-bold">{activity.title}</p>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-sm font-bold truncate">{activity.title}</p>
             <p className="text-slate-500 text-xs">
-              {activity.tool_name} • {formatDistanceToNow(new Date(activity.created_at), { addSuffix: true })}
+              {activity.tool_name} · {formatDistanceToNow(new Date(activity.ts), { addSuffix: true })}
             </p>
           </div>
-        </div>
+          <ArrowRight className="w-4 h-4 text-slate-600 shrink-0" />
+        </Link>
       ))}
     </>
   );
 }
+

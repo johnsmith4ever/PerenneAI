@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target, Lock, Mail, Save, CheckCircle2 } from "lucide-react";
+import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target, Lock, Mail, Save, CheckCircle2, RotateCcw } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE } from "@/hooks/use-subscription";
+import { insertFeatureAction, insertExploreHistoryAdminAction } from "@/actions/supabase";
 
 import { ApiErrorFallback } from "@/components/ui/api-error-fallback";
 import { useLocalStorage } from "@/hooks/use-local-storage";
@@ -18,7 +19,7 @@ type SummarizerData = {
   keyConcepts?: { title: string; explanation: string }[];
   actionableTakeaways?: string[];
   eli10?: string;
-  pureSummary?: string;
+  pureSummary?: { heading?: string; content: string }[] | string;
 };
 
 export default function NoteSummarizerPage() {
@@ -91,14 +92,12 @@ export default function NoteSummarizerPage() {
     if (!result) return;
     setIsSaving(true);
     try {
-      const { supabase } = await import("@/lib/supabase");
-      const { error } = await supabase.from("explore").insert({
+      await insertExploreHistoryAdminAction({
         user_id: user.id,
-        type: "note_summary_saved",
         topic: saveName || "Note Summary",
-        data: result
+        type: "note_summary_saved",
+        data: result,
       });
-      if (error) throw error;
       setHasSaved(true);
       setTimeout(() => setHasSaved(false), 3000);
     } catch (e) {
@@ -113,7 +112,7 @@ export default function NoteSummarizerPage() {
     if (!currentInput.trim()) return;
     if (!subLoaded) return;
     
-    const isProPlus = tierRank >= TIER_RANK.Pro;
+    // Use the user's assigned model (based on their subscription tier)
     const modelUsed: ModelType = assistant;
 
     if (!canAfford(1500, modelUsed)) {
@@ -158,11 +157,7 @@ export default function NoteSummarizerPage() {
             <BookOpen className="w-5 h-5" />
           </div>
           <p className="label-title m-0">Productivity Tool</p>
-          {subLoaded && tierRank < TIER_RANK.Pro && !FREE_ACCESS_MODE && (
-            <span className="ml-auto px-3 py-1 bg-amber-500/10 text-amber-600 border border-amber-500/20 rounded-full text-[11px] font-bold uppercase tracking-wider">
-              Free Limit: 1 / Day
-            </span>
-          )}
+
         </div>
         <div className="flex items-center gap-3">
           <h1 className="page-title font-serif m-0" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>Understand</h1>
@@ -175,7 +170,7 @@ export default function NoteSummarizerPage() {
 
       <div className="grid lg:grid-cols-[1fr_1.2fr] gap-8 items-start">
         {/* INPUT */}
-        <div className="space-y-4 sticky top-6">
+        <div className="space-y-4 lg:sticky lg:top-6">
             <div className="flex flex-col gap-3">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <button 
@@ -233,7 +228,7 @@ export default function NoteSummarizerPage() {
                     value={mode === "understand" ? understandInput : pureInput}
                     onChange={(e) => mode === "understand" ? setUnderstandInput(e.target.value) : setPureInput(e.target.value)}
                     placeholder="Paste your lecture notes, article text, or random thoughts here..."
-                    className="w-full h-[500px] bg-transparent border-none focus:ring-0 p-4 text-sm leading-relaxed resize-none focus:outline-none font-sans"
+                    className="w-full h-[250px] lg:h-[500px] bg-transparent border-none focus:ring-0 p-4 text-sm leading-relaxed resize-none focus:outline-none font-sans"
                   />
                 )}
                 {mode === "eli10" && aqaStatus === "not_found" && (
@@ -250,10 +245,32 @@ export default function NoteSummarizerPage() {
                 )}
               </div>
             </div>
-            <Button className="w-full gap-2 py-6 text-base font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl mt-4" onClick={handleSummarize} disabled={loading || !currentInput.trim()}>
-                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
-                {loading ? "Summarizing..." : "Summarize"}
-            </Button>
+            <div className="flex items-center gap-3 mt-4">
+              <Button 
+                variant="outline"
+                className="py-6 rounded-xl font-bold shadow-sm"
+                onClick={() => {
+                  if (mode === "understand") {
+                    setUnderstandInput("");
+                    setUnderstandResult(null);
+                  } else if (mode === "pure") {
+                    setPureInput("");
+                    setPureResult(null);
+                  } else {
+                    setEli10Input("");
+                    setEli10Result(null);
+                  }
+                }}
+                disabled={loading}
+              >
+                <RotateCcw className="w-5 h-5 mr-2" />
+                Restart
+              </Button>
+              <Button className="flex-1 gap-2 py-6 text-base font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl" onClick={handleSummarize} disabled={loading || !currentInput.trim()}>
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
+                  {mode === "understand" ? "Understand Notes" : mode === "eli10" ? "Explain Topic" : "Summarize Text"}
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -299,13 +316,70 @@ export default function NoteSummarizerPage() {
           ) : null}
 
           {pureResult && mode === "pure" && pureResult.pureSummary && (
-             <div className="space-y-6 animate-in slide-in-from-right-8 duration-500 font-sans" style={{ fontFamily: 'Anthropic Sans, var(--font-inter), sans-serif' }}>
-               <div className="p-6 rounded-2xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
-                 <h3 className="font-bold text-foreground text-xl font-serif mb-4" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>Summary</h3>
-                 <div className="text-[15px] text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                   {pureResult.pureSummary}
-                 </div>
-               </div>
+             <div className="space-y-4 animate-in slide-in-from-right-8 duration-500 font-sans" style={{ fontFamily: 'Anthropic Sans, var(--font-inter), sans-serif' }}>
+               <h3 className="font-bold flex items-center gap-2 text-foreground text-xl font-serif mb-4" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>
+                  <Sparkles className="w-5 h-5 text-blue-500" /> Summary
+               </h3>
+               
+               {Array.isArray(pureResult.pureSummary) ? (
+                 // New structured JSON array format
+                 pureResult.pureSummary.map((item, i) => {
+                   const lines = item.content.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                   const isGreen = lines.length > 1 && lines.some(l => l.startsWith('-') || l.startsWith('*'));
+                   
+                   if (isGreen) {
+                     return (
+                       <div key={i} className="p-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 shadow-sm hover:shadow-md transition-shadow">
+                           {item.heading && <h4 className="font-bold text-emerald-700 mb-3 text-base font-serif" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>{item.heading.replace(/\*\*/g, '')}</h4>}
+                           <div className="text-[14px] text-foreground leading-relaxed whitespace-pre-wrap">{item.content.replace(/\*\*/g, '')}</div>
+                       </div>
+                     );
+                   } else {
+                     return (
+                       <div key={i} className="p-5 rounded-2xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow flex items-start gap-3">
+                         <div className="w-2 h-2 rounded-full bg-blue-500 mt-2 shrink-0" />
+                         <div>
+                           {item.heading && (
+                             <h4 className="font-bold text-foreground mb-1 text-base font-serif" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>{item.heading.replace(/\*\*/g, '')}</h4>
+                           )}
+                           <p className="text-[14px] text-muted-foreground leading-relaxed whitespace-pre-wrap">{item.content.replace(/\*\*/g, '').replace(/^[\-\*]\s*/, '')}</p>
+                         </div>
+                       </div>
+                     );
+                   }
+                 })
+               ) : (
+                 // Legacy plain string format
+                 typeof pureResult.pureSummary === "string" && pureResult.pureSummary.split('\n').filter(line => line.trim().length > 0).map((line, i) => {
+                   const isBullet = line.trim().startsWith('-') || line.trim().startsWith('*');
+                   let content = line.replace(/^[\-\*]\s*/, '').replace(/\*\*/g, '').trim();
+                   
+                   const splitIdx = content.indexOf(':');
+                   let title = "";
+                   let description = content;
+                   
+                   if (splitIdx > 0 && splitIdx < 50) {
+                     title = content.substring(0, splitIdx);
+                     description = content.substring(splitIdx + 1).trim();
+                   }
+
+                   return (
+                     <div key={i} className="p-5 rounded-2xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow flex items-start gap-3">
+                       {isBullet && <div className="w-2 h-2 rounded-full bg-blue-500 mt-2 shrink-0" />}
+                       <div>
+                         {title ? (
+                           <>
+                             <h4 className="font-bold text-foreground mb-1 text-base font-serif" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>{title}</h4>
+                             <p className="text-[14px] text-muted-foreground leading-relaxed">{description}</p>
+                           </>
+                         ) : (
+                           <p className="text-[14px] text-muted-foreground leading-relaxed">{description}</p>
+                         )}
+                       </div>
+                     </div>
+                   );
+                 })
+               )}
              </div>
           )}
 
@@ -382,27 +456,12 @@ export default function NoteSummarizerPage() {
                 <h3 className="font-bold flex items-center gap-2 text-foreground text-xl font-serif mb-6" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>
                   <Brain className="w-6 h-6 text-purple-500" /> Core Concepts
                 </h3>
-                {understandResult.keyConcepts?.map((concept, i) => (
+              {understandResult.keyConcepts?.map((concept, i) => (
                   <div key={i} className="p-6 rounded-2xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
                     <h4 className="font-bold text-foreground mb-3 text-lg font-serif tracking-tight" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>{concept.title}</h4>
                     <p className="text-[15px] text-muted-foreground leading-relaxed">{concept.explanation}</p>
                   </div>
                 ))}
-              </div>
-
-              <div className="p-6 rounded-2xl border border-amber-500/20 bg-amber-500/5 mt-8">
-                <div className="flex items-center gap-2 mb-4">
-                  <Target className="w-5 h-5 text-amber-600" />
-                  <h3 className="font-bold text-amber-600 text-lg font-serif" style={{ fontFamily: 'Anthropic Serif, var(--font-merriweather), serif' }}>Actionable Takeaways</h3>
-                </div>
-                <ul className="space-y-3">
-                  {understandResult.actionableTakeaways?.map((takeaway, i) => (
-                    <li key={i} className="flex items-start gap-3 text-[15px] text-foreground bg-amber-500/10 p-3 rounded-lg border border-amber-500/10">
-                      <span className="text-amber-500 font-bold shrink-0">{i + 1}.</span>
-                      <span className="leading-relaxed">{takeaway}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
 
             </div>

@@ -90,15 +90,16 @@ ${text}
 """
 
 Settings:
-- Format: ${format === 'bullets' ? 'Bullet points (use markdown bullets inside the text)' : 'A single cohesive paragraph'}
+- Format: ${format === 'bullets' ? 'Bullet points style' : 'A single cohesive summary or a series of concise paragraphs'}
 - Length constraint: ${length === 'mini' ? 'Extremely brief, around 2-3 sentences max.' : length === 'short' ? 'Short length.' : 'Medium length, comprehensive but concise.'}
 
 You must respond with EXACTLY and ONLY a valid JSON object matching this schema:
 {
-  "pureSummary": "Your generated summary here. Make sure it adheres to the format and length settings."
+  "pureSummary": "Your full text summary here."
 }
 
-Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object.`;
+CRITICAL: If using bullet points, YOU MUST NOT USE SUB-BULLET POINTS. Keep everything as single-level primary bullet points.
+Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object. You MUST properly escape any newlines as \\n inside strings.`;
     } else if (mode === "eli10") {
       prompt = `You are a highly skilled educator who specializes in breaking down complex topics clearly.
 I am going to give you a topic or concept. Explain it step by step using plain, simple English — as if speaking to someone who has no prior knowledge.
@@ -147,10 +148,6 @@ You must respond with EXACTLY and ONLY a valid JSON object matching this schema:
       "title": "Concept Name",
       "explanation": "A clear, concise explanation of the concept."
     }
-  ],
-  "actionableTakeaways": [
-    "Short actionable point 1",
-    "Short actionable point 2"
   ]
 }
 

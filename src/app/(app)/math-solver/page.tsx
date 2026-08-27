@@ -1,4 +1,6 @@
 "use client";
+import { toast } from "sonner";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 
 import React, { useState, useEffect, memo } from "react";
@@ -11,7 +13,7 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { useUser } from "@clerk/nextjs";
 
 import ReactMarkdown from "react-markdown";
-import { insertFeatureAction } from "@/actions/supabase";
+import { insertFeatureAction, insertMathsQuestionsAction } from "@/actions/supabase";
 
 declare global {
   namespace JSX {
@@ -26,12 +28,12 @@ import { MemoizedQuestionText } from "@/components/memoized-question-text";
 export default function MathSolverPage() {
   const { openUpgradeModal } = useUpgradeModal();
   const { canAfford, deductCredits, heavy, judge, assistant, grading } = useSubscription();
-  const [topic, setTopic] = useState("");
-  const [difficulty, setDifficulty] = useState("Intermediate");
-  const [questionType, setQuestionType] = useState("AQA Based Sim");
-  const [year, setYear] = useState("GCSE");
-  const [testSize, setTestSize] = useState("Medium");
-  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [topic, setTopic] = usePersistentState("math_topic", "");
+  const [difficulty, setDifficulty] = usePersistentState("math_diff", "Intermediate");
+  const [questionType, setQuestionType] = usePersistentState("math_exam_type", "AQA Based Sim");
+  const [year, setYear] = usePersistentState("math_year", "GCSE");
+  const [testSize, setTestSize] = usePersistentState("math_size", "Medium");
+  const [timeLeft, setTimeLeft] = usePersistentState<number | null>("math_time", null);
   const isAQA = questionType === "AQA Based Sim";
   const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
 
@@ -73,9 +75,20 @@ export default function MathSolverPage() {
   }, []);
 
 
-  const [role, setRole] = useState<"practice" | "grading" | null>(null);
-  const [examState, setExamState] = useState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("setup");
-  
+  const [role, setRole, roleLoaded] = usePersistentState<"practice" | "grading" | null>("math_role", null);
+  const [examState, setExamState, examStateLoaded] = usePersistentState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("math_examstate", "setup");
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (examState === "taking") {
+        e.preventDefault();
+        e.returnValue = "You are currently taking a timed Maths session. Navigating away means you will instantly forfeit the exam. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [examState]);
+
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (examState === "taking" && timeLeft !== null && timeLeft > 0) {
@@ -83,7 +96,7 @@ export default function MathSolverPage() {
         setTimeLeft(prev => (prev !== null && prev > 0 ? prev - 1 : 0));
       }, 1000);
     } else if (examState === "taking" && timeLeft === 0) {
-      handleSubmit(); // Auto-submit when time is up
+      handleSubmit(); 
     }
     return () => clearInterval(timer);
   }, [examState, timeLeft]);
@@ -97,7 +110,7 @@ export default function MathSolverPage() {
         clearTimeout(timeoutId);
       }
     };
-    
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
@@ -115,7 +128,7 @@ export default function MathSolverPage() {
   const [gradingImage, setGradingImage] = useState<string | null>(null);
   const [gradingQuestion, setGradingQuestion] = useState("");
   const [gradingFeedback, setGradingFeedback] = useState<any>(null);
-  
+
   const handleStartOver = () => {
     setRole(null);
     setExamState("setup");
@@ -127,9 +140,9 @@ export default function MathSolverPage() {
     setGradingQuestion("");
     setGradingFeedback(null);
   };
-  const [questions, setQuestions] = useState<{text: string, marks: number, parts?: string[] | null}[] | any[]>([]);
-  const [answers, setAnswers] = useState<any[]>([]);
-  const [results, setResults] = useState<{marks: number, feedback: string, max_marks?: number}[]>([]);
+  const [questions, setQuestions] = usePersistentState<{ text: string, marks: number, parts?: string[] | null }[] | any[]>("math_questions", []);
+  const [answers, setAnswers] = usePersistentState<any[]>("math_answers", []);
+  const [results, setResults] = usePersistentState<{ marks: number, feedback: string, max_marks?: number }[]>("math_results", []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -138,36 +151,33 @@ export default function MathSolverPage() {
       }
     }
   }, [examState, questions]);
-  
+
   const { user } = useUser();
   const [isSaving, setIsSaving] = useState(false);
-  const [hasSaved, setHasSaved] = useState(false);
+  const [hasSaved, setHasSaved] = usePersistentState("math_saved", false);
 
   const saveToHistory = async (latestResults: any[] = results) => {
     if (!user || questions.length === 0 || latestResults.length === 0) return;
     setIsSaving(true);
     try {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
-      /* Removed history save per user request
-      await insertFeatureAction("maths_questions", {
-        user_id: user.id,
-        topic: `Maths: ${topic || "Mixed"}`,
-        questions: questions.map((q, i) => {
-          const maxMarks = latestResults[i].max_marks || 10;
-          return {
-            question: typeof q === "string" ? q : q.text,
+      await insertMathsQuestionsAction(questions.map((q, i) => {
+        const maxMarks = latestResults[i].max_marks || 10;
+        return {
+          question: typeof q === "string" ? q : q.text,
+          solution: {
+            topic: `Maths: ${topic || "Mixed"}`,
             user_answer: Array.isArray(answers[i]) ? answers[i].flat(Infinity).filter(Boolean).join(" | ") || "Skipped" : (answers[i] || "Skipped"),
             grading: {
               marks_awarded: latestResults[i].marks,
               marks_available: maxMarks,
               feedback: latestResults[i].feedback,
               correct: latestResults[i].marks >= (maxMarks / 2)
-            }
-          };
-        }),
-        score: scorePct
-      });
-      */
+            },
+            score_pct: scorePct
+          }
+        };
+      }));
       setHasSaved(true);
     } catch (e) {
       console.error("Error saving math history:", e);
@@ -194,17 +204,17 @@ export default function MathSolverPage() {
         const checkData = await checkRes.json();
         if (checkData.status === "error") {
           setExamState("setup");
-          alert("Error verifying syllabus: " + checkData.message);
+          toast.error("Error verifying syllabus: " + checkData.message);
           return;
         }
         if (!checkData.exists) {
           setExamState("setup");
-          alert("This topic does not exist in the AQA syllabus database. Please try a different topic.");
+          toast.error("This topic does not exist in the AQA syllabus database. Please try a different topic.");
           return;
         }
       } catch (e: any) {
         setExamState("setup");
-        alert("Failed to connect to syllabus database: " + e.message);
+        toast.error("Failed to connect to syllabus database: " + e.message);
         console.error("Failed to check AQA topic", e);
         return;
       }
@@ -230,7 +240,7 @@ export default function MathSolverPage() {
 
           // Force newlines before part letters/roman numerals
           textStr = textStr.replace(/([^\n])\s*(\([a-e]\)|[a-e]\)|\([ivx]+\)|[ivx]+\))\s+/gi, '$1\n\n$2 ');
-          
+
           const partsMatch = [...textStr.matchAll(/(?:\n|^)\s*(\([a-e]\)|[a-e]\)|\([ivx]+\)|[ivx]+\))\s+/gi)];
           const parts = partsMatch.map(m => m[1].replace(/[()\s]/g, '').toUpperCase());
 
@@ -249,7 +259,10 @@ export default function MathSolverPage() {
           } else if (marks <= 1) {
             // 1 mark: single box
             return [[""]];
-          } else if (marks <= 3) {
+          } else if (marks === 2) {
+            // 2 marks: 1 working step + 1 final answer
+            return [["", ""]];
+          } else if (marks === 3) {
             // 3 marks: 2 working steps + 1 final answer
             return [["", "", ""]];
           } else {
@@ -265,7 +278,7 @@ export default function MathSolverPage() {
         setExamState("taking");
         if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, heavy);
       } else {
-        alert("Failed to generate math problems.");
+        toast.error("Failed to generate math problems.");
         setExamState("setup");
       }
     } catch (e) {
@@ -280,10 +293,10 @@ export default function MathSolverPage() {
       const res = await fetch("/api/math-solver", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          action: "grade_answers", 
-          topic, 
-          difficulty, 
+        body: JSON.stringify({
+          action: "grade_answers",
+          topic,
+          difficulty,
           questions: questions.map((q: any) => typeof q === "string" ? q : q.text),
           marks: questions.map((q: any) => typeof q === "string" ? 3 : (q.marks || 3)),
           answers: answers.map((ans, qIdx) => {
@@ -305,9 +318,9 @@ export default function MathSolverPage() {
         setResults(data.results);
         setExamState("results");
         saveToHistory(data.results); // Automatically save to history
-        if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, grading);
+        if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, grading, "chat");
       } else {
-        alert("Failed to grade.");
+        toast.error("Failed to grade.");
         setExamState("taking");
       }
     } catch (e) {
@@ -318,70 +331,33 @@ export default function MathSolverPage() {
 
   const handleGrade = async () => {
     if (!canAfford(3000, "Gemini 3.6 Flash")) {
-      openUpgradeModal("Insufficient credits to grade this math problem.", "Upgrade Plan", "/subscriptions");
+      openUpgradeModal("You do not have enough daily credits. Please try again tomorrow or upgrade your plan.", "Upgrade Plan", "/subscriptions");
       return;
     }
     setExamState("grading");
     try {
-      let extractedText = "";
-      
-      // Step 1: OCR the image
-      const ocrRes = await fetch("/api/chat", {
+      const res = await fetch("/api/math-solver", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: [{ 
-            role: "user", 
-            content: [
-              { type: "text", text: "Extract all the mathematical working out and text from this image exactly as written. Do not add any commentary." },
-              { type: "image", image: gradingImage }
-            ] 
-          }],
-          model: "Gemini 3.6 Flash",
+          action: "breakdown",
+          question: gradingQuestion.trim(),
+          imageBase64: gradingImage || null,
         }),
       });
-      const ocrData = await ocrRes.json();
-      if (ocrData.usage) deductCredits(ocrData.usage.inputTokens, ocrData.usage.outputTokens, "Gemini 3.6 Flash");
-      if (ocrData.text) extractedText = ocrData.text;
-
-      // Step 2: Grade the working out
-      const gradingSystemPrompt = `You are an expert Math teacher grading a student's handwritten working out for the following problem:
-Original Question: ${gradingQuestion}
-
-The student's transcribed working out is below:
-${extractedText}
-
-Evaluate their working step-by-step. Identify any mistakes.
-You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
-{
-  "marks": <integer out of 10>,
-  "maxMarks": 10,
-  "correctWorking": "<Show the ideal step-by-step working to solve the problem>",
-  "feedback": "<Point out exactly where they went wrong, or praise their method if correct>"
-}`;
-
-      const gradeRes = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [{ role: "user", content: gradingSystemPrompt }],
-          model: grading,
-        }),
-      });
-      const gradeData = await gradeRes.json();
-      if (gradeData.usage) deductCredits(gradeData.usage.inputTokens, gradeData.usage.outputTokens, grading);
-      
-      const parsed = JSON.parse(gradeData.text.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim());
-      setGradingFeedback(parsed);
+      const data = await res.json();
+      if (data.status !== "success") throw new Error(data.message || "Failed to generate breakdown.");
+      if (data.usage) deductCredits(data.usage.inputTokens, data.usage.outputTokens, "Gemini 3.6 Flash");
+      setGradingFeedback(data.data);
       setExamState("results");
     } catch (e) {
       console.error(e);
-      alert("Error grading.");
+      toast.error("Error generating breakdown.");
       setExamState("setup");
     }
   };
 
-  
+
 
   if (!role) {
     return (
@@ -397,7 +373,7 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-2xl">
-          <button 
+          <button
             onClick={() => setRole("practice")}
             className="flex flex-col items-center text-center p-8 rounded-2xl border border-border bg-card hover:border-primary/40 hover:bg-primary/5 transition-all group relative overflow-hidden shadow-sm hover:shadow-md"
           >
@@ -411,7 +387,7 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
             </p>
           </button>
 
-          <button 
+          <button
             onClick={() => setRole("grading")}
             className="flex flex-col items-center text-center p-8 rounded-2xl border border-border bg-card hover:border-primary/40 hover:bg-primary/5 transition-all group relative overflow-hidden shadow-sm hover:shadow-md"
           >
@@ -438,13 +414,10 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
               <h1 className="page-title m-0 flex items-center gap-2"><Sigma className="w-8 h-8 text-primary" /> Maths</h1>
               <span className="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider whitespace-nowrap mt-1">AQA Syllabus</span>
             </div>
-            <p className="text-sm text-muted-foreground mt-1">Upload your working out for detailed feedback.</p>
+            <p className="text-sm text-muted-foreground mt-1">Upload your question for a detailed breakdown and steps to finding the answer.</p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <Button variant="outline" size="sm" onClick={() => setRole("practice")} className="gap-1.5">
-              <ArrowRight className="w-3.5 h-3.5" />
-              Switch to Practice
-            </Button>
+
             <Button variant="ghost" size="sm" onClick={handleStartOver} className="text-muted-foreground hover:text-foreground">
               Start Over
             </Button>
@@ -468,7 +441,7 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
                 </div>
               )}
 
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Your Working Out</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Upload Image (Optional)</h3>
               <div className="border-2 border-dashed border-border rounded-xl p-8 text-center flex flex-col items-center justify-center hover:bg-muted/50 transition-colors">
                 {gradingImage ? (
                   <img src={gradingImage} alt="Uploaded working out" className="max-h-48 object-contain rounded-lg mb-4 shadow-sm" />
@@ -478,13 +451,13 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
                   </div>
                 )}
                 <p className="text-sm font-medium text-foreground mb-4">
-                  {gradingImage ? "Image uploaded" : "Upload an image of your handwritten working out"}
+                  {gradingImage ? "Image uploaded" : "Upload an image of your question or working out"}
                 </p>
-                <input 
-                  type="file" 
-                  id="gradingImageUpload" 
-                  accept="image/*" 
-                  className="hidden" 
+                <input
+                  type="file"
+                  id="gradingImageUpload"
+                  accept="image/*"
+                  className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
@@ -492,54 +465,56 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
                       reader.onload = (e) => setGradingImage(e.target?.result as string);
                       reader.readAsDataURL(file);
                     }
-                  }} 
+                  }}
                 />
                 <Button variant="outline" size="sm" onClick={() => document.getElementById('gradingImageUpload')?.click()}>
                   {gradingImage ? "Change Image" : "Select Image"}
                 </Button>
               </div>
             </div>
-            
-            <Button size="lg" className="w-full" disabled={!gradingImage || !gradingQuestion.trim()} onClick={handleGrade}>
-              Grade My Working Out
+
+            <Button size="lg" className="w-full" disabled={!gradingImage && !gradingQuestion.trim()} onClick={handleGrade}>
+              Get Step-by-Step Breakdown
             </Button>
           </div>
         )}
-        
+
         {examState === "grading" && (
           <div className="flex flex-col items-center justify-center min-h-[40vh] space-y-4">
             <Loader2 className="w-10 h-10 animate-spin text-primary" />
-            <h2 className="text-xl font-bold">Grading your working out...</h2>
-            <p className="text-muted-foreground">The AI is analyzing your steps line-by-line.</p>
+            <h2 className="text-xl font-bold">Breaking down the question...</h2>
+            <p className="text-muted-foreground">Gemini is working out the solution step by step.</p>
           </div>
         )}
-        
-        {examState === "results" && gradingFeedback && (
-          <div className="mt-8 space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-            <h2 className="text-2xl font-bold">Grading Complete</h2>
-            
-            <div className="p-8 rounded-3xl border border-border/40 bg-card/40 backdrop-blur-lg shadow-xl space-y-6">
-               <div className="flex justify-between items-start">
-                 <h3 className="font-bold text-xl leading-relaxed">Evaluation</h3>
-                 <div className={cn("px-4 py-2 rounded-2xl text-lg font-bold shrink-0 shadow-inner backdrop-blur-md border", gradingFeedback.marks >= (gradingFeedback.maxMarks * 0.7) ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : gradingFeedback.marks >= (gradingFeedback.maxMarks * 0.4) ? "bg-amber-500/10 text-amber-500 border-amber-500/20" : "bg-red-500/10 text-red-500 border-red-500/20")}>
-                    {gradingFeedback.marks} / {gradingFeedback.maxMarks}
-                 </div>
-               </div>
-               
-               <div className="bg-muted/30 p-5 rounded-2xl text-[15px] italic border border-border/50 shadow-inner">
-                  <span className="block not-italic font-semibold text-xs uppercase text-muted-foreground mb-2 tracking-wider">Correct Working Out:</span>
-                  <p className="leading-relaxed whitespace-pre-wrap">{gradingFeedback.correctWorking}</p>
-               </div>
 
-               <div className={cn("p-6 rounded-2xl text-[15px] border shadow-sm", gradingFeedback.marks >= (gradingFeedback.maxMarks * 0.7) ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-900 dark:text-emerald-100" : "bg-red-500/5 border-red-500/20 text-red-900 dark:text-red-100")}>
-                  <span className="block font-semibold text-xs uppercase opacity-70 mb-2 tracking-wider">Feedback & Corrections:</span>
-                  <div className="leading-relaxed [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>li]:mb-1 [&>strong]:font-bold [&>strong]:text-current">
-                     <ReactMarkdown>{gradingFeedback.feedback}</ReactMarkdown>
-                  </div>
-               </div>
+        {examState === "results" && gradingFeedback && (
+          <div className="mt-8 space-y-5 animate-in slide-in-from-bottom-4 duration-500">
+            <h2 className="text-2xl font-bold">Step-by-Step Breakdown</h2>
+
+            {(Array.isArray(gradingFeedback.steps) ? gradingFeedback.steps : [gradingFeedback.steps]).map((step: string, i: number) => (
+              <div key={i} className="bg-blue-500/5 border border-blue-500/20 p-5 rounded-2xl">
+                <span className="block font-bold text-[10px] uppercase text-blue-500 mb-3 tracking-wider">Step {i + 1}</span>
+                <div className="text-[15px] leading-relaxed">
+                  <MemoizedQuestionText text={step} id={`breakdown-step-${i}`} />
+                </div>
+              </div>
+            ))}
+
+            <div className="bg-emerald-500/5 border border-emerald-500/20 p-5 rounded-2xl">
+              <span className="block font-bold text-[10px] uppercase text-emerald-500 mb-2 tracking-wider">✓ Final Answer</span>
+              <div className="text-lg font-bold leading-relaxed">
+                <MemoizedQuestionText text={gradingFeedback.answer} id="breakdown-answer" />
+              </div>
             </div>
 
-            <Button onClick={handleStartOver} size="lg" className="w-full">Grade Another</Button>
+            {gradingFeedback.tips && (
+              <div className="bg-amber-500/5 border border-amber-500/20 p-5 rounded-2xl">
+                <span className="block font-bold text-[10px] uppercase text-amber-500 mb-2 tracking-wider">💡 Key Tips</span>
+                <MemoizedQuestionText text={gradingFeedback.tips} id="breakdown-tips" />
+              </div>
+            )}
+
+            <Button onClick={handleStartOver} size="lg" className="w-full">Try Another Question</Button>
           </div>
         )}
       </div>
@@ -559,10 +534,7 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
         <div className="flex items-center gap-3 shrink-0">
           {examState !== "taking" && (
             <>
-              <Button variant="outline" size="sm" onClick={() => setRole("grading")} className="gap-1.5">
-                <ArrowRight className="w-3.5 h-3.5" />
-                Switch to Grading
-              </Button>
+
               <Button variant="ghost" size="sm" onClick={handleStartOver} className="text-muted-foreground hover:text-foreground">
                 Start Over
               </Button>
@@ -609,7 +581,7 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
 
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">Year Group</label>
-                <select 
+                <select
                   className="w-full p-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
@@ -619,10 +591,10 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
                   <option>A-Level</option>
                 </select>
               </div>
-              
+
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">Difficulty</label>
-                <select 
+                <select
                   className="w-full p-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                   value={difficulty}
                   onChange={(e) => setDifficulty(e.target.value)}
@@ -631,10 +603,10 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
                   <option>Higher</option>
                 </select>
               </div>
-              
+
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">Test Size</label>
-                <select 
+                <select
                   className="w-full p-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                   value={testSize}
                   onChange={(e) => setTestSize(e.target.value)}
@@ -647,7 +619,7 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
               </div>
             </div>
           </div>
-          
+
           <Button className="w-full gap-2 py-6 text-lg font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-2xl mt-4" size="lg" onClick={handleStart} disabled={!topic.trim()}>
             <Sparkles className="w-5 h-5" /> Generate Math Practice
           </Button>
@@ -666,52 +638,66 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
 
       {examState === "taking" && (
         <div className="space-y-8 mt-8 animate-in slide-in-from-bottom-4">
-              <div className="flex items-center gap-4">
-                <div className="flex-1 flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-foreground">Exam: {topic || "Mixed"} ({difficulty})</h2>
-                  <div className={cn("px-4 py-2 rounded-full font-mono font-bold border shadow-sm flex items-center gap-2", timeLeft && timeLeft < 300 ? "bg-red-500/10 text-red-500 border-red-500/20" : "bg-primary/10 text-primary border-primary/20")}>
-                    <Clock className="w-4 h-4" />
-                    {timeLeft !== null ? formatTime(timeLeft) : "Untimed"}
-                  </div>
-                </div>
+          <div className="flex items-center gap-4">
+            <div className="flex-1 flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-foreground">Exam: {topic || "Mixed"} ({difficulty})</h2>
+              <div className={cn("px-4 py-2 rounded-full font-mono font-bold border shadow-sm flex items-center gap-2", timeLeft && timeLeft < 300 ? "bg-red-500/10 text-red-500 border-red-500/20" : "bg-primary/10 text-primary border-primary/20")}>
+                <Clock className="w-4 h-4" />
+                {timeLeft !== null ? formatTime(timeLeft) : "Untimed"}
               </div>
+            </div>
+          </div>
           <div className="p-8 rounded-3xl border border-border bg-card/50 shadow-xl relative overflow-hidden">
-             <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><Sigma className="w-6 h-6 text-primary" /> Practice Session</h2>
-             <div id="math-questions-container" className="space-y-10">
-               {questions.map((q, idx) => (
-                 <div key={idx} className="space-y-4">
-                   <h3 className="font-semibold text-lg text-foreground flex gap-3 items-start">
-                     <span className="shrink-0 w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold text-sm border border-primary/20">{idx + 1}</span>
-                      <div className="pt-1 flex-1">
-                        <MemoizedQuestionText text={typeof q === "string" ? q : q.text} id={`math-q-${idx}`} />
-                        {q.marks && <div className="text-muted-foreground font-normal text-sm mt-2">[{q.marks} marks]</div>}
-                      </div>
-                   </h3>
-                    <div className="pl-11 space-y-8">
-                      {(() => {
-                        const marks = q.marks || 3;
-                        // 5+ marks OR existing parts: render as labeled parts a, b, c...
-                        if (marks >= 5 || (q.parts && q.parts.length > 1)) {
-                          const partLabels = q.parts && q.parts.length > 1
-                            ? q.parts
-                            : Array.from({ length: answers[idx]?.length || marks }, (_, i) => String.fromCharCode(97 + i));
-                          return (answers[idx] || []).map((partSteps: string[], partIdx: number) => (
-                            <div key={partIdx} className="space-y-3 bg-background/30 p-4 rounded-2xl border border-border/40">
-                              <div className="font-bold text-sm text-primary uppercase tracking-wider">
-                                Part {(partLabels[partIdx] || String.fromCharCode(97 + partIdx)).toUpperCase()}
-                              </div>
-                              {Array.isArray(partSteps) && partSteps.map((stepVal, stepIdx) => {
-                                const isLastPart = partIdx === (answers[idx] || []).length - 1;
-                                const isLastStep = stepIdx === partSteps.length - 1;
-                                const showAsAnswer = isLastPart && isLastStep;
-                                
-                                return (
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><Sigma className="w-6 h-6 text-primary" /> Practice Session</h2>
+            <div id="math-questions-container" className="space-y-10">
+              {questions.map((q, idx) => (
+                <div key={idx} className="space-y-4">
+                  <h3 className="font-semibold text-lg text-foreground flex gap-3 items-start">
+                    <span className="shrink-0 w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold text-sm border border-primary/20">{idx + 1}</span>
+                    <div className="pt-1 flex-1">
+                      <MemoizedQuestionText text={typeof q === "string" ? q : q.text} id={`math-q-${idx}`} />
+                      {q.marks && <div className="text-muted-foreground font-normal text-sm mt-2">[{q.marks} marks]</div>}
+                    </div>
+                  </h3>
+                  <div className="pl-11 space-y-8">
+                    {(() => {
+                      const marks = q.marks || 3;
+                      // 5+ marks OR existing parts: render as labeled parts a, b, c...
+                      if (marks >= 5 || (q.parts && q.parts.length > 1)) {
+                        const partLabels = q.parts && q.parts.length > 1
+                          ? q.parts
+                          : Array.from({ length: answers[idx]?.length || marks }, (_, i) => String.fromCharCode(97 + i));
+                        return (answers[idx] || []).map((partSteps: string[], partIdx: number) => (
+                          <div key={partIdx} className="space-y-3 bg-background/30 p-4 rounded-2xl border border-border/40">
+                            <div className="font-bold text-sm text-primary uppercase tracking-wider">
+                              Part {(partLabels[partIdx] || String.fromCharCode(97 + partIdx)).toUpperCase()}
+                            </div>
+                            {Array.isArray(partSteps) && partSteps.map((stepVal, stepIdx) => {
+                              const isLastPart = partIdx === (answers[idx] || []).length - 1;
+                              const isLastStep = stepIdx === partSteps.length - 1;
+                              const showAsAnswer = isLastPart && isLastStep;
+                              const isWorkingStep = !(isLastPart && isLastStep);
+
+                              return (
                                 <div key={stepIdx} className="space-y-1">
-                                  {isLastPart && (
-                                    <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                                      {showAsAnswer ? "Answer" : "Working Out"}
-                                    </div>
-                                  )}
+                                  <div className="flex items-center justify-between">
+                                    {isLastPart && (
+                                      <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                                        {showAsAnswer ? "Answer" : "Working Out"}
+                                      </div>
+                                    )}
+                                    {isWorkingStep && (
+                                      <button
+                                        onClick={() => {
+                                          const copy = [...answers];
+                                          copy[idx][partIdx].splice(stepIdx, 1);
+                                          setAnswers(copy);
+                                        }}
+                                        className="ml-auto text-muted-foreground hover:text-red-500 text-xs px-1.5 py-0.5 rounded hover:bg-red-500/10 transition-colors"
+                                        title="Remove step"
+                                      >✕</button>
+                                    )}
+                                  </div>
                                   {/* @ts-ignore */}
                                   <math-field
                                     id={`math-field-${idx}-${partIdx}-${stepIdx}`}
@@ -726,100 +712,125 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
                                       setAnswers(copy);
                                     }}
                                   />
-                                  <Button variant="outline" size="sm" className="font-bold text-sm px-3 border-border/60 hover:bg-primary/10 hover:text-primary"
-                                    onClick={() => {
-                                      const fieldId = `math-field-${idx}-${partIdx}-${stepIdx}`;
-                                      const field = document.getElementById(fieldId) as any;
-                                      if (field) { field.focus(); field.executeCommand(["insert", "\\frac{#@}{#?}"]); }
-                                    }}>½ Fraction</Button>
-                                </div>
-                                );
-                              })}
-                            </div>
-                          ));
-                        }
-                        // 3 marks: Steps + Answer
-                        if (marks <= 3 && marks > 1) {
-                          const partSteps: string[] = answers[idx]?.[0] || ["", "", ""];
-                          return (
-                            <div className="space-y-4">
-                              {partSteps.map((stepVal, stepIdx) => (
-                                <div key={stepIdx} className="space-y-1">
+                                <Button variant="outline" size="sm" className="font-bold text-sm px-3 border-border/60 hover:bg-primary/10 hover:text-primary"
+                                  onClick={() => {
+                                    const fieldId = `math-field-${idx}-${partIdx}-${stepIdx}`;
+                                    const field = document.getElementById(fieldId) as any;
+                                    if (field) { field.focus(); field.executeCommand(["insert", "\\frac{#@}{#?}"]); }
+                                  }}>½ Fraction</Button>
+                              </div>
+                            );
+                          })}
+                          
+                          {partIdx === (answers[idx] || []).length - 1 && (
+                            <Button variant="default" size="sm" onClick={() => {
+                              const copy = [...answers];
+                              // Insert a new step before the answer box
+                              copy[idx][partIdx].splice(copy[idx][partIdx].length - 1, 0, "");
+                              setAnswers(copy);
+                            }} className="w-full mt-3 font-bold gap-2 text-sm bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20">
+                              + Add Next Step
+                            </Button>
+                          )}
+                        </div>
+                      ));
+                    }
+                      // 3 marks: Steps + Answer
+                      if (marks <= 3 && marks > 1) {
+                        const partSteps: string[] = answers[idx]?.[0] || ["", "", ""];
+                        return (
+                          <div className="space-y-4">
+                            {partSteps.map((stepVal, stepIdx) => (
+                              <div key={stepIdx} className="space-y-1">
+                                <div className="flex items-center justify-between">
                                   <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                                     {stepIdx === partSteps.length - 1 ? "Answer" : `Step ${stepIdx + 1}`}
                                   </div>
-                                  {/* @ts-ignore */}
-                                  <math-field
-                                    id={`math-field-${idx}-0-${stepIdx}`}
-                                    className={cn("w-full rounded-xl border bg-background shadow-sm block text-lg p-2 min-h-[70px]",
-                                      stepIdx === partSteps.length - 1 ? "border-primary/40 bg-primary/5" : "border-border"
-                                    )}
-                                    style={{ '--keyboard-zindex': '100', color: 'var(--foreground)' } as React.CSSProperties}
-                                    value={stepVal}
-                                    onInput={(e: any) => {
-                                      const copy = [...answers];
-                                      if (!copy[idx]) copy[idx] = [["", "", ""]];
-                                      if (!copy[idx][0]) copy[idx][0] = ["", "", ""];
-                                      copy[idx][0][stepIdx] = e.target.value;
-                                      setAnswers(copy);
-                                    }}
-                                  />
-                                  <Button variant="outline" size="sm" className="font-bold text-sm px-3 border-border/60 hover:bg-primary/10 hover:text-primary"
-                                    onClick={() => {
-                                      const fieldId = `math-field-${idx}-0-${stepIdx}`;
-                                      const field = document.getElementById(fieldId) as any;
-                                      if (field) { field.focus(); field.executeCommand(["insert", "\\frac{#@}{#?}"]); }
-                                    }}>½ Fraction</Button>
+                                  {stepIdx < partSteps.length - 1 && (
+                                    <button
+                                      onClick={() => {
+                                        const copy = [...answers];
+                                        if (!copy[idx]) copy[idx] = [["", "", ""]];
+                                        copy[idx][0].splice(stepIdx, 1);
+                                        setAnswers([...copy]);
+                                      }}
+                                      className="text-muted-foreground hover:text-red-500 text-xs px-1.5 py-0.5 rounded hover:bg-red-500/10 transition-colors"
+                                      title="Remove step"
+                                    >✕</button>
+                                  )}
                                 </div>
-                              ))}
-                              <Button variant="default" size="sm" onClick={() => {
-                                const copy = [...answers];
-                                if (!copy[idx]) copy[idx] = [["", "", ""]];
-                                if (!copy[idx][0]) copy[idx][0] = ["", "", ""];
-                                // Insert a new step before the answer box
-                                copy[idx][0].splice(copy[idx][0].length - 1, 0, "");
-                                setAnswers(copy);
-                              }} className="w-full font-bold gap-2 text-sm bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20">
-                                + Add Next Step
-                              </Button>
-                            </div>
-                          );
-                        }
-                        // 1 mark: single Answer box
-                        const answerVal: string = answers[idx]?.[0]?.[0] || "";
-                        return (
-                          <div className="space-y-1">
-                            <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Answer</div>
-                            {/* @ts-ignore */}
-                            <math-field
-                              id={`math-field-${idx}-0-0`}
-                              className="w-full rounded-xl border border-primary/40 bg-primary/5 shadow-sm block text-lg p-2 min-h-[60px]"
-                              style={{ '--keyboard-zindex': '100', color: 'var(--foreground)' } as React.CSSProperties}
-                              value={answerVal}
-                              onInput={(e: any) => {
-                                const copy = [...answers];
-                                if (!copy[idx]) copy[idx] = [[""]];
-                                if (!copy[idx][0]) copy[idx][0] = [""];
-                                copy[idx][0][0] = e.target.value;
-                                setAnswers(copy);
-                              }}
-                            />
-                            <Button variant="outline" size="sm" className="font-bold text-sm px-3 border-border/60 hover:bg-primary/10 hover:text-primary mt-1"
-                              onClick={() => {
-                                const field = document.getElementById(`math-field-${idx}-0-0`) as any;
-                                if (field) { field.focus(); field.executeCommand(["insert", "\\frac{#@}{#?}"]); }
-                              }}>½ Fraction</Button>
+                                {/* @ts-ignore */}
+                                <math-field
+                                  id={`math-field-${idx}-0-${stepIdx}`}
+                                  className={cn("w-full rounded-xl border bg-background shadow-sm block text-lg p-2 min-h-[70px]",
+                                    stepIdx === partSteps.length - 1 ? "border-primary/40 bg-primary/5" : "border-border"
+                                  )}
+                                  style={{ '--keyboard-zindex': '100', color: 'var(--foreground)' } as React.CSSProperties}
+                                  value={stepVal}
+                                  onInput={(e: any) => {
+                                    const copy = [...answers];
+                                    if (!copy[idx]) copy[idx] = [["", "", ""]];
+                                    if (!copy[idx][0]) copy[idx][0] = ["", "", ""];
+                                    copy[idx][0][stepIdx] = e.target.value;
+                                    setAnswers(copy);
+                                  }}
+                                />
+                                <Button variant="outline" size="sm" className="font-bold text-sm px-3 border-border/60 hover:bg-primary/10 hover:text-primary"
+                                  onClick={() => {
+                                    const fieldId = `math-field-${idx}-0-${stepIdx}`;
+                                    const field = document.getElementById(fieldId) as any;
+                                    if (field) { field.focus(); field.executeCommand(["insert", "\\frac{#@}{#?}"]); }
+                                  }}>½ Fraction</Button>
+                              </div>
+                            ))}
+                            <Button variant="default" size="sm" onClick={() => {
+                              const copy = [...answers];
+                              if (!copy[idx]) copy[idx] = [["", "", ""]];
+                              if (!copy[idx][0]) copy[idx][0] = ["", "", ""];
+                              // Insert a new step before the answer box
+                              copy[idx][0].splice(copy[idx][0].length - 1, 0, "");
+                              setAnswers(copy);
+                            }} className="w-full font-bold gap-2 text-sm bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20">
+                              + Add Next Step
+                            </Button>
                           </div>
                         );
-                      })()}
-                    </div>
-                 </div>
-               ))}
-             </div>
+                      }
+                      // 1 mark: single Answer box
+                      const answerVal: string = answers[idx]?.[0]?.[0] || "";
+                      return (
+                        <div className="space-y-1">
+                          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Answer</div>
+                          {/* @ts-ignore */}
+                          <math-field
+                            id={`math-field-${idx}-0-0`}
+                            className="w-full rounded-xl border border-primary/40 bg-primary/5 shadow-sm block text-lg p-2 min-h-[60px]"
+                            style={{ '--keyboard-zindex': '100', color: 'var(--foreground)' } as React.CSSProperties}
+                            value={answerVal}
+                            onInput={(e: any) => {
+                              const copy = [...answers];
+                              if (!copy[idx]) copy[idx] = [[""]];
+                              if (!copy[idx][0]) copy[idx][0] = [""];
+                              copy[idx][0][0] = e.target.value;
+                              setAnswers(copy);
+                            }}
+                          />
+                          <Button variant="outline" size="sm" className="font-bold text-sm px-3 border-border/60 hover:bg-primary/10 hover:text-primary mt-1"
+                            onClick={() => {
+                              const field = document.getElementById(`math-field-${idx}-0-0`) as any;
+                              if (field) { field.focus(); field.executeCommand(["insert", "\\frac{#@}{#?}"]); }
+                            }}>½ Fraction</Button>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="flex justify-end pt-4 pb-20">
             <Button size="lg" className="px-10 py-6 text-lg font-bold shadow-lg" onClick={handleSubmit}>
-               Submit for Marking
+              Submit for Marking
             </Button>
           </div>
         </div>
@@ -854,50 +865,49 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
                 const maxMarks = results[idx].max_marks || 10;
                 const pct = maxMarks > 0 ? marks / maxMarks : 0;
                 return (
-                <div key={idx} className="p-6 rounded-2xl border border-border bg-background/50 space-y-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="font-semibold text-lg text-foreground flex gap-3 items-start">
-                      <span className="shrink-0 w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold text-sm border border-primary/20">{idx + 1}</span>
-                      <div className="pt-1 flex-1">
-                        <div className="prose dark:prose-invert max-w-none prose-p:my-1 prose-p:leading-relaxed">
-                          <ReactMarkdown>
-                            {typeof q === "string" ? q : q.text}
-                          </ReactMarkdown>
+                  <div key={idx} className="p-6 rounded-2xl border border-border bg-background/50 space-y-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="font-semibold text-lg text-foreground flex gap-3 items-start">
+                        <span className="shrink-0 w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold text-sm border border-primary/20">{idx + 1}</span>
+                        <div className="pt-1 flex-1">
+                          <div className="prose dark:prose-invert max-w-none prose-p:my-1 prose-p:leading-relaxed">
+                            <MemoizedQuestionText text={typeof q === "string" ? q : q.text} id={`math-result-q-${idx}`} />
+                          </div>
+                        </div>
+                      </h3>
+                      <div className={cn("px-3 py-1.5 rounded-lg font-bold text-sm whitespace-nowrap", pct >= 0.7 ? "bg-emerald-500/10 text-emerald-600" : pct >= 0.4 ? "bg-amber-500/10 text-amber-600" : "bg-red-500/10 text-red-600")}>
+                        {marks} / {maxMarks} marks
+                      </div>
+                    </div>
+                    <div className="pl-11 grid md:grid-cols-2 gap-4">
+                      <div className="p-4 rounded-xl border border-border/50 bg-card font-mono text-sm whitespace-pre-wrap opacity-70">
+                        <p className="text-xs font-bold uppercase tracking-wider mb-2 text-muted-foreground font-sans">Your Working:</p>
+                        {(() => {
+                          const raw = answers[idx];
+                          const flattened = Array.isArray(raw)
+                            ? raw.flat(Infinity).map(s => String(s || "")).filter(s => s.trim() !== "")
+                            : typeof raw === "string" && raw.trim() !== "" ? [raw] : [];
+
+                          if (flattened.length === 0) return <span className="text-muted-foreground italic">No working provided.</span>;
+
+                          return flattened.map((step: string, i: number) => (
+                            <div key={i} className="mb-2 pb-2 border-b border-border/30 last:border-0 last:mb-0 last:pb-0">
+                              <span className="text-muted-foreground mr-2">{i + 1}.</span>
+                              <span dangerouslySetInnerHTML={{ __html: typeof window !== "undefined" && (window as any).katex ? (window as any).katex.renderToString(step, { throwOnError: false }) : step }} />
+                            </div>
+                          ));
+                        })()}
+                      </div>
+                      <div className="p-4 rounded-xl border border-primary/20 bg-primary/5 text-sm whitespace-pre-wrap font-medium">
+                        <p className="text-xs font-bold uppercase tracking-wider mb-2 text-primary font-sans">Examiner Feedback:</p>
+                        <div className="leading-relaxed [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>li]:mb-1 [&>strong]:font-bold [&>strong]:text-current">
+                          <MemoizedQuestionText text={results[idx].feedback} id={`math-feedback-${idx}`} />
                         </div>
                       </div>
-                    </h3>
-                    <div className={cn("px-3 py-1.5 rounded-lg font-bold text-sm whitespace-nowrap", pct >= 0.7 ? "bg-emerald-500/10 text-emerald-600" : pct >= 0.4 ? "bg-amber-500/10 text-amber-600" : "bg-red-500/10 text-red-600")}>
-                      {marks} / {maxMarks} marks
                     </div>
                   </div>
-                  <div className="pl-11 grid md:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-xl border border-border/50 bg-card font-mono text-sm whitespace-pre-wrap opacity-70">
-                      <p className="text-xs font-bold uppercase tracking-wider mb-2 text-muted-foreground font-sans">Your Working:</p>
-                      {(() => {
-                        const raw = answers[idx];
-                        const flattened = Array.isArray(raw)
-                          ? raw.flat(Infinity).map(s => String(s || "")).filter(s => s.trim() !== "")
-                          : typeof raw === "string" && raw.trim() !== "" ? [raw] : [];
-
-                        if (flattened.length === 0) return <span className="text-muted-foreground italic">No working provided.</span>;
-
-                        return flattened.map((step: string, i: number) => (
-                          <div key={i} className="mb-2 pb-2 border-b border-border/30 last:border-0 last:mb-0 last:pb-0">
-                            <span className="text-muted-foreground mr-2">{i + 1}.</span> 
-                            <span dangerouslySetInnerHTML={{__html: typeof window !== "undefined" && (window as any).katex ? (window as any).katex.renderToString(step, {throwOnError: false}) : step}} />
-                          </div>
-                        ));
-                      })()}
-                    </div>
-                    <div className="p-4 rounded-xl border border-primary/20 bg-primary/5 text-sm whitespace-pre-wrap font-medium">
-                       <p className="text-xs font-bold uppercase tracking-wider mb-2 text-primary font-sans">Examiner Feedback:</p>
-                       <div className="leading-relaxed [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>li]:mb-1 [&>strong]:font-bold [&>strong]:text-current">
-                         <MemoizedQuestionText text={results[idx].feedback} id={`math-feedback-${idx}`} />
-                       </div>
-                    </div>
-                  </div>
-                </div>
-              )})}
+                )
+              })}
             </div>
 
             <div className="flex justify-end pt-8 mt-8 border-t border-border/50 gap-4">
@@ -917,7 +927,7 @@ You MUST reply with ONLY a raw JSON object (no markdown, no backticks). Format:
           </div>
         </div>
       )}
-      
+
       {examState === "forfeited" && (
         <div className="flex flex-col items-center text-center max-w-lg mx-auto py-20 animate-in zoom-in-95 duration-500">
           <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/20">

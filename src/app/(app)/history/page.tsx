@@ -1,10 +1,11 @@
 "use client";
 
+// Trigger rebuild
 import { useState, useEffect } from "react";
 import { Clock, BookOpen, PenLine, FileText, ChevronRight, Loader2, Trash2, X, Globe, Lock, ArrowRight, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
+import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction, fetchExploreHistoryAdminAction } from "@/actions/supabase";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -58,7 +59,7 @@ export default function HistoryPage() {
           fetchFeatureAction("quizzes"),
           fetchFeatureAction("flashcards"),
           fetchFeatureAction("essay_sims"),
-          fetchFeatureAction("notes"),
+          fetchExploreHistoryAdminAction(),
           fetchFeatureAction("mind_maps"),
         ]);
         
@@ -67,7 +68,8 @@ export default function HistoryPage() {
         if (flashRes) setFlashcards(flashRes);
         if (essayRes) setEssays(essayRes);
         if (notesRes || mindmapsRes) {
-          const combined = [...(notesRes || []), ...(mindmapsRes || [])].sort((a,b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+          const mappedMindmaps = (mindmapsRes || []).map(m => ({ ...m, type: "mindmap" }));
+          const combined = [...(notesRes || []), ...mappedMindmaps].sort((a,b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime());
           setExplore(combined);
         }
       } catch (err) {
@@ -86,7 +88,7 @@ export default function HistoryPage() {
     if (table === "quizzes") setQuizzes(prev => prev.filter(q => q.id !== id));
     if (table === "flashcards") setFlashcards(prev => prev.filter(f => f.id !== id));
     if (table === "essay_sims") setEssays(prev => prev.filter(e => e.id !== id));
-    if (table === "notes" || table === "mind_maps") setExplore(prev => prev.filter(e => e.id !== id));
+    if (table === "explore_history" || table === "mind_maps") setExplore(prev => prev.filter(e => e.id !== id));
   };
 
   const formatDate = (dateString: string) => {
@@ -96,9 +98,9 @@ export default function HistoryPage() {
   };
 
   const handleRetakeFlashcards = (f: any) => {
-    localStorage.setItem("flashcards_all", JSON.stringify(f.cards || []));
-    localStorage.setItem("flashcards_study", JSON.stringify(f.cards || []));
-    localStorage.setItem("flashcards_title", JSON.stringify(f.title || f.topic || "Untitled Deck"));
+    localStorage.setItem("flashcards_all", JSON.stringify(f.data?.cards || []));
+    localStorage.setItem("flashcards_study", JSON.stringify(f.data?.cards || []));
+    localStorage.setItem("flashcards_title", JSON.stringify(f.data?.title || f.topic || "Untitled Deck"));
     localStorage.setItem("flashcards_topic", JSON.stringify(f.topic || ""));
     localStorage.setItem("flashcards_mode", JSON.stringify("studying"));
     localStorage.setItem("flashcards_index", JSON.stringify(0));
@@ -180,39 +182,46 @@ export default function HistoryPage() {
               </div>
             )}
 
-            {selectedItem.type === "essay" && (
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <span className="text-4xl font-black text-primary">{selectedItem.data.grade_letter}</span>
+            {selectedItem.type === "essay" && (() => {
+              const grade = selectedItem.data.grade || {};
+              const rawText = selectedItem.data.essay || "N/A";
+
+              return (
+                <div className="space-y-6">
+                  {grade.grade_letter && (
+                    <div className="flex items-center gap-4">
+                      <span className="text-4xl font-black text-primary">{grade.grade_letter}</span>
+                      <div>
+                        <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Score</p>
+                        <p className="text-xl font-semibold">{grade.final_score}/100</p>
+                      </div>
+                    </div>
+                  )}
+                  {grade.key_issues && (
+                    <div>
+                      <h3 className="font-bold text-destructive mb-2">Key Issues</h3>
+                      <ul className="list-disc pl-5 space-y-1 text-sm text-foreground">
+                        {grade.key_issues.map((iss: string, i: number) => <li key={i}>{iss}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                  {grade.improvement_points && (
+                    <div>
+                      <h3 className="font-bold text-green-600 mb-2">Improvements</h3>
+                      <ul className="list-disc pl-5 space-y-1 text-sm text-foreground">
+                        {grade.improvement_points.map((imp: string, i: number) => <li key={i}>{imp}</li>)}
+                      </ul>
+                    </div>
+                  )}
                   <div>
-                    <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Score</p>
-                    <p className="text-xl font-semibold">{selectedItem.data.final_score}/100</p>
+                    <h3 className="font-bold text-foreground mb-2">Original Submission</h3>
+                    <div className="text-sm text-muted-foreground whitespace-pre-wrap bg-muted/30 p-4 rounded-lg">
+                      {rawText}
+                    </div>
                   </div>
                 </div>
-                {selectedItem.data.key_issues && (
-                  <div>
-                    <h3 className="font-bold text-destructive mb-2">Key Issues</h3>
-                    <ul className="list-disc pl-5 space-y-1 text-sm text-foreground">
-                      {selectedItem.data.key_issues.map((iss: string, i: number) => <li key={i}>{iss}</li>)}
-                    </ul>
-                  </div>
-                )}
-                {selectedItem.data.improvement_points && (
-                  <div>
-                    <h3 className="font-bold text-green-600 mb-2">Improvements</h3>
-                    <ul className="list-disc pl-5 space-y-1 text-sm text-foreground">
-                      {selectedItem.data.improvement_points.map((imp: string, i: number) => <li key={i}>{imp}</li>)}
-                    </ul>
-                  </div>
-                )}
-                <div>
-                  <h3 className="font-bold text-foreground mb-2">Original Essay</h3>
-                  <div className="text-sm text-muted-foreground whitespace-pre-wrap bg-muted/30 p-4 rounded-lg">
-                    {selectedItem.data.original_essay || "N/A"}
-                  </div>
-                </div>
-              </div>
-            )}
+              );
+            })()}
 
             {(selectedItem.type === "note_summary_saved" || selectedItem.type === "note_summary") && (
               <div className="space-y-6 font-sans">
@@ -329,7 +338,7 @@ export default function HistoryPage() {
                         <div className="flex items-center gap-3 text-sm text-muted-foreground">
                           <span>{formatDate(q.created_at)}</span>
                           <span>•</span>
-                          <span>{q.questions?.length || 0} Questions</span>
+                          <span>{q.data?.length || 0} Questions</span>
                           {q.score !== null && (
                             <>
                               <span>•</span>
@@ -365,9 +374,9 @@ export default function HistoryPage() {
                         <div className="flex items-center gap-3 text-sm text-muted-foreground">
                           <span className="font-bold text-primary">Flashcards</span>
                           <span>•</span>
-                          <span>{f.cards?.length || 0} Cards</span>
+                          <span>{f.data?.cards?.length || 0} Cards</span>
                           <span>•</span>
-                          <span>{formatDate(f.created_at)}</span>
+                          <span>{formatDate(f.updated_at || f.created_at)}</span>
                         </div>
                       </div>
                       <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("flashcards", f.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
@@ -395,12 +404,12 @@ export default function HistoryPage() {
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="flex items-center gap-3 mb-1">
-                            <span className="text-2xl font-black text-primary leading-none">{e.grade_letter}</span>
+                            <span className="text-2xl font-black text-primary leading-none">{e.grade?.grade_letter || "N/A"}</span>
                             <div className="h-4 w-px bg-border"></div>
-                            <h3 className="font-semibold text-foreground text-lg leading-none">Score: {e.final_score}/100</h3>
+                            <h3 className="font-semibold text-foreground text-lg leading-none">Score: {e.grade?.final_score ?? "--"}/100</h3>
                           </div>
                           <div className="flex items-center gap-3 text-sm text-muted-foreground mt-2">
-                            <span>{formatDate(e.created_at)}</span>
+                            <span>{formatDate(e.created_at || e.updated_at)}</span>
                           </div>
                         </div>
                         <Button variant="ghost" size="icon" onClick={(ev) => { ev.stopPropagation(); handleDelete("essay_sims", e.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
@@ -411,7 +420,7 @@ export default function HistoryPage() {
                         <div>
                           <p className="text-xs font-bold uppercase tracking-wider text-destructive mb-2">Key Issues</p>
                           <ul className="space-y-1">
-                            {e.key_issues?.map((issue: string, i: number) => (
+                            {e.grade?.key_issues?.map((issue: string, i: number) => (
                               <li key={i} className="text-xs text-muted-foreground truncate flex items-center gap-2">
                                 <span className="w-1 h-1 rounded-full bg-destructive shrink-0"></span> {issue}
                               </li>
@@ -421,7 +430,7 @@ export default function HistoryPage() {
                         <div>
                           <p className="text-xs font-bold uppercase tracking-wider text-green-600 mb-2">Improvements</p>
                           <ul className="space-y-1">
-                            {e.improvement_points?.map((point: string, i: number) => (
+                            {e.grade?.improvement_points?.map((point: string, i: number) => (
                               <li key={i} className="text-xs text-muted-foreground truncate flex items-center gap-2">
                                 <span className="w-1 h-1 rounded-full bg-green-600 shrink-0"></span> {point}
                               </li>

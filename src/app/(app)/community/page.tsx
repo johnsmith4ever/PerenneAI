@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { MessageSquare, Plus, Loader2, ThumbsUp, User as UserIcon, AlertTriangle, Lightbulb, Trash2 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
@@ -91,7 +91,7 @@ export default function CommunityPage() {
       setShowModal(false);
       fetchPosts();
     } catch (e: any) {
-      alert("Failed to submit. Please ensure the 'community_posts' table exists in Supabase.");
+      toast.error("Failed to submit. Please ensure the 'community_posts' table exists in Supabase.");
     } finally {
       setIsSubmitting(false);
     }
@@ -104,7 +104,7 @@ export default function CommunityPage() {
       
       fetchPosts();
     } catch (e: any) {
-      alert("Failed to delete post: " + e.message);
+      toast.error("Failed to delete post: " + e.message);
     }
   };
 

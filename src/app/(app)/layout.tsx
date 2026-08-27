@@ -11,7 +11,9 @@ export default async function AppLayout({
 
   return (
     <UpgradeModalProvider>
-      <AppLayoutClient>{children}</AppLayoutClient>
+      <AppLayoutClient>
+        {children}
+      </AppLayoutClient>
     </UpgradeModalProvider>
   );
 }

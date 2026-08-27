@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "sonner";
 import { useEffect } from "react";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ export default function DonationPage() {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get("success") === "true") {
-        alert("Thank you so much for your donation! You're a legend!");
+        toast.success("Thank you so much for your donation! You're a legend!");
         window.history.replaceState({}, document.title, window.location.pathname);
       }
     }
@@ -26,11 +26,11 @@ export default function DonationPage() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert("Failed to connect to Stripe: " + data.message);
+        toast.error("Failed to connect to Stripe: " + data.message);
       }
     } catch (e) {
       console.error(e);
-      alert("Something went wrong connecting to Stripe.");
+      toast.error("Something went wrong connecting to Stripe.");
     }
   };
 

@@ -3,6 +3,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { generateGeminiText } from "./gemini-fallback";
 import { generateMistralText } from "./mistral-fallback";
+import { generateClaudeText } from "./claude-fallback";
 
 const groq = createOpenAI({
   baseURL: "https://api.groq.com/openai/v1",
@@ -39,26 +40,16 @@ export async function generateUniversalText({
 }) {
   const finalMessages = messages || [{ role: "user", content: prompt }];
 
-  if (model === "Claude 4.5 Haiku" || model === "Claude 3.5 Sonnet") {
-    const claudeModelName = model === "Claude 3.5 Sonnet" ? "claude-3-5-sonnet-20241022" : "claude-haiku-4-5-20251001";
-    const { text, usage } = await generateText({
-      model: anthropic(claudeModelName),
+  if (model === "Claude 4.5 Haiku" || model === "Claude 4.6 Sonnet") {
+    const claudeModelName = model === "Claude 4.6 Sonnet" ? "claude-sonnet-4-6" : "claude-haiku-4-5-20251001";
+    return await generateClaudeText({
+      modelName: claudeModelName,
       system,
       messages: finalMessages,
       temperature,
-      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
+      ...(maxOutputTokens ? { maxOutputTokens } : {})
     });
-    return { text, usage };
-  } else if (model === "GPT Luna" || model === "GPT Terra") {
-    const openaiModelName = model === "GPT Luna" ? "gpt-5.6-luna" : "gpt-5.6-terra";
-    const { text, usage } = await generateText({
-      model: openai(openaiModelName),
-      system,
-      messages: finalMessages,
-      temperature,
-      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
-    });
-    return { text, usage };
+
   } else if (model === "Deepseek-V4-Pro" || model === "Deepseek V4 Pro") {
     const { text, usage } = await generateText({
       model: deepseek.chat("deepseek-reasoner"),

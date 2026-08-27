@@ -1,4 +1,6 @@
 "use client";
+import { toast } from "sonner";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useState } from "react";
 
 import { Bot, User, Send, Loader2, ArrowLeft, ShieldAlert, Save, CheckCircle2 } from "lucide-react";
@@ -15,11 +17,11 @@ import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertCha
 export default function DebatePage() {
   const { openUpgradeModal } = useUpgradeModal();
   const { canAfford, deductCredits, isLoaded, assistant } = useSubscription();
-  const [topic, setTopic] = useState("");
-  const [stance, setStance] = useState<"Affirmative" | "Against">("Affirmative");
-  const [useResearch, setUseResearch] = useState(false);
-  const [isDebating, setIsDebating] = useState(false);
-  const [messages, setMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
+const [topic, setTopic] = usePersistentState("debate_topic", "");
+const [stance, setStance] = usePersistentState<"Affirmative" | "Against">("debate_stance", "Affirmative");
+const [useResearch, setUseResearch] = usePersistentState("debate_research", false);
+const [isDebating, setIsDebating, isDebatingLoaded] = usePersistentState("debate_active", false);
+const [messages, setMessages] = usePersistentState<{ role: "user" | "assistant"; content: string }[]>("debate_messages", []);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -86,11 +88,11 @@ export default function DebatePage() {
           deductCredits(25, 25, "Tavily Search"); // roughly 3500 flat fee for web search
         }
       } else {
-        alert(data.message || "Failed to get response");
+        toast.error(data.message || "Failed to get response");
       }
     } catch (e) {
       console.error(e);
-      alert("An error occurred");
+      toast.error("An error occurred");
     } finally {
       setIsLoading(false);
     }
@@ -118,10 +120,6 @@ export default function DebatePage() {
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" onClick={() => setIsDebating(false)}>
               Leave / New Debate
-            </Button>
-            <Button variant="outline" size="sm" className="gap-2" onClick={saveToHistory} disabled={isSaving || hasSaved}>
-              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : hasSaved ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Save className="w-4 h-4" />}
-              {hasSaved ? "Saved to History" : "Save Debate"}
             </Button>
           </div>
         )}

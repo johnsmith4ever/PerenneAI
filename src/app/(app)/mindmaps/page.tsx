@@ -1,9 +1,11 @@
 "use client";
+import { toast } from "sonner";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
   Plus, Trash2, ZoomIn, ZoomOut, Maximize, Bot, Loader2,
-  Sparkles, Network, X, RotateCcw, ChevronRight, PanelLeftClose, PanelLeftOpen, Lock, CheckCircle2,
+  Sparkles, Network, X, RotateCcw, ChevronRight, PanelLeftClose, PanelLeftOpen, Lock, CheckCircle2, Printer, Save
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -40,12 +42,12 @@ const CANVAS_CX = CANVAS_SIZE / 2;   // 2500
 const CANVAS_CY = CANVAS_SIZE / 2;   // 2500
 
 // Radial distance from a node's center to its children
-const RADII: Record<number, number> = { 1: 220, 2: 380, 3: 520, 4: 650 };
-const radiusAt = (depth: number) => RADII[depth] ?? 650 + (depth - 4) * 130;
+const RADII: Record<number, number> = { 1: 350, 2: 700, 3: 1050, 4: 1400 };
+const radiusAt = (depth: number) => RADII[depth] ?? 1400 + (depth - 4) * 350;
 
 // Approx half-dimensions of each node (for line termination)
-const NODE_HW: Record<string, number> = { root: 82, mid: 68, leaf: 56 };
-const NODE_HH: Record<string, number> = { root: 22, mid: 18, leaf: 15 };
+const NODE_HW: Record<string, number> = { root: 110, mid: 90, leaf: 75 };
+const NODE_HH: Record<string, number> = { root: 26, mid: 22, leaf: 18 };
 
 function nodeSize(depth: number) {
   if (depth === 0) return { hw: NODE_HW.root, hh: NODE_HH.root };
@@ -68,21 +70,22 @@ function computeLayout(root: MindmapNode): Map<string, { x: number; y: number; d
   const map = new Map<string, { x: number; y: number; depth: number }>();
   map.set(root.id, { x: CANVAS_CX, y: CANVAS_CY, depth: 0 });
 
-  function place(node: MindmapNode, px: number, py: number, startA: number, sweepA: number, depth: number) {
+  function place(node: MindmapNode, startA: number, sweepA: number, depth: number) {
     if (!node.children?.length) return;
     const n = node.children.length;
     const r = radiusAt(depth);
     node.children.forEach((child, i) => {
       const angle = startA + (i + 0.5) * (sweepA / n);
-      const x = px + r * Math.cos(angle);
-      const y = py + r * Math.sin(angle);
+      // Absolute polar coordinates from center
+      const x = CANVAS_CX + r * Math.cos(angle);
+      const y = CANVAS_CY + r * Math.sin(angle);
       map.set(child.id, { x, y, depth });
       const childSweep = sweepA / n;
-      place(child, x, y, startA + i * childSweep, childSweep, depth + 1);
+      place(child, startA + i * childSweep, childSweep, depth + 1);
     });
   }
 
-  place(root, CANVAS_CX, CANVAS_CY, 0, Math.PI * 2, 1);
+  place(root, 0, Math.PI * 2, 1);
   return map;
 }
 
@@ -135,19 +138,22 @@ function palette(depth: number) {
   const router = useRouter();
   const { user } = useUser();
 
-  const [root, setRoot] = useState<MindmapNode>(DEFAULT_ROOT);
+const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_root_v4", DEFAULT_ROOT);
   const [zoom, setZoom] = useState(0.65);
-  const [panelOpen, setPanelOpen] = useState(false);
+  const [panelOpen, setPanelOpen] = usePersistentState("mm_panelOpen", true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasSaved, setHasSaved] = useState(false);
 
   // Analysis
-  const [inputMode, setInputMode] = useState<"notes" | "topic">("topic");
-  const [topic, setTopic] = useState("");
-  const [subject, setSubject] = useState("Biology");
+  const [inputMode, setInputMode] = usePersistentState<"notes" | "topic">("mm_inputMode", "topic");
+  const [topic, setTopic] = usePersistentState("mm_topic", "");
+  const [subject, setSubject] = usePersistentState("mm_subject", "Biology");
   const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
-  const [analysisInput, setAnalysisInput] = useState("");
+  const [analysisInput, setAnalysisInput] = usePersistentState("mm_analysisInput", "");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const [analysis, setAnalysis] = usePersistentState<Analysis | null>("mm_analysis", null);
   const [isBuilding, setIsBuilding] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
 
   // AQA Checker
   useEffect(() => {
@@ -213,7 +219,12 @@ function palette(depth: number) {
   const addChild  = useCallback((id: string) => setRoot(r => addChildTo(r, id)), [setRoot]);
   const updateText = useCallback((id: string, t: string) => setRoot(r => setText(r, id, t)), [setRoot]);
   const deleteNode = useCallback((id: string) => setRoot(r => removeNode(r, id)), [setRoot]);
-  const resetMap   = () => { if (confirm("Clear the current mindmap?")) setRoot({ id: genId(), text: "Central Idea", children: [] }); };
+  const resetMap   = () => setShowResetModal(true);
+  
+  const confirmResetMap = () => {
+    setRoot({ id: genId(), text: "Central Idea", children: [] });
+    setShowResetModal(false);
+  };
 
   // ── Pan ────────────────────────────────────────────────────────────────────
   const onMouseDown = (e: React.MouseEvent) => {
@@ -238,7 +249,7 @@ function palette(depth: number) {
     const textToAnalyze = inputMode === "notes" ? analysisInput : topic;
     if (!textToAnalyze.trim()) return;
 
-    const model: ModelType = assistant;
+    const model: ModelType = "Gemini 3.5 Flash-Lite";
     setIsAnalyzing(true);
     try {
       const res  = await fetch("/api/analyze-topic", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: textToAnalyze, inputMode, subject, model }) });
@@ -246,31 +257,35 @@ function palette(depth: number) {
       if (data.status === "success") {
         if (data.usage) deductCredits(data.usage.promptTokens ?? data.usage.inputTokens, data.usage.completionTokens ?? data.usage.outputTokens, model, "other");
         setAnalysis(data.data);
-      } else { alert("Error: " + data.message); }
-    } catch { alert("Failed to analyse."); }
+      } else { toast.error("Error: " + data.message); }
+    } catch { toast.error("Failed to analyse."); }
     finally { setIsAnalyzing(false); }
   };
 
-  // ── Build manually ─────────────────────────────────────────────────────────
-  const buildManually = () => {
-    if (!analysis) return;
-    setRoot({
-      id: genId(), text: analysis.title,
-      children: analysis.sections.map(s => ({
-        id: genId(), text: s.heading,
-        children: s.points.map(p => ({ id: genId(), text: p, children: [] })),
-      })),
-    });
+  // ── Auto-build with Gemini ─────────────────────────────────────────────────
+  const handleManualSave = async () => {
+    if (!user) return;
+    setIsSaving(true);
+    try {
+      await insertFeatureAction("mind_maps", {
+        user_id: user.id,
+        topic: analysis?.title || topic || "Untitled Mindmap",
+        data: root
+      });
+      setHasSaved(true);
+      setTimeout(() => setHasSaved(false), 3000);
+      toast.success("Saved to history!");
+    } catch (e: any) {
+      toast.error("Failed to save: " + e.message);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  // ── Auto-build with Gemini ─────────────────────────────────────────────────
   const buildWithGemini = async () => {
     if (!analysis) return;
-    if (!FREE_ACCESS_MODE && TIER_RANK[tier] < TIER_RANK["Pro"]) {
-      router.push("/subscriptions");
-      return;
-    }
-    const model: ModelType = assistant;
+
+    const model: ModelType = "Gemini 3.5 Flash-Lite";
     const structured = `Title: ${analysis.title}\nTheme: ${analysis.mainTheme}\n\n` +
       analysis.sections.map(s => `Section: ${s.heading}\n${s.points.map(p => `- ${p}`).join("\n")}`).join("\n\n");
     setIsBuilding(true);
@@ -285,13 +300,12 @@ function palette(depth: number) {
             await insertFeatureAction("mind_maps", {
               user_id: user.id,
               topic: analysis.title || "Untitled Mindmap",
-              type: "mindmap",
               data: data.data
             });
           }
         }
-      } else { alert("Error: " + data.message); }
-    } catch { alert("Failed to build with Gemini."); }
+      } else { toast.error("Error: " + data.message); }
+    } catch { toast.error("Failed to build with Gemini."); }
     finally { setIsBuilding(false); }
   };
 
@@ -372,20 +386,32 @@ function palette(depth: number) {
     });
   };
 
+  const handlePrint = () => {
+    // Zoom out enough to fit a level-4 mindmap (radius 1400) onto an A4 page
+    handleZoom(0.28);
+    setTimeout(() => {
+      centerCanvas();
+      setTimeout(() => {
+        window.print();
+      }, 100);
+    }, 50);
+  };
+
   // ─────────────────────────────────────────────────────────────────────────
   
 
   return (
+    <>
     <div className="flex h-[calc(100vh-2rem)] w-full overflow-hidden">
 
       {/* ══════════ LEFT PANEL ══════════ */}
       <div
         className={cn(
           "shrink-0 border-r border-border flex flex-col bg-card overflow-hidden transition-all duration-300 ease-in-out",
-          panelOpen ? "w-[360px]" : "w-0 border-r-0"
+          panelOpen ? "w-[300px]" : "w-0 border-r-0"
         )}
       >
-        <div className="w-[360px] flex flex-col h-full">
+        <div className="w-[300px] flex flex-col h-full">
           {/* Header */}
           <div className="p-5 border-b border-border shrink-0 flex items-start justify-between">
             <div>
@@ -443,7 +469,10 @@ function palette(depth: number) {
                         <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider flex items-center gap-1 mt-1"><CheckCircle2 className="w-3 h-3"/> Found in AQA DB</p>
                       )}
                       {aqaStatus === "not_found" && subject !== "General" && (
-                        <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider mt-1">Not found in official DB (Soft warning)</p>
+                        <div className="bg-amber-500/20 px-3 py-2 mt-2 rounded-md text-[10px] font-bold text-amber-500 uppercase tracking-wider flex items-center gap-2 border border-amber-500/20">
+                          <Sparkles className="w-3 h-3" />
+                          Subject/Topic Mismatch (Not in DB)
+                        </div>
                       )}
                     </div>
                   </div>
@@ -498,14 +527,10 @@ function palette(depth: number) {
 
                 {/* Build Buttons */}
                 <div className="space-y-2 pt-1">
-                  <Button variant="outline" className="w-full gap-2" onClick={buildManually}><Network size={14} />Build Map Manually</Button>
-                  
-
                     <Button className="w-full gap-2 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 text-white border-0 shadow-md" onClick={buildWithGemini} disabled={isBuilding}>
                       {isBuilding ? <Loader2 className="w-4 h-4 animate-spin" /> : <Bot size={14} />}
                       {isBuilding ? "Building…" : "Auto-Build with Gemini"}
                     </Button>
-
                 </div>
               </div>
             )}
@@ -525,25 +550,29 @@ function palette(depth: number) {
       </div>
 
       {/* ══════════ RIGHT PANEL ══════════ */}
-      <div className="flex-1 flex flex-col overflow-hidden relative bg-background">
+      <div id="mindmap-print-container" className="flex-1 flex flex-col overflow-hidden relative bg-background">
 
         {/* Toolbar */}
-        <div className="absolute top-4 left-4 z-50 flex items-center gap-1.5 bg-card/90 backdrop-blur-md px-2 py-1.5 rounded-2xl border border-border shadow-lg">
+        <div className="print-hide absolute top-4 left-4 z-50 flex items-center gap-1 bg-card/90 backdrop-blur-md px-1.5 py-1 rounded-2xl border border-border shadow-lg">
           {/* Panel toggle */}
-          <button onClick={() => setPanelOpen(p => !p)} className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors" title={panelOpen ? "Close panel" : "Open panel"}>
-            {panelOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
+          <button onClick={() => setPanelOpen(p => !p)} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors" title={panelOpen ? "Close panel" : "Open panel"}>
+            {panelOpen ? <PanelLeftClose size={14} /> : <PanelLeftOpen size={14} />}
           </button>
-          <div className="w-px h-5 bg-border mx-0.5" />
-          <button onClick={() => handleZoom(Math.max(0.2, parseFloat((zoom - 0.1).toFixed(1))))} className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"><ZoomOut size={16} /></button>
-          <span className="text-xs font-medium w-10 text-center tabular-nums">{Math.round(zoom * 100)}%</span>
-          <button onClick={() => handleZoom(Math.min(2, parseFloat((zoom + 0.1).toFixed(1))))} className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"><ZoomIn size={16} /></button>
-          <button onClick={() => { handleZoom(0.65); setTimeout(centerCanvas, 50); }} className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors" title="Reset & re-centre"><Maximize size={14} /></button>
-          <div className="w-px h-5 bg-border mx-0.5" />
-          <button onClick={resetMap} className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 transition-colors" title="New map"><RotateCcw size={14} /></button>
+          <div className="w-px h-4 bg-border mx-0.5" />
+          <button onClick={() => handleZoom(Math.max(0.2, parseFloat((zoom - 0.1).toFixed(1))))} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"><ZoomOut size={14} /></button>
+          <span className="text-[10px] font-medium w-8 text-center tabular-nums">{Math.round(zoom * 100)}%</span>
+          <button onClick={() => handleZoom(Math.min(2, parseFloat((zoom + 0.1).toFixed(1))))} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"><ZoomIn size={14} /></button>
+          <button onClick={() => { handleZoom(0.65); setTimeout(centerCanvas, 50); }} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors" title="Reset & re-centre"><Maximize size={12} /></button>
+          <div className="w-px h-4 bg-border mx-0.5" />
+          <button onClick={handleManualSave} disabled={isSaving} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors" title="Save to History">
+            {isSaving ? <Loader2 size={12} className="animate-spin" /> : hasSaved ? <CheckCircle2 size={12} className="text-green-500" /> : <Save size={12} />}
+          </button>
+          <button onClick={handlePrint} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors" title="Print Map"><Printer size={12} /></button>
+          <button onClick={resetMap} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 transition-colors" title="New map"><RotateCcw size={12} /></button>
         </div>
 
         {/* Hint */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+        <div className="print-hide absolute bottom-4 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
           <p className="text-[10px] text-muted-foreground/60 bg-card/60 backdrop-blur-sm px-3 py-1.5 rounded-full border border-border/40">
             Hover node → <strong>+</strong> add branch · click to edit · drag canvas to pan
           </p>
@@ -570,7 +599,7 @@ function palette(depth: number) {
             }}
           >
             {/* Dot-grid */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.18]" style={{ zIndex: 0 }}>
+            <svg className="print-hide absolute inset-0 w-full h-full pointer-events-none opacity-[0.18]" style={{ zIndex: 0 }}>
               <defs>
                 <pattern id="mmgrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
                   <circle cx="1" cy="1" r="1" fill="currentColor" className="text-border" />
@@ -607,7 +636,59 @@ function palette(depth: number) {
           </div>
         </div>
       </div>
+
+      {showResetModal && (
+        <div className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-card border border-border w-full max-w-sm rounded-2xl shadow-2xl p-6 animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto mb-4">
+              <RotateCcw className="w-6 h-6" />
+            </div>
+            <h2 className="text-xl font-bold font-serif text-center mb-2">Clear Mindmap?</h2>
+            <p className="text-sm text-muted-foreground text-center mb-6">
+              Are you sure you want to completely clear the canvas? All nodes will be permanently removed.
+            </p>
+            <div className="flex gap-3">
+              <Button variant="outline" className="flex-1 rounded-xl" onClick={() => setShowResetModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="destructive" className="flex-1 rounded-xl font-bold" onClick={confirmResetMap}>
+                Clear All
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
+    
+    <style jsx global>{`
+      @media print {
+        @page { size: landscape; margin: 0; }
+        body * { visibility: hidden; }
+        #mindmap-print-container, #mindmap-print-container * { visibility: visible; }
+        #mindmap-print-container {
+          position: fixed !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          background: white !important;
+          overflow: visible !important;
+          z-index: 9999;
+        }
+        .print-hide { display: none !important; }
+        .mm-node > div {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        .mm-node textarea, .mm-node p {
+          color: black !important;
+        }
+        /* Ensure edges print in black */
+        svg path { stroke: black !important; }
+      }
+    `}</style>
+    </>
   );
 }
 
@@ -629,7 +710,7 @@ function MindmapNodeCard({ node, x, y, depth, isRoot, onAdd, onUpdate, onDelete 
   const { border, bg, text: textColor } = palette(depth);
 
   // Width scales with depth
-  const w = isRoot ? 164 : depth <= 1 ? 144 : 120;
+  const w = isRoot ? 220 : depth <= 1 ? 180 : 150;
 
   return (
     <div

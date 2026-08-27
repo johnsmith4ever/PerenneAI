@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2, Calendar, Send, Sparkles, Plus, X, Pencil, Trash, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -182,7 +182,7 @@ export default function CalendarPage() {
     if (!agentPrompt || !subLoaded) return;
     
     if (!canAfford(200, "Gemini 3.6 Flash")) {
-      alert("You do not have enough daily credits to redesign your schedule. Please try again tomorrow or upgrade your plan.");
+      toast.error("You do not have enough daily credits to redesign your schedule. Please try again tomorrow or upgrade your plan.");
       return;
     }
     
@@ -200,11 +200,11 @@ export default function CalendarPage() {
         setSchedule({ ...currentSchedule, days: data.data });
         setAgentPrompt("");
       } else {
-        alert("Failed to redesign: " + data.message);
+        toast.error("Failed to redesign: " + data.message);
       }
     } catch (e) {
       console.error(e);
-      alert("An error occurred");
+      toast.error("An error occurred");
     } finally {
       setAgentLoading(false);
     }

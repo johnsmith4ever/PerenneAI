@@ -72,14 +72,14 @@ You MUST reply with ONLY a raw JSON array of strings representing the questions,
               rules = `AQA Science Rules:
 - 1 min per mark rule. A 6-mark question should take roughly 5 to 6 minutes (including 30 seconds of bullet-point planning).
 - 1-3 Mark Questions: Direct point-marking. State the fact, read the graph, or write the equation.
-- Maths Calculations (2-5 Marks): Step-by-step logic. Always write: Formula -> Substitution -> Rearrangement -> Final Answer with Units.
+- Short Answer Application (2-5 Marks): Require students to apply knowledge to a new context, explain a phenomenon step-by-step, or evaluate an experimental setup. Focus heavily on written explanations and concepts, avoiding purely numerical maths calculation questions.
 - 6-Mark Extended Prose Questions: Level-marked (Level 1: 1-2m, Level 2: 3-4m, Level 3: 5-6m).
 - 6-Marker (Method/Practical): Step-by-step bulleted list with independent, dependent, and control variables specified.
 - 6-Marker (Evaluate/Compare): Balanced pros/cons + a final concluding sentence.`;
 
-              if (testSize === "Small") targets = "GENERATE EXACTLY 5 QUESTIONS IN THIS EXACT ORDER: 1. Fill-in-the-blank (1 mark), 2. Multiple Choice (1 mark), 3. Multiple Choice (1 mark), 4. Multi-step Calculation (3-4 marks), 5. 6-Mark Extended Prose Question.";
-              else if (testSize === "Medium") targets = "GENERATE EXACTLY 8 QUESTIONS IN THIS EXACT ORDER: 1. Fill-in-the-blank (1 mark), 2. Multiple Choice (1 mark), 3. Multiple Choice (1 mark), 4. Multiple Choice (1 mark), 5. Multi-step Calculation (3-4 marks), 6. Multi-step Calculation (3-4 marks), 7. 6-Mark Extended Prose Question, 8. 6-Mark Extended Prose Question.";
-              else targets = "GENERATE EXACTLY 11 QUESTIONS IN THIS EXACT ORDER: 1. Fill-in-the-blank (1 mark), 2. Multiple Choice (1 mark), 3. Multiple Choice (1 mark), 4. Multiple Choice (1 mark), 5. Multiple Choice (1 mark), 6. Multi-step Calculation (3-4 marks), 7. Multi-step Calculation (3-4 marks), 8. Multi-step Calculation (3-4 marks), 9. 6-Mark Extended Prose Question, 10. 6-Mark Extended Prose Question, 11. 6-Mark Extended Prose Question.";
+              if (testSize === "Small") targets = "GENERATE EXACTLY 6 QUESTIONS IN THIS EXACT ORDER: 1. Fill-in-the-blank (1 mark), 2. Multiple Choice (1 mark), 3. Multiple Choice (1 mark), 4. Short Answer Application (3 marks), 5. Short Answer Explanation (3 marks), 6. 6-Mark Extended Prose Question.";
+              else if (testSize === "Medium") targets = "GENERATE EXACTLY 12 QUESTIONS IN THIS EXACT ORDER: 1. Fill-in-the-blank (1 mark), 2. Fill-in-the-blank (1 mark), 3. Multiple Choice (1 mark), 4. Multiple Choice (1 mark), 5. Multiple Choice (1 mark), 6. Multiple Choice (1 mark), 7-10. Short Answer Application / Explanation (3 marks each), 11. 6-Mark Extended Prose Question, 12. 6-Mark Extended Prose Question.";
+              else targets = "GENERATE EXACTLY 24 QUESTIONS IN THIS EXACT ORDER: 1-4. Fill-in-the-blanks (1 mark each), 5-12. Multiple Choice (1 mark each), 13-20. Short Answer Application / Explanation (3 marks each), 21-24. 6-Mark Extended Prose Questions.";
             } else {
                targets = testSize === "Small" ? "GENERATE EXACTLY 3 QUESTIONS. DO NOT EXCEED." : testSize === "Medium" ? "GENERATE EXACTLY 5 QUESTIONS. DO NOT EXCEED." : "GENERATE EXACTLY 8 QUESTIONS. DO NOT EXCEED.";
             }
@@ -98,6 +98,7 @@ UNDER NO CIRCUMSTANCES SHOULD YOU GENERATE MORE QUESTIONS THAN REQUESTED IN THE 
 
 Make sure to include a diversity of question styles exactly like real AQA papers. Include simulated data extracts, short case studies, quotes, or source materials within the questions where appropriate.
 Ensure the style, wording, and mark allocations reflect real AQA exam questions (e.g. "[2 marks]", "[4 marks]", "[6 marks]").
+For Multiple Choice questions, you MUST provide exactly 4 options labelled explicitly as A), B), C), D).
 You MUST reply with ONLY a raw JSON array of strings representing the questions, and absolutely no other text. Example: ["Question 1 [4 marks]", "Question 2 [6 marks]"]`;
           } else {
             return NextResponse.json({ status: "error", message: `The topic '${topic}' does not seem to exist in the official AQA syllabus for ${subject}. Try rewording it, or switch to Freestyle mode.` }, { status: 400 });
@@ -137,8 +138,8 @@ Difficulty: "${difficulty}"
 You will be given the original questions and the student's answers.
 Grade them brutally but fairly. Point out any logical fallacies, missing context, or weak points.
 You MUST reply with ONLY a raw JSON array of objects, each containing 'marks' (number awarded), 'max_marks' (total marks available for the question), and 'feedback' (string). 
-The feedback string MUST be highly organized and formatted in Markdown. Use bolding (**), short bullet points, and explicitly state what they did right vs wrong. Be precise and brutal.
-Example: [{"marks": 2, "max_marks": 5, "feedback": "**Good Start**\\n- You correctly identified X.\\n\\n**Missing Marks**\\n- You failed to mention Y."}]`;
+The feedback string MUST be extremely concise (1-2 sentences maximum). If the student gets full marks (marks == max_marks), leave the feedback string completely empty ("") to save time. Otherwise, just state briefly what was missing or wrong.
+Example: [{"marks": 2, "max_marks": 5, "feedback": "Failed to mention Y."}, {"marks": 5, "max_marks": 5, "feedback": ""}]`;
 
       if (isAQA) {
         finalSystemPrompt = `You are a strict AQA Examiner grading a student's answers.
@@ -149,8 +150,8 @@ You will be given the original questions (which indicate the total marks availab
 You must grade them according to official AQA Mark Scheme principles (awarding marks for correct terminology, logical steps, specific knowledge, and deducting for contradictions).
 Do not scale the marks to 10. You MUST read the question to find the total available marks (e.g., "[6 marks]") and use that as the max_marks.
 You MUST reply with ONLY a raw JSON array of objects, each containing 'marks' (number awarded), 'max_marks' (total marks available for the question), and 'feedback' (string). 
-The feedback string MUST be highly organized and formatted in Markdown. Use bolding (**), short bullet points, and explicitly state what they did right vs wrong according to standard AQA Mark Schemes. Be brutal and precise.
-Example: [{"marks": 2, "max_marks": 4, "feedback": "**What you did right:**\\n- Correctly identified X.\\n\\n**Where you lost marks:**\\n- Failed to mention Y.\\n- AQA requires you to specifically state Z for full marks."}]`;
+The feedback string MUST be extremely concise (1-2 sentences maximum). If the student gets full marks (marks == max_marks), leave the feedback string completely empty ("") to save time. Otherwise, just state briefly what was missing or wrong according to standard AQA Mark Schemes. Be brutal and precise.
+Example: [{"marks": 2, "max_marks": 4, "feedback": "Lost marks for failing to state Z which is required by AQA."}, {"marks": 4, "max_marks": 4, "feedback": ""}]`;
       }
 
       const prompt = `Questions and Answers:

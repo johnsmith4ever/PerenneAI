@@ -47,7 +47,7 @@ Make sure all generated questions are entirely new and distinct from the past qu
 
     prompt += `
 Rules:
-- For Multiple Choice or MC: include an "options" array with 4 choices, and set "answer" to the correct option.
+- For Multiple Choice or MC: include an "options" array with 4 choices, and set "answer" to the correct option. CRITICAL: You MUST randomise which position (A/B/C/D, i.e. index 0/1/2/3) the correct answer appears in. Distribute the correct answer evenly across all 4 positions — do NOT place it at position A (index 0) more than 25% of the time. For every batch of 4 MC questions, ensure the correct answer appears at a different index for each one.
 - For True/False: set "answer" to "True" or "False".
 - For Matching: include an "options" array of items to match, and set "answer" to the correct pairing.
 - For Short Numerical Answer: set "answer" to the numerical value.
@@ -94,8 +94,12 @@ You MUST respond with ONLY a valid JSON array (no wrapping object, no markdown f
       return NextResponse.json({ status: "error", message: "AI returned empty results. Please try again." }, { status: 500 });
     }
 
-    
-    return NextResponse.json({ status: "success", data: questions, usage });
+    const normalisedUsage = {
+      inputTokens: usage?.inputTokens ?? usage?.promptTokens ?? 0,
+      outputTokens: usage?.outputTokens ?? usage?.completionTokens ?? 0,
+    };
+
+    return NextResponse.json({ status: "success", data: questions, usage: normalisedUsage });
 
   } catch (error: any) {
     console.error("Quiz Generation API Error:", error);

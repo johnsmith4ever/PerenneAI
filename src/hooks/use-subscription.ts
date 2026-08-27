@@ -14,11 +14,11 @@ export const FREE_ACCESS_MODE = false;
 
 export const TIER_ALLOWANCES: Record<Tier, number> = {
   Guest: 11_000,
-  Free: 40_000,
+  Free: 30_000,
   Core: 70_000,
-  Pro: 150_000,
-  Premium: 300_000,
-  Maximum: 450_000,
+  Pro: 135_000,
+  Premium: 280_000,
+  Maximum: 400_000,
 };
 
 export const TIER_RANK: Record<Tier, number> = {
@@ -32,35 +32,25 @@ export const TIER_RANK: Record<Tier, number> = {
 
 export type ModelType = 
   | "Mistral Small" 
-  | "GPT OSS"
   | "Gemini 3.5 Flash-Lite"
   | "Gemini 3.6 Flash" 
-  | "Gemini 3.5 Pro"
   | "Deepseek-V4-Flash" 
   | "Deepseek-V4-Pro" 
   | "Claude 4.5 Haiku"
-  | "Claude 3.5 Sonnet"
-  | "GPT Luna"
-  | "GPT Terra"
+  | "Claude 4.6 Sonnet"
   | "Mistral Large"
-  | "Tavily Search"
-  | "Mistral Embed";
+  | "Tavily Search";
 
 export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> = {
-  "Mistral Small": { input: 150.0, output: 150.0 },
-  "GPT OSS": { input: 1, output: 1 },
-  "Gemini 3.5 Flash-Lite": { input: 1, output: 1 },
+  "Mistral Small": { input: 3, output: 3 },
+  "Gemini 3.5 Flash-Lite": { input: 2, output: 2 },
   "Gemini 3.6 Flash": { input: 2.5, output: 2.5 },
-  "Gemini 3.5 Pro": { input: 4, output: 4 },
-  "Deepseek-V4-Flash": { input: 3, output: 3 },
-  "Deepseek-V4-Pro": { input: 5, output: 5 },
-  "Claude 4.5 Haiku": { input: 10, output: 10 },
-  "Claude 3.5 Sonnet": { input: 20, output: 20 },
-  "GPT Luna": { input: 5, output: 5 },
-  "GPT Terra": { input: 15, output: 15 },
-  "Mistral Large": { input: 250.0, output: 250.0 },
+  "Deepseek-V4-Flash": { input: 2.5, output: 2.5 },
+  "Deepseek-V4-Pro": { input: 3.5, output: 3.5 },
+  "Claude 4.5 Haiku": { input: 4, output: 4 },
+  "Claude 4.6 Sonnet": { input: 5, output: 5 },
+  "Mistral Large": { input: 4, output: 4 },
   "Tavily Search": { input: 10, output: 10 },
-  "Mistral Embed": { input: 168, output: 168 },
 };
 
 type SubscriptionState = {
@@ -69,22 +59,36 @@ type SubscriptionState = {
   lastReset: string;
 };
 
-export function getTierModels(tier: Tier): { heavy: ModelType, judge: ModelType, assistant: ModelType } {
-  const heavy: ModelType = "Deepseek-V4-Flash";
-  const judge: ModelType = "Claude 4.5 Haiku";
-  let assistant: ModelType = "Mistral Small"; // Free / Guest tier
+export function getTierModels(tier: Tier): { heavy: ModelType, generation: ModelType, judge: ModelType, assistant: ModelType } {
+  // Free Defaults
+  let heavy: ModelType = "Gemini 3.6 Flash";
+  let generation: ModelType = "Deepseek-V4-Flash";
+  let judge: ModelType = "Claude 4.5 Haiku";
+  let assistant: ModelType = "Mistral Small";
   
   if (tier === "Core") {
-    assistant = "Mistral Large"; // Also implies GPT OSS is unlocked
+    heavy = "Deepseek-V4-Flash";
+    generation = "Deepseek-V4-Flash";
+    judge = "Claude 4.5 Haiku";
+    assistant = "Deepseek-V4-Flash";
   } else if (tier === "Pro") {
-    assistant = "Gemini 3.5 Pro";
-  } else if (tier === "Premium") {
+    heavy = "Deepseek-V4-Pro";
+    generation = "Deepseek-V4-Pro";
+    judge = "Deepseek-V4-Pro";
     assistant = "Deepseek-V4-Pro";
+  } else if (tier === "Premium") {
+    heavy = "Claude 4.5 Haiku";
+    generation = "Claude 4.5 Haiku";
+    judge = "Claude 4.5 Haiku";
+    assistant = "Claude 4.5 Haiku";
   } else if (tier === "Maximum") {
-    assistant = "Claude 3.5 Sonnet";
+    heavy = "Claude 4.6 Sonnet";
+    generation = "Claude 4.6 Sonnet";
+    judge = "Claude 4.6 Sonnet";
+    assistant = "Claude 4.6 Sonnet";
   }
   
-  return { heavy, judge, assistant };
+  return { heavy, generation, judge, assistant };
 }
 
 import { useUser } from "@clerk/nextjs";
@@ -99,6 +103,17 @@ export function useSubscription() {
     lastReset: new Date().toISOString().split("T")[0],
   });
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Sync across components
+  useEffect(() => {
+    const handleCreditsUpdate = (e: any) => {
+      if (e.detail && e.detail.creditsUsed !== undefined) {
+        setState(prev => ({ ...prev, creditsUsed: e.detail.creditsUsed }));
+      }
+    };
+    window.addEventListener("perenne_credits_updated", handleCreditsUpdate);
+    return () => window.removeEventListener("perenne_credits_updated", handleCreditsUpdate);
+  }, []);
 
   // Check for daily reset
   useEffect(() => {
@@ -124,7 +139,7 @@ export function useSubscription() {
   useEffect(() => {
     if (clerkLoaded) {
       if (user) {
-        let dbTier: Tier = "Free"; 
+        let dbTier: Tier = (user.publicMetadata?.tier as Tier) || "Free"; 
         const today = new Date().toISOString().split("T")[0];
 
         let isMounted = true;
@@ -182,7 +197,7 @@ export function useSubscription() {
     // Roughly estimate tokens from word count (e.g. 1.3 tokens per word)
     const estimatedTokens = Math.ceil(wordCount * 1.3);
     // Rough estimate just for the pre-check (actual usage is deducted post-generation)
-    const estimatedCost = Math.ceil(estimatedTokens * (costConfig.input / 1000));
+    const estimatedCost = Math.ceil(estimatedTokens * costConfig.input);
     
     // As long as they have enough to cover the prompt, let them proceed (it will deduct into the negative if it overruns).
     return creditsRemaining >= estimatedCost;
@@ -193,26 +208,42 @@ export function useSubscription() {
     
     const safeInput = inputTokens || 0;
     const safeOutput = outputTokens || 0;
-    // Costs are defined per 1k tokens. Divide by 1000 to get the correct absolute cost.
-    const cost = Math.ceil((safeInput * (costConfig.input / 1000)) + (safeOutput * (costConfig.output / 1000)));
+    // Costs are direct multipliers per token
+    let cost = Math.ceil((safeInput * costConfig.input) + (safeOutput * costConfig.output));
     
-    setState((prev) => {
-      const currentCredits = prev.creditsUsed && !isNaN(prev.creditsUsed) ? prev.creditsUsed : 0;
-      const newCredits = currentCredits + cost;
-      
-      // Update Supabase directly so stats carry over to other devices/browsers
-      if (user) {
-         upsertFeatureAction("usage", {
-           credits_used: newCredits,
-           last_reset: prev.lastReset
-         }).catch(e => console.error("Failed to sync usage to supabase:", e));
-      }
+    // Non-chat features provide massive value/compute per request (e.g. grading, flashcard gen)
+    // Apply a 3.0x multiplier to reflect this service value (charge the product, not the cost)
+    if (feature !== "chat") {
+      cost = Math.ceil(cost * 3.0);
+    }
+    
+    const currentCredits = state.creditsUsed && !isNaN(state.creditsUsed) ? state.creditsUsed : 0;
+    const newCredits = currentCredits + cost;
+    
+    // Update Supabase directly so stats carry over to other devices/browsers
+    if (user) {
+       upsertFeatureAction("usage", {
+         credits_used: newCredits,
+         last_reset: state.lastReset
+       }).catch(e => console.error("Failed to sync usage to supabase:", e));
+       
+       // Also add to all-time XP in background
+       fetch("/api/add-xp", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ amount: cost })
+       }).catch(e => console.error("Failed to add XP:", e));
+    }
 
-      return {
-        ...prev,
-        creditsUsed: newCredits,
-      };
-    });
+    setState((prev) => ({
+      ...prev,
+      creditsUsed: newCredits, // Use computed newCredits to avoid race conditions
+    }));
+    
+    // Dispatch event to update other components (like the sidebar usage bar)
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("perenne_credits_updated", { detail: { creditsUsed: newCredits } }));
+    }
   };
 
   const upgradeTo = (tier: Tier) => {
@@ -235,8 +266,9 @@ export function useSubscription() {
     upgradeTo,
     isLoaded,
     assistant: preferences.generation !== "default" ? preferences.generation : defaultModels.assistant,
+    generation: preferences.generation !== "default" ? preferences.generation : defaultModels.generation,
     heavy: preferences.heavy !== "default" ? preferences.heavy : defaultModels.heavy,
     judge: preferences.judge !== "default" ? preferences.judge : defaultModels.judge,
-    grading: preferences.grading !== "default" ? preferences.grading : "Claude 4.5 Haiku" // Default math/essay grading
+    grading: preferences.grading !== "default" ? preferences.grading : defaultModels.judge
   };
 }

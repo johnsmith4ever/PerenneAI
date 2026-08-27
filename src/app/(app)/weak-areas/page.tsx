@@ -40,7 +40,7 @@ export default function WeakAreasPage() {
   const [essayStats, setEssayStats] = useState<{ averageScore: number; commonIssues: string[]; commonImprovements: string[] } | null>(null);
   const [retestModal, setRetestModal] = useState<WeakArea | null>(null);
   const [activeTab, setActiveTab] = useState<string>("Overview");
-  const subjects = ["Overview", "Biology", "Chemistry", "Physics", "Geography", "Maths", "Essay Writing", "Other"];
+  const subjects = ["Overview", "Biology", "Chemistry", "Physics", "Geography", "Maths", "Essay Writing"];
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -51,59 +51,90 @@ export default function WeakAreasPage() {
 
     async function fetchData() {
       try {
-        const [quizRes, essayRes] = await Promise.all([
+        const [quizRes, examRes, essayRes, mathsRes] = await Promise.all([
           fetchFeatureAction("quizzes"),
-          fetchFeatureAction("essay_sims")
+          fetchFeatureAction("exam_sims"),
+          fetchFeatureAction("essay_sims"),
+          fetchFeatureAction("maths_questions")
         ]);
 
         const topicMap = new Map<string, WeakArea>();
 
-        if (quizRes) {
-          quizRes.forEach(q => {
+        const allQuestions = [...(quizRes || []), ...(examRes || []), ...(mathsRes || [])];
+
+        if (allQuestions.length > 0) {
+          allQuestions.forEach(q => {
+            const topic = q.topic || q.solution?.topic || q.subject || "Maths Solver";
+            let qs = q.questions;
+            if (!qs && q.data) {
+              qs = Array.isArray(q.data) ? q.data : q.data.questions;
+            }
+            
             // Determine source — Maths prefix is definitive; otherwise check _quizSettings;
             // if neither, default to "Quiz" (NOT "Exam Sim") since most saved quizzes come from the quiz page
-            let source: "Exam Sim" | "Quiz" | "Maths Solver" | "Flashcards" = "Quiz";
-            const settings = q.questions?.[0]?._quizSettings;
-            if (q.topic?.startsWith("Maths: ")) {
+            let source: "Exam Sim" | "Quiz" | "Maths Solver" | "Flashcards" | "Essay Marking" = "Quiz";
+            const settings = qs?.[0]?._quizSettings;
+            if (topic.startsWith("Maths")) {
               source = "Maths Solver";
             } else if (settings) {
               source = settings.quizType !== undefined ? "Quiz" : settings.testSize !== undefined ? "Exam Sim" : "Quiz";
+            } else if (q.subject) {
+              source = "Exam Sim";
             }
 
             // Determine subject — _quizSettings.subject is most reliable when present
             let parsedSubject = "Other";
-            if (q.topic?.startsWith("Maths: ")) {
+            if (topic.startsWith("Maths")) {
               parsedSubject = "Maths";
             } else if (settings?.subject) {
               parsedSubject = settings.subject;
+            } else if (q.subject) {
+              parsedSubject = q.subject;
             } else {
-              parsedSubject = inferSubject(q.topic);
+              parsedSubject = inferSubject(topic);
             }
 
-            const key = `${source}-${q.topic}`;
+            const key = `${source}-${topic}`;
             if (!topicMap.has(key)) {
-              topicMap.set(key, { topic: q.topic, subject: parsedSubject, source, failedCount: 0, totalCount: 0, errorRate: 0, details: [] });
+              topicMap.set(key, { topic, subject: parsedSubject, source, failedCount: 0, totalCount: 0, errorRate: 0, details: [] });
             }
             
             const area = topicMap.get(key)!;
             
             if (source === "Maths Solver") {
-              const quizErrorRate = 100 - (q.score || 0);
-              area.failedCount += quizErrorRate;
-              area.totalCount += 1;
-              
-              q.questions?.forEach((qq: any) => {
-                const grading = qq.grading || {};
+              if (q.solution) {
+                // New maths_questions row structure
+                const quizErrorRate = 100 - (q.solution.score_pct || 0);
+                area.failedCount += quizErrorRate;
+                area.totalCount += 1;
+                
+                const grading = q.solution.grading || {};
                 const max = grading.marks_available || 1;
                 const awarded = grading.marks_awarded ?? (grading.correct ? max : 0);
                 const lost = Math.max(0, max - awarded);
                 
                 if (lost > 0) {
-                  area.details.push({ question: qq.question, feedback: grading.feedback || "Lost marks on this question." });
+                  area.details.push({ question: q.question || "Maths Question", feedback: grading.feedback || "Lost marks on this question." });
                 }
-              });
+              } else {
+                // Legacy quizzes row structure
+                const quizErrorRate = 100 - (q.score || 0);
+                area.failedCount += quizErrorRate;
+                area.totalCount += 1;
+                
+                qs?.forEach((qq: any) => {
+                  const grading = qq.grading || {};
+                  const max = grading.marks_available || 1;
+                  const awarded = grading.marks_awarded ?? (grading.correct ? max : 0);
+                  const lost = Math.max(0, max - awarded);
+                  
+                  if (lost > 0) {
+                    area.details.push({ question: qq.question, feedback: grading.feedback || "Lost marks on this question." });
+                  }
+                });
+              }
             } else {
-              q.questions?.forEach((qq: any) => {
+              qs?.forEach((qq: any) => {
                 // Only count graded questions — skip ungraded ones
                 if (!qq.grading) return;
                 area.totalCount++;
@@ -128,22 +159,21 @@ export default function WeakAreasPage() {
           }))
           .sort((a, b) => b.errorRate - a.errorRate);
 
-        setWeakAreas(calculated);
-
         if (essayRes && essayRes.length > 0) {
           let totalScore = 0;
           const issueCounts = new Map<string, number>();
           const improvementCounts = new Map<string, number>();
           
-          essayRes.forEach(e => {
-            totalScore += e.final_score || 0;
-            if (Array.isArray(e.key_issues)) {
-              e.key_issues.forEach((issue: string) => {
+          essayRes.forEach((e: any) => {
+            const grade = e.grade || {};
+            totalScore += grade.final_score || 0;
+            if (Array.isArray(grade.key_issues)) {
+              grade.key_issues.forEach((issue: string) => {
                 issueCounts.set(issue, (issueCounts.get(issue) || 0) + 1);
               });
             }
-            if (Array.isArray(e.improvement_points)) {
-              e.improvement_points.forEach((point: string) => {
+            if (Array.isArray(grade.improvement_points)) {
+              grade.improvement_points.forEach((point: string) => {
                 improvementCounts.set(point, (improvementCounts.get(point) || 0) + 1);
               });
             }
@@ -154,7 +184,29 @@ export default function WeakAreasPage() {
           const commonImprovements = Array.from(improvementCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
 
           setEssayStats({ averageScore, commonIssues, commonImprovements });
+
+          essayRes.forEach((e: any, index: number) => {
+            const grade = e.grade || {};
+            const score = grade.final_score || 0;
+            const errorRate = Math.max(0, 100 - score);
+            
+            calculated.push({
+              subject: "Essay Writing",
+              topic: `Essay ${index + 1}`,
+              source: "Essay Marking",
+              totalCount: 1,
+              failedCount: 100 - score,
+              errorRate,
+              details: [
+                ...(grade.key_issues || []).map((issue: string) => ({ question: "Issue", feedback: issue })),
+                ...(grade.improvement_points || []).map((point: string) => ({ question: "Tip", feedback: point }))
+              ]
+            });
+          });
         }
+
+        calculated.sort((a, b) => b.errorRate - a.errorRate);
+        setWeakAreas(calculated);
 
       } catch (e) {
         console.error("Failed to load weak areas", e);
@@ -261,7 +313,7 @@ export default function WeakAreasPage() {
               {(() => {
                 const filteredAreas = activeTab === "Overview" 
                   ? weakAreas 
-                  : weakAreas.filter(a => a.subject === activeTab || (activeTab === "Other" && !["Biology", "Chemistry", "Physics", "Geography", "Maths", "Essay Writing"].includes(a.subject)));
+                  : weakAreas.filter(a => a.subject === activeTab);
                 
                 if (filteredAreas.length === 0) {
                   return (
@@ -281,13 +333,11 @@ export default function WeakAreasPage() {
                         <div className="w-full max-w-2xl h-[400px]">
                           <ResponsiveContainer width="100%" height="100%">
                             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={
-                              ["Biology", "Chemistry", "Physics", "Geography", "Maths", "Essay Writing"].map(sub => {
-                                if (sub === "Essay Writing") {
-                                  return { subject: sub, errorRate: essayStats ? Math.max(0, 100 - (essayStats.averageScore || 0)) : 0 };
-                                }
-                                const subAreas = weakAreas.filter(a => a.subject === sub || (sub === "Other" && !["Biology", "Chemistry", "Physics", "Geography", "Maths", "Essay Writing"].includes(a.subject)));
-                                if (subAreas.length === 0) return { subject: sub, errorRate: 0 };
-                                const avgError = subAreas.reduce((acc, a) => acc + a.errorRate, 0) / subAreas.length;
+                              subjects.filter(sub => sub !== "Overview").map(sub => {
+                                const subAreas = weakAreas.filter(a => a.subject === sub);
+                                const avgError = subAreas.length > 0 
+                                  ? subAreas.reduce((acc, a) => acc + a.errorRate, 0) / subAreas.length 
+                                  : 0;
                                 return { subject: sub, errorRate: Math.round(avgError) };
                               })
                             }>
@@ -328,6 +378,8 @@ export default function WeakAreasPage() {
                         <p className="text-sm text-muted-foreground">
                           {area.source === "Maths Solver"
                             ? `Your average error rate is ${area.errorRate}% across ${area.totalCount} attempt${area.totalCount === 1 ? '' : 's'}.`
+                            : area.source === "Essay Marking"
+                            ? `Based on ${area.totalCount} graded essay${area.totalCount === 1 ? '' : 's'}.`
                             : `You got ${area.failedCount} out of ${area.totalCount} questions wrong in this topic.`
                           }
                         </p>

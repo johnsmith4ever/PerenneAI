@@ -36,15 +36,14 @@ function getModel(displayName: string) {
       return mistral.chat("mistral-large-latest");
     case "Gemini 3.6 Flash":
       return deepseek.chat("deepseek-v4-flash"); // Should be intercepted by Gemini fallback
-    case "Gemini 3.5 Pro":
-      return deepseek.chat("deepseek-v4-flash"); // Should be intercepted
+
     case "Deepseek-V4-Flash":
       return deepseek.chat("deepseek-chat");
     case "Deepseek-V4-Pro":
-      return deepseek.chat("deepseek-reasoner");
+      return deepseek.chat("deepseek-chat"); // Deep thinking explicitly disabled
     case "Claude 4.5 Haiku":
       return anthropic.chat("claude-haiku-4-5-20251001");
-    case "Claude 3.5 Sonnet":
+    case "Claude 4.6 Sonnet":
       return anthropic.chat("claude-3-5-sonnet-20241022");
     default:
       return mistral.chat("mistral-small-latest");
@@ -156,7 +155,7 @@ export async function POST(req: Request) {
     if (modelName && (modelName.includes("Gemini") || modelName.includes("gemini"))) {
       const { generateGeminiText } = await import("@/lib/gemini-fallback");
       const res = await generateGeminiText({
-        modelName: "gemini-3.5-flash",
+        modelName: "gemini-1.5-flash",
         system: finalSystemPrompt,
         messages,
         maxOutputTokens: maxTokens || undefined,
@@ -173,6 +172,17 @@ export async function POST(req: Request) {
       });
       text = res.text;
       usage = res.usage;
+    } else if (modelName && modelName.includes("Claude")) {
+      const { generateClaudeText } = await import("@/lib/claude-fallback");
+      const claudeModelName = modelName.includes("Sonnet") ? "claude-sonnet-4-6" : "claude-haiku-4-5-20251001";
+      const res = await generateClaudeText({
+        modelName: claudeModelName,
+        system: finalSystemPrompt,
+        messages,
+        maxOutputTokens: maxTokens || undefined,
+      });
+      text = res.text;
+      usage = res.usage;
     } else {
       const res = await generateText({
         model,
@@ -182,6 +192,24 @@ export async function POST(req: Request) {
       });
       text = res.text;
       usage = res.usage;
+    }
+
+    if (usage && typeof usage.inputTokens === 'undefined' && typeof usage.promptTokens !== 'undefined') {
+      usage = {
+        inputTokens: usage.promptTokens || 0,
+        outputTokens: usage.completionTokens || 0,
+        totalTokens: usage.totalTokens || 0
+      };
+    }
+
+    if (!usage || (!usage.inputTokens && !usage.promptTokens)) {
+      const inputChars = finalSystemPrompt.length + messages.map((m: any) => m.content || "").join(" ").length;
+      const outputChars = text ? text.length : 0;
+      usage = {
+        inputTokens: Math.ceil(inputChars / 4),
+        outputTokens: Math.ceil(outputChars / 4),
+        totalTokens: Math.ceil((inputChars + outputChars) / 4)
+      };
     }
 
     console.log("Chat generation complete. Usage:", usage);

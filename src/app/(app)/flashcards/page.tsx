@@ -1,4 +1,6 @@
 "use client";
+import { toast } from "sonner";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useCurriculum } from "@/hooks/use-curriculum";
@@ -18,6 +20,7 @@ import {
   Eye,
   EyeOff,
   CheckCircle2,
+  XCircle,
   ChevronDown,
   BookOpenCheck,
 } from "lucide-react";
@@ -37,20 +40,47 @@ export default function FlashcardsPage() {
   const tierRank = TIER_RANK[tier] ?? 0;
 
   // Input state
-  const [inputTab, setInputTab] = useState<InputTab>("manual");
+const [inputTab, setInputTab] = usePersistentState<InputTab>("flashcards_input_tab", "manual");
   const [manualDeckTitle, setManualDeckTitle] = useState("");
   const [manualCards, setManualCards] = useState<Flashcard[]>([
     { term: "", definition: "" },
     { term: "", definition: "" },
     { term: "", definition: "" },
   ]);
-  const [topic, setTopic] = useState("");
-  const [textContent, setTextContent] = useState("");
-  const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const [cardCount, setCardCount] = useState<string>("Auto");
-  const [flashcardGenMode, setFlashcardGenMode] = useState<"Standard" | "Syllabus">("Syllabus");
-  const [extraTopicDetails, setExtraTopicDetails] = useState("");
+const [topic, setTopic] = usePersistentState("flashcards_topic", "");
+const [textContent, setTextContent] = usePersistentState("flashcards_text", "");
+const [imageBase64, setImageBase64] = usePersistentState<string | null>("flashcards_image", null);
+const [cardCount, setCardCount] = usePersistentState<string>("flashcards_count", "Auto");
+const [flashcardGenMode, setFlashcardGenMode] = usePersistentState<"Standard" | "Syllabus">("flashcards_gen_mode", "Syllabus");
+const [extraTopicDetails, setExtraTopicDetails] = usePersistentState("flashcards_extra_details", "");
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const [preCheckStatus, setPreCheckStatus] = useState<"idle" | "checking" | "found" | "not_found">("idle");
+
+  useEffect(() => {
+    if (flashcardGenMode !== "Syllabus" || !topic.trim()) {
+      setPreCheckStatus("idle");
+      return;
+    }
+    
+    setPreCheckStatus("checking");
+    const timeoutId = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/check-syllabus", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic: topic.trim(), subject: curriculumSubject, curriculumLevel })
+        });
+        const data = await res.json();
+        if (data.found) setPreCheckStatus("found");
+        else setPreCheckStatus("not_found");
+      } catch {
+        setPreCheckStatus("idle");
+      }
+    }, 800);
+  
+    return () => clearTimeout(timeoutId);
+  }, [topic, flashcardGenMode, curriculumSubject, curriculumLevel]);
 
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
@@ -67,27 +97,27 @@ export default function FlashcardsPage() {
   }, []);
 
   // Card state
-  const [allCards, setAllCards] = useState<Flashcard[]>([]);
-  const [studyCards, setStudyCards] = useState<Flashcard[]>([]);
-  const [mode, setMode] = useState<AppMode>("input");
-  const [deckTitle, setDeckTitle] = useState("");
-  const [isDatabaseMatch, setIsDatabaseMatch] = useState<boolean | null>(null);
+const [allCards, setAllCards] = usePersistentState<Flashcard[]>("flashcards_all", []);
+const [studyCards, setStudyCards] = usePersistentState<Flashcard[]>("flashcards_study", []);
+const [mode, setMode] = usePersistentState<AppMode>("flashcards_mode", "input");
+const [deckTitle, setDeckTitle] = usePersistentState("flashcards_title", "");
+const [isDatabaseMatch, setIsDatabaseMatch] = usePersistentState<boolean | null>("flashcards_db_match", null);
 
   // Study state
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
+const [currentIndex, setCurrentIndex] = usePersistentState("flashcards_index", 0);
+const [isFlipped, setIsFlipped] = usePersistentState("flashcards_flipped", false);
   const [isFlipping, setIsFlipping] = useState(false);
   const [exitDirection, setExitDirection] = useState<ExitDirection>(null);
-  const [correctCards, setCorrectCards] = useState<Flashcard[]>([]);
-  const [wrongCards, setWrongCards] = useState<Flashcard[]>([]);
-  const [roundNumber, setRoundNumber] = useState(1);
+const [correctCards, setCorrectCards] = usePersistentState<Flashcard[]>("flashcards_correct", []);
+const [wrongCards, setWrongCards] = usePersistentState<Flashcard[]>("flashcards_wrong", []);
+const [roundNumber, setRoundNumber] = usePersistentState("flashcards_round", 1);
   const [shuffleSpin, setShuffleSpin] = useState(false);
 
   // Track progress toggle
-  const [trackProgress, setTrackProgress] = useState(true);
+const [trackProgress, setTrackProgress] = usePersistentState("flashcards_track", true);
 
   // Edit state
-  const [editCards, setEditCards] = useState<Flashcard[]>([]);
+const [editCards, setEditCards] = usePersistentState<Flashcard[]>("flashcards_edit", []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -107,12 +137,12 @@ export default function FlashcardsPage() {
 
     // Quick pre-flight check
     if (!canAfford(2000, modelUsed)) {
-      alert("You do not have enough daily credits to generate these flashcards. Please try again tomorrow or upgrade your plan.");
+      toast.error("You do not have enough daily credits to generate these flashcards. Please try again tomorrow or upgrade your plan.");
       return;
     }
 
     if (flashcardGenMode === "Syllabus" && !topic.trim()) {
-      alert("Topic is required when using Syllabus Strict mode.");
+      toast.error("Topic is required when using Syllabus Strict mode.");
       return;
     }
 
@@ -151,16 +181,18 @@ export default function FlashcardsPage() {
         if (user) {
           insertFeatureAction("flashcards", {
             user_id: user.id,
-            title: finalTitle,
             topic: topic || "Generated Deck",
-            cards: data.data.map((c: any) => ({ ...c, failed: false }))
+            data: {
+              title: finalTitle,
+              cards: data.data.map((c: any) => ({ ...c, failed: false }))
+            }
           }).then(() => setHasSaved(true)).catch(console.error);
         }
       } else {
-        alert("Error: " + data.message);
+        toast.error("Error: " + data.message);
       }
     } catch {
-      alert("Failed to generate flashcards.");
+      toast.error("Failed to generate flashcards.");
     } finally {
       setIsGenerating(false);
     }
@@ -277,9 +309,11 @@ export default function FlashcardsPage() {
     if (user) {
       insertFeatureAction("flashcards", {
         user_id: user.id,
-        title: finalTitle,
         topic: "Manual Deck",
-        cards: validCards.map((c: any) => ({ ...c, failed: false }))
+        data: {
+          title: finalTitle,
+          cards: validCards.map((c: any) => ({ ...c, failed: false }))
+        }
       }).then(() => setHasSaved(true)).catch(console.error);
     }
   };
@@ -290,16 +324,18 @@ export default function FlashcardsPage() {
     try {
       await insertFeatureAction("flashcards", {
         user_id: user.id,
-        title: deckTitle || "Untitled Deck",
         topic: topic || "Generated Deck",
-        cards: allCards.map(c => ({
-          ...c,
-          failed: wrongCards.some(wc => wc.term === c.term)
-        }))
+        data: {
+          title: deckTitle || "Untitled Deck",
+          cards: allCards.map(c => ({
+            ...c,
+            failed: wrongCards.some(wc => wc.term === c.term)
+          }))
+        }
       });
       
       setHasSaved(true);
-      alert("Flashcards saved to your account history!");
+      toast.success("Flashcards saved to your account history!");
     } catch (e) {
       console.error("Error saving flashcard history:", e);
     } finally {
@@ -496,16 +532,32 @@ export default function FlashcardsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Topic {flashcardGenMode === "Syllabus" ? "(Required)" : "(Optional)"}
+              <label className="flex items-center justify-between text-sm font-medium text-foreground mb-2">
+                <span>Topic {flashcardGenMode === "Syllabus" ? "(Required)" : "(Optional)"}</span>
               </label>
               <input
                 type="text"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 placeholder="e.g. Cell Biology, French Revolution..."
-                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all mb-2"
               />
+              {flashcardGenMode === "Syllabus" && topic.trim() && (
+                <div className="flex flex-col gap-2 mb-4 mt-2">
+                  {preCheckStatus === "not_found" && (
+                    <div className="bg-red-500/20 px-4 py-3 rounded-lg text-sm font-bold text-red-500 flex items-center gap-2 border border-red-500/20">
+                      <XCircle className="w-5 h-5" />
+                      Not found in Database
+                    </div>
+                  )}
+                  {preCheckStatus === "found" && (
+                    <div className="bg-emerald-500/20 px-4 py-3 rounded-lg text-sm font-bold text-emerald-500 flex items-center gap-2 border border-emerald-500/20">
+                      <CheckCircle2 className="w-5 h-5" />
+                      Found in Database
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             <div>
@@ -703,13 +755,6 @@ export default function FlashcardsPage() {
             <h1 className="font-serif text-xl font-bold text-foreground tracking-tight leading-tight text-center truncate max-w-sm">
               {deckTitle}
             </h1>
-            {isDatabaseMatch === false && (
-              <div className="mt-1 flex justify-center">
-                <span className="px-2 py-0.5 rounded bg-yellow-500/10 border border-yellow-500/30 text-[10px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">
-                  Not in Database
-                </span>
-              </div>
-            )}
             <p className="text-xs text-muted-foreground">
               {currentIndex + 1}&nbsp;/&nbsp;{studyCards.length}
               {roundNumber > 1 && (

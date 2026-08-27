@@ -15,6 +15,7 @@ const merriweather = Merriweather({
 
 import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "PerenneAI",
@@ -41,6 +42,7 @@ export default function RootLayout({
         </head>
         <body className="min-h-full flex flex-col font-sans">
           {children}
+          <Toaster richColors position="bottom-center" />
           <Script src="https://unpkg.com/mathlive" strategy="afterInteractive" />
           <Script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" strategy="afterInteractive" />
           <Script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" strategy="afterInteractive" />

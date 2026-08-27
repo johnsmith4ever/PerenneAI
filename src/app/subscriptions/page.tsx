@@ -83,9 +83,9 @@ const TIERS: { id: Tier; name: string; tagline: string; priceText: string; price
     tagline: "Meet PerenneAI",
     priceText: "£0",
     priceDetail: "",
-    credits: "40,000",
+    credits: "30,000",
     featureHeader: "Includes:",
-    features: ["Gemini 3.6 Flash engine", "Claude 4.5 Haiku for math grading", "Basic study tools"],
+    features: ["Gemini 3.6 Flash engine", "Deepseek V4 Flash generation", "Claude 4.5 Haiku for grading", "Mistral Small in Study Assistant"],
     iconLevel: 1
   },
   {
@@ -93,10 +93,10 @@ const TIERS: { id: Tier; name: string; tagline: string; priceText: string; price
     name: "Core",
     tagline: "Standard study access",
     priceText: "£1.99",
-    priceDetail: "GBP / month\nbilled monthly (includes VAT)",
+    priceDetail: "GBP / month\nbilled monthly",
     credits: "70,000",
     featureHeader: "Everything in Free and:",
-    features: ["Deepseek V4 Flash engine", "Advanced study tools", "70,000 daily credits"],
+    features: ["Deepseek V4 Flash engine", "Mistral Large in Study Assistant", "70,000 daily credits"],
     iconLevel: 2
   },
   {
@@ -104,32 +104,32 @@ const TIERS: { id: Tier; name: string; tagline: string; priceText: string; price
     name: "Pro",
     tagline: "Research, code, and organize",
     priceText: "£3.99",
-    priceDetail: "GBP / month\nbilled monthly (includes VAT)",
-    credits: "150,000",
+    priceDetail: "GBP / month\nbilled monthly",
+    credits: "135,000",
     featureHeader: "Everything in Core and:",
-    features: ["Deepseek V4 Pro engine", "Priority generation speed", "150,000 daily credits"],
+    features: ["Deepseek V4 Pro engine", "Gemini models in Study Assistant", "135,000 daily credits"],
     iconLevel: 3
   },
   {
     id: "Premium",
     name: "Premium",
     tagline: "For heavy daily usage",
-    priceText: "£5.99",
-    priceDetail: "GBP / month\nbilled monthly (includes VAT)",
-    credits: "300,000",
+    priceText: "£6.99",
+    priceDetail: "GBP / month\nbilled monthly",
+    credits: "280,000",
     featureHeader: "Everything in Pro and:",
-    features: ["Claude 4.5 Haiku engine", "Massive daily bandwidth", "300,000 daily credits"],
+    features: ["Claude 4.5 Haiku engine", "Deepseek models in Study Assistant", "280,000 daily credits"],
     iconLevel: 4
   },
   {
     id: "Maximum",
     name: "Maximum",
     tagline: "Higher limits, priority access",
-    priceText: "From £10.99",
-    priceDetail: "GBP / month\nbilled monthly (includes VAT)",
-    credits: "450,000",
+    priceText: "£10.99",
+    priceDetail: "GBP / month\nbilled monthly",
+    credits: "400,000",
     featureHeader: "Everything in Premium, plus:",
-    features: ["Claude 3.5 Sonnet engine", "Ultimate power user tier", "Early access to features", "450,000 daily credits"],
+    features: ["Claude 4.6 Sonnet engine", "Claude models in Study Assistant", "400,000 daily credits"],
     iconLevel: 5
   }
 ];
@@ -271,7 +271,7 @@ export default function SubscriptionsPage() {
                   <h3 className="text-3xl font-black text-white mb-2 tracking-tight drop-shadow-sm">{t.name}</h3>
                   <p className="text-sm text-neutral-400 mb-8 font-medium h-[40px] leading-relaxed">{t.tagline}</p>
                   
-                  <div className="flex flex-col items-start gap-1.5 mb-10 h-[64px]">
+                  <div className="flex flex-col items-start gap-1.5 mb-10">
                     <span className="text-[2.75rem] font-black tracking-tighter text-white leading-none drop-shadow-sm">{t.priceText}</span>
                     {t.priceDetail ? (
                       <span className="text-xs text-neutral-500 font-medium leading-snug whitespace-pre-wrap">{t.priceDetail}</span>

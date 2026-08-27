@@ -18,7 +18,7 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const isLimitReached = isLoaded && creditsUsed >= dailyLimit && dailyLimit > 0;
-  const isSubscriptionsPage = pathname === "/subscriptions";
+  const isAllowedPage = ["/subscriptions", "/admin", "/community", "/history", "/weak-areas"].includes(pathname);
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background text-foreground relative">
@@ -52,7 +52,7 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
         />
         <div className={cn("flex-1 min-w-0 overflow-y-auto relative flex flex-col break-words", device === "mobile" && "ml-[80px]")}>
           <div className="flex-1 max-w-4xl w-full mx-auto px-8 py-8 relative">
-            {isLimitReached && !isSubscriptionsPage ? (
+            {isLimitReached && !isAllowedPage ? (
               <div className="absolute inset-0 z-50 bg-background/60 backdrop-blur-md rounded-3xl mt-8">
                 <div className="sticky top-1/2 -translate-y-1/2 flex flex-col items-center justify-center p-8 animate-in fade-in duration-500">
                   <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-6 shadow-inner border border-red-500/20">
@@ -72,7 +72,7 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
               </div>
             ) : null}
             
-            <div className={cn(isLimitReached && !isSubscriptionsPage && "pointer-events-none opacity-30 select-none blur-sm transition-all duration-500")}>
+            <div className={cn(isLimitReached && !isAllowedPage && "pointer-events-none opacity-30 select-none blur-sm transition-all duration-500")}>
               {children}
             </div>
           </div>

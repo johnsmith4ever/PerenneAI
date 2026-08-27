@@ -7,7 +7,7 @@ const keys = [
 ].filter(Boolean) as string[];
 
 // Call Google's API directly using their own SDK (not Vercel wrappers)
-// Model: gemini-3.6-flash via Google's API keys
+// Model: gemini-1.5-flash via Google's API keys
 export async function generateGeminiText(options: {
   modelName?: string;
   prompt?: string;
@@ -17,12 +17,15 @@ export async function generateGeminiText(options: {
   temperature?: number;
   [key: string]: any;
 }) {
-  const modelName = options.modelName || "gemini-3.6-flash";
+  const modelName = options.modelName || "gemini-1.5-flash";
   let lastError: any;
 
-  // Build the prompt string from either prompt or messages
-  let contents: string;
-  if (options.prompt) {
+  // Build the prompt: supports raw parts array (multimodal), plain prompt string, or messages array
+  let contents: any;
+  if (options.parts) {
+    // Raw multipart array — used for image+text OCR requests
+    contents = { parts: options.parts };
+  } else if (options.prompt) {
     contents = options.prompt;
   } else if (options.messages) {
     contents = options.messages.map((m) => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`).join("\n\n");

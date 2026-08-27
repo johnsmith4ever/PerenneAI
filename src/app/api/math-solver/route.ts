@@ -21,20 +21,20 @@ export async function POST(req: Request) {
     if (req.headers.get("x-test-bypass") === "true") userId = "test_user";
     if (!userId) return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
 
-    const { action, topic, difficulty, questionType, questions, answers, marks, testSize, year, isAQA, heavyModel, judgeModel } = await req.json();
+    const { action, topic, difficulty, questionType, questions, answers, marks, testSize, year, isAQA, heavyModel, judgeModel, question, imageBase64 } = await req.json();
 
     if (action === "generate_questions") {
       let generationBreakdown = "";
       if (testSize === "Small") {
-        generationBreakdown = "Generate EXACTLY 6 questions total: 3 questions worth 1 mark, 2 questions worth 3 marks, and 1 question worth 5 marks.";
+        generationBreakdown = "Generate EXACTLY 5 questions total: 3 questions worth 1 mark, 1 question worth 2 marks, and 1 question worth 5 marks.";
       } else if (testSize === "Medium") {
-        generationBreakdown = "Generate EXACTLY 10 questions total: 4 questions worth 1 mark, 4 questions worth 3 marks, and 2 questions worth 6 marks.";
+        generationBreakdown = "Generate EXACTLY 10 questions total: 3 questions worth 1 mark, 1 question worth 2 marks, 4 questions worth 3 marks, and 2 questions worth 5 marks.";
       } else if (testSize === "Big") {
-        generationBreakdown = "Generate EXACTLY 14 questions total: 6 questions worth 1 mark, 4 questions worth 3 marks, and 4 questions worth 6 marks.";
+        generationBreakdown = "Generate EXACTLY 14 questions total: 5 questions worth 1 mark, 1 question worth 2 marks, 4 questions worth 3 marks, and 4 questions worth 5 marks.";
       } else if (testSize === "Large") {
-        generationBreakdown = "Generate EXACTLY 19 questions total: 8 questions worth 1 mark, 6 questions worth 3 marks, and 5 questions worth 6 marks.";
+        generationBreakdown = "Generate EXACTLY 19 questions total: 7 questions worth 1 mark, 1 question worth 2 marks, 6 questions worth 3 marks, and 5 questions worth 5 marks.";
       } else {
-        generationBreakdown = "Generate EXACTLY 5 questions total: 2 questions worth 1 mark, 2 questions worth 3 marks, and 1 question worth 6 marks.";
+        generationBreakdown = "Generate EXACTLY 5 questions total: 3 questions worth 1 mark, 1 question worth 2 marks, and 1 question worth 5 marks.";
       }
 
       // Run RAG in parallel with a 2s timeout — never block question generation
@@ -83,8 +83,9 @@ Base the fundamental difficulty of the question on the requested tier.
 
 Definitions for marks (MARKS DICTATE COMPLEXITY/STEPS, NOT BASE DIFFICULTY):
 - 1 mark = A short 1-2 step problem using the base difficulty.
+- 2 marks = A medium problem requiring 1 step of working out and 1 final answer.
 - 3 marks = A complex multi-step problem using the base difficulty. A student MUST use paper to solve this.
-- 5 or 6 marks = A heavily multi-layered, grueling problem requiring extensive working out (potentially with parts a/b/c/d) using the base difficulty. CRITICAL: If generating parts (e.g. a, b, c), you MUST use markdown newlines (\n\n) between parts so they are not muddled together in one paragraph.
+- 5 or 6 marks = A heavily multi-layered problem. CRITICAL: You MUST break 5-mark questions down into EXACTLY 4 parts: (a) short 1-mark question, (b) short 1-mark question, (c) short 1-mark question, (d) medium 2-mark question. You MUST label them strictly as (a), (b), (c), and (d) and separate them with newlines (\n\n). DO NOT use any other part breakdown for 5 mark questions!
 
 CRITICAL FORMATTING INSTRUCTION: 
 You MUST format ALL equations, numbers, and mathematical symbols in the questions using LaTeX. Wrap inline math variables/equations with a single \`$\` (e.g. $x^2$) and use \`$$\` for block equations if necessary. This is required so the frontend can parse the math properly.
@@ -112,38 +113,58 @@ Example format:
         throw new Error("Failed to generate math questions. Please try again.");
       }
 
-            return NextResponse.json({ status: "success", questions: parsedQuestions, usage });
+      return NextResponse.json({ status: "success", questions: parsedQuestions, usage });
 
     } else if (action === "grade_answers") {
-      const gradingPrompt = `You are a strict GCSE Math Examiner and Logic Parser (AQA standard).
+      // Step 1: Marker (Deepseek V4 Flash) generates the raw error log
+      const markerPrompt = `You are a strict GCSE Math Examiner (AQA standard).
 Topic: "${topic}"
 
 You are provided with:
 1. The original questions
 2. The student's multi-step working out
 
-Your job is to first analyze their logic step-by-step, and then assign final marks and provide feedback.
-CRITICAL AQA RULE: ANY question worth 3 marks or more ALWAYS requires explicit, multi-step working out. If the student provides the correct answer for a 3+ mark question but does not show detailed working out (e.g., only 1 step or just the final answer), you MUST brutally deduct the majority of the marks (e.g. give 1/3 or 2/5 marks) and explicitly state: "Correct answer but no working out shown. Marks deducted under strict guidelines." You MUST enforce this rule.
-For 1 mark questions, working out is encouraged but NOT strictly required for full marks if the final answer is perfectly correct.
-
-You MUST reply with ONLY a raw JSON array of objects: { "marks": number, "max_marks": number, "feedback": "markdown string" }.
-The feedback string MUST be highly organized and formatted in Markdown. Use bolding (**), short bullet points, and explicitly state what they did right vs where their logic broke down step-by-step.
+Your job is to strictly analyze their logic step-by-step and output a brutal, detailed error log.
+CRITICAL AQA RULE: ANY question worth 3 marks or more ALWAYS requires explicit, multi-step working out. If they just wrote the final answer, brutally highlight that they missed all working out steps.
+For 1 mark questions, briefly confirm if the final answer is correct or not. Skim over them.
 
 DATA:
-Questions and Student Working:
 ${questions.map((q: string, i: number) => {
-  const maxMarks = marks ? marks[i] : 5;
-  return `Q${i+1} [max ${maxMarks} marks]: ${q}\nStudent's Steps:\n${answers[i] || "[No Answer Provided]"}`;
-}).join("\n\n")}
+        const maxMarks = marks ? marks[i] : 5;
+        return `Q${i + 1} [max ${maxMarks} marks]: ${q}\nStudent's Steps:\n${answers[i] || "[No Answer Provided]"}`;
+      }).join("\n\n")}
+
+Do NOT output a JSON yet. Just write the error log for each question clearly.`;
+
+      const markerRes = await generateUniversalText({
+        model: heavyModel || "Deepseek-V4-Flash",
+        system: `You are a strict GCSE Math Examiner (AQA standard). Analyze the student's work and write a detailed error log.`,
+        prompt: markerPrompt,
+        temperature: 0.1
+      });
+      
+      const rawErrorLog = markerRes.text;
+      
+      // Step 2: Judge (Claude 4.5 Haiku) parses the error log into JSON
+      const judgePrompt = `You are a strict GCSE Math Examiner and Logic Parser (AQA standard).
+You have been provided with an Error Log generated by a strict examiner for a student's math test on "${topic}".
+
+Your job is to read the error log and convert it into a final structured JSON array of grades and feedback.
+CRITICAL OUTPUT LIMIT: To ensure your response isn't cut off by token limits, you MUST skim over 1-point questions. For 1-point questions, provide a maximum of ONE very short sentence of feedback. Reserve detailed bullet points ONLY for questions worth 3 marks or more.
+
+You MUST reply with ONLY a raw JSON array of objects: { "marks": number, "max_marks": number, "feedback": "markdown string" }.
+The feedback string MUST be highly organized and formatted in Markdown. You MUST use explicit double newlines (\\n\\n) to separate every single bullet point and paragraph so it renders beautifully in the UI. If you do not use \\n\\n, the text will run together into an unreadable mess! Use bolding (**), short bullet points, and explicitly state what they did right vs where their logic broke down step-by-step based on the error log.
+
+Error Log to parse:
+${rawErrorLog}
 
 Example output format:
-[{"marks": 2, "max_marks": 5, "feedback": "**Good Start**\\n- Your method was correct.\\n\\n**Where you went wrong**\\n- You forgot to carry the 1 in step 2."}]
-`;
+[{"marks": 2, "max_marks": 5, "feedback": "**Good Start**\\n\\n- Your method was correct.\\n\\n**Where you went wrong**\\n\\n- You forgot to carry the 1 in step 2."}]`;
 
       const { text, usage } = await generateUniversalText({
         model: judgeModel || "Claude 4.5 Haiku",
-        system: `You are a strict GCSE Math Examiner (AQA standard). Grade the student's work brutally and fairly. Reply with ONLY a raw JSON array.`,
-        prompt: gradingPrompt,
+        system: `You are a strict GCSE Math Examiner. Parse the error log into a pure JSON array.`,
+        prompt: judgePrompt,
         temperature: 0.1
       });
 
@@ -151,11 +172,56 @@ Example output format:
       let parsedResults = [];
       try {
         parsedResults = JSON.parse(parsedText);
-      } catch(e) {
+      } catch (e) {
         throw new Error("Failed to parse grading results.");
       }
 
-            return NextResponse.json({ status: "success", results: parsedResults, usage });
+      // Combine usage for billing
+      const combinedUsage = {
+        inputTokens: (markerRes.usage?.inputTokens || 0) + (usage?.inputTokens || 0),
+        outputTokens: (markerRes.usage?.outputTokens || 0) + (usage?.outputTokens || 0)
+      };
+
+      return NextResponse.json({ status: "success", results: parsedResults, usage: combinedUsage });
+
+    } else if (action === "breakdown") {
+      const typedQuestion = (question as string)?.trim() || "";
+
+      if (!typedQuestion && !imageBase64) {
+        return NextResponse.json({ status: "error", message: "No question provided." }, { status: 400 });
+      }
+
+      // Single multimodal call: Gemini 3.6 Flash reads the image (if any) AND solves the question in one go.
+      // This handles diagrams, typed questions, or both simultaneously.
+      const solvePrompt = `You are an expert math tutor. ${typedQuestion ? `The student's typed question is: "${typedQuestion}"\n\n` : ""}${imageBase64 ? "An image has been provided — read it carefully. It may contain a math question, diagram, graph, or working out. Use all visual information to understand and solve the problem.\n\n" : ""}Provide a complete, clear step-by-step solution. Break each step into its own separate entry in an array. Each step should have a short label (e.g. "Step 1: Identify Given Values") and the full working out for that step only. Use LaTeX for all equations — wrap inline math with $ and block equations with $$.
+
+You MUST reply with ONLY a valid raw JSON object, no markdown fences, no extra text:
+{
+  "steps": ["Step 1: <label and full working for step 1 in Markdown+LaTeX>", "Step 2: ...", ...],
+  "answer": "<The final answer, clearly stated with LaTeX if needed>",
+  "tips": "<1-2 key tips or common mistakes for this question type>"
+}`;
+
+      const parts: any[] = [{ text: solvePrompt }];
+      if (imageBase64) {
+        parts.push({ inlineData: { mimeType: "image/jpeg", data: (imageBase64 as string).replace(/^data:image\/\w+;base64,/, "") } });
+      }
+
+      const { text, usage } = await generateGeminiText({
+        modelName: "gemini-3.6-flash",
+        system: "You are an expert math tutor. You MUST reply with ONLY a valid raw JSON object and absolutely no other text or markdown fences.",
+        parts,
+      });
+
+      const clean = text.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
+      let parsed;
+      try {
+        parsed = JSON.parse(clean);
+      } catch (e) {
+        throw new Error("Failed to parse breakdown response.");
+      }
+
+      return NextResponse.json({ status: "success", data: parsed, usage: { inputTokens: usage?.promptTokens, outputTokens: usage?.completionTokens } });
     }
 
     return NextResponse.json({ status: "error", message: "Invalid action" }, { status: 400 });

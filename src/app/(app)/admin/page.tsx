@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { Lock, UserCheck, ShieldAlert, Zap, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,7 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(false);
   const [authenticating, setAuthenticating] = useState(false);
   const [upgrading, setUpgrading] = useState<string | null>(null);
+  const [resetting, setResetting] = useState<string | null>(null);
 
   useEffect(() => {
     if (authLevel === 4) {
@@ -97,13 +98,37 @@ export default function AdminDashboardPage() {
       if (data.status === "success") {
         setUsers(users.map(u => u.id === userId ? { ...u, tier: newTier } : u));
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (e) {
       console.error(e);
-      alert(`Failed to ${actionText} user`);
+      toast.error(`Failed to ${actionText} user`);
     } finally {
       setUpgrading(null);
+    }
+  };
+
+  const resetTokens = async (userId: string) => {
+    if (!confirm("Are you sure you want to reset this user's daily tokens to 0?")) return;
+    
+    setResetting(userId);
+    try {
+      const res = await fetch("/api/admin/reset-credits", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ targetUserId: userId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Tokens reset to 0");
+      } else {
+        toast.error(data.error || "Failed to reset tokens");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Failed to reset tokens");
+    } finally {
+      setResetting(null);
     }
   };
 
@@ -271,7 +296,7 @@ export default function AdminDashboardPage() {
                     <td className="px-6 py-4 text-right space-x-2">
                       <Button 
                         onClick={() => changeTier(user.id, user.tier, "down")} 
-                        disabled={user.tier === "Free" || upgrading === user.id}
+                        disabled={user.tier === "Free" || upgrading === user.id || resetting === user.id}
                         variant="ghost"
                         size="sm"
                         className={cn("rounded-lg font-bold text-xs text-red-500 hover:text-red-600 hover:bg-red-500/10", user.tier === "Free" && "opacity-50")}
@@ -279,8 +304,17 @@ export default function AdminDashboardPage() {
                         Downgrade
                       </Button>
                       <Button 
+                        onClick={() => resetTokens(user.id)} 
+                        disabled={resetting === user.id}
+                        variant="ghost"
+                        size="sm"
+                        className="rounded-lg font-bold text-xs text-amber-500 hover:text-amber-600 hover:bg-amber-500/10"
+                      >
+                        {resetting === user.id ? <Loader2 className="w-3 h-3 animate-spin" /> : "Reset Limits"}
+                      </Button>
+                      <Button 
                         onClick={() => changeTier(user.id, user.tier, "up")} 
-                        disabled={isMax || upgrading === user.id}
+                        disabled={isMax || upgrading === user.id || resetting === user.id}
                         variant={isMax ? "ghost" : "default"}
                         size="sm"
                         className={cn("rounded-lg font-bold text-xs", isMax && "opacity-50")}

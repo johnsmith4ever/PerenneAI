@@ -1,4 +1,5 @@
 "use client";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 import { useState, useEffect } from "react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
@@ -9,8 +10,9 @@ import { useSubscription, ModelType, TIER_RANK, FREE_ACCESS_MODE, getTierModels 
 import { 
   Upload, FileText, ArrowRight, Image as ImageIcon, 
   Cpu, Sparkles, ArrowLeft, PenTool, BookOpenCheck, Loader2, CheckCircle2,
-  XCircle, TrendingUp, ChevronDown, Save, Lock, Clock, AlertTriangle
+  XCircle, TrendingUp, ChevronDown, Save, Lock, Clock, AlertTriangle, X
 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -71,7 +73,7 @@ export default function EssayPage() {
   const { user } = useUser();
   const { tier, deductCredits, canAfford, isLoaded, assistant, heavy, judge, grading } = useSubscription();
   const { curriculumLevel, curriculumSubject } = useCurriculum();
-  const [role, setRole] = useState<Role>(null);
+const [role, setRole, roleLoaded] = usePersistentState<Role>("essay_role", null);
   const tierRank = TIER_RANK[tier] ?? 0;
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
@@ -80,9 +82,9 @@ export default function EssayPage() {
   const maxParagraphs = 8;
   
   // Student flow state
-  const [essayStep, setEssayStep] = useState<number>(1);
-  const [sourceType, setSourceType] = useState<SourceType>(null);
-  const [config, setConfig] = useState<EssayConfig>({
+const [essayStep, setEssayStep] = usePersistentState<number>("essay_step", 1);
+const [sourceType, setSourceType] = usePersistentState<SourceType>("essay_source", null);
+const [config, setConfig] = usePersistentState<EssayConfig>("essay_config", {
     questionType: "AQA Exam Simulator",
     style: "Modern Texts",
     yearGroup: "GCSE",
@@ -99,17 +101,30 @@ export default function EssayPage() {
     isTimedCustom: false
   });
   
-  const [realImage, setRealImage] = useState<string | null>(null);
-  const [ocrText, setOcrText] = useState<string>("");
+const [realImage, setRealImage] = usePersistentState<string | null>("essay_real_img", null);
+const [ocrText, setOcrText] = usePersistentState<string>("essay_ocr_text", "");
 
-  const [generatedPassage, setGeneratedPassage] = useState<string>("");
-  const [generatedSummary, setGeneratedSummary] = useState<string>("");
-  const [generatedQuestion, setGeneratedQuestion] = useState<string>("");
-  const [studentAnswers, setStudentAnswers] = useState<string[]>([]);
+const [generatedPassage, setGeneratedPassage] = usePersistentState<string>("essay_gen_passage", "");
+const [generatedSummary, setGeneratedSummary] = usePersistentState<string>("essay_gen_summary", "");
+const [generatedQuestion, setGeneratedQuestion] = usePersistentState<string>("essay_gen_question", "");
+const [studentAnswers, setStudentAnswers] = usePersistentState<string[]>("essay_student_answers", []);
   
-  const [essayTimeLeft, setEssayTimeLeft] = useState(0);
-  const [essayTimerState, setEssayTimerState] = useState<"idle" | "running" | "expired" | "forfeited">("idle");
+  const [essayTimeLeft, setEssayTimeLeft] = usePersistentState<number>("essay_time_left", 0);
+  const [essayTimerState, setEssayTimerState] = usePersistentState<"idle" | "running" | "expired" | "forfeited">("essay_timer_state", "idle");
+  const [showCreditWarning, setShowCreditWarning] = useState<{ active: boolean, isUploadFlow: boolean }>({ active: false, isUploadFlow: false });
   
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (essayTimerState === "running") {
+        e.preventDefault();
+        e.returnValue = "You are currently taking a timed Essay session. Navigating away means you will instantly forfeit the exam. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [essayTimerState]);
+
   useEffect(() => {
     if (essayTimerState === "running" && essayTimeLeft > 0) {
       const timer = setInterval(() => setEssayTimeLeft(prev => prev - 1), 1000);
@@ -117,7 +132,7 @@ export default function EssayPage() {
     } else if (essayTimerState === "running" && essayTimeLeft === 0) {
       setEssayTimerState("expired");
     }
-  }, [essayTimerState, essayTimeLeft]);
+  }, [essayTimerState, essayTimeLeft, setEssayTimeLeft, setEssayTimerState]);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -139,18 +154,18 @@ export default function EssayPage() {
   const [setupError, setSetupError] = useState(false);
 
   // Teacher flow state
-  const [teacherStep, setTeacherStep] = useState<number>(1);
-  const [teacherImage, setTeacherImage] = useState<string | null>(null);
-  const [gradingConfig, setGradingConfig] = useState<GradingConfig>({
+const [teacherStep, setTeacherStep] = usePersistentState<number>("essay_teacher_step", 1);
+const [teacherImage, setTeacherImage] = usePersistentState<string | null>("essay_teacher_img", null);
+const [gradingConfig, setGradingConfig] = usePersistentState<GradingConfig>("essay_grading_config", {
     structure: "PEEL",
     paragraphs: 1,
     passage: ""
   });
-  const [gradingAnswers, setGradingAnswers] = useState<GradingAnswer[]>([]);
+const [gradingAnswers, setGradingAnswers] = usePersistentState<GradingAnswer[]>("essay_grading_answers", [{ question: "", answer: "" }]);
 
   // Multi-Agent Grading State
-  const [gradingStatus, setGradingStatus] = useState<GradingStatus>("idle");
-  const [gradingResult, setGradingResult] = useState<GradingResult | null>(null);
+const [gradingStatus, setGradingStatus] = usePersistentState<GradingStatus>("essay_grading_status", "idle");
+const [gradingResult, setGradingResult] = usePersistentState<GradingResult | null>("essay_grading_result", null);
   
   const handleStartOver = () => {
     setRole(null);
@@ -171,7 +186,7 @@ export default function EssayPage() {
       paragraphs: 1,
       passage: ""
     });
-    setGradingAnswers([]);
+    setGradingAnswers([{ question: "", answer: "" }]);
     setGradingStatus("idle");
     setGradingResult(null);
     setHasSaved(false);
@@ -210,15 +225,30 @@ export default function EssayPage() {
     }
   };
 
-  const handleGenerateExercise = async () => {
+  const handleGenerateExercise = async (e?: React.FormEvent, isUploadFlow = false, skipWarning = false) => {
+    if (e) e.preventDefault();
+    
     if (!isLoaded) return;
-    if (!canAfford(3000, "Mistral Small")) {
+    
+    if (tierRank === 0 && !skipWarning) {
+      setShowCreditWarning({ active: true, isUploadFlow });
+      return;
+    }
+
+    if (!canAfford(3000, heavy)) {
+      openUpgradeModal("You do not have enough daily credits to generate an essay setup. Please try again tomorrow or upgrade your plan.", "Upgrade Plan", "/subscriptions");
+      return;
+    }
+
+    if (!isUploadFlow && !config.subject) {
       openUpgradeModal("You do not have enough daily credits to generate an essay setup. Please try again tomorrow or upgrade your plan.", "Upgrade Plan", "/subscriptions");
       return;
     }
 
     setIsGenerating(true);
     setEssayStep(3);
+    setEssayTimerState("idle");
+    setEssayTimeLeft(0);
     
     let allowedParagraphs = 1;
     if (tierRank >= TIER_RANK.Premium) allowedParagraphs = 8;
@@ -277,7 +307,6 @@ export default function EssayPage() {
               ? `You are a senior AQA examiner and educational author. Write an extract that perfectly encapsulates the specification points provided in the context. Ensure it matches the requested style (${effectiveStyle}). It MUST contain rich linguistic devices, structural features, and layered themes suitable for rigorous GCSE-level analysis (AO2/AO3). Do not include a title or any intro, just the raw passage text.`
               : `You are an expert educational author. Write a passage about the requested topic. Ensure it matches the requested style (${effectiveStyle}). Do not include a title or any intro, just the raw passage text.`,
             model: heavy,
-            maxTokens: passageTokens,
             curriculumLevel,
             curriculumSubject: config.subject, // Override the global context so it doesn't force biology restrictions for english essays
             chatMode: "Standard", // Always use standard for English since we don't have English AQA specs in DB yet
@@ -285,6 +314,9 @@ export default function EssayPage() {
           }),
         });
         const passageData = await passageRes.json();
+        if (passageData.status === "error" || !passageData.text) {
+          throw new Error(passageData.message || "Failed to generate passage");
+        }
         if (passageData.usage) deductCredits(passageData.usage.inputTokens, passageData.usage.outputTokens, heavy);
         finalPassage = passageData.text;
       } else {
@@ -302,13 +334,15 @@ export default function EssayPage() {
             messages: [{ role: "user", content: `Write a concise summary of the following passage. Focus strictly on the core plot, main themes, and key literary devices. Keep it under 150 words. Do NOT invent information. This summary is used to verify a student's reading comprehension.\n\nPassage:\n${finalPassage}` }],
             systemPrompt: "You are an objective AI summarizing a passage for grading context.",
             model: heavy,
-            maxTokens: 200,
             curriculumLevel,
             curriculumSubject: config.subject,
             extraTopicDetails: `AQA English summary of passage`,
           }),
         });
         const summaryData = await summaryRes.json();
+        if (summaryData.status === "error" || !summaryData.text) {
+          throw new Error(summaryData.message || "Failed to generate summary");
+        }
         if (summaryData.usage) deductCredits(summaryData.usage.inputTokens, summaryData.usage.outputTokens, heavy);
         setGeneratedSummary(summaryData.text);
       }
@@ -327,18 +361,20 @@ export default function EssayPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [{ role: "user", content: isAQA 
-            ? `Based on this passage, create a highly realistic AQA exam for ${config.yearGroup} students at ${config.difficulty} tier. Generate exactly: ${aqaPrompt} Focus the questions on analyzing ${analysisFocusText}. EACH question MUST explicitly state the marks at the end (e.g. [4 marks]). For any paragraph or 8-mark questions, you MUST explicitly state '(Use the PETAL structure)' in the question text. Do not include any intro, just the raw questions separated by newlines.\n\nPassage:\n${finalPassage}`
-            : `Based on this passage, create a custom exam for ${config.yearGroup} students at a ${config.difficulty} level. Generate exactly ${config.questionCounts.short} short answer questions (1-2pts), ${config.questionCounts.simple} simple paragraph questions (3-4pts), and ${config.questionCounts.detailed} detailed paragraph (PETALS) questions (5-6pts). Focus the questions on analyzing ${analysisFocusText}. EACH question MUST explicitly state the marks at the end (e.g. [4 marks]). For any paragraph or 8-mark questions, you MUST explicitly state '(Use the PETAL structure)' in the question text. Do not include any intro, just the raw questions separated by newlines.\n\nPassage:\n${finalPassage}` 
+            ? `Based on this passage, create a highly realistic AQA exam for ${config.yearGroup} students at ${config.difficulty} tier. Generate exactly: ${aqaPrompt} Focus the questions on analyzing ${analysisFocusText}. EACH question MUST explicitly state the marks at the end (e.g. [4 marks]). For any paragraph or 8-mark questions, you MUST explicitly state '(Use the PETAL structure)' in the question text. Do not include any intro. You MUST write out the ACTUAL question text (e.g. "How does the writer use language to describe..."), NOT just "Question 1". Separate each question with a newline.\n\nPassage:\n${finalPassage}`
+            : `Based on this passage, create a custom exam for ${config.yearGroup} students at a ${config.difficulty} level. Generate exactly ${config.questionCounts.short} short answer questions (1-2pts), ${config.questionCounts.simple} simple paragraph questions (3-4pts), and ${config.questionCounts.detailed} detailed paragraph (PETALS) questions (5-6pts). Focus the questions on analyzing ${analysisFocusText}. EACH question MUST explicitly state the marks at the end (e.g. [4 marks]). For any paragraph or 8-mark questions, you MUST explicitly state '(Use the PETAL structure)' in the question text. Do not include any intro. You MUST write out the ACTUAL question text (e.g. "How does the writer use language to describe..."), NOT just "Question 1". Separate each question with a newline.\n\nPassage:\n${finalPassage}` 
           }],
           systemPrompt: "You are an expert literature teacher creating exam questions.",
           model: heavy,
-          maxTokens: 500,
           curriculumLevel,
           curriculumSubject: config.subject,
           extraTopicDetails: `AQA English question creation for passage`,
         }),
       });
       const qData = await qRes.json();
+      if (qData.status === "error" || !qData.text) {
+        throw new Error(qData.message || "Failed to generate questions");
+      }
       if (qData.usage) deductCredits(qData.usage.inputTokens, qData.usage.outputTokens, heavy);
       setGeneratedQuestion(qData.text);
       
@@ -371,7 +407,7 @@ export default function EssayPage() {
 
   const handleMarkEssayStudent = async (answers: {question: string, answer: string}[]) => {
     if (!isLoaded) return;
-    const markerModel: ModelType = grading;
+    const markerModel: ModelType = "Deepseek-V4-Flash";
     if (!canAfford(4000, markerModel)) {
       openUpgradeModal("You do not have enough daily credits to grade this essay. Please try again tomorrow.", "Upgrade Plan", "/subscriptions");
       return;
@@ -390,7 +426,10 @@ Key Assessment Objectives (AOs):
 - AO3: Show understanding of the relationships between texts and contexts. (Relevant contextual links).
 - AO4: Evaluate texts critically with appropriate textual references.
 
-Identify every flaw in their response based on the provided passage/source material. Be ruthless but fair. Output a detailed error log detailing exact mistakes, missed analytical opportunities, and weak terminology. Do not output a final score yet.`;
+Identify every flaw in their response based on the provided passage/source material. Be ruthless but fair. 
+CRITICAL INSTRUCTION: You MUST scale your expectations and feedback length based on the marks available for each question:
+- For 1-2 mark questions: Provide ONLY a single, extremely brief sentence. DO NOT over-analyze.
+- For 3+ mark questions: Use your normal, full analytical thought process to list detailed improvements and output a detailed error log detailing exact mistakes, missed analytical opportunities, and weak terminology. Do not output a final score yet.`;
 
       const markerUserMessage = `Passage Summary:
 ${generatedSummary || generatedPassage}
@@ -405,7 +444,6 @@ ${finalSubmissionText}`;
           messages: [{ role: "user", content: markerUserMessage }],
           systemPrompt: markerSystemPrompt,
           model: markerModel,
-          maxTokens: 400,
           curriculumLevel,
           curriculumSubject,
           extraTopicDetails: `AQA English essay grading criteria`,
@@ -446,7 +484,6 @@ Do not use markdown. Output pure JSON.`;
           messages: [{ role: "user", content: judgeUserMessage }],
           systemPrompt: judgeSystemPrompt,
           model: grading,
-          maxTokens: 400,
           curriculumLevel,
           curriculumSubject,
           chatMode: "Strict Syllabus",
@@ -470,6 +507,8 @@ Do not use markdown. Output pure JSON.`;
   };
 
   const handleSubmitStudentEssay = () => {
+    setEssayTimerState("idle");
+    setEssayTimeLeft(0);
     setEssayStep(4);
     const populatedAnswers = studentAnswers.map(ans => ({
       question: generatedQuestion,
@@ -498,14 +537,15 @@ Do not use markdown. Output pure JSON.`;
     setIsSaving(true);
     try {
       await insertFeatureAction("essay_sims", {
-        user_id: user.id,
-        source_passage: gradingConfig.passage || "Image uploaded",
-        student_submission: gradingAnswers.map((a, i) => `Paragraph ${i+1}:\nQ: ${a.question}\nA: ${a.answer}`).join("\n\n"),
-        final_score: gradingResult.final_score,
-        grade_letter: gradingResult.grade_letter,
-        marker_log: gradingResult.marker_log,
-        key_issues: gradingResult.key_issues,
-        improvement_points: gradingResult.improvement_points
+        prompt: gradingConfig.passage || "Image uploaded",
+        essay: gradingAnswers.map((a, i) => `Paragraph ${i+1}:\nQ: ${a.question}\nA: ${a.answer}`).join("\n\n"),
+        grade: {
+          final_score: gradingResult.final_score,
+          grade_letter: gradingResult.grade_letter,
+          marker_log: gradingResult.marker_log,
+          key_issues: gradingResult.key_issues,
+          improvement_points: gradingResult.improvement_points
+        }
       });
       
       setHasSaved(true);
@@ -521,7 +561,7 @@ Do not use markdown. Output pure JSON.`;
     // Use Deepseek V4 Flash for the Marker since deepseek-reasoner (Pro) can sometimes 
     // swallow output into reasoning blocks, causing "No response received" empty text errors.
     // swallow output into reasoning blocks, causing "No response received" empty text errors.
-    const markerModel: ModelType = heavy;
+    const markerModel: ModelType = "Deepseek-V4-Flash";
     if (!canAfford(4000, markerModel)) {
       openUpgradeModal("You do not have enough daily credits to grade this essay. Please try again tomorrow or upgrade your plan.", "Upgrade Plan", "/subscriptions");
       return;
@@ -567,17 +607,14 @@ Key Assessment Objectives (AOs) to look for:
 - AO4: Evaluate texts critically and support this with appropriate textual references.
 
 CRITICAL INSTRUCTION: You MUST scale your expectations and feedback length based on the marks available for each question:
-- For 1-3 mark questions: Look for a single valid point. DO NOT penalize for lack of embedded quotes, terminology, or depth. Keep feedback extremely brief (max 1-2 short sentences).
-- For 4-6 mark questions: Look for basic structure (PEEL/PETAL). Evaluate clarity of point, evidence, and simple explanation. Keep feedback concise (max 3 bullet points).
-- For 8+ mark questions: Apply full rigorous AQA standards. Expect embedded quotes, terminology, perceptive analysis, and structured arguments. Provide a detailed error log detailing exact mistakes and missed analytical opportunities.
+- For 1-2 mark questions: Provide ONLY a single, extremely brief sentence. DO NOT over-analyze.
+- For 3+ mark questions: Use your normal, full analytical thought process to list detailed improvements and provide a detailed error log detailing exact mistakes and missed analytical opportunities.
 
 Do not penalize them if they do not use a standard 'PEE' paragraph structure on long questions, provided their analysis is fluent, perceptive, and analytical.
 Identify flaws in their response based on the provided passage/source material. Be ruthless but fair, adhering to the mark-scaling rules above. Do not output a final score yet.`;
 
       const markerUserMessage = `Passage Summary (for thematic reference):
 ${gradingConfig.passage || "None provided"}
-
-Assignment: Write ${gradingConfig.paragraphs} paragraphs using ${gradingConfig.structure} structure.
 
 Student Submission:
 ${finalSubmissionText}`;
@@ -589,9 +626,9 @@ ${finalSubmissionText}`;
           messages: [{ role: "user", content: markerUserMessage }],
           systemPrompt: markerSystemPrompt,
           model: markerModel,
-          maxTokens: 1500,
           curriculumLevel,
           curriculumSubject,
+          chatMode: "Quick Answer",
           extraTopicDetails: `AQA English essay grading criteria`,
         }),
       });
@@ -633,10 +670,9 @@ Do not use markdown code blocks. Output pure JSON.`;
           messages: [{ role: "user", content: judgeUserMessage }],
           systemPrompt: judgeSystemPrompt,
           model: grading,
-          maxTokens: 800,
           curriculumLevel,
           curriculumSubject,
-          chatMode: "Strict Syllabus",
+          chatMode: "Quick Answer",
           extraTopicDetails: `AQA grading synthesis`,
         }),
       });
@@ -731,22 +767,18 @@ Do not use markdown code blocks. Output pure JSON.`;
             <p className="text-sm text-muted-foreground mt-1">Upload essays for full detailed AI feedback.</p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <Button variant="outline" size="sm" onClick={() => setRole("student")} className="gap-1.5">
-              <ArrowRight className="w-3.5 h-3.5" />
-              Switch to Practice
-            </Button>
+
             <Button variant="ghost" size="sm" onClick={handleStartOver} className="text-muted-foreground hover:text-foreground">
               Start Over
             </Button>
           </div>
         </div>
 
-        {teacherStep === 1 && (
-          <div className="space-y-8 animate-in slide-in-from-bottom-4 fade-in">
-            <h2 className="text-xl font-semibold text-foreground">Prepare Essay for Marking</h2>
-            
-            <div className="bg-card border border-border rounded-xl p-6 space-y-6">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Source Material</h3>
+        <div className="space-y-8 animate-in slide-in-from-bottom-4 fade-in">
+          <h2 className="text-xl font-semibold text-foreground">Prepare Essay for Marking</h2>
+          
+          <div className="bg-card border border-border rounded-xl p-6 space-y-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Source Material</h3>
               <div className="grid gap-6">
                 <div className="border-2 border-dashed border-border rounded-xl p-8 text-center flex flex-col items-center justify-center hover:bg-muted/50 transition-colors">
                   {teacherImage ? (
@@ -789,64 +821,11 @@ Do not use markdown code blocks. Output pure JSON.`;
               </div>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-6 space-y-6">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Configuration</h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Number of Questions / Paragraphs</label>
-                  <select 
-                    value={gradingConfig.paragraphs}
-                    onChange={(e) => setGradingConfig({...gradingConfig, paragraphs: Number(e.target.value)})}
-                    className="w-full p-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  >
-                    {Array.from({ length: maxParagraphs }, (_, i) => i + 1).map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Type of Paragraphs</label>
-                  <select 
-                    value={gradingConfig.structure}
-                    onChange={(e) => setGradingConfig({...gradingConfig, structure: e.target.value})}
-                    className="w-full p-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  >
-                    {["PEE", "PEEL", "PETAL", "TEEL", "Freeform"].map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-end pt-4">
-              <Button size="lg" onClick={() => {
-                setGradingAnswers(prev => {
-                  const arr = [...prev];
-                  while(arr.length < gradingConfig.paragraphs) arr.push({question: "", answer: ""});
-                  if(arr.length > gradingConfig.paragraphs) arr.length = gradingConfig.paragraphs;
-                  return arr;
-                });
-                setTeacherStep(2);
-                setGradingStatus("idle");
-                setGradingResult(null);
-              }}>
-                Proceed to Marking View <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {teacherStep === 2 && (
-          <div className="space-y-12 animate-in slide-in-from-bottom-4 fade-in">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => setTeacherStep(1)} className="rounded-full shrink-0">
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
-              <h2 className="text-xl font-semibold text-foreground">Marking View</h2>
-            </div>
-
-            <div className="space-y-8">
+            <div className="space-y-8 mt-12">
               <div className="flex items-center justify-between border-b border-border pb-2">
                 <h3 className="text-lg font-semibold text-foreground">Student Submission</h3>
                 <span className="text-xs font-medium px-2.5 py-1 bg-secondary rounded-full text-secondary-foreground">
-                  {gradingConfig.paragraphs} Paragraph{gradingConfig.paragraphs > 1 ? 's' : ''} • {gradingConfig.structure}
+                  {gradingAnswers.length} Paragraph{gradingAnswers.length > 1 ? 's' : ''}
                 </span>
               </div>
 
@@ -859,6 +838,18 @@ Do not use markdown code blocks. Output pure JSON.`;
                     <label className="text-sm font-semibold text-foreground">
                       Paragraph {idx + 1}
                     </label>
+                    {gradingAnswers.length > 1 && (
+                      <button 
+                        onClick={() => {
+                          const copy = [...gradingAnswers];
+                          copy.splice(idx, 1);
+                          setGradingAnswers(copy);
+                        }}
+                        className="ml-auto text-muted-foreground hover:text-red-500 text-xs px-2 py-1 rounded hover:bg-red-500/10 transition-colors"
+                      >
+                        ✕ Remove
+                      </button>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -885,11 +876,19 @@ Do not use markdown code blocks. Output pure JSON.`;
                         setGradingAnswers(copy);
                       }}
                       className="w-full min-h-[150px] p-4 rounded-xl border border-border bg-background text-sm resize-y focus:outline-none focus:ring-2 focus:ring-primary/20 leading-relaxed"
-                      placeholder={`Student's ${gradingConfig.structure} response...`}
+                      placeholder={`Student's response...`}
                     />
                   </div>
                 </div>
               ))}
+              
+              <Button 
+                variant="outline" 
+                className="w-full py-6 border-dashed border-2 hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors gap-2" 
+                onClick={() => setGradingAnswers([...gradingAnswers, { question: "", answer: "" }])}
+              >
+                + Add Question
+              </Button>
             </div>
 
             <div className="flex justify-end pt-6 pb-20 border-t border-border">
@@ -907,8 +906,8 @@ Do not use markdown code blocks. Output pure JSON.`;
                   <Loader2 className="w-5 h-5 animate-spin" />
                   <span className="font-semibold text-sm">
                     {gradingStatus === "ocr" && "Extracting text from image..."}
-                    {gradingStatus === "marker" && "The Marker (DeepSeek) is analyzing..."}
-                    {gradingStatus === "judge" && "The Judge (Gemini) is evaluating..."}
+                    {gradingStatus === "marker" && "The Marker is analyzing..."}
+                    {gradingStatus === "judge" && "The Judge is evaluating..."}
                   </span>
                 </div>
               ) : gradingResult ? (
@@ -916,7 +915,7 @@ Do not use markdown code blocks. Output pure JSON.`;
                   <div className="flex items-start justify-between border-b border-border pb-6 mb-6">
                     <div>
                       <h3 className="text-2xl font-bold text-foreground">Grading Verdict</h3>
-                      <p className="text-sm text-muted-foreground mt-1">Evaluated by DeepSeek V4 Flash & Gemini Flash-Lite</p>
+                      <p className="text-sm text-muted-foreground mt-1">Evaluated strictly against AQA Mark Schemes</p>
                     </div>
                     <div className="flex items-center gap-4 text-right">
                       <div className="flex flex-col">
@@ -979,7 +978,7 @@ Do not use markdown code blocks. Output pure JSON.`;
 
                   <details className="group border border-border rounded-lg bg-muted/20">
                     <summary className="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                      <span>View The Marker's Raw Log (DeepSeek)</span>
+                      <span>View The Marker's Raw Log</span>
                       <span className="transition group-open:rotate-180">
                         <ChevronDown className="w-4 h-4" />
                       </span>
@@ -1011,7 +1010,6 @@ Do not use markdown code blocks. Output pure JSON.`;
               ) : null}
             </div>
           </div>
-        )}
       </div>
     );
   }
@@ -1029,13 +1027,7 @@ Do not use markdown code blocks. Output pure JSON.`;
         <div className="flex items-center gap-3 shrink-0">
           {essayStep !== 3 && (
             <>
-              <Button variant="outline" size="sm" onClick={() => {
-                setRole("teacher");
-                setTeacherStep(1);
-              }} className="gap-1.5">
-                <ArrowRight className="w-3.5 h-3.5" />
-                Switch to Grading
-              </Button>
+
               <Button variant="ghost" size="sm" onClick={handleStartOver} className="text-muted-foreground hover:text-foreground">
                 Start Over
               </Button>
@@ -1530,8 +1522,8 @@ Do not use markdown code blocks. Output pure JSON.`;
             <div className="flex flex-col items-center justify-center py-20 space-y-4">
               <Loader2 className="w-8 h-8 text-primary animate-spin" />
               <span className="font-semibold text-sm text-muted-foreground">
-                {gradingStatus === "marker" && "The Strict AQA Examiner (DeepSeek) is analyzing..."}
-                {gradingStatus === "judge" && "The Judge (Gemini) is evaluating the score..."}
+                {gradingStatus === "marker" && "The Strict AQA Examiner is analyzing..."}
+                {gradingStatus === "judge" && "The Judge is evaluating the score..."}
                 {gradingStatus === "idle" && "Initializing marking engine..."}
               </span>
             </div>
@@ -1603,7 +1595,7 @@ Do not use markdown code blocks. Output pure JSON.`;
 
               <details className="group border border-border rounded-xl bg-background overflow-hidden">
                 <summary className="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  <span>View The Raw Examiner's Log (DeepSeek)</span>
+                  <span>View The Raw Examiner's Log</span>
                   <span className="transition group-open:rotate-180">
                     <ChevronDown className="w-4 h-4" />
                   </span>
@@ -1637,6 +1629,39 @@ Do not use markdown code blocks. Output pure JSON.`;
           <span className={cn(essayTimeLeft < 60 ? "text-red-500" : "text-foreground")}>
             {Math.floor(essayTimeLeft / 60).toString().padStart(2, "0")}:{(essayTimeLeft % 60).toString().padStart(2, "0")}
           </span>
+        </div>
+      )}
+
+      {showCreditWarning.active && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-card w-full max-w-md rounded-3xl border border-border shadow-2xl overflow-hidden relative p-6 text-center">
+            <button onClick={() => setShowCreditWarning({ active: false, isUploadFlow: false })} className="absolute right-4 top-4 text-muted-foreground hover:text-foreground">
+              <X className="w-5 h-5" />
+            </button>
+            <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-amber-500/20">
+              <AlertTriangle className="w-10 h-10 text-amber-500" />
+            </div>
+            <h3 className="text-2xl font-bold text-foreground mb-4 font-serif">Credit Warning</h3>
+            <p className="text-sm text-muted-foreground mb-8">
+              This generation is highly resource-intensive and will likely use up all your remaining Free credits. Are you sure you want to proceed?
+            </p>
+            
+            <div className="space-y-3">
+              <button 
+                onClick={() => {
+                  const isUpload = showCreditWarning.isUploadFlow;
+                  setShowCreditWarning({ active: false, isUploadFlow: false });
+                  handleGenerateExercise(undefined, isUpload, true);
+                }} 
+                className="w-full py-3 rounded-xl bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 font-bold transition-colors border border-amber-500/20"
+              >
+                Yes, Proceed
+              </button>
+              <button onClick={() => setShowCreditWarning({ active: false, isUploadFlow: false })} className="w-full py-3 rounded-xl bg-muted text-foreground hover:bg-muted/80 font-bold transition-colors">
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

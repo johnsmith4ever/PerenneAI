@@ -22,14 +22,12 @@ type ModelDefinition = {
 const MODELS: ModelDefinition[] = [
   { displayName: "Mistral Small", realProvider: "Mistral Small (Mistral)" },
   { displayName: "Mistral Large", realProvider: "Mistral Large (Mistral)" },
-  { displayName: "GPT OSS", realProvider: "GPT OSS 120B (Groq)" },
   { displayName: "Gemini 3.5 Flash-Lite", realProvider: "Gemini 3.5 Flash-Lite" },
   { displayName: "Gemini 3.6 Flash", realProvider: "Gemini 2.5 Flash-Lite" },
-  { displayName: "Gemini 3.5 Pro", realProvider: "Gemini 3.6 Flash" },
   { displayName: "Deepseek-V4-Flash", realProvider: "DeepSeek V4 Flash" },
   { displayName: "Deepseek-V4-Pro", realProvider: "DeepSeek V4 Pro" },
   { displayName: "Claude 4.5 Haiku", realProvider: "Claude 3.5 Haiku" },
-  { displayName: "Claude 3.5 Sonnet", realProvider: "Claude 3.5 Sonnet" },
+  { displayName: "Claude 4.6 Sonnet", realProvider: "Claude 4.6 Sonnet" },
 ];
 
 type Message = {
@@ -57,7 +55,6 @@ export default function AssistantPage() {
       let isLocked = false;
       const name = m.displayName;
       if (name === "Mistral Large" && tierRank < TIER_RANK.Core) isLocked = true;
-      if (name === "GPT OSS" && tierRank < TIER_RANK.Core) isLocked = true;
       if (name.includes("Gemini") && tierRank < TIER_RANK.Pro) isLocked = true;
       if (name.includes("Deepseek") && tierRank < TIER_RANK.Premium) isLocked = true;
       if (name.includes("Claude") && tierRank < TIER_RANK.Maximum) isLocked = true;
@@ -88,7 +85,7 @@ export default function AssistantPage() {
   const chatsRef = useRef<ChatSession[]>(chats);
   useEffect(() => { chatsRef.current = chats; }, [chats]);
   const [chatsLoaded, setChatsLoaded] = useState(false);
-  const [activeChatId, setActiveChatId] = useState<string | null>(null);
+const [activeChatId, setActiveChatId] = usePersistentState<string | null>("assistant_active_chat_id", null);
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
   const [editChatTitle, setEditChatTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -338,14 +335,14 @@ export default function AssistantPage() {
 
     // Build system prompt based on mode
     const GREETING_RESPONSE = "Hi, I'm Perenne — your AI study assistant, built specifically around the AQA specification so everything I help you with actually maps to what you'll be tested on. I can generate flashcards from your notes or a topic, build you a quiz or run a full exam simulator with AQA-style questions, grade your essays with feedback tied to real AQA assessment objectives like AO1 and AO2, and answer questions or walk through topics with you directly. I also track your weak areas automatically based on your quiz and essay history, so you always know what's worth revising next, and I've got extra tools like mind maps, a math solver, presentations, and debate practice depending on how you like to study. Everything's tied to your account too, so you can start something on one device and pick it back up wherever you are. What do you need help with today?";
-    const identity = `You are Perenne, an AI study assistant built specifically for UK students around the AQA specification. You answer every question the user asks fully and accurately. ONLY if the user directly greets you or asks who you are or what you can do, respond with exactly: "${GREETING_RESPONSE}" — do NOT use this response for any other type of question.`;
+    const identity = `You are Perenne, an AI study assistant built specifically for UK students around the AQA specification. You answer every question the user asks fully and accurately. ONLY if the user directly greets you or asks who you are or what you can do, respond with exactly: "${GREETING_RESPONSE}" — do NOT use this response for any other type of question. IMPORTANT RULES: Do NOT use any built-in web searching, extended reasoning, or deep thinking capabilities. You must rely solely on the provided context or your base knowledge.`;
     let systemPrompt = "";
     if (chatMode === "Quick Answer") {
-      systemPrompt = identity + "\nBe brief. Key facts only.";
+      systemPrompt = identity + "\nProvide ONLY the key points as concisely as possible. Summarize key information with minimal detail.";
     } else if (chatMode === "Strict Syllabus") {
       systemPrompt = identity + "\nExplain step-by-step using only strict syllabus knowledge. At the very end, on its own line, write the direct answer prefixed with 'ANSWER: '.";
     } else {
-      systemPrompt = identity;
+      systemPrompt = identity + "\nKeep your responses relatively short and direct.";
     }
 
     try {
@@ -372,10 +369,6 @@ export default function AssistantPage() {
             activeModel.displayName as ModelType, 
             "chat"
           );
-        }
-        // Deduct Mistral embedding cost when RAG is triggered
-        if (chatMode === "Standard" || chatMode === "Strict Syllabus") {
-          deductCredits(150, 0, "Mistral Embed", "chat");
         }
         if (data.tavilyUsed) {
           deductCredits(100, 100, "Tavily Search", "chat");
@@ -802,6 +795,16 @@ export default function AssistantPage() {
                 <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:bg-muted transition-colors rounded-lg">
                   <Paperclip className="w-4 h-4" />
                   <span className="text-xs font-medium">Attach</span>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={cn("gap-1.5 transition-colors rounded-lg", useWebFallback ? "text-blue-500 bg-blue-500/10 hover:bg-blue-500/20" : "text-muted-foreground hover:bg-muted")}
+                  onClick={() => setUseWebFallback(!useWebFallback)}
+                  title="Search the web if AQA syllabus has no answer"
+                >
+                  <Globe className="w-4 h-4" />
+                  <span className="text-xs font-medium">Web Search</span>
                 </Button>
               </div>
               <Button

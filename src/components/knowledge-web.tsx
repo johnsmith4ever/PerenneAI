@@ -1,8 +1,8 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-server";
 import { cn } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
 
-export async function KnowledgeWeb({ userId }: { userId?: string }) {
+export async function KnowledgeWeb({ userId, mini = false }: { userId?: string, mini?: boolean }) {
   if (!userId) return null;
 
   const daysToTrack = 84; // 12 weeks * 7 days
@@ -10,11 +10,12 @@ export async function KnowledgeWeb({ userId }: { userId?: string }) {
   startDate.setDate(startDate.getDate() - daysToTrack + 1);
   const cutoff = startDate.toISOString();
 
-  const [qRes, fRes, eRes, exRes] = await Promise.all([
-    supabase.from("quiz_history").select("created_at").eq("user_id", userId).gte("created_at", cutoff),
-    supabase.from("flashcards_history").select("created_at").eq("user_id", userId).gte("created_at", cutoff),
-    supabase.from("essay_history").select("created_at").eq("user_id", userId).gte("created_at", cutoff),
-    supabase.from("explore_history").select("created_at").eq("user_id", userId).gte("created_at", cutoff),
+  // Query the real tables that actually exist, filter by updated_at (created_at may not be set)
+  const [qRes, fRes, eRes, mRes] = await Promise.all([
+    supabaseAdmin.from("quizzes").select("updated_at").eq("user_id", userId).gte("updated_at", cutoff),
+    supabaseAdmin.from("flashcards").select("updated_at").eq("user_id", userId).gte("updated_at", cutoff),
+    supabaseAdmin.from("essay_sims").select("updated_at").eq("user_id", userId).gte("updated_at", cutoff),
+    supabaseAdmin.from("maths_questions").select("updated_at").eq("user_id", userId).gte("updated_at", cutoff),
   ]);
 
   const counts: Record<string, number> = {};
@@ -22,8 +23,7 @@ export async function KnowledgeWeb({ userId }: { userId?: string }) {
   const processDates = (res: any) => {
     if (res.data) {
       res.data.forEach((row: any) => {
-        // Simple local date conversion (assuming UTC is close enough to avoid complex timezone math for a heatmap)
-        const d = new Date(row.created_at).toISOString().split("T")[0];
+        const d = new Date(row.updated_at || row.created_at).toISOString().split("T")[0];
         counts[d] = (counts[d] || 0) + 1;
       });
     }
@@ -32,7 +32,7 @@ export async function KnowledgeWeb({ userId }: { userId?: string }) {
   processDates(qRes);
   processDates(fRes);
   processDates(eRes);
-  processDates(exRes);
+  processDates(mRes);
 
   const totalActivity = Object.values(counts).reduce((a, b) => a + b, 0);
 
@@ -53,6 +53,34 @@ export async function KnowledgeWeb({ userId }: { userId?: string }) {
     return "bg-amber-500 border border-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.6)] text-white";
   };
 
+  if (mini) {
+    return (
+      <div className="w-full">
+        <div className="flex items-center justify-between mb-2 px-1">
+          <div className="flex items-center gap-1.5 text-slate-300">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <p className="text-xs font-bold tracking-wide">Knowledge Web</p>
+          </div>
+          <span className="text-[10px] font-bold text-amber-500">{totalActivity}</span>
+        </div>
+        <div className="p-3 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm overflow-hidden flex justify-center">
+          <div className="inline-grid grid-flow-col grid-rows-7 gap-[3px]">
+            {daysArray.map((day) => (
+              <div 
+                key={day.date} 
+                title={`${day.count} interactions on ${day.date}`}
+                className={cn(
+                  "w-[9px] h-[9px] rounded-[2px]",
+                  getColor(day.count)
+                )}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mb-8 pt-4">
       <div className="flex items-center justify-between mb-4">
@@ -61,18 +89,18 @@ export async function KnowledgeWeb({ userId }: { userId?: string }) {
             <Sparkles className="w-5 h-5 text-amber-500" />
             The Knowledge Web
           </h3>
-          <p className="text-xs text-slate-400 mt-1">Your neural activity over the last 12 weeks.</p>
+          <p className="text-xs text-slate-400 mt-1">Your study activity over the last 12 weeks.</p>
         </div>
         <div className="text-right">
           <p className="text-2xl font-bold font-serif text-amber-500 leading-none">{totalActivity}</p>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Total Interactions</p>
+          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Total Sessions</p>
         </div>
       </div>
 
       <div className="p-6 rounded-3xl bg-black/40 border border-white/10 backdrop-blur-sm overflow-x-auto">
         {/* Heatmap Grid */}
         <div className="inline-grid grid-flow-col grid-rows-7 gap-1.5">
-          {daysArray.map((day, i) => (
+          {daysArray.map((day) => (
             <div 
               key={day.date} 
               title={`${day.count} interactions on ${day.date}`}

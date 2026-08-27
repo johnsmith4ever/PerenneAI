@@ -12,13 +12,10 @@ const ALL_MODELS: (ModelType | "default")[] = [
   "Mistral Large",
   "Gemini 3.5 Flash-Lite",
   "Gemini 3.6 Flash",
-  "Gemini 3.5 Pro",
   "Deepseek-V4-Flash",
   "Deepseek-V4-Pro",
   "Claude 4.5 Haiku",
-  "Claude 3.5 Sonnet",
-  "GPT Luna",
-  "GPT Terra"
+  "Claude 4.6 Sonnet"
 ];
 
 export function ModelSelectorModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {

@@ -1,4 +1,6 @@
 "use client";
+import { toast } from "sonner";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 import { useState, useEffect } from "react";
 import { Clock, Loader2, ArrowLeft, CheckCircle2, AlertTriangle, Save, Target, X, Check } from "lucide-react";
@@ -14,15 +16,18 @@ import { MemoizedQuestionText } from "@/components/memoized-question-text";
 
 export default function ExamSimPage() {
   const { openUpgradeModal } = useUpgradeModal();
-  const { canAfford, deductCredits, isLoaded, heavy, judge, assistant, grading } = useSubscription();
-  const [isAQA, setIsAQA] = useState(true);
-  const [subject, setSubject] = useState("Biology");
-  const [topic, setTopic] = useState("");
-  const [year, setYear] = useState("GCSE");
-  const [difficulty, setDifficulty] = useState("Foundation");
-  const [testSize, setTestSize] = useState("Medium");
+  const { canAfford, deductCredits, isLoaded, heavy, judge, assistant, grading, tierRank } = useSubscription();
+const [isAQA, setIsAQA] = usePersistentState("exam_sim_isAQA", true);
+const [subject, setSubject] = usePersistentState("exam_sim_subject", "Biology");
+const [topic, setTopic] = usePersistentState("exam_sim_topic", "");
+const [year, setYear] = usePersistentState("exam_sim_year", "GCSE");
+const [difficulty, setDifficulty] = usePersistentState("exam_sim_diff", "Foundation");
+const [testSize, setTestSize] = usePersistentState("exam_sim_size", "Medium");
   const [weakPoints, setWeakPoints] = useState<any[]>([]);
   const [showQuitModal, setShowQuitModal] = useState(false);
+  const [showCreditWarning, setShowCreditWarning] = useState(false);
+  const [subjectMismatch, setSubjectMismatch] = useState<boolean | null>(null);
+  const [subjectMismatchOverridden, setSubjectMismatchOverridden] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -65,17 +70,48 @@ export default function ExamSimPage() {
 
     return () => clearTimeout(timer);
   }, [topic, subject, isAQA]);
+
+  // Subject mismatch check via Mistral Small
+  useEffect(() => {
+    if (!topic.trim() || !subject) {
+      setSubjectMismatch(null);
+      setSubjectMismatchOverridden(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "Mistral Small",
+            systemPrompt: "You are a subject classifier. Reply only with 'yes' or 'no'.",
+            messages: [{ role: "user", content: `Is the topic "${topic}" directly part of or clearly related to the school subject "${subject}"? Reply with only 'yes' or 'no'.` }],
+            maxTokens: 5
+          })
+        });
+        const data = await res.json();
+        const answer = (data.text || "").trim().toLowerCase();
+        setSubjectMismatch(answer.startsWith("no"));
+      } catch (e) {
+        setSubjectMismatch(null);
+      }
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, [topic, subject]);
   
-  const [examState, setExamState] = useState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("setup");
-  const [questions, setQuestions] = useState<string[]>([]);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [results, setResults] = useState<{marks: number, feedback: string, max_marks?: number}[]>([]);
+const [examState, setExamState] = usePersistentState<"setup" | "generating" | "taking" | "grading" | "results" | "forfeited">("exam_sim_state", "setup");
+const [questions, setQuestions] = usePersistentState<string[]>("exam_sim_questions", []);
+const [answers, setAnswers] = usePersistentState<string[]>("exam_sim_answers", []);
+const [results, setResults] = usePersistentState<{marks: number, feedback: string, max_marks?: number}[]>("exam_sim_results", []);
   
-  const [timeLeft, setTimeLeft] = useState(0);
+const [timeLeft, setTimeLeft] = usePersistentState("exam_sim_timeLeft", 0);
 
   const { user } = useUser();
   const [isSaving, setIsSaving] = useState(false);
-  const [hasSaved, setHasSaved] = useState(false);
+const [hasSaved, setHasSaved] = usePersistentState("exam_sim_saved", false);
 
   useEffect(() => {
     if (user) {
@@ -102,25 +138,28 @@ export default function ExamSimPage() {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
       await insertFeatureAction("exam_sims", {
         user_id: user.id,
-        topic: topic || "Exam Simulator",
-        questions: questions.map((q, i) => {
-          const maxMarks = latestResults[i].max_marks || 10;
-          const res: any = {
-            question: q,
-            user_answer: answers[i] || "Skipped",
-            grading: {
-              marks_awarded: latestResults[i].marks,
-              marks_available: maxMarks,
-              feedback: latestResults[i].feedback,
-              correct: latestResults[i].marks >= (maxMarks / 2)
+        subject: subject || "Exam Simulator",
+        score: scorePct,
+        data: {
+          topic: topic || "Exam Simulator",
+          questions: questions.map((q, i) => {
+            const maxMarks = latestResults[i].max_marks || 10;
+            const res: any = {
+              question: q,
+              user_answer: answers[i] || "Skipped",
+              grading: {
+                marks_awarded: latestResults[i].marks,
+                marks_available: maxMarks,
+                feedback: latestResults[i].feedback,
+                correct: latestResults[i].marks >= (maxMarks / 2)
+              }
+            };
+            if (i === 0) {
+              res._quizSettings = { subject, difficulty, testSize, isAQA };
             }
-          };
-          if (i === 0) {
-            res._quizSettings = { subject, difficulty, testSize, isAQA };
-          }
-          return res;
-        }),
-        score: scorePct
+            return res;
+          })
+        }
       });
       
       setHasSaved(true);
@@ -132,6 +171,18 @@ export default function ExamSimPage() {
   };
 
   useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (examState === "taking") {
+        e.preventDefault();
+        e.returnValue = "You are currently taking a timed Exam Simulator session. Navigating away means you will instantly forfeit the exam. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [examState]);
+
+  useEffect(() => {
     if (examState === "taking" && timeLeft > 0) {
       const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
       return () => clearInterval(timer);
@@ -140,10 +191,16 @@ export default function ExamSimPage() {
     }
   }, [examState, timeLeft]);
 
-  const handleStart = async () => {
+  const handleStart = async (bypassWarning = false) => {
     if (!topic.trim()) return;
     if (!canAfford(1000, "Deepseek-V4-Flash")) {
       openUpgradeModal("Insufficient credits.", "Upgrade Plan", "/subscriptions");
+      return;
+    }
+
+    // @ts-ignore
+    if (!bypassWarning && tierRank === 0) {
+      setShowCreditWarning(true);
       return;
     }
 
@@ -158,7 +215,7 @@ export default function ExamSimPage() {
         const checkData = await checkRes.json();
         if (!checkData.exists) {
           setExamState("setup");
-          alert("This topic does not exist in the AQA syllabus database. Please try a different topic or use Freestyle Mode.");
+          toast.error("This topic does not exist in the AQA syllabus database. Please try a different topic or use Freestyle Mode.");
           return;
         }
       } catch (e) {
@@ -192,11 +249,11 @@ export default function ExamSimPage() {
         setExamState("taking");
         if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, heavy);
       } else {
-        alert("Exam generation failed: " + (data.message || "Unknown error"));
+        toast.error("Exam generation failed: " + (data.message || "Unknown error"));
         setExamState("setup");
       }
     } catch (e: any) {
-      alert("Exam generation crashed: " + (e.message || "Network error"));
+      toast.error("Exam generation crashed: " + (e.message || "Network error"));
       setExamState("setup");
     }
   };
@@ -217,7 +274,7 @@ export default function ExamSimPage() {
         saveToHistory(data.results); // Automatically save to history
         if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, grading);
       } else {
-        alert("Grading failed.");
+        toast.error("Grading failed.");
         setExamState("setup");
       }
     } catch (e) {
@@ -312,6 +369,15 @@ export default function ExamSimPage() {
                 AQA Database Clearance: Found
               </div>
             )}
+            {subjectMismatch && !subjectMismatchOverridden && (
+              <div className="bg-orange-500/20 px-4 py-3 mt-3 rounded-lg text-xs font-bold text-orange-500 border border-orange-500/30 flex items-center justify-between shadow-inner">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4" />
+                  Subject Mismatch
+                </div>
+                <button onClick={() => setSubjectMismatchOverridden(true)} className="text-orange-500 hover:underline text-xs font-bold uppercase ml-4 whitespace-nowrap">Override</button>
+              </div>
+            )}
             {!isAQA && <p className="text-xs text-amber-500 mt-2 font-medium tracking-wide">* Does not follow official AQA standards.</p>}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -351,7 +417,12 @@ export default function ExamSimPage() {
               </select>
             </div>
           </div>
-          <Button className="w-full gap-2 py-6 text-lg font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-2xl mt-4" size="lg" onClick={handleStart} disabled={!topic.trim()}>
+          <Button 
+            className="w-full gap-2 py-6 text-lg font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-2xl mt-4" 
+            size="lg" 
+            onClick={() => handleStart(false)} 
+            disabled={!topic.trim() || (subjectMismatch !== null && subjectMismatch && !subjectMismatchOverridden)}
+          >
             <AlertTriangle className="w-5 h-5" /> Start Strict Exam
           </Button>
 
@@ -423,7 +494,7 @@ export default function ExamSimPage() {
                           )}
                         >
                           <div className={cn(
-                            "w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors",
+                            "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
                             isSelected ? "border-primary bg-primary" : "border-muted-foreground"
                           )}>
                             {isSelected && <Check className="w-3.5 h-3.5 text-background" />}
@@ -497,7 +568,7 @@ export default function ExamSimPage() {
                 <div className={cn("p-6 rounded-2xl text-[15px] border shadow-sm", pct >= 0.7 ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-900 dark:text-emerald-100" : "bg-red-500/5 border-red-500/20 text-red-900 dark:text-red-100")}>
                   <span className="block font-semibold text-xs uppercase opacity-70 mb-2 tracking-wider">Examiner Feedback:</span>
                   <div className="leading-relaxed [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>li]:mb-1 [&>strong]:font-bold [&>strong]:text-current">
-                    <ReactMarkdown>{results[i].feedback}</ReactMarkdown>
+                    <ReactMarkdown>{results[i].feedback || "Perfect! No notes."}</ReactMarkdown>
                   </div>
                 </div>
               </div>
@@ -558,6 +629,38 @@ export default function ExamSimPage() {
               <Button size="lg" variant="ghost" className="w-full" onClick={() => setShowQuitModal(false)}>
                 Cancel
               </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showCreditWarning && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-card w-full max-w-md rounded-3xl border border-border shadow-2xl overflow-hidden relative p-6 text-center">
+            <button onClick={() => setShowCreditWarning(false)} className="absolute right-4 top-4 text-muted-foreground hover:text-foreground">
+              <X className="w-5 h-5" />
+            </button>
+            <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-amber-500/20">
+              <AlertTriangle className="w-10 h-10 text-amber-500" />
+            </div>
+            <h3 className="text-2xl font-bold text-foreground mb-4 font-serif">Credit Warning</h3>
+            <p className="text-sm text-muted-foreground mb-8">
+              This generation is highly resource-intensive and will likely use up all your remaining Free credits. Are you sure you want to proceed?
+            </p>
+            
+            <div className="space-y-3">
+              <button 
+                onClick={() => {
+                  setShowCreditWarning(false);
+                  handleStart(true);
+                }} 
+                className="w-full py-3 rounded-xl bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 font-bold transition-colors border border-amber-500/20"
+              >
+                Yes, Proceed
+              </button>
+              <button onClick={() => setShowCreditWarning(false)} className="w-full py-3 rounded-xl bg-muted text-foreground hover:bg-muted/80 font-bold transition-colors">
+                Cancel
+              </button>
             </div>
           </div>
         </div>

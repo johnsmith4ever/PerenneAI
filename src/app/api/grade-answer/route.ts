@@ -1,51 +1,42 @@
 import { NextResponse } from "next/server";
-import { generateText } from "ai";
-import { createAnthropic } from "@ai-sdk/anthropic";
 import { auth } from "@clerk/nextjs/server";
-import { generateUniversalText } from "@/lib/universal-router";
+import { generateGeminiText } from "@/lib/gemini-fallback";
 
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
     // Guest bypass allowed: userId can be null
 
-    const { question, userAnswer, subject, topic, judgeModel } = await req.json();
+    const { question, userAnswer, subject, topic } = await req.json();
 
-    const prompt = `
-    You are an expert AI grader for a quiz.
-    Subject: ${subject}
-    Topic: ${topic}
-    Question: ${question}
-    User's Answer: "${userAnswer}"
+    const prompt = `You are an expert AI grader for a student quiz.
+Subject: ${subject}
+Topic: ${topic}
+Question: ${question}
+Student's Answer: "${userAnswer}"
 
-    Task:
-    1. First, determine the ideal "model answer" for this question.
-    2. Second, compare the user's answer against your model answer.
-    3. Determine if they are correct, assign marks (out of 10), and provide feedback.
-    
-    You MUST respond ONLY with a pure JSON object matching this exact structure, with no extra markdown formatting (no \`\`\`json blocks):
-    {
-      "correct": boolean,
-      "confidence": "high" | "medium" | "low",
-      "model_answer": "string, your ideal answer",
-      "marks_awarded": number,
-      "marks_available": 10,
-      "feedback": "string, 1-2 sentences of helpful feedback",
-      "missing_points": ["string array of specific things they missed"]
-    }
-    `;
+Your task:
+1. Determine the correct answer to this question.
+2. Decide if the student's answer is correct. Be LENIENT about formatting — if the student wrote "380g" and the answer is "380", that is correct. Accept synonyms, equivalent expressions, and minor variations.
+3. Provide a short 1-2 sentence feedback.
+4. If incorrect, include the model answer in "model_answer".
 
-    const { text: rawJson, usage } = await generateUniversalText({
-      model: judgeModel || "Claude 4.5 Haiku",
-      system: "You are an expert AI grader.",
-      temperature: 0.2,
-      prompt: prompt,
+You MUST respond ONLY with a pure JSON object, no markdown or code fences:
+{
+  "correct": true or false,
+  "feedback": "Short feedback string",
+  "model_answer": "The correct answer (only needed if incorrect, otherwise empty string)"
+}`;
+
+    const { text: rawJson, usage } = await generateGeminiText({
+      modelName: "gemini-3.5-flash",
+      system: "You are an expert AI grader. Respond only with valid JSON.",
+      prompt,
     });
 
     const cleanJson = rawJson.replace(/```json\n|```json|```/g, '').trim();
     const verdict = JSON.parse(cleanJson);
 
-    
     return NextResponse.json({ status: "success", data: verdict, usage });
   } catch (error: any) {
     console.error("Grading API Error:", error);

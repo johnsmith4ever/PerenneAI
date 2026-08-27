@@ -1,4 +1,6 @@
 "use client";
+import { toast } from "sonner";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 import { useState, useEffect } from "react";
 
@@ -6,7 +8,7 @@ import { useUser } from "@clerk/nextjs";
 import { useCurriculum } from "@/hooks/use-curriculum";
 import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertChatAction } from "@/actions/supabase";
 import { useSubscription, TIER_RANK } from "@/hooks/use-subscription";
-import { Sparkles, Brain, Clock, ChevronRight, CheckCircle2, XCircle, FileText, Zap, BookOpen, AlertCircle, RefreshCw, ArrowLeft, Calculator, GraduationCap, ListChecks, BarChart, Settings2, Loader2, Save, Target } from "lucide-react";
+import { Sparkles, Brain, Clock, ChevronRight, CheckCircle2, XCircle, FileText, Zap, BookOpen, AlertCircle, AlertTriangle, RefreshCw, ArrowLeft, Calculator, GraduationCap, ListChecks, BarChart, Settings2, Loader2, Save, Target } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { MemoizedQuestionText } from "@/components/memoized-question-text";
 import { Button } from "@/components/ui/button";
@@ -14,8 +16,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 
-type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-type QuizType = "Calculation" | "Word-Heavy" | null;
+type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+type QuizType = "Word-Heavy" | null;
 type QuizMode = "setup" | "taking" | "grading" | "results";
 
 const years: { label: string; value: string }[] = [
@@ -25,28 +27,17 @@ const years: { label: string; value: string }[] = [
   { label: "GCSE", value: "GCSE" },
   { label: "A-Level", value: "A-Level" },
 ];
-const calculationSubjects = ["Physics", "Chemistry"];
-const wordHeavySubjects = ["Chemistry", "Biology", "Geography", "RE", "Physics"];
+const allSubjects = ["Biology", "Chemistry", "Physics", "Geography"];
 const difficulties = ["Easy", "Medium", "Hard", "Impossible"];
 
 const questionDefinitions: Record<string, string> = {
-  // Calculation Types
-  "Multiple Choice": "Which one is correct",
-  "Short Numerical Answer": "Simple straight-forward question with 1 value answer",
-  "Long Answer (Multi-step)": "More complex with multiple steps (Answer is also one value)",
-  "True/False": "Is equation correct/balanced",
-  "Matching": "Equation to answer",
-  
-  // Word-Heavy Types
-  "MC": "Which statement or definition is correct",
+  "Multiple Choice": "Which statement or definition is correct",
   "Short Answer": "A quick answer without a full sentence",
-  "Long Answer (Explain)": "A few sentences explain",
-  "Case Study": "An example + long/short answer",
-  "Definition": "A word and a definition is needed"
+  "Long Answer": "A few sentences of explanation",
+  "Definition": "A word and its definition",
+  "Calculation": "A numerical or multi-step calculation question",
+  "True/False": "Is a given statement correct?",
 };
-
-const calcQTypes = ["Short Numerical Answer", "Long Answer (Multi-step)", "True/False", "Matching", "Multiple Choice"];
-const wordQTypes = ["MC", "Short Answer", "Long Answer (Explain)", "Case Study", "Definition"];
 
 export default function QuizPage() {
   const { openUpgradeModal } = useUpgradeModal();
@@ -56,17 +47,19 @@ export default function QuizPage() {
   const tierRank = TIER_RANK[tier] ?? 0;
 
   // Setup State
-  const [step, setStep] = useState<Step>(1);
-  const [year, setYear] = useState<string | null>(null);
-  const [quizType, setQuizType] = useState<QuizType>(null);
-  const [subject, setSubject] = useState<string | null>(null);
-  const [questionTypes, setQuestionTypes] = useState<string[]>([]);
-  const [difficulty, setDifficulty] = useState<string | null>(null);
-  const [questionCount, setQuestionCount] = useState<number>(10);
-  const [topic, setTopic] = useState<string>("");
-  const [imageContext, setImageContext] = useState<string | null>(null);
-  const [usePremiumModel, setUsePremiumModel] = useState<boolean>(false);
+const [step, setStep] = usePersistentState<Step>("quiz_step", 1);
+const [year, setYear] = usePersistentState<string | null>("quiz_year", null);
+const [quizType, setQuizType] = usePersistentState<QuizType>("quiz_type", null);
+const [subject, setSubject] = usePersistentState<string | null>("quiz_subject", null);
+const [questionTypes, setQuestionTypes] = usePersistentState<string[]>("quiz_qtypes", []);
+const [difficulty, setDifficulty] = usePersistentState<string | null>("quiz_diff", null);
+const [questionCount, setQuestionCount] = usePersistentState<number>("quiz_count", 10);
+const [topic, setTopic] = usePersistentState<string>("quiz_topic", "");
+const [imageContext, setImageContext] = usePersistentState<string | null>("quiz_img", null);
+const [usePremiumModel, setUsePremiumModel] = usePersistentState<boolean>("quiz_premium_model", false);
   const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
+  const [subjectMismatch, setSubjectMismatch] = useState<boolean | null>(null);
+  const [subjectMismatchOverridden, setSubjectMismatchOverridden] = useState(false);
 
   useEffect(() => {
     if (!topic.trim()) {
@@ -96,25 +89,54 @@ export default function QuizPage() {
 
     return () => clearTimeout(timer);
   }, [topic, subject]);
+
+  // Subject mismatch check via Mistral Small
+  useEffect(() => {
+    if (!topic.trim() || !subject) {
+      setSubjectMismatch(null);
+      setSubjectMismatchOverridden(false);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "Mistral Small",
+            systemPrompt: "You are a subject classifier. Reply only with 'yes' or 'no'.",
+            messages: [{ role: "user", content: `Is the topic "${topic}" directly part of or clearly related to the school subject "${subject}"? Reply with only 'yes' or 'no'.` }],
+            chatMode: "Standard",
+          })
+        });
+        const data = await res.json();
+        const answer = (data.text || "").toLowerCase().trim();
+        setSubjectMismatch(answer.startsWith("no"));
+      } catch (e) {
+        setSubjectMismatch(null);
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [topic, subject]);
   
-  const [quizMode, setQuizMode] = useState<QuizMode>("setup");
+const [quizMode, setQuizMode, quizModeLoaded] = usePersistentState<QuizMode>("quiz_mode", "setup");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedQuiz, setGeneratedQuiz] = useState<any[]>([]);
+const [generatedQuiz, setGeneratedQuiz] = usePersistentState<any[]>("quiz_generated", []);
   
   // Advanced Retake State
-  const [quizRedoMode, setQuizRedoMode] = useState<"new" | "exact" | null>(null);
-  const [quizOldQuestions, setQuizOldQuestions] = useState<any[] | null>(null);
+const [quizRedoMode, setQuizRedoMode] = usePersistentState<"new" | "exact" | null>("quiz_redo_mode", null);
+const [quizOldQuestions, setQuizOldQuestions] = usePersistentState<any[] | null>("quiz_old_questions", null);
   
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
 
   // Quiz Taking State
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState<Record<number, { skipped: boolean, text: string }>>({});
-  const [currentInput, setCurrentInput] = useState<string>("");
+const [currentQuestionIndex, setCurrentQuestionIndex] = usePersistentState("quiz_index", 0);
+const [userAnswers, setUserAnswers] = usePersistentState<Record<number, { skipped: boolean, text: string }>>("quiz_answers", {});
+const [currentInput, setCurrentInput] = usePersistentState<string>("quiz_input", "");
 
   // Grading State
-  const [gradingResults, setGradingResults] = useState<Record<number, any>>({});
+const [gradingResults, setGradingResults] = usePersistentState<Record<number, any>>("quiz_results", {});
 
   useEffect(() => {
     if (typeof window === "undefined" || !user) return;
@@ -123,9 +145,9 @@ export default function QuizPage() {
     const retest = params.get("retest");
 
     if (t && retest === "true") {
-      fetchFeatureAction("quizzes", "questions", 1, { topic: t }).then((data: any) => {
-        if (data && data.length > 0 && data[0].questions && data[0].questions.length > 0) {
-          const settings = data[0].questions[0]._quizSettings;
+      fetchFeatureAction("quizzes", "data", 1, { topic: t }).then((data: any) => {
+        if (data && data.length > 0 && data[0].data && data[0].data.length > 0) {
+          const settings = data[0].data[0]._quizSettings;
           if (settings) {
             setTopic(t);
             if (settings.year) setYear(settings.year);
@@ -134,7 +156,7 @@ export default function QuizPage() {
             if (settings.difficulty) setDifficulty(settings.difficulty);
             if (settings.questionCount) setQuestionCount(settings.questionCount);
             if (settings.questionTypes) setQuestionTypes(settings.questionTypes);
-            setStep(8);
+            setStep(7);
           }
         }
       });
@@ -145,7 +167,7 @@ export default function QuizPage() {
     setQuizMode("setup");
     setStep(1);
     setYear(null);
-    setQuizType(null);
+    setQuizType("Word-Heavy"); // fixed type
     setSubject(null);
     setQuestionTypes([]);
     setDifficulty(null);
@@ -160,20 +182,23 @@ export default function QuizPage() {
     setCurrentInput("");
     setGradingResults({});
     setHasSaved(false);
+    setSubjectMismatch(null);
+    setSubjectMismatchOverridden(false);
   };
 
-  const saveToHistory = async (scorePct: number) => {
+  const saveToHistory = async (scorePct: number, freshResults?: Record<number, any>) => {
     if (!user || generatedQuiz.length === 0) return;
+    const resultsToSave = freshResults ?? gradingResults;
     setIsSaving(true);
     try {
       await insertFeatureAction("quizzes", {
         user_id: user.id,
         topic: topic || "Untitled Quiz",
-        questions: generatedQuiz.map((q, i) => {
+        data: generatedQuiz.map((q, i) => {
           const res = {
             ...q,
             user_answer: userAnswers[i]?.text || "Skipped",
-            grading: gradingResults[i]
+            grading: resultsToSave[i]
           };
           if (i === 0) {
             res._quizSettings = {
@@ -191,7 +216,7 @@ export default function QuizPage() {
       });
       
       setHasSaved(true);
-      alert("Quiz saved to your account history!");
+      toast.success("Quiz saved to your account history!");
     } catch (e) {
       console.error("Error saving quiz history:", e);
     } finally {
@@ -253,12 +278,12 @@ export default function QuizPage() {
       let pastQuestionsList: string[] = [];
       if (quizRedoMode !== "exact") {
         try {
-          const pastQuizzes = await fetchFeatureAction("quizzes", "questions", 50, { topic: topic });
+          const pastQuizzes = await fetchFeatureAction("quizzes", "data", 50, { topic: topic });
 
           if (pastQuizzes && pastQuizzes.length > 0) {
             pastQuizzes.forEach(quiz => {
-              if (Array.isArray(quiz.questions)) {
-                quiz.questions.forEach((q: any) => {
+              if (Array.isArray(quiz.data)) {
+                quiz.data.forEach((q: any) => {
                   if (q.question) pastQuestionsList.push(q.question);
                 });
               }
@@ -278,7 +303,7 @@ export default function QuizPage() {
       });
       const data = await res.json();
       if (res.status === 400 && data.status === "flagged") {
-        alert("Logic Review Flagged: " + data.message);
+        toast.error("Logic Review Flagged: " + data.message);
       } else if (data.status === "success") {
         if (data.usage) deductCredits(data.usage.inputTokens, data.usage.outputTokens, heavy);
         setGeneratedQuiz(data.data);
@@ -287,11 +312,11 @@ export default function QuizPage() {
         setUserAnswers({});
         setCurrentInput("");
       } else {
-        alert("Error: " + data.message);
+        toast.error("Error: " + data.message);
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to generate quiz.");
+      toast.error("Failed to generate quiz.");
     } finally {
       setIsGenerating(false);
     }
@@ -320,14 +345,6 @@ export default function QuizPage() {
     }
   };
 
-  const getMarksAvailable = (qType: string, style: QuizType) => {
-    if (style === "Word-Heavy") {
-      if (qType === "Short Answer") return 2;
-      if (qType === "Long Answer (Explain)") return 3;
-    }
-    return 1;
-  };
-
   const submitQuizForGrading = async (answers: Record<number, { skipped: boolean, text: string }>) => {
     setQuizMode("grading");
     const results: Record<number, any> = {};
@@ -335,30 +352,22 @@ export default function QuizPage() {
     for (let i = 0; i < generatedQuiz.length; i++) {
       const q = generatedQuiz[i];
       const ans = answers[i];
-      const maxMarks = getMarksAvailable(q.type, quizType);
 
       if (!ans || ans.skipped) {
-        results[i] = { correct: false, marks_awarded: 0, marks_available: maxMarks, feedback: "Question was skipped.", missing_points: [] };
+        results[i] = { correct: false, feedback: "Question was skipped.", model_answer: "" };
         continue;
       }
 
-      // If the question has a strictly generated answer from Deepseek
-      if (q.answer && q.answer.trim() !== "") {
+      // MCQ / True-False / Matching: fast string comparison
+      if (q.answer && q.answer.trim() !== "" && (q.type === "mcq" || q.type === "Multiple Choice" || q.type === "True/False" || q.type === "Matching")) {
         const isCorrect = ans.text.toLowerCase().trim() === q.answer.toLowerCase().trim();
-        results[i] = { 
-          correct: isCorrect, 
-          marks_awarded: isCorrect ? maxMarks : 0, 
-          marks_available: maxMarks, 
+        results[i] = {
+          correct: isCorrect,
           feedback: isCorrect ? "Correct!" : `Incorrect. The correct answer was: ${q.answer}`,
-          missing_points: []
+          model_answer: isCorrect ? "" : q.answer,
         };
       } else {
-        // Complex AI grading required
-        if (!canAfford(1000, "Gemini 3.6 Flash")) {
-          results[i] = { correct: false, marks_awarded: 0, marks_available: maxMarks, feedback: "Insufficient credits to grade this answer." };
-          continue;
-        }
-
+        // AI semantic grading via Gemini Flash
         try {
           const res = await fetch("/api/grade-answer", {
             method: "POST",
@@ -368,22 +377,17 @@ export default function QuizPage() {
               userAnswer: ans.text,
               subject,
               topic,
-              judgeModel: grading
             })
           });
           const data = await res.json();
           if (data.status === "success") {
-            if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens, data.usage.outputTokens ?? data.usage.completionTokens, grading);
-            results[i] = { ...data.data, marks_available: maxMarks };
-            // Ensure marks awarded don't exceed max marks (API might return out of 10)
-            if (data.data.marks_awarded > maxMarks) {
-              results[i].marks_awarded = Math.round((data.data.marks_awarded / 10) * maxMarks);
-            }
+            if (data.usage) deductCredits(data.usage.inputTokens ?? data.usage.promptTokens ?? 0, data.usage.outputTokens ?? data.usage.completionTokens ?? 0, "Gemini 3.6 Flash");
+            results[i] = data.data;
           } else {
-            results[i] = { correct: false, marks_awarded: 0, marks_available: maxMarks, feedback: "Grading failed for this question." };
+            results[i] = { correct: false, feedback: "Grading failed for this question.", model_answer: "" };
           }
         } catch (e) {
-          results[i] = { correct: false, marks_awarded: 0, marks_available: maxMarks, feedback: "Grading API error." };
+          results[i] = { correct: false, feedback: "Grading API error.", model_answer: "" };
         }
       }
     }
@@ -391,10 +395,9 @@ export default function QuizPage() {
     setGradingResults(results);
     setQuizMode("results");
 
-    const totalMaxMarks = generatedQuiz.reduce((acc, q) => acc + getMarksAvailable(q.type, quizType), 0);
-    const earnedMarks = Object.values(results).reduce((acc: number, r: any) => acc + (r.marks_awarded || 0), 0);
-    const scorePct = Math.round((earnedMarks / totalMaxMarks) * 100) || 0;
-    saveToHistory(scorePct).catch(console.error);
+    const totalCorrect = Object.values(results).filter((r: any) => r.correct).length;
+    const scorePct = Math.round((totalCorrect / generatedQuiz.length) * 100) || 0;
+    saveToHistory(scorePct, results).catch(console.error);
   };
 
   // --- Renderers ---
@@ -485,13 +488,9 @@ export default function QuizPage() {
   }
 
   if (quizMode === "results") {
-    let totalAwarded = 0;
-    let totalAvailable = 0;
-    Object.values(gradingResults).forEach(res => {
-      totalAwarded += res.marks_awarded || 0;
-      totalAvailable += res.marks_available || 0;
-    });
-    const scorePct = Math.round((totalAwarded / totalAvailable) * 100) || 0;
+    const totalCorrect = Object.values(gradingResults).filter((r: any) => r.correct).length;
+    const totalQuestions = generatedQuiz.length;
+    const scorePct = Math.round((totalCorrect / totalQuestions) * 100) || 0;
 
     return (
       <div className="max-w-3xl mx-auto py-12 space-y-8 animate-in fade-in">
@@ -500,7 +499,7 @@ export default function QuizPage() {
           <div className="inline-flex items-center justify-center w-32 h-32 rounded-full border-8 border-primary/20 relative">
             <span className="text-3xl font-bold text-primary">{scorePct}%</span>
           </div>
-          <p className="mt-4 text-muted-foreground font-medium">You scored {totalAwarded} out of {totalAvailable} marks.</p>
+          <p className="mt-4 text-muted-foreground font-medium">You got {totalCorrect} out of {totalQuestions} questions correct.</p>
         </div>
 
         <div className="space-y-6">
@@ -512,7 +511,7 @@ export default function QuizPage() {
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-sm font-semibold text-muted-foreground">Question {i + 1}</span>
                   <div className={cn("px-3 py-1 rounded-full text-xs font-semibold", res.correct ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700")}>
-                    {res.marks_awarded} / {res.marks_available} Marks
+                    {res.correct ? "Correct ✓" : "Incorrect ✗"}
                   </div>
                 </div>
                 
@@ -530,19 +529,10 @@ export default function QuizPage() {
                     <span className="block text-xs font-semibold uppercase mb-1 text-foreground/70">Feedback:</span>
                     <p className="text-foreground leading-relaxed">{res.feedback}</p>
                     
-                    {(res.model_answer || q.answer) && (
+                    {!res.correct && (res.model_answer || q.answer) && (
                       <div className="mt-3 pt-3 border-t border-border/50">
-                        <span className="block text-xs font-semibold uppercase mb-1 text-foreground/70">Model Answer:</span>
+                        <span className="block text-xs font-semibold uppercase mb-1 text-foreground/70">Correct Answer:</span>
                         <p className="text-foreground/90 italic leading-relaxed text-sm">{res.model_answer || q.answer}</p>
-                      </div>
-                    )}
-
-                    {res.missing_points && res.missing_points.length > 0 && (
-                      <div className="mt-3">
-                        <span className="block text-xs font-semibold uppercase mb-1 text-foreground/70">Missing Points:</span>
-                        <ul className="list-disc pl-5 space-y-1">
-                          {res.missing_points.map((pt: string, idx: number) => <li key={idx} className="text-foreground/80">{pt}</li>)}
-                        </ul>
                       </div>
                     )}
                   </div>
@@ -604,43 +594,12 @@ export default function QuizPage() {
              <div className="flex items-center gap-3 mb-6">
               <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full shrink-0" onClick={handlePrevStep}><ArrowLeft className="w-4 h-4" /></Button>
               <div>
-                <h2 className="text-xl font-semibold text-foreground">Quiz Style</h2>
-                <p className="text-sm text-muted-foreground">What kind of subject is this?</p>
-              </div>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <button
-                onClick={() => { setQuizType("Calculation"); setSubject(null); setQuestionTypes([]); handleNextStep(); }}
-                className={cn("flex flex-col items-center p-6 rounded-xl border transition-all hover:border-primary hover:bg-primary/5 text-center group", quizType === "Calculation" ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border bg-card")}
-              >
-                <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform"><Calculator className="w-6 h-6" /></div>
-                <span className="font-semibold text-foreground mb-1">Calculation</span>
-                <span className="text-xs text-muted-foreground">Maths, Physics, etc.</span>
-              </button>
-              <button
-                onClick={() => { setQuizType("Word-Heavy"); setSubject(null); setQuestionTypes([]); handleNextStep(); }}
-                className={cn("flex flex-col items-center p-6 rounded-xl border transition-all hover:border-primary hover:bg-primary/5 text-center group", quizType === "Word-Heavy" ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border bg-card")}
-              >
-                <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-4 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform"><BookOpen className="w-6 h-6" /></div>
-                <span className="font-semibold text-foreground mb-1">Word-Heavy</span>
-                <span className="text-xs text-muted-foreground">Biology, History, etc.</span>
-              </button>
-            </div>
-          </div>
-        );
-      case 3:
-        const subjectsList = quizType === "Calculation" ? calculationSubjects : wordHeavySubjects;
-        return (
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-             <div className="flex items-center gap-3 mb-6">
-              <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full shrink-0" onClick={handlePrevStep}><ArrowLeft className="w-4 h-4" /></Button>
-              <div>
                 <h2 className="text-xl font-semibold text-foreground">Select Subject</h2>
                 <p className="text-sm text-muted-foreground">Choose the specific subject for your quiz.</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {subjectsList.map((sub) => (
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-3">
+              {allSubjects.map((sub) => (
                 <button
                   key={sub}
                   onClick={() => { setSubject(sub); handleNextStep(); }}
@@ -652,8 +611,8 @@ export default function QuizPage() {
             </div>
           </div>
         );
-      case 4:
-        const qTypesList = quizType === "Calculation" ? calcQTypes : wordQTypes;
+      case 3:
+        const allQTypes = Object.keys(questionDefinitions);
         return (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300 flex flex-col h-full">
             <div className="flex items-center gap-3 mb-6">
@@ -667,7 +626,7 @@ export default function QuizPage() {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-              {qTypesList.map((type) => (
+              {allQTypes.map((type) => (
                 <button
                   key={type}
                   onClick={() => toggleQuestionType(type)}
@@ -683,7 +642,7 @@ export default function QuizPage() {
             </div>
           </div>
         );
-      case 5:
+      case 4:
         return (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
              <div className="flex items-center gap-3 mb-6">
@@ -709,7 +668,7 @@ export default function QuizPage() {
             </div>
           </div>
         );
-      case 6:
+      case 5:
         return (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300 flex flex-col h-full">
             <div className="flex items-center gap-3 mb-6">
@@ -735,7 +694,7 @@ export default function QuizPage() {
             </div>
           </div>
         );
-      case 7:
+      case 6:
         return (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300 flex flex-col h-full">
              <div className="flex items-center gap-3 mb-6">
@@ -752,19 +711,29 @@ export default function QuizPage() {
               <label htmlFor="topic" className="block text-sm font-medium text-foreground mb-2">Enter your topic below</label>
               <textarea id="topic" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. The Krebs Cycle, Quadratic Equations..." className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all mb-2" rows={4} />
               
-              {aqaStatus === "not_found" && (
-                <div className="bg-red-500/20 px-4 py-2 mb-6 rounded-lg text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-2 border border-red-500/20">
-                  <Target className="w-4 h-4" />
-                  Not in official AQA database (Soft Warning - You can still proceed)
-                </div>
-              )}
-              {aqaStatus === "found" && (
-                <div className="bg-emerald-500/20 px-4 py-2 mb-6 rounded-lg text-xs font-bold text-emerald-500 uppercase tracking-wider flex items-center gap-2 border border-emerald-500/20">
-                  <CheckCircle2 className="w-4 h-4" />
-                  AQA Database Clearance: Found
-                </div>
-              )}
-              {!aqaStatus && <div className="mb-6"></div>}
+              <div className="flex flex-col gap-2 mb-6">
+                {subjectMismatch && !subjectMismatchOverridden && (
+                  <div className="bg-orange-500/20 px-4 py-3 rounded-lg text-sm font-bold text-orange-500 flex items-center justify-between gap-2 border border-orange-500/20">
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5" />
+                      Subject Mismatch
+                    </div>
+                    <button onClick={() => setSubjectMismatchOverridden(true)} className="text-orange-500 hover:underline text-xs font-bold uppercase ml-4 whitespace-nowrap">Override</button>
+                  </div>
+                )}
+                {aqaStatus === "not_found" && (
+                  <div className="bg-red-500/20 px-4 py-3 rounded-lg text-sm font-bold text-red-500 flex items-center gap-2 border border-red-500/20">
+                    <XCircle className="w-5 h-5" />
+                    Not found in Database
+                  </div>
+                )}
+                {aqaStatus === "found" && (
+                  <div className="bg-emerald-500/20 px-4 py-3 rounded-lg text-sm font-bold text-emerald-500 flex items-center gap-2 border border-emerald-500/20">
+                    <CheckCircle2 className="w-5 h-5" />
+                    Found in Database
+                  </div>
+                )}
+              </div>
 
               <label className="block text-sm font-medium text-foreground mb-2">Attach Reference Image (Optional)</label>
               <div className="flex items-center gap-4">
@@ -777,7 +746,7 @@ export default function QuizPage() {
             </div>
           </div>
         );
-      case 8:
+      case 7:
         return (
           <div className="animate-in fade-in zoom-in duration-500">
             <div className="flex items-center gap-3 mb-6">
@@ -793,7 +762,7 @@ export default function QuizPage() {
               </div>
               <div className="p-4 space-y-3 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">Level:</span><span className="font-medium">{year}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">Subject:</span><span className="font-medium">{subject} ({quizType})</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">Subject:</span><span className="font-medium">{subject}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">Difficulty:</span><span className="font-medium">{difficulty}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">Length:</span><span className="font-medium">{questionCount} Questions</span></div>
                 <div className="flex justify-between border-t border-border pt-3 mt-3"><span className="text-muted-foreground shrink-0 pr-4">Topic:</span><span className="font-medium text-right break-words">{topic}</span></div>
@@ -838,7 +807,7 @@ export default function QuizPage() {
         <div>
           <p className="label-title mb-1.5 flex items-center gap-2">
             Study tools
-            {quizMode === "setup" && step > 1 && <span className="text-muted-foreground/50 text-[10px] font-medium tracking-wider uppercase">• Step {step} of 8</span>}
+            {quizMode === "setup" && step > 1 && <span className="text-muted-foreground/50 text-[10px] font-medium tracking-wider uppercase">• Step {step} of 7</span>}
           </p>
           <div className="flex items-center gap-3">
           <h1 className="page-title m-0">Quiz Maker</h1>
@@ -857,7 +826,7 @@ export default function QuizPage() {
       </div>
 
 
-      {quizMode === "setup" && step < 8 && (
+      {quizMode === "setup" && step < 7 && (
         <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden mt-6">
           <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${(step / 7) * 100}%` }} />
         </div>
