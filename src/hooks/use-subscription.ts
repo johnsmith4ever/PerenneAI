@@ -269,6 +269,7 @@ export function useSubscription() {
     generation: preferences.generation !== "default" ? preferences.generation : defaultModels.generation,
     heavy: preferences.heavy !== "default" ? preferences.heavy : defaultModels.heavy,
     judge: preferences.judge !== "default" ? preferences.judge : defaultModels.judge,
-    grading: preferences.grading !== "default" ? preferences.grading : defaultModels.judge
+    grading: preferences.grading !== "default" ? preferences.grading : defaultModels.judge,
+    tierRank: TIER_RANK[state.tier] ?? 0,
   };
 }
