@@ -177,9 +177,11 @@ Example output format:
       }
 
       // Combine usage for billing
+      const mu = markerRes.usage as any;
+      const u = usage as any;
       const combinedUsage = {
-        inputTokens: (markerRes.usage?.inputTokens || 0) + (usage?.inputTokens || 0),
-        outputTokens: (markerRes.usage?.outputTokens || 0) + (usage?.outputTokens || 0)
+        inputTokens: (mu?.inputTokens || 0) + (u?.inputTokens || 0),
+        outputTokens: (mu?.outputTokens || 0) + (u?.outputTokens || 0)
       };
 
       return NextResponse.json({ status: "success", results: parsedResults, usage: combinedUsage });

@@ -94,9 +94,10 @@ You MUST respond with ONLY a valid JSON array (no wrapping object, no markdown f
       return NextResponse.json({ status: "error", message: "AI returned empty results. Please try again." }, { status: 500 });
     }
 
+    const u = usage as any;
     const normalisedUsage = {
-      inputTokens: usage?.inputTokens ?? usage?.promptTokens ?? 0,
-      outputTokens: usage?.outputTokens ?? usage?.completionTokens ?? 0,
+      inputTokens: u?.inputTokens ?? u?.promptTokens ?? 0,
+      outputTokens: u?.outputTokens ?? u?.completionTokens ?? 0,
     };
 
     return NextResponse.json({ status: "success", data: questions, usage: normalisedUsage });
