@@ -203,7 +203,7 @@ export async function POST(req: Request) {
       };
     }
 
-    if (!usage || (!usage.inputTokens && !usage.promptTokens)) {
+    if (!usage || (!(usage as any).inputTokens && !(usage as any).promptTokens)) {
       const inputChars = finalSystemPrompt.length + messages.map((m: any) => m.content || "").join(" ").length;
       const outputChars = text ? text.length : 0;
       usage = {
