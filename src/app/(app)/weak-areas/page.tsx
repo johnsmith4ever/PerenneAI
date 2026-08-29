@@ -14,7 +14,7 @@ import { MemoizedQuestionText } from "@/components/memoized-question-text";
 type WeakArea = {
   topic: string;
   subject: string;
-  source: "Exam Sim" | "Quiz" | "Flashcards" | "Maths Solver";
+  source: "Exam Sim" | "Quiz" | "Flashcards" | "Maths Solver" | "Essay Marking";
   failedCount: number;
   totalCount: number;
   errorRate: number;
