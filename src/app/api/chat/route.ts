@@ -194,11 +194,12 @@ export async function POST(req: Request) {
       usage = res.usage;
     }
 
-    if (usage && typeof usage.inputTokens === 'undefined' && typeof usage.promptTokens !== 'undefined') {
+    const usageAny = usage as any;
+    if (usageAny && typeof usageAny.inputTokens === 'undefined' && typeof usageAny.promptTokens !== 'undefined') {
       usage = {
-        inputTokens: usage.promptTokens || 0,
-        outputTokens: usage.completionTokens || 0,
-        totalTokens: usage.totalTokens || 0
+        inputTokens: usageAny.promptTokens || 0,
+        outputTokens: usageAny.completionTokens || 0,
+        totalTokens: usageAny.totalTokens || 0
       };
     }
 
