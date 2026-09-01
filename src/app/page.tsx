@@ -5,6 +5,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, BrainCircuit, GraduationCap, MessagesSquare, CheckCircle2, Calendar, LayoutTemplate, ShieldCheck, Zap } from "lucide-react";
 import { MouseTrackingBackground } from "@/components/ui/mouse-tracking-bg";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
+
 export default async function RootPage() {
   const { userId } = await auth();
 

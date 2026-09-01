@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { ArrowRight, Scale, ShieldCheck, FileText } from "lucide-react";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/terms',
+  },
+};
+
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-[#020617] text-slate-300 font-sans selection:bg-slate-800 relative isolate">

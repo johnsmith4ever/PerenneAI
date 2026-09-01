@@ -18,6 +18,7 @@ import Script from "next/script";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://perenne-ai.co.uk'),
   title: "PerenneAI",
   description: "Your intelligent, all-in-one productivity and AI companion.",
   verification: {

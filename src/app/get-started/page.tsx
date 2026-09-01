@@ -2,6 +2,14 @@ import Link from "next/link";
 import { ArrowRight, UserCircle, UserPlus, Sparkles } from "lucide-react";
 import { MouseTrackingBackground } from "@/components/ui/mouse-tracking-bg";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/get-started',
+  },
+};
+
 export default function GetStartedPage() {
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center font-sans overflow-hidden relative selection:bg-purple-500/30">

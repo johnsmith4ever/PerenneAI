@@ -27,8 +27,8 @@ Perenne is designed to be the ultimate AI study companion, focusing heavily on s
 - **The Hook:** *"I procrastinated studying for my actual exams by coding an AI that generates and grades my mock exams."* 
 - **KPI:** The primary goal right now is hitting **>100 Clerk sign-ins** to prove Product-Market Fit.
 
-## 4. Next Technical Steps
-- **Voice Sprint (Speaking Examiner):** The user has a premade Claude version of a Voice Sprint feature (testing MFL/English speaking skills via microphone and TTS). Your job may be to help integrate this into the Next.js dashboard.
+## 4. Next Technical Steps (Current Focus)
+- **Voice Sprint (Speaking Examiner) - IN PROGRESS:** The user is currently building the Voice Sprint feature (testing MFL/English speaking skills via microphone and TTS). This is the main priority for the next session.
 - **UI/UX Polish:** Keep the aesthetic hyper-modern, clean, and gamified. Always prioritize token efficiency when dealing with AI API routes.
 
 ---
