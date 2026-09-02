@@ -15,6 +15,8 @@ export default function robots(): MetadataRoute.Robots {
         '/mindmaps/',
         '/subscriptions/',
         '/explore/',
+        '/Voicesprint/',
+        '/voicesprint/',
       ],
     },
     sitemap: 'https://perenne-ai.co.uk/sitemap.xml',
