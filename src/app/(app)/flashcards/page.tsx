@@ -186,7 +186,10 @@ const [editCards, setEditCards] = usePersistentState<Flashcard[]>("flashcards_ed
               title: finalTitle,
               cards: data.data.map((c: any) => ({ ...c, failed: false }))
             }
-          }).then(() => setHasSaved(true)).catch(console.error);
+          }).then(() => setHasSaved(true)).catch((err) => {
+            console.error("[flashcards] Auto-save after generation failed:", err);
+            toast.error("Couldn't save to history, try again.");
+          });
         }
       } else {
         toast.error("Error: " + data.message);
@@ -314,7 +317,10 @@ const [editCards, setEditCards] = usePersistentState<Flashcard[]>("flashcards_ed
           title: finalTitle,
           cards: validCards.map((c: any) => ({ ...c, failed: false }))
         }
-      }).then(() => setHasSaved(true)).catch(console.error);
+      }).then(() => setHasSaved(true)).catch((err) => {
+        console.error("[flashcards] Auto-save after manual deck failed:", err);
+        toast.error("Couldn't save to history, try again.");
+      });
     }
   };
 

@@ -10,8 +10,6 @@ import { FileText, Mic, Sparkles, BookOpen, Clock, Activity, Settings, Network, 
 import { useSubscription, FREE_ACCESS_MODE, TIER_RANK } from "@/hooks/use-subscription";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ModelSelectorModal } from "@/components/model-selector-modal";
-import { Cpu } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -46,7 +44,6 @@ export function Sidebar({ isOpen = true, onClose, onOpen, isMobile = false, onOp
 
   const router = useRouter();
   const [cheatWarning, setCheatWarning] = useState<{type: "exam_sim" | "math" | "essay", href: string} | null>(null);
-  const [showModelSelector, setShowModelSelector] = useState(false);
 
   const [examSimState, setExamSimState] = usePersistentState("exam_sim_state", "setup");
   const [mathExamState, setMathExamState] = usePersistentState("math_examstate", "setup");
@@ -172,30 +169,6 @@ export function Sidebar({ isOpen = true, onClose, onOpen, isMobile = false, onOp
             <svg className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             {!isCollapsed && "Community"}
           </Link>
-          <Link href="/admin" onClick={(e) => handleLinkClick(e, "/admin")} className={cn("flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all group border border-transparent", pathname === "/admin" ? "bg-white/10 text-white font-bold border-white/10" : "text-slate-400 hover:text-white hover:bg-white/10", isCollapsed && "justify-center")}>
-            <svg className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            {!isCollapsed && "Admin"}
-          </Link>
-
-          {isPayingUser ? (
-            <button 
-              onClick={() => setShowModelSelector(true)} 
-              className={cn("flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all group border border-transparent text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 mb-2 mt-1", isCollapsed && "justify-center")}
-            >
-              <Cpu className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
-              {!isCollapsed && <span className="font-bold">AI Engines</span>}
-            </button>
-          ) : (
-            <Link href="/subscriptions" className={cn("flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all group border border-indigo-500/10 text-indigo-400/50 bg-indigo-500/5 hover:bg-indigo-500/10 mb-2 mt-1", isCollapsed && "justify-center")}>
-              <Lock className="w-4 h-4 shrink-0" />
-              {!isCollapsed && (
-                <div className="flex items-center justify-between w-full">
-                  <span className="font-bold">AI Engines</span>
-                  <span className="text-[9px] uppercase tracking-wider font-bold bg-indigo-500/20 px-1.5 py-0.5 rounded-md">Pro</span>
-                </div>
-              )}
-            </Link>
-          )}
 
           {!isCollapsed && (
             <div className="p-4 rounded-2xl bg-black/40 border border-white/5 relative overflow-hidden group mt-2">
@@ -295,7 +268,6 @@ export function Sidebar({ isOpen = true, onClose, onOpen, isMobile = false, onOp
         </div>
       )}
 
-      <ModelSelectorModal isOpen={showModelSelector} onClose={() => setShowModelSelector(false)} />
     </aside>
   );
 }

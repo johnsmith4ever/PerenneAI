@@ -1,3 +1,4 @@
+import { mistralProvider } from "@/lib/mistral-fallback";
 import { NextResponse } from "next/server";
 import { generateText, embed } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
@@ -17,8 +18,7 @@ const deepseek = createOpenAI({
 
 export async function POST(req: Request) {
   try {
-    let { userId } = await auth();
-    if (req.headers.get("x-test-bypass") === "true") userId = "test_user";
+    const { userId } = await auth();
     if (!userId) return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
 
     const { action, topic, difficulty, questionType, questions, answers, marks, testSize, year, isAQA, heavyModel, judgeModel, question, imageBase64 } = await req.json();
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       if (isAQA) {
         try {
           const ragPromise = (async () => {
-            const mistralProvider = createMistral({ apiKey: process.env.MISTRAL_API_KEY_2 });
+            
             const { embedding } = await embed({
               model: mistralProvider.textEmbeddingModel("mistral-embed"),
               value: topic,

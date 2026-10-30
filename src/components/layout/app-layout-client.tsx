@@ -18,7 +18,7 @@ export function AppLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const isLimitReached = isLoaded && creditsUsed >= dailyLimit && dailyLimit > 0;
-  const isAllowedPage = ["/subscriptions", "/admin", "/community", "/history", "/weak-areas"].includes(pathname);
+  const isAllowedPage = ["/subscriptions", "/community", "/history", "/weak-areas"].includes(pathname);
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background text-foreground relative">

@@ -35,6 +35,7 @@ export default function HistoryPage() {
   const isGuest = userLoaded && !user;
 
   const [activeTab, setActiveTab] = useState<Tab>("quizzes");
+  const [betaBannerDismissed, setBetaBannerDismissed] = useState(false);
   
   const [quizzes, setQuizzes] = useState<any[]>([]);
   const [flashcards, setFlashcards] = useState<any[]>([]);
@@ -140,6 +141,15 @@ export default function HistoryPage() {
     <div className="max-w-4xl mx-auto pb-12 animate-in fade-in relative">
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
+      {!betaBannerDismissed && (
+        <div className="flex items-center justify-between gap-3 mb-6 px-4 py-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 text-sm relative z-10">
+          <span>⚡ <strong>Beta:</strong> Saving is still being improved — some sessions may not appear immediately.</span>
+          <button onClick={() => setBetaBannerDismissed(true)} className="shrink-0 opacity-60 hover:opacity-100 transition-opacity" aria-label="Dismiss">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       {selectedItem ? (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
           <div className="flex items-center gap-4 border-b border-border pb-6">
@@ -197,7 +207,23 @@ export default function HistoryPage() {
                       </div>
                     </div>
                   )}
-                  {grade.key_issues && (
+                  {grade.issue_groups && grade.issue_groups.length > 0 ? (
+                    <div>
+                      <h3 className="font-bold text-destructive mb-2">Key Issues</h3>
+                      <div className="space-y-3">
+                        {grade.issue_groups.map((group: any, idx: number) => (
+                          <div key={idx} className="space-y-1">
+                            <span className="text-xs font-bold px-2 py-0.5 rounded bg-destructive/10 text-destructive">
+                              {group.heading}
+                            </span>
+                            <ul className="list-disc pl-5 space-y-0.5 text-sm text-foreground">
+                              {group.issues.map((iss: string, j: number) => <li key={j}>{iss}</li>)}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : grade.key_issues && (
                     <div>
                       <h3 className="font-bold text-destructive mb-2">Key Issues</h3>
                       <ul className="list-disc pl-5 space-y-1 text-sm text-foreground">
@@ -210,6 +236,14 @@ export default function HistoryPage() {
                       <h3 className="font-bold text-green-600 mb-2">Improvements</h3>
                       <ul className="list-disc pl-5 space-y-1 text-sm text-foreground">
                         {grade.improvement_points.map((imp: string, i: number) => <li key={i}>{imp}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                  {grade.optional_suggestions && grade.optional_suggestions.length > 0 && (
+                    <div className="p-3 rounded-lg border border-blue-500/20 bg-blue-500/5">
+                      <h3 className="font-bold text-blue-600 dark:text-blue-400 text-sm mb-1.5">Optional — To Push Even Higher</h3>
+                      <ul className="list-disc pl-5 space-y-0.5 text-xs text-muted-foreground">
+                        {grade.optional_suggestions.map((sug: string, i: number) => <li key={i}>{sug}</li>)}
                       </ul>
                     </div>
                   )}
@@ -467,7 +501,7 @@ export default function HistoryPage() {
                             <span>{formatDate(item.created_at)}</span>
                           </div>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete("explore", item.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete(item.type === "mindmap" ? "mind_maps" : "explore_history", item.id); }} className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>

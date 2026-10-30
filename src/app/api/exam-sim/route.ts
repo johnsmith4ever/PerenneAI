@@ -4,6 +4,7 @@ import { z } from "zod";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createMistral } from "@ai-sdk/mistral";
 import { createAnthropic } from "@ai-sdk/anthropic";
+import { mistralProvider } from "@/lib/mistral-fallback";
 import { auth } from "@clerk/nextjs/server";
 import { generateUniversalText } from "@/lib/universal-router";
 
@@ -12,7 +13,6 @@ const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
 
     const { action, topic, subject, difficulty, isAQA, weakPoints, answers, questions, testSize, year, heavyModel, judgeModel } = await req.json();
 
@@ -33,20 +33,22 @@ You MUST reply with ONLY a raw JSON array of strings representing the questions,
         // Query AQA database
         try {
           const { supabase } = await import("@/lib/supabase");
-          const mistralProvider = createMistral({ apiKey: process.env.MISTRAL_API_KEY_2 });
           const { embedding } = await embed({
             model: mistralProvider.textEmbeddingModel("mistral-embed"),
             value: topic,
           });
           
-          const threshold = subject === "Mathematics" || subject === "Maths" ? 0.70 : 0.70;
+          const threshold = subject === "Mathematics" || subject === "Maths" ? 0.50 : 0.50;
+
+          const dbSubject = subject === "Maths" ? "Mathematics" : subject;
+          const normLevel = year ? (year.includes("A") ? "A-Level" : year === "KS3" ? null : year) : null;
 
           const { data: specs, error: specError } = await supabase.rpc("match_aqa_specs", {
             query_embedding: embedding,
             match_threshold: threshold,
             match_count: 5,
-            filter_subject: subject || null,
-            filter_level: year === "KS3" ? undefined : year
+            filter_subject: dbSubject || null,
+            filter_level: normLevel
           });
 
           if (!specError && specs && specs.length > 0) {

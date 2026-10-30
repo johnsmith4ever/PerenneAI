@@ -7,9 +7,6 @@ import { generateAssistantText } from "@/lib/assistant-router";
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
 
     const { text, model } = await req.json();
 
@@ -51,7 +48,7 @@ You must respond with EXACTLY and ONLY a valid JSON object matching this schema:
 Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSON object. Ensure the JSON is perfectly formatted and deeply nested (at least 2-3 levels deep).`;
 
     const { text: rawJson, usage } = await generateAssistantText({
-      model: model || "Gemini 3.6 Flash",
+      model: model || "Deepseek-V4-Flash",
       system: "You are an AI mindmap architect. You always output valid, raw JSON.",
       prompt,
     });

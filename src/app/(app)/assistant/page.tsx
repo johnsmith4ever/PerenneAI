@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { insertFeatureAction, deleteFeatureAction, fetchFeatureAction, upsertFeatureAction } from "@/actions/supabase";
 import { useUser } from "@clerk/nextjs";
+import ReactMarkdown from "react-markdown";
+import { formatReadableMathAndLatex } from "@/lib/clean-latex";
 
 type ChatMode = "Standard" | "Strict Syllabus" | "Quick Answer";
 
@@ -19,15 +21,9 @@ type ModelDefinition = {
   realProvider: string;
 };
 
+// GPT 6 Luna is the only available model in the Study Assistant
 const MODELS: ModelDefinition[] = [
-  { displayName: "Mistral Small", realProvider: "Mistral Small (Mistral)" },
-  { displayName: "Mistral Large", realProvider: "Mistral Large (Mistral)" },
-  { displayName: "Gemini 3.5 Flash-Lite", realProvider: "Gemini 3.5 Flash-Lite" },
-  { displayName: "Gemini 3.6 Flash", realProvider: "Gemini 2.5 Flash-Lite" },
-  { displayName: "Deepseek-V4-Flash", realProvider: "DeepSeek V4 Flash" },
-  { displayName: "Deepseek-V4-Pro", realProvider: "DeepSeek V4 Pro" },
-  { displayName: "Claude 4.5 Haiku", realProvider: "Claude 3.5 Haiku" },
-  { displayName: "Claude 4.6 Sonnet", realProvider: "Claude 4.6 Sonnet" },
+  { displayName: "GPT 6 Luna", realProvider: "GPT 6 Luna" },
 ];
 
 type Message = {
@@ -50,18 +46,10 @@ export default function AssistantPage() {
   const { curriculumLevel, setCurriculumLevel, curriculumSubject, setCurriculumSubject } = useCurriculum();
   const tierRank = TIER_RANK[tier] ?? 0;
 
+  // Only GPT 6 Luna is available — no locking logic needed
   const availableModels = useMemo(() => {
-    return MODELS.map(m => {
-      let isLocked = false;
-      const name = m.displayName;
-      if (name === "Mistral Large" && tierRank < TIER_RANK.Core) isLocked = true;
-      if (name.includes("Gemini") && tierRank < TIER_RANK.Pro) isLocked = true;
-      if (name.includes("Deepseek") && tierRank < TIER_RANK.Premium) isLocked = true;
-      if (name.includes("Claude") && tierRank < TIER_RANK.Maximum) isLocked = true;
-
-      return { ...m, isLocked };
-    });
-  }, [tierRank]);
+    return MODELS.map(m => ({ ...m, isLocked: false }));
+  }, []);
 
   const [chatMode, setChatMode] = useState<ChatMode>("Standard");
   const [isModeSelectorOpen, setIsModeSelectorOpen] = useState(false);
@@ -70,7 +58,8 @@ export default function AssistantPage() {
   const currDropdownRef = useRef<HTMLDivElement>(null);
   const [isSubjectSelectorOpen, setIsSubjectSelectorOpen] = useState(false);
   const subjectDropdownRef = useRef<HTMLDivElement>(null);
-  const [activeModel, setActiveModel] = useState<ModelDefinition>(MODELS[0]);
+  // GPT 6 Luna is the fixed and only model
+  const [activeModel, setActiveModel] = useState<ModelDefinition>(MODELS[0]); // always GPT 6 Luna
   const [isModelSelectorOpen, setIsModelSelectorOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = usePersistentState<boolean>("assistant_sidebar_open", true);
   const [useWebFallback, setUseWebFallback] = usePersistentState<boolean>("assistant_use_web_fallback", false);
@@ -418,20 +407,25 @@ const [activeChatId, setActiveChatId] = usePersistentState<string | null>("assis
   };
 
   // Split understand mode messages into explanation + answer
+  // Render assistant & user messages with LaTeX sanitization and clean markdown formatting
   const renderMessageContent = (msg: Message, index: number) => {
+    const cleaned = formatReadableMathAndLatex(msg.content || "");
+
     if (msg.role === "user") {
-      return <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>;
+      return <p className="text-sm leading-relaxed whitespace-pre-wrap">{cleaned}</p>;
     }
 
     // In Understand mode, split out the ANSWER: line
     if (msg.revealAnswer !== undefined) {
-      const parts = msg.content.split(/\nANSWER:\s*/i);
+      const parts = cleaned.split(/\nANSWER:\s*/i);
       const explanation = parts[0];
       const answer = parts.length > 1 ? parts[1].trim() : null;
 
       return (
         <div>
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">{explanation}</p>
+          <div className="text-sm leading-relaxed prose dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-headings:my-2 prose-pre:my-2 text-foreground">
+            <ReactMarkdown>{explanation}</ReactMarkdown>
+          </div>
           {answer && (
             <div className="mt-4 pt-4 border-t border-border">
               <button
@@ -442,8 +436,8 @@ const [activeChatId, setActiveChatId] = usePersistentState<string | null>("assis
                 {msg.revealAnswer ? "Hide Answer" : "Reveal Answer"}
               </button>
               {msg.revealAnswer && (
-                <div className="p-3 rounded-lg bg-primary/5 border border-primary/10 animate-in fade-in slide-in-from-top-1">
-                  <p className="text-sm font-medium text-foreground leading-relaxed">{answer}</p>
+                <div className="p-3 rounded-lg bg-primary/5 border border-primary/10 animate-in fade-in slide-in-from-top-1 text-sm font-medium text-foreground leading-relaxed prose dark:prose-invert max-w-none">
+                  <ReactMarkdown>{answer}</ReactMarkdown>
                 </div>
               )}
             </div>
@@ -452,125 +446,126 @@ const [activeChatId, setActiveChatId] = usePersistentState<string | null>("assis
       );
     }
 
-    return <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>;
+    return (
+      <div className="text-sm leading-relaxed prose dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-headings:my-2 prose-pre:my-2 text-foreground">
+        <ReactMarkdown>{cleaned}</ReactMarkdown>
+      </div>
+    );
   };
 
   return (
     <div className="flex gap-3 h-[calc(100vh-4rem)]">
       {/* Assistant sidebar: Recent chats */}
-      {isSidebarOpen ? (
-        <div className="w-72 shrink-0 flex flex-col gap-3 pr-1 hidden md:flex">
-          <div className="flex items-center gap-2">
-            <Button onClick={handleNewChat} className="flex-1 gap-2 justify-start shadow-none border border-border bg-card hover:bg-muted text-sm font-normal tracking-normal" variant="outline">
-              <Plus className="w-4 h-4" />
-              New Chat
-            </Button>
+      {userLoaded && user && (
+        isSidebarOpen ? (
+          <div className="w-72 shrink-0 flex flex-col gap-3 pr-1 hidden md:flex">
+            <div className="flex items-center gap-2">
+              <Button onClick={handleNewChat} className="flex-1 gap-2 justify-start shadow-none border border-border bg-card hover:bg-muted text-sm font-normal tracking-normal" variant="outline">
+                <Plus className="w-4 h-4" />
+                New Chat
+              </Button>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="flex shrink-0 items-center justify-center w-9 h-9 rounded-lg border border-border bg-card shadow-sm hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                title="Close Sidebar"
+              >
+                <PanelLeft className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <div className="flex-1 flex flex-col overflow-hidden rounded-xl bg-card border border-border shadow-sm">
+              <div className="px-4 py-3 border-b border-border bg-muted/30">
+                <p className="font-semibold text-[13px] text-foreground flex items-center gap-2">
+                  <MessagesSquare className="w-4 h-4 text-muted-foreground" />
+                  Recent Chats
+                </p>
+              </div>
+
+              <div className="flex-1 overflow-y-auto flex flex-col">
+                {chats.length === 0 ? (
+                  <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
+                    <p className="text-sm font-medium text-foreground mb-1">No recent chats</p>
+                    <p className="text-xs text-muted-foreground">Your history will appear here.</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col p-2 space-y-1">
+                    {chats.map((c) => (
+                      <div key={c.id} className="relative group/chat">
+                        {editingChatId === c.id ? (
+                          <div className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg bg-primary/10 border border-primary/20">
+                            <MessageSquare className="w-3.5 h-3.5 shrink-0 text-primary" />
+                            <input
+                              type="text"
+                              value={editChatTitle}
+                              onChange={(e) => setEditChatTitle(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") handleSaveTitle(c.id);
+                                if (e.key === "Escape") setEditingChatId(null);
+                              }}
+                              onBlur={() => handleSaveTitle(c.id)}
+                              autoFocus
+                              className="flex-1 bg-transparent border-none focus:outline-none text-xs text-primary font-medium"
+                            />
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => loadChat(c.id)}
+                            className={cn(
+                              "flex items-center gap-2.5 w-full text-left px-3 py-2 rounded-lg transition-colors group",
+                              activeChatId === c.id ? "bg-primary/10 text-primary font-medium pr-8" : "text-muted-foreground hover:bg-muted hover:text-foreground pr-8"
+                            )}
+                          >
+                            <MessageSquare className={cn("w-3.5 h-3.5 shrink-0", activeChatId === c.id ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
+                            <span className="text-xs truncate leading-relaxed flex-1">{c.title}</span>
+                          </button>
+                        )}
+
+                        {editingChatId !== c.id && (
+                          <div className={cn(
+                            "absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5 transition-all",
+                            activeChatId === c.id ? "opacity-100" : "opacity-0 group-hover/chat:opacity-100"
+                          )}>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditingChatId(c.id);
+                                setEditChatTitle(c.title);
+                              }}
+                              className="p-1.5 rounded-md hover:bg-background/80 text-muted-foreground hover:text-foreground"
+                              title="Rename chat"
+                            >
+                              <MoreHorizontal className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteChat(c.id);
+                              }}
+                              className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
+                              title="Delete chat"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="shrink-0 flex flex-col gap-3 pr-1 hidden md:flex">
             <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="flex shrink-0 items-center justify-center w-9 h-9 rounded-lg border border-border bg-card shadow-sm hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
-              title="Close Sidebar"
+              onClick={() => setIsSidebarOpen(true)}
+              className="flex items-center justify-center w-9 h-9 rounded-lg border border-border bg-card shadow-sm hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+              title="Open Sidebar"
             >
               <PanelLeft className="w-4 h-4" />
             </button>
           </div>
-          
-          <div className="flex-1 flex flex-col overflow-hidden rounded-xl bg-card border border-border shadow-sm">
-            <div className="px-4 py-3 border-b border-border bg-muted/30">
-              <p className="font-semibold text-[13px] text-foreground flex items-center gap-2">
-                <MessagesSquare className="w-4 h-4 text-muted-foreground" />
-                Recent Chats
-              </p>
-            </div>
-            {userLoaded && !user && (
-              <div className="px-4 py-3 bg-amber-500/5 border-b border-amber-500/20">
-                <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">Guest mode: chats won't be saved across sessions.</p>
-              </div>
-            )}
-            
-            <div className="flex-1 overflow-y-auto flex flex-col">
-              {chats.length === 0 ? (
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
-                  <p className="text-sm font-medium text-foreground mb-1">No recent chats</p>
-                  <p className="text-xs text-muted-foreground">Your history will appear here.</p>
-                </div>
-              ) : (
-                <div className="flex flex-col p-2 space-y-1">
-                  {chats.map((c) => (
-                    <div key={c.id} className="relative group/chat">
-                      {editingChatId === c.id ? (
-                        <div className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg bg-primary/10 border border-primary/20">
-                          <MessageSquare className="w-3.5 h-3.5 shrink-0 text-primary" />
-                          <input
-                            type="text"
-                            value={editChatTitle}
-                            onChange={(e) => setEditChatTitle(e.target.value)}
-                            onKeyDown={(e) => {
-                            if (e.key === "Enter") handleSaveTitle(c.id);
-                            if (e.key === "Escape") setEditingChatId(null);
-                          }}
-                          onBlur={() => handleSaveTitle(c.id)}
-                          autoFocus
-                          className="flex-1 bg-transparent border-none focus:outline-none text-xs text-primary font-medium"
-                        />
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => loadChat(c.id)}
-                        className={cn(
-                          "flex items-center gap-2.5 w-full text-left px-3 py-2 rounded-lg transition-colors group",
-                          activeChatId === c.id ? "bg-primary/10 text-primary font-medium pr-8" : "text-muted-foreground hover:bg-muted hover:text-foreground pr-8"
-                        )}
-                      >
-                        <MessageSquare className={cn("w-3.5 h-3.5 shrink-0", activeChatId === c.id ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
-                        <span className="text-xs truncate leading-relaxed flex-1">{c.title}</span>
-                      </button>
-                    )}
-                    
-                    {editingChatId !== c.id && (
-                      <div className={cn(
-                        "absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5 transition-all",
-                        activeChatId === c.id ? "opacity-100" : "opacity-0 group-hover/chat:opacity-100"
-                      )}>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setEditingChatId(c.id);
-                            setEditChatTitle(c.title);
-                          }}
-                          className="p-1.5 rounded-md hover:bg-background/80 text-muted-foreground hover:text-foreground"
-                          title="Rename chat"
-                        >
-                          <MoreHorizontal className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteChat(c.id);
-                          }}
-                          className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-                          title="Delete chat"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      ) : (
-        <div className="shrink-0 flex flex-col gap-3 pr-1 hidden md:flex">
-          <button
-            onClick={() => setIsSidebarOpen(true)}
-            className="flex items-center justify-center w-9 h-9 rounded-lg border border-border bg-card shadow-sm hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
-            title="Open Sidebar"
-          >
-            <PanelLeft className="w-4 h-4" />
-          </button>
-        </div>
+        )
       )}
 
       {/* Main chat area */}

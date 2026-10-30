@@ -1,20 +1,30 @@
+import { mistralProvider } from "@/lib/mistral-fallback";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { createMistral } from "@ai-sdk/mistral";
 import { embed } from "ai";
 
-const mistralProvider = createMistral({
-  apiKey: process.env.MISTRAL_API_KEY_2,
-});
 
-// Simple hardcoded secret for basic admin protection. 
-// In a real app, use proper clerk admin roles, but this prevents random public access.
-const ADMIN_SECRET = process.env.ADMIN_SECRET || "supersecret123";
+
+import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
+    const adminSecret = process.env.ADMIN_SECRET;
+    if (!adminSecret || adminSecret.trim() === "") {
+      return NextResponse.json({ error: "Server configuration error: ADMIN_SECRET not set" }, { status: 500 });
+    }
+
     const authHeader = req.headers.get("authorization");
-    if (authHeader !== `Bearer ${ADMIN_SECRET}`) {
+    if (!authHeader) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const expectedHeader = `Bearer ${adminSecret}`;
+    const expectedHash = crypto.createHash("sha256").update(expectedHeader).digest();
+    const actualHash = crypto.createHash("sha256").update(authHeader).digest();
+
+    if (!crypto.timingSafeEqual(expectedHash, actualHash)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

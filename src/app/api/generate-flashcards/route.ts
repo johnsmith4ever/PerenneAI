@@ -1,3 +1,4 @@
+import { mistralProvider } from "@/lib/mistral-fallback";
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
@@ -63,20 +64,22 @@ export async function POST(req: Request) {
         const { embed } = await import("ai");
         const { supabase } = await import("@/lib/supabase");
         
-        const mistralProvider = createMistral({ apiKey: process.env.MISTRAL_API_KEY_2 });
+        
         const { embedding } = await embed({
           model: mistralProvider.textEmbeddingModel("mistral-embed"),
           value: topic,
         });
 
-        const threshold = subject === "Mathematics" || subject === "Maths" ? 0.70 : 0.70;
+        const dbSubject = subject === "Maths" ? "Mathematics" : subject;
+        const normLevel = curriculumLevel ? (curriculumLevel.includes("A") ? "A-Level" : curriculumLevel === "KS3" ? null : curriculumLevel) : null;
+        const threshold = 0.40;
 
         const { data: specs, error: specError } = await supabase.rpc("match_aqa_specs", {
           query_embedding: embedding,
           match_threshold: threshold,
           match_count: 15, // Get more for flashcards to ensure broad coverage of the entire topic area
-          filter_subject: subject,
-          filter_level: curriculumLevel
+          filter_subject: dbSubject || null,
+          filter_level: normLevel
         });
 
         if (!specError && specs && specs.length > 0) {
@@ -114,7 +117,7 @@ Respond with ONLY a JSON object, no markdown, no explanation:
 
     if (isPremiumPlus) {
       const result = await generateAssistantText({
-        model: model || "Gemini 3.6 Flash",
+        model: model || "Deepseek-V4-Flash",
         system: sysPrompt,
         prompt: userPrompt
       });

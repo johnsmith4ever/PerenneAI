@@ -40,7 +40,6 @@ async function searchTavily(query: string) {
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
 
     const { messages, useResearch, topic, stance , model } = await req.json();
 
@@ -69,7 +68,7 @@ You must vigorously but respectfully challenge their arguments, point out logica
 Do not break character. Do not agree with them easily. Keep your responses concise (1-2 paragraphs max) and punchy.${contextText}`;
 
     const { text, usage } = await generateAssistantText({
-      model: model || "Gemini 3.6 Flash",
+      model: model || "Deepseek-V4-Flash",
       system: systemPrompt,
       messages,
       maxOutputTokens: 500,

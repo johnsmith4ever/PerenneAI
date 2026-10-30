@@ -1,3 +1,4 @@
+import { mistralProvider } from "@/lib/mistral-fallback";
 import { NextResponse } from "next/server";
 import { generateText, embed } from "ai";
 import { createMistral } from "@ai-sdk/mistral";
@@ -7,14 +8,11 @@ import { supabase } from "@/lib/supabase";
 import { generateGeminiText } from "@/lib/gemini-fallback";
 import { generateAssistantText } from "@/lib/assistant-router";
 
-const mistral = createMistral({ apiKey: process.env.MISTRAL_API_KEY_2 });
+
 
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
 
     const { text, inputMode, subject , model } = await req.json();
 
@@ -26,36 +24,42 @@ export async function POST(req: Request) {
     let mistralTokens = { input: 0, output: 0 };
 
     if (inputMode === "topic") {
-      const { embedding } = await embed({
-        model: mistral.textEmbeddingModel("mistral-embed"),
-        value: text,
-      });
+      try {
+        const { embedding } = await embed({
+          model: mistralProvider.textEmbeddingModel("mistral-embed"),
+          value: text,
+        });
 
-      const threshold = subject === "Mathematics" || subject === "Maths" ? 0.70 : 0.70;
+        const threshold = 0.40;
+        const dbSubject = subject === "Maths" ? "Mathematics" : subject;
 
-      const { data: specs } = await supabase.rpc("match_aqa_specs", {
-        query_embedding: embedding,
-        match_threshold: threshold,
-        match_count: 5,
-        filter_subject: subject || null,
-        filter_level: null
-      });
+        const { data: specs } = await supabase.rpc("match_aqa_specs", {
+          query_embedding: embedding,
+          match_threshold: threshold,
+          match_count: 5,
+          filter_subject: dbSubject || null,
+          filter_level: null
+        });
 
-      let aqaContext = "";
-      if (specs && specs.length > 0) {
-        aqaContext = specs.map((s: any) => s.content).join("\n\n");
-      }
+        let aqaContext = "";
+        if (specs && specs.length > 0) {
+          aqaContext = specs.map((s: any) => s.content).join("\n\n");
+        }
 
-      const { text: synthesizedNotes, usage: mistralUsage } = await generateText({
-        model: mistral.chat("mistral-large-latest"),
-        system: "You are an expert AQA teacher. Your job is to take a short topic and synthesize comprehensive, detailed study notes using ONLY the provided AQA specification context. If the context is empty, write high-quality general notes for a high school student.",
-        prompt: `Topic: ${text}\n\nAQA Context:\n${aqaContext || "None provided."}`,
-      });
+        const { text: synthesizedNotes, usage: noteUsage } = await generateAssistantText({
+          model: "GPT 5.4 Nano",
+          system: "You are an expert AQA teacher. Your job is to take a short topic and synthesize comprehensive, detailed study notes using ONLY the provided AQA specification context. If the context is empty, write high-quality general notes for a high school student.",
+          prompt: `Topic: ${text}\n\nAQA Context:\n${aqaContext || "None provided."}`,
+        });
 
-      finalNotes = synthesizedNotes;
-      if (mistralUsage) {
-         mistralTokens.input = mistralUsage.inputTokens || 0;
-         mistralTokens.output = mistralUsage.outputTokens || 0;
+        finalNotes = synthesizedNotes;
+        if (noteUsage) {
+          mistralTokens.input = (noteUsage as any).inputTokens || (noteUsage as any).promptTokens || 0;
+          mistralTokens.output = (noteUsage as any).outputTokens || (noteUsage as any).completionTokens || 0;
+        }
+      } catch (embErr) {
+        console.warn("Topic synthesis error, proceeding with direct topic notes:", embErr);
+        finalNotes = text;
       }
     }
 
@@ -91,7 +95,7 @@ Rules:
 - Think deeply — give the user real insight, not generic fluff`;
 
     const { text: rawJson, usage } = await generateAssistantText({
-      model: model || "Gemini 3.6 Flash",
+      model: model || "Deepseek-V4-Flash",
       system: "You are a structured knowledge analyst. You always output valid raw JSON with no markdown.",
       prompt,
     });

@@ -1,23 +1,35 @@
+import { mistralProvider } from "@/lib/mistral-fallback";
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { createMistral } from "@ai-sdk/mistral";
 import { embedMany } from "ai";
 
-const mistralProvider = createMistral({
-  apiKey: process.env.MISTRAL_API_KEY_2,
-});
+
 
 const adminSupabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
   process.env.SUPABASE_SERVICE_ROLE_KEY || "placeholder_key"
 );
 
-const ADMIN_SECRET = process.env.ADMIN_SECRET || "supersecret123";
+import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
+    const adminSecret = process.env.ADMIN_SECRET;
+    if (!adminSecret || adminSecret.trim() === "") {
+      return NextResponse.json({ error: "Server configuration error: ADMIN_SECRET not set" }, { status: 500 });
+    }
+
     const authHeader = req.headers.get("authorization");
-    if (authHeader !== `Bearer ${ADMIN_SECRET}`) {
+    if (!authHeader) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const expectedHeader = `Bearer ${adminSecret}`;
+    const expectedHash = crypto.createHash("sha256").update(expectedHeader).digest();
+    const actualHash = crypto.createHash("sha256").update(authHeader).digest();
+
+    if (!crypto.timingSafeEqual(expectedHash, actualHash)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

@@ -8,18 +8,10 @@ export function usePersistentState<T>(baseKey: string, initialValue: T) {
   const { userId, isLoaded } = useAuth();
   const key = `${baseKey}_${userId || 'guest'}`;
 
-  const [state, setState] = useState<T>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const item = window.localStorage.getItem(key);
-        return item ? JSON.parse(item) : initialValue;
-      } catch (error) {
-        console.warn("Error reading localStorage", error);
-        return initialValue;
-      }
-    }
-    return initialValue;
-  });
+  // Always start with initialValue so SSR and the initial client render match,
+  // preventing React hydration errors. The useEffect below syncs from localStorage
+  // after hydration is complete.
+  const [state, setState] = useState<T>(initialValue);
   
   const [isStateLoaded, setIsStateLoaded] = useState(false);
 

@@ -58,12 +58,14 @@ const [topic, setTopic] = usePersistentState<string>("quiz_topic", "");
 const [imageContext, setImageContext] = usePersistentState<string | null>("quiz_img", null);
 const [usePremiumModel, setUsePremiumModel] = usePersistentState<boolean>("quiz_premium_model", false);
   const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
+  const [matchedSubject, setMatchedSubject] = useState<string | null>(null);
   const [subjectMismatch, setSubjectMismatch] = useState<boolean | null>(null);
   const [subjectMismatchOverridden, setSubjectMismatchOverridden] = useState(false);
 
   useEffect(() => {
     if (!topic.trim()) {
       setAqaStatus(null);
+      setMatchedSubject(null);
       return;
     }
 
@@ -71,26 +73,34 @@ const [usePremiumModel, setUsePremiumModel] = usePersistentState<boolean>("quiz_
 
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch("/api/search-aqa", {
+        const res = await fetch("/api/check-syllabus", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query: topic, subject: subject })
+          body: JSON.stringify({ topic, subject, curriculumLevel: year })
         });
         const data = await res.json();
-        if (data.status === "success" && data.results && data.results.length === 0) {
-          setAqaStatus("not_found");
-        } else {
+        if (data.existsInAqa) {
           setAqaStatus("found");
+          setMatchedSubject(data.matchedSubject || null);
+          if (data.isSubjectMatch === false) {
+            setSubjectMismatch(true);
+          } else {
+            setSubjectMismatch(false);
+          }
+        } else {
+          setAqaStatus("not_found");
+          setMatchedSubject(null);
+          setSubjectMismatch(false);
         }
       } catch (e) {
         setAqaStatus(null);
       }
-    }, 800);
+    }, 500);
 
     return () => clearTimeout(timer);
-  }, [topic, subject]);
+  }, [topic, subject, year]);
 
-  // Subject mismatch check via Mistral Small
+  // Subject mismatch check via GPT 5.4 Nano
   useEffect(() => {
     if (!topic.trim() || !subject) {
       setSubjectMismatch(null);
@@ -103,7 +113,7 @@ const [usePremiumModel, setUsePremiumModel] = usePersistentState<boolean>("quiz_
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "Mistral Small",
+            model: "GPT 5.4 Nano",
             systemPrompt: "You are a subject classifier. Reply only with 'yes' or 'no'.",
             messages: [{ role: "user", content: `Is the topic "${topic}" directly part of or clearly related to the school subject "${subject}"? Reply with only 'yes' or 'no'.` }],
             chatMode: "Standard",
@@ -187,11 +197,11 @@ const [gradingResults, setGradingResults] = usePersistentState<Record<number, an
   };
 
   const saveToHistory = async (scorePct: number, freshResults?: Record<number, any>) => {
-    if (!user || generatedQuiz.length === 0) return;
+    if (!user || generatedQuiz.length === 0 || hasSaved) return;
     const resultsToSave = freshResults ?? gradingResults;
     setIsSaving(true);
     try {
-      await insertFeatureAction("quizzes", {
+      const res = await insertFeatureAction("quizzes", {
         user_id: user.id,
         topic: topic || "Untitled Quiz",
         data: generatedQuiz.map((q, i) => {
@@ -215,10 +225,15 @@ const [gradingResults, setGradingResults] = usePersistentState<Record<number, an
         score: scorePct
       });
       
-      setHasSaved(true);
-      toast.success("Quiz saved to your account history!");
+      if (res.ok) {
+        setHasSaved(true);
+        toast.success("Quiz saved to your account history!");
+      } else {
+        toast.error("Couldn't save quiz to history.");
+      }
     } catch (e) {
       console.error("Error saving quiz history:", e);
+      toast.error("Couldn't save quiz to history.");
     } finally {
       setIsSaving(false);
     }
@@ -702,21 +717,38 @@ const [gradingResults, setGradingResults] = usePersistentState<Record<number, an
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0"><FileText className="w-5 h-5 text-primary" /></div>
                 <div>
-                  <h2 className="text-xl font-semibold text-foreground">Specific Topic</h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-xl font-semibold text-foreground">Specific Topic</h2>
+                    {subject && (
+                      <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+                        {subject}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-sm text-muted-foreground">What exactly are we studying today?</p>
                 </div>
               </div>
             </div>
             <div className="mb-8">
               <label htmlFor="topic" className="block text-sm font-medium text-foreground mb-2">Enter your topic below</label>
-              <textarea id="topic" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. The Krebs Cycle, Quadratic Equations..." className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all mb-2" rows={4} />
+              <textarea 
+                id="topic" 
+                value={topic} 
+                onChange={(e) => {
+                  setTopic(e.target.value);
+                  setSubjectMismatchOverridden(false);
+                }} 
+                placeholder="e.g. The Krebs Cycle, Quadratic Equations..." 
+                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all mb-2" 
+                rows={4} 
+              />
               
               <div className="flex flex-col gap-2 mb-6">
-                {subjectMismatch && !subjectMismatchOverridden && (
+                {subjectMismatch && !subjectMismatchOverridden && aqaStatus !== "not_found" && (
                   <div className="bg-orange-500/20 px-4 py-3 rounded-lg text-sm font-bold text-orange-500 flex items-center justify-between gap-2 border border-orange-500/20">
                     <div className="flex items-center gap-2">
                       <AlertTriangle className="w-5 h-5" />
-                      Subject Mismatch
+                      <span>Subject Mismatch {matchedSubject ? `(Found under AQA ${matchedSubject})` : ""}</span>
                     </div>
                     <button onClick={() => setSubjectMismatchOverridden(true)} className="text-orange-500 hover:underline text-xs font-bold uppercase ml-4 whitespace-nowrap">Override</button>
                   </div>
@@ -727,7 +759,7 @@ const [gradingResults, setGradingResults] = usePersistentState<Record<number, an
                     Not found in Database
                   </div>
                 )}
-                {aqaStatus === "found" && (
+                {aqaStatus === "found" && (!subjectMismatch || subjectMismatchOverridden) && (
                   <div className="bg-emerald-500/20 px-4 py-3 rounded-lg text-sm font-bold text-emerald-500 flex items-center gap-2 border border-emerald-500/20">
                     <CheckCircle2 className="w-5 h-5" />
                     Found in Database

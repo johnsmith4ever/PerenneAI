@@ -38,10 +38,11 @@ export async function generateUniversalText({
   temperature?: number;
   maxOutputTokens?: number;
 }) {
+  const m = (model || "").trim().toLowerCase();
   const finalMessages = messages || [{ role: "user", content: prompt }];
 
-  if (model === "Claude 4.5 Haiku" || model === "Claude 4.6 Sonnet") {
-    const claudeModelName = model === "Claude 4.6 Sonnet" ? "claude-sonnet-4-6" : "claude-haiku-4-5-20251001";
+  if (m.includes("claude")) {
+    const claudeModelName = m.includes("sonnet") ? "claude-sonnet-4-6" : "claude-haiku-4-5-20251001";
     return await generateClaudeText({
       modelName: claudeModelName,
       system,
@@ -50,7 +51,7 @@ export async function generateUniversalText({
       ...(maxOutputTokens ? { maxOutputTokens } : {})
     });
 
-  } else if (model === "Deepseek-V4-Pro" || model === "Deepseek V4 Pro") {
+  } else if (m.includes("deepseek") && (m.includes("pro") || m.includes("reasoner"))) {
     const { text, usage } = await generateText({
       model: deepseek.chat("deepseek-reasoner"),
       system,
@@ -59,7 +60,7 @@ export async function generateUniversalText({
       ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
     });
     return { text, usage };
-  } else if (model === "Deepseek-V4-Flash" || model === "Deepseek V4 Flash") {
+  } else if (m.includes("deepseek")) {
     const { text, usage } = await generateText({
       model: deepseek.chat("deepseek-chat"),
       system,
@@ -68,32 +69,34 @@ export async function generateUniversalText({
       ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
     });
     return { text, usage };
-  } else if (model === "Mistral Small") {
-    return await generateMistralText({
-      modelName: "mistral-small-latest",
+  } else if (m.includes("gpt 5.4") || m.includes("nano") || m.includes("mistral-small") || m.includes("mistral small")) {
+    const { text, usage } = await generateText({
+      model: openai.chat("gpt-4o-mini"),
       system,
       messages: finalMessages,
       temperature,
-      ...(maxOutputTokens ? { maxOutputTokens } : {})
+      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
     });
-  } else if (model === "Mistral Large") {
-    return await generateMistralText({
-      modelName: "mistral-large-latest",
+    return { text, usage };
+  } else if (m.includes("gpt 6") || m.includes("luna") || m.includes("mistral-large") || m.includes("mistral large")) {
+    const { text, usage } = await generateText({
+      model: openai.chat("gpt-4o"),
       system,
       messages: finalMessages,
       temperature,
-      ...(maxOutputTokens ? { maxOutputTokens } : {})
+      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
     });
+    return { text, usage };
   } else {
-    // Fallback to Gemini for Guest/Free or if Gemini is specifically requested
-    return await generateGeminiText({
-      modelName: "gemini-3.6-flash",
+    // Default: all unspecified/Gemini requests route to Deepseek V4.1 Flash
+    const { text, usage } = await generateText({
+      model: deepseek.chat("deepseek-chat"),
       system,
-      ...(prompt ? { prompt } : {}),
-      ...(messages ? { messages } : {}),
+      messages: finalMessages,
       temperature,
-      ...(maxOutputTokens ? { maxOutputTokens } : {})
+      ...(maxOutputTokens ? { maxTokens: maxOutputTokens } : {})
     });
+    return { text, usage };
   }
 }
 

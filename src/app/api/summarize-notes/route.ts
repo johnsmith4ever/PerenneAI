@@ -1,3 +1,4 @@
+import { mistralProvider } from "@/lib/mistral-fallback";
 import { NextResponse } from "next/server";
 import { generateText, embed } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
@@ -55,13 +56,13 @@ export async function POST(req: Request) {
     // Always try to fetch AQA specs if it's Understand or ELI10 mode (especially if it's a short topic)
     if (mode === "understand" || mode === "eli10") {
       try {
-        const mistralProvider = createMistral({ apiKey: process.env.MISTRAL_API_KEY_2 });
+        
         const { embedding } = await embed({
           model: mistralProvider.textEmbeddingModel("mistral-embed"),
           value: text,
         });
         
-        const threshold = subject === "Mathematics" || subject === "Maths" ? 0.70 : 0.70;
+        const threshold = subject === "Mathematics" || subject === "Maths" ? 0.50 : 0.50;
 
         const { data: specs, error: specError } = await supabaseAdmin.rpc("match_aqa_specs", {
           query_embedding: embedding,
@@ -155,7 +156,7 @@ Do not use markdown blocks for the JSON (no \`\`\`json). Just return the raw JSO
     }
 
     const { text: rawJson, usage } = await generateAssistantText({
-      model: model || "Gemini 3.6 Flash",
+      model: model || "Deepseek-V4-Flash",
       system: "You are an AI study summarizer. You always output valid, raw JSON.",
       prompt,
       maxOutputTokens: 800,

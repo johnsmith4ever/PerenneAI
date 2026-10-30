@@ -98,7 +98,14 @@ export default async function DashboardPage() {
 }
 
 async function RecentActivitiesList({ userId }: { userId?: string }) {
-  if (!userId) return null;
+  if (!userId) {
+    return (
+      <div className="px-5 py-10 rounded-2xl bg-white/5 border border-white/10 text-center space-y-3">
+        <p className="text-white font-semibold">Sign in to see your recent activity</p>
+        <p className="text-slate-500 text-sm">Your study history, quizzes, and flashcards will appear here once you create an account.</p>
+      </div>
+    );
+  }
   
   const [quizRes, flashRes, essayRes, mathRes] = await Promise.all([
     supabaseAdmin.from("quizzes").select("id, topic, updated_at").eq("user_id", userId).order("updated_at", { ascending: false }).limit(3),

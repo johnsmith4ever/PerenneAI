@@ -10,9 +10,6 @@ export const maxDuration = 60; // longer generation for schedules
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
 
     const { goal, hours, style, subjects, targets, days, intensity, energy , model } = await req.json();
 
@@ -86,7 +83,7 @@ Requirements:
 `;
 
     const { text: rawJson, usage } = await generateAssistantText({
-      model: model || "Gemini 3.6 Flash",
+      model: model || "Deepseek-V4-Flash",
       system: "You are a structured planner. You output ONLY raw JSON.",
       prompt: prompt,
       temperature: 0.7,

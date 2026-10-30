@@ -7,9 +7,6 @@ import { generateAssistantText } from "@/lib/assistant-router";
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
 
     const { topic, slideCount = 5, extraContext, tierRank = 0 , model } = await req.json();
 
@@ -27,7 +24,7 @@ export async function POST(req: Request) {
     }
 
     const { text } = await generateAssistantText({
-      model: model || "Gemini 3.6 Flash",
+      model: model || "Deepseek-V4-Flash",
       system: "You are an expert presentation maker.",
       prompt: `Create a ${slideCount}-slide presentation outline on the topic: "${topic}".
       ${promptContext}

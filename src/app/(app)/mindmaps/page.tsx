@@ -5,7 +5,8 @@ import { usePersistentState } from "@/hooks/use-persistent-state";
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
   Plus, Trash2, ZoomIn, ZoomOut, Maximize, Bot, Loader2,
-  Sparkles, Network, X, RotateCcw, ChevronRight, PanelLeftClose, PanelLeftOpen, Lock, CheckCircle2, Printer, Save
+  Sparkles, Network, X, RotateCcw, ChevronRight, PanelLeftClose, PanelLeftOpen, Lock, CheckCircle2, Printer, Save,
+  FileText, FileImage, Download, ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -73,7 +74,10 @@ function computeLayout(root: MindmapNode): Map<string, { x: number; y: number; d
   function place(node: MindmapNode, startA: number, sweepA: number, depth: number) {
     if (!node.children?.length) return;
     const n = node.children.length;
-    const r = radiusAt(depth);
+    // Increase radial spacing when branch has many nodes to prevent node overlap
+    const minArcSpacing = depth <= 1 ? 210 : 170;
+    const requiredRadius = (n * minArcSpacing) / (sweepA || (Math.PI * 2));
+    const r = Math.max(radiusAt(depth), requiredRadius);
     node.children.forEach((child, i) => {
       const angle = startA + (i + 0.5) * (sweepA / n);
       // Absolute polar coordinates from center
@@ -193,6 +197,40 @@ const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_ro
   const layout = useMemo(() => computeLayout(root), [root]);
   const allNodes = useMemo(() => flattenNodes(root), [root]);
 
+  const printContainerRef = useRef<HTMLDivElement>(null);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
+
+  // Exact mindmap bounding box for print scaling & centering
+  const bounds = useMemo(() => {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    allNodes.forEach(node => {
+      const pos = layout.get(node.id);
+      if (!pos) return;
+      const hw = node.id === root.id ? 110 : pos.depth <= 1 ? 90 : 75;
+      const hh = node.id === root.id ? 26 : pos.depth <= 1 ? 22 : 18;
+      minX = Math.min(minX, pos.x - hw);
+      maxX = Math.max(maxX, pos.x + hw);
+      minY = Math.min(minY, pos.y - hh);
+      maxY = Math.max(maxY, pos.y + hh);
+    });
+    if (!isFinite(minX)) {
+      minX = CANVAS_CX - 300; maxX = CANVAS_CX + 300;
+      minY = CANVAS_CY - 300; maxY = CANVAS_CY + 300;
+    }
+    const padding = 32; // Compact padding so map fills page
+    const width = Math.max(200, (maxX - minX) + padding * 2);
+    const height = Math.max(200, (maxY - minY) + padding * 2);
+    const offsetX = minX - padding;
+    const offsetY = minY - padding;
+    // Fit onto A4 landscape printable area (approx 1040px × 640px)
+    const targetW = 1040;
+    const targetH = 640;
+    const scale = Math.min(targetW / width, targetH / height);
+    return { width, height, offsetX, offsetY, scale };
+  }, [allNodes, layout, root.id]);
+
   // Credits display
   const safeUsed = creditsUsed ?? 0;
   const rawPct = subLoaded ? Math.min(100, (safeUsed / dailyLimit) * 100) : 0;
@@ -249,7 +287,7 @@ const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_ro
     const textToAnalyze = inputMode === "notes" ? analysisInput : topic;
     if (!textToAnalyze.trim()) return;
 
-    const model: ModelType = "Gemini 3.5 Flash-Lite";
+    const model: ModelType = "Deepseek-V4-Flash";
     setIsAnalyzing(true);
     try {
       const res  = await fetch("/api/analyze-topic", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: textToAnalyze, inputMode, subject, model }) });
@@ -285,7 +323,7 @@ const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_ro
   const buildWithGemini = async () => {
     if (!analysis) return;
 
-    const model: ModelType = "Gemini 3.5 Flash-Lite";
+    const model: ModelType = "Deepseek-V4-Flash";
     const structured = `Title: ${analysis.title}\nTheme: ${analysis.mainTheme}\n\n` +
       analysis.sections.map(s => `Section: ${s.heading}\n${s.points.map(p => `- ${p}`).join("\n")}`).join("\n\n");
     setIsBuilding(true);
@@ -386,15 +424,81 @@ const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_ro
     });
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
+        setShowExportMenu(false);
+      }
+    };
+    if (showExportMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [showExportMenu]);
+
   const handlePrint = () => {
-    // Zoom out enough to fit a level-4 mindmap (radius 1400) onto an A4 page
-    handleZoom(0.28);
-    setTimeout(() => {
-      centerCanvas();
-      setTimeout(() => {
-        window.print();
-      }, 100);
-    }, 50);
+    window.print();
+  };
+
+  const handleDownloadPng = async () => {
+    if (!printContainerRef.current) return;
+    const toastId = toast.loading("Generating high-resolution PNG...");
+    try {
+      setIsExporting(true);
+      const { toPng } = await import("html-to-image");
+      const dataUrl = await toPng(printContainerRef.current, {
+        pixelRatio: 2,
+        backgroundColor: "#ffffff",
+        cacheBust: true,
+      });
+      const safeTopic = (analysis?.title || topic || root.text || "mind-map")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+      const link = document.createElement("a");
+      link.download = `${safeTopic}-mind-map.png`;
+      link.href = dataUrl;
+      link.click();
+      toast.success("PNG downloaded successfully!", { id: toastId });
+    } catch (err: any) {
+      console.error("Failed to export PNG:", err);
+      toast.error("Failed to generate PNG. Please try again.", { id: toastId });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!printContainerRef.current) return;
+    const toastId = toast.loading("Generating A4 landscape PDF...");
+    try {
+      setIsExporting(true);
+      const { toPng } = await import("html-to-image");
+      const { jsPDF } = await import("jspdf");
+      const dataUrl = await toPng(printContainerRef.current, {
+        pixelRatio: 2,
+        backgroundColor: "#ffffff",
+        cacheBust: true,
+      });
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: "a4",
+      });
+      // A4 landscape dimensions: 297mm x 210mm
+      pdf.addImage(dataUrl, "PNG", 0, 0, 297, 210);
+      const safeTopic = (analysis?.title || topic || root.text || "mind-map")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+      pdf.save(`${safeTopic}-mind-map.pdf`);
+      toast.success("PDF downloaded successfully!", { id: toastId });
+    } catch (err: any) {
+      console.error("Failed to export PDF:", err);
+      toast.error("Failed to generate PDF. Please try again.", { id: toastId });
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -402,7 +506,7 @@ const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_ro
 
   return (
     <>
-    <div className="flex h-[calc(100vh-2rem)] w-full overflow-hidden">
+    <div className="flex h-[calc(100vh-2rem)] w-full overflow-hidden print:hidden">
 
       {/* ══════════ LEFT PANEL ══════════ */}
       <div
@@ -550,7 +654,7 @@ const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_ro
       </div>
 
       {/* ══════════ RIGHT PANEL ══════════ */}
-      <div id="mindmap-print-container" className="flex-1 flex flex-col overflow-hidden relative bg-background">
+      <div className="flex-1 flex flex-col overflow-hidden relative bg-background">
 
         {/* Toolbar */}
         <div className="print-hide absolute top-4 left-4 z-50 flex items-center gap-1 bg-card/90 backdrop-blur-md px-1.5 py-1 rounded-2xl border border-border shadow-lg">
@@ -567,7 +671,56 @@ const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_ro
           <button onClick={handleManualSave} disabled={isSaving} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors" title="Save to History">
             {isSaving ? <Loader2 size={12} className="animate-spin" /> : hasSaved ? <CheckCircle2 size={12} className="text-green-500" /> : <Save size={12} />}
           </button>
-          <button onClick={handlePrint} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors" title="Print Map"><Printer size={12} /></button>
+          {/* Export Dropdown */}
+          <div className="relative" ref={exportMenuRef}>
+            <button
+              onClick={() => setShowExportMenu(prev => !prev)}
+              disabled={isExporting}
+              className="h-7 px-2 rounded-xl flex items-center gap-1 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              title="Print or Export Mind Map"
+            >
+              {isExporting ? <Loader2 size={13} className="animate-spin text-primary" /> : <Printer size={13} />}
+              <span>Export</span>
+              <ChevronDown size={11} className={cn("transition-transform duration-200", showExportMenu && "rotate-180")} />
+            </button>
+
+            {showExportMenu && (
+              <div className="absolute top-9 left-0 z-50 w-52 bg-card border border-border rounded-2xl shadow-2xl py-1.5 animate-in fade-in zoom-in-95 backdrop-blur-md">
+                <button
+                  onClick={() => { setShowExportMenu(false); handlePrint(); }}
+                  className="w-full px-3 py-2 text-left text-xs text-foreground hover:bg-muted flex items-center gap-2.5 transition-colors"
+                >
+                  <Printer size={15} className="text-primary shrink-0" />
+                  <div>
+                    <p className="font-semibold text-foreground">Print Map</p>
+                    <p className="text-[10px] text-muted-foreground">Print or save via browser</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => { setShowExportMenu(false); handleDownloadPng(); }}
+                  className="w-full px-3 py-2 text-left text-xs text-foreground hover:bg-muted flex items-center gap-2.5 transition-colors"
+                >
+                  <FileImage size={15} className="text-violet-500 shrink-0" />
+                  <div>
+                    <p className="font-semibold text-foreground">Download PNG</p>
+                    <p className="text-[10px] text-muted-foreground">High resolution image</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => { setShowExportMenu(false); handleDownloadPdf(); }}
+                  className="w-full px-3 py-2 text-left text-xs text-foreground hover:bg-muted flex items-center gap-2.5 transition-colors"
+                >
+                  <FileText size={15} className="text-emerald-500 shrink-0" />
+                  <div>
+                    <p className="font-semibold text-foreground">Download PDF</p>
+                    <p className="text-[10px] text-muted-foreground">A4 landscape document</p>
+                  </div>
+                </button>
+              </div>
+            )}
+          </div>
           <button onClick={resetMap} className="w-7 h-7 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 transition-colors" title="New map"><RotateCcw size={12} /></button>
         </div>
 
@@ -660,32 +813,199 @@ const [root, setRoot, rootLoaded] = usePersistentState<MindmapNode>("mindmaps_ro
       )}
 
     </div>
+
+    {/* ══════════ DEDICATED PRINT VIEW ══════════ */}
+    <div id="mindmap-print-container" ref={printContainerRef} className="flex flex-col items-center justify-start w-full h-full bg-white text-black">
+      {/* Print Header */}
+      <div className="w-full flex items-center justify-between px-6 py-2 border-b border-gray-200 shrink-0 mb-1">
+        <div>
+          <h1 className="text-lg font-bold text-gray-900 font-serif tracking-tight leading-tight">
+            {analysis?.title || topic || root.text || "Mindmap"}
+          </h1>
+          <p className="text-[11px] text-gray-500 font-sans mt-0.5">
+            Visual Revision Map • Perenne
+          </p>
+        </div>
+        <div className="text-right">
+          <span className="inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded border border-gray-200 text-gray-600 bg-gray-50">
+            AQA Revision
+          </span>
+        </div>
+      </div>
+
+      {/* Centered Mindmap Canvas */}
+      <div className="print-content-wrapper flex items-center justify-center flex-1 w-full overflow-hidden">
+        <div
+          className="relative print-content-box"
+          style={{
+            width: `${Math.round(bounds.width * bounds.scale)}px`,
+            height: `${Math.round(bounds.height * bounds.scale)}px`,
+          }}
+        >
+          <div
+            className="absolute left-0 top-0"
+            style={{
+              width: `${bounds.width}px`,
+              height: `${bounds.height}px`,
+              transform: `scale(${bounds.scale})`,
+              transformOrigin: "0 0",
+            }}
+          >
+            {/* Edges */}
+            <svg
+              className="absolute inset-0 pointer-events-none"
+              viewBox={`${bounds.offsetX} ${bounds.offsetY} ${bounds.width} ${bounds.height}`}
+              style={{ width: `${bounds.width}px`, height: `${bounds.height}px` }}
+            >
+              {lines}
+            </svg>
+
+            {/* Nodes */}
+            <div className="absolute inset-0" style={{ width: `${bounds.width}px`, height: `${bounds.height}px` }}>
+              {allNodes.map(node => {
+                const pos = layout.get(node.id);
+                if (!pos) return null;
+                const x = pos.x - bounds.offsetX;
+                const y = pos.y - bounds.offsetY;
+                const depth = pos.depth;
+                const isRoot = node.id === root.id;
+                
+                // Base width; adapt if scaled down so readable text fits nicely
+                const baseW = isRoot ? 220 : depth <= 1 ? 180 : 150;
+                const w = bounds.scale < 1 ? Math.round(baseW * Math.max(1, 1 / (bounds.scale * 1.15))) : baseW;
+                
+                // Print color palettes (high-contrast, crisp ink on paper)
+                const printPalettes = [
+                  { border: "#f97316", bg: "#fff7ed", text: "#9a3412" }, // Root: coral theme
+                  { border: "#8b5cf6", bg: "#f5f3ff", text: "#4c1d95" }, // Violet
+                  { border: "#0284c7", bg: "#f0f9ff", text: "#0369a1" }, // Sky
+                  { border: "#10b981", bg: "#ecfdf5", text: "#047857" }, // Emerald
+                  { border: "#f59e0b", bg: "#fffbeb", text: "#b45309" }, // Amber
+                  { border: "#ec4899", bg: "#fdf2f8", text: "#be185d" }, // Pink
+                ];
+                const pStyle = printPalettes[Math.min(depth, printPalettes.length - 1)];
+
+                // Ensure rendered font size is at least ~10pt (~13.3px)
+                const minRenderedPx = isRoot ? 15 : depth <= 1 ? 13.5 : 13;
+                const nodeFontSizePx = Math.max(minRenderedPx, Math.round(minRenderedPx / bounds.scale));
+
+                return (
+                  <div
+                    key={`print-node-${node.id}`}
+                    className="absolute print-node"
+                    style={{
+                      left: `${x}px`,
+                      top: `${y}px`,
+                      transform: "translate(-50%, -50%)",
+                      width: `${w}px`,
+                    }}
+                  >
+                    <div
+                      className="rounded-2xl px-3 py-2 text-center shadow-sm"
+                      style={{
+                        border: isRoot ? `2.5px solid #ea580c` : `2px solid ${pStyle.border}`,
+                        backgroundColor: isRoot ? "#ea580c" : pStyle.bg,
+                        color: isRoot ? "#ffffff" : pStyle.text,
+                        minHeight: isRoot ? 44 : 32,
+                        WebkitPrintColorAdjust: "exact",
+                        printColorAdjust: "exact",
+                      }}
+                    >
+                      <p
+                        className="break-words leading-snug font-sans"
+                        style={{
+                          fontSize: `${nodeFontSizePx}px`,
+                          fontWeight: isRoot ? 700 : depth <= 1 ? 600 : 500,
+                          color: isRoot ? "#ffffff" : pStyle.text,
+                          WebkitPrintColorAdjust: "exact",
+                          printColorAdjust: "exact",
+                        }}
+                      >
+                        {node.text || (isRoot ? "Central Idea" : "")}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     
     <style jsx global>{`
-      @media print {
-        @page { size: landscape; margin: 0; }
-        body * { visibility: hidden; }
-        #mindmap-print-container, #mindmap-print-container * { visibility: visible; }
+      @media screen {
         #mindmap-print-container {
           position: fixed !important;
+          left: -99999px !important;
+          top: 0 !important;
+          width: 1123px !important;
+          height: 794px !important;
+          background: white !important;
+          pointer-events: none !important;
+          z-index: -100 !important;
+          overflow: hidden !important;
+        }
+      }
+      @media print {
+        @page {
+          size: A4 landscape;
+          margin: 10mm;
+        }
+        html, body {
+          background: white !important;
+          color: black !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: hidden !important;
+          width: 100vw !important;
+          height: 100vh !important;
+        }
+        body * {
+          visibility: hidden !important;
+        }
+        #mindmap-print-container,
+        #mindmap-print-container * {
+          visibility: visible !important;
+        }
+        #mindmap-print-container {
+          position: fixed !important;
+          inset: 0 !important;
           left: 0 !important;
           top: 0 !important;
           width: 100vw !important;
           height: 100vh !important;
           background: white !important;
-          overflow: visible !important;
-          z-index: 9999;
-        }
-        .print-hide { display: none !important; }
-        .mm-node > div {
+          z-index: 9999999 !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: flex-start !important;
+          padding: 0 !important;
+          box-sizing: border-box !important;
+          overflow: hidden !important;
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
         }
-        .mm-node textarea, .mm-node p {
-          color: black !important;
+        .print-content-wrapper {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          width: 100% !important;
+          flex: 1 1 auto !important;
         }
-        /* Ensure edges print in black */
-        svg path { stroke: black !important; }
+        #mindmap-print-container svg path {
+          opacity: 0.9 !important;
+          stroke-width: 2.5px !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
       }
     `}</style>
     </>

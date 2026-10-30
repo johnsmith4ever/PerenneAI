@@ -55,13 +55,13 @@ const [testSize, setTestSize] = usePersistentState("exam_sim_size", "Medium");
         const res = await fetch("/api/search-aqa", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query: topic, subject })
+          body: JSON.stringify({ query: topic, subject, level: year === "KS3" ? undefined : year })
         });
         const data = await res.json();
-        if (data.status === "success" && data.results && data.results.length === 0) {
-          setAqaStatus("not_found");
-        } else {
+        if (data.status === "success" && data.results && data.results.length > 0) {
           setAqaStatus("found");
+        } else {
+          setAqaStatus("not_found");
         }
       } catch (e) {
         setAqaStatus(null);
@@ -69,9 +69,9 @@ const [testSize, setTestSize] = usePersistentState("exam_sim_size", "Medium");
     }, 800);
 
     return () => clearTimeout(timer);
-  }, [topic, subject, isAQA]);
+  }, [topic, subject, year, isAQA]);
 
-  // Subject mismatch check via Mistral Small
+  // Subject mismatch check via GPT 5.4 Nano
   useEffect(() => {
     if (!topic.trim() || !subject) {
       setSubjectMismatch(null);
@@ -85,7 +85,7 @@ const [testSize, setTestSize] = usePersistentState("exam_sim_size", "Medium");
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "Mistral Small",
+            model: "GPT 5.4 Nano",
             systemPrompt: "You are a subject classifier. Reply only with 'yes' or 'no'.",
             messages: [{ role: "user", content: `Is the topic "${topic}" directly part of or clearly related to the school subject "${subject}"? Reply with only 'yes' or 'no'.` }],
             maxTokens: 5
@@ -132,11 +132,11 @@ const [hasSaved, setHasSaved] = usePersistentState("exam_sim_saved", false);
   }, [user]);
 
   const saveToHistory = async (latestResults: any[] = results) => {
-    if (!user || questions.length === 0 || latestResults.length === 0) return;
+    if (!user || questions.length === 0 || latestResults.length === 0 || hasSaved) return;
     setIsSaving(true);
     try {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
-      await insertFeatureAction("exam_sims", {
+      const res = await insertFeatureAction("exam_sims", {
         user_id: user.id,
         subject: subject || "Exam Simulator",
         score: scorePct,
@@ -162,9 +162,15 @@ const [hasSaved, setHasSaved] = usePersistentState("exam_sim_saved", false);
         }
       });
       
-      setHasSaved(true);
+      if (res.ok) {
+        setHasSaved(true);
+        toast.success("Exam saved to your account history!");
+      } else {
+        toast.error("Couldn't save exam to history.");
+      }
     } catch (e) {
       console.error("Error saving exam history:", e);
+      toast.error("Couldn't save exam to history.");
     } finally {
       setIsSaving(false);
     }
@@ -204,7 +210,7 @@ const [hasSaved, setHasSaved] = usePersistentState("exam_sim_saved", false);
       return;
     }
 
-    if (isAQA && topic !== "My Past Weak Points") {
+    if (isAQA && topic !== "My Past Weak Points" && aqaStatus !== "found") {
       setExamState("generating");
       try {
         const checkRes = await fetch("/api/check-aqa-topic", {
@@ -213,7 +219,7 @@ const [hasSaved, setHasSaved] = usePersistentState("exam_sim_saved", false);
           body: JSON.stringify({ topic, subject })
         });
         const checkData = await checkRes.json();
-        if (!checkData.exists) {
+        if (checkData.status === "success" && checkData.exists === false) {
           setExamState("setup");
           toast.error("This topic does not exist in the AQA syllabus database. Please try a different topic or use Freestyle Mode.");
           return;
@@ -369,7 +375,7 @@ const [hasSaved, setHasSaved] = usePersistentState("exam_sim_saved", false);
                 AQA Database Clearance: Found
               </div>
             )}
-            {subjectMismatch && !subjectMismatchOverridden && (
+            {subjectMismatch && !subjectMismatchOverridden && aqaStatus !== "not_found" && (
               <div className="bg-orange-500/20 px-4 py-3 mt-3 rounded-lg text-xs font-bold text-orange-500 border border-orange-500/30 flex items-center justify-between shadow-inner">
                 <div className="flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4" />

@@ -52,7 +52,6 @@ async function searchTavily(query: string, includeDomains?: string[]) {
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
 
     const { topic, focusArea, domains } = await req.json();
     if (!topic) return NextResponse.json({ status: "error", message: "Topic is required" }, { status: 400 });

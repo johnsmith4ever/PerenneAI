@@ -7,9 +7,6 @@ import { generateAssistantText } from "@/lib/assistant-router";
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-    }
 
     const { topic, extraContext , model } = await req.json();
 
@@ -23,7 +20,7 @@ export async function POST(req: Request) {
     }
 
     const { text } = await generateAssistantText({
-      model: model || "Gemini 3.6 Flash",
+      model: model || "Deepseek-V4-Flash",
       system: "You are an expert at generating pro-con lists.",
       prompt: `Generate a comprehensive Pros and Cons list for the following topic/dilemma: "${topic}".
       ${promptContext}

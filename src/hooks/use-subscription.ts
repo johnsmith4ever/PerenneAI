@@ -1,56 +1,58 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { fetchFeatureAction, upsertFeatureAction } from "@/actions/supabase";
+import { fetchFeatureAction, upsertFeatureAction, incrementUsageAction } from "@/actions/supabase";
 
 export type Tier = "Guest" | "Free" | "Core" | "Pro" | "Premium" | "Maximum";
 
 // ============================================================================
 // 🛑 FREE ACCESS MODE (Soft Bypass)
 // Set this to `true` to unlock all Pro/Premium features for everyone.
-// Users will still consume their normal tier credits and hit daily limits.
-// Set back to `false` when you want the paywalls to reappear.
 // ============================================================================
-export const FREE_ACCESS_MODE = false;
+export const FREE_ACCESS_MODE = true;
 
 export const TIER_ALLOWANCES: Record<Tier, number> = {
-  Guest: 11_000,
-  Free: 30_000,
-  Core: 70_000,
-  Pro: 135_000,
-  Premium: 280_000,
-  Maximum: 400_000,
+  Guest: 50_000,
+  Free: 100_000,
+  Core: 100_000,
+  Pro: 100_000,
+  Premium: 100_000,
+  Maximum: 100_000,
 };
 
 export const TIER_RANK: Record<Tier, number> = {
   Guest: -1,
   Free: 0,
-  Core: 1,
-  Pro: 2,
-  Premium: 3,
-  Maximum: 4,
+  Core: 0,
+  Pro: 0,
+  Premium: 0,
+  Maximum: 0,
 };
 
 export type ModelType = 
-  | "Mistral Small" 
+  | "GPT 5.4 Nano" 
   | "Gemini 3.5 Flash-Lite"
   | "Gemini 3.6 Flash" 
   | "Deepseek-V4-Flash" 
   | "Deepseek-V4-Pro" 
   | "Claude 4.5 Haiku"
   | "Claude 4.6 Sonnet"
-  | "Mistral Large"
+  | "Claude Haiku"
+  | "claude-haiku-5-5"
+  | "GPT 6 Luna"
   | "Tavily Search";
 
 export const MODEL_COSTS: Record<ModelType, { input: number, output: number }> = {
-  "Mistral Small": { input: 3, output: 3 },
-  "Gemini 3.5 Flash-Lite": { input: 2, output: 2 },
-  "Gemini 3.6 Flash": { input: 2.5, output: 2.5 },
-  "Deepseek-V4-Flash": { input: 2.5, output: 2.5 },
-  "Deepseek-V4-Pro": { input: 3.5, output: 3.5 },
-  "Claude 4.5 Haiku": { input: 4, output: 4 },
-  "Claude 4.6 Sonnet": { input: 5, output: 5 },
-  "Mistral Large": { input: 4, output: 4 },
-  "Tavily Search": { input: 10, output: 10 },
+  "GPT 5.4 Nano":         { input: 2.5, output: 2.5 },
+  "Gemini 3.5 Flash-Lite":{ input: 2.5, output: 2.5 },
+  "Gemini 3.6 Flash":     { input: 2.5, output: 2.5 },
+  "Deepseek-V4-Flash":    { input: 2.5, output: 2.5 },
+  "Deepseek-V4-Pro":      { input: 2.5, output: 2.5 },
+  "Claude 4.5 Haiku":     { input: 2.5, output: 2.5 },
+  "Claude 4.6 Sonnet":    { input: 2.5, output: 2.5 },
+  "Claude Haiku":         { input: 2.5, output: 2.5 },
+  "claude-haiku-5-5":     { input: 2.5, output: 2.5 },
+  "GPT 6 Luna":           { input: 2.5, output: 2.5 },
+  "Tavily Search":        { input: 10, output: 10 },
 };
 
 type SubscriptionState = {
@@ -59,61 +61,110 @@ type SubscriptionState = {
   lastReset: string;
 };
 
+// All tiers now use Deepseek-V4-Flash for everything, GPT 6 Luna locked for assistant
 export function getTierModels(tier: Tier): { heavy: ModelType, generation: ModelType, judge: ModelType, assistant: ModelType } {
-  // Free Defaults
-  let heavy: ModelType = "Gemini 3.6 Flash";
-  let generation: ModelType = "Deepseek-V4-Flash";
-  let judge: ModelType = "Claude 4.5 Haiku";
-  let assistant: ModelType = "Mistral Small";
-  
-  if (tier === "Core") {
-    heavy = "Deepseek-V4-Flash";
-    generation = "Deepseek-V4-Flash";
-    judge = "Claude 4.5 Haiku";
-    assistant = "Deepseek-V4-Flash";
-  } else if (tier === "Pro") {
-    heavy = "Deepseek-V4-Pro";
-    generation = "Deepseek-V4-Pro";
-    judge = "Deepseek-V4-Pro";
-    assistant = "Deepseek-V4-Pro";
-  } else if (tier === "Premium") {
-    heavy = "Claude 4.5 Haiku";
-    generation = "Claude 4.5 Haiku";
-    judge = "Claude 4.5 Haiku";
-    assistant = "Claude 4.5 Haiku";
-  } else if (tier === "Maximum") {
-    heavy = "Claude 4.6 Sonnet";
-    generation = "Claude 4.6 Sonnet";
-    judge = "Claude 4.6 Sonnet";
-    assistant = "Claude 4.6 Sonnet";
-  }
-  
-  return { heavy, generation, judge, assistant };
+  return {
+    heavy:      "Deepseek-V4-Flash",
+    generation: "Deepseek-V4-Flash",
+    judge:      "Deepseek-V4-Flash",
+    assistant:  "GPT 6 Luna",
+  };
 }
 
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { useModelPreferences } from "./use-model-preferences";
 
+function getGuestUsage(): { creditsUsed: number; lastReset: string } {
+  const today = new Date().toISOString().split("T")[0];
+  if (typeof window === "undefined") {
+    return { creditsUsed: 0, lastReset: today };
+  }
+  try {
+    const raw = window.localStorage.getItem("perenne_guest_usage");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed.lastReset === today && typeof parsed.creditsUsed === "number") {
+        return {
+          creditsUsed: parsed.creditsUsed,
+          lastReset: today,
+        };
+      }
+    }
+  } catch (e) {
+    console.warn("Failed to read guest usage from localStorage:", e);
+  }
+  return { creditsUsed: 0, lastReset: today };
+}
+
+function saveGuestUsage(creditsUsed: number, lastReset: string) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem("perenne_guest_usage", JSON.stringify({ creditsUsed, lastReset }));
+  } catch (e) {
+    console.warn("Failed to save guest usage to localStorage:", e);
+  }
+}
+
 export function useSubscription() {
   const { user, isLoaded: clerkLoaded } = useUser();
-  const [state, setState] = useState<SubscriptionState>({
-    tier: "Free",
-    creditsUsed: 0,
-    lastReset: new Date().toISOString().split("T")[0],
+  const [state, setState] = useState<SubscriptionState>(() => {
+    const today = new Date().toISOString().split("T")[0];
+    const guestData = getGuestUsage();
+    return {
+      tier: "Guest", // Default to Guest (50k limit) until user is confirmed signed-in
+      creditsUsed: guestData.creditsUsed,
+      lastReset: today,
+    };
   });
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Sync across components
+  // Sync across components via CustomEvent with monotonic guard (allowing explicit reset to 0)
   useEffect(() => {
     const handleCreditsUpdate = (e: any) => {
-      if (e.detail && e.detail.creditsUsed !== undefined) {
-        setState(prev => ({ ...prev, creditsUsed: e.detail.creditsUsed }));
+      if (e.detail && typeof e.detail.creditsUsed === "number") {
+        setState(prev => {
+          const today = new Date().toISOString().split("T")[0];
+          if (e.detail.creditsUsed === 0) {
+            return { ...prev, creditsUsed: 0, lastReset: today };
+          }
+          // Guard: usage can never decrease within the same reset period unless reset to 0
+          if (prev.lastReset === today && e.detail.creditsUsed < prev.creditsUsed) {
+            return prev;
+          }
+          return { ...prev, creditsUsed: e.detail.creditsUsed };
+        });
       }
     };
     window.addEventListener("perenne_credits_updated", handleCreditsUpdate);
     return () => window.removeEventListener("perenne_credits_updated", handleCreditsUpdate);
   }, []);
+
+  // Sync guest credits across tabs via StorageEvent with monotonic guard (allowing explicit reset to 0)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "perenne_guest_usage" && e.newValue && !user) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (typeof parsed.creditsUsed === "number") {
+            setState(prev => {
+              const today = new Date().toISOString().split("T")[0];
+              if (parsed.creditsUsed === 0) {
+                return { ...prev, creditsUsed: 0, lastReset: today };
+              }
+              if (prev.lastReset === today && parsed.creditsUsed < prev.creditsUsed) {
+                return prev;
+              }
+              return { ...prev, creditsUsed: parsed.creditsUsed };
+            });
+          }
+        } catch (err) {}
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [user]);
 
   // Check for daily reset
   useEffect(() => {
@@ -127,21 +178,24 @@ export function useSubscription() {
       nextState.creditsUsed = 0;
       nextState.lastReset = today;
       needsUpdate = true;
+      if (!user) {
+        saveGuestUsage(0, today);
+      }
     }
 
     if (needsUpdate) {
       setState(nextState);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.lastReset, isLoaded, setState]);
+  }, [state.lastReset, isLoaded, setState, user]);
 
-  // Sync tier from Clerk public metadata AND sync credits from Supabase
+  // Sync tier from Clerk public metadata AND sync credits from Supabase (for signed in) or localStorage (for guest)
   useEffect(() => {
     if (clerkLoaded) {
+      const today = new Date().toISOString().split("T")[0];
       if (user) {
-        let dbTier: Tier = (user.publicMetadata?.tier as Tier) || "Free"; 
-        const today = new Date().toISOString().split("T")[0];
-
+        // Signed-in user: Free tier gets 100,000 allowance
+        const dbTier: Tier = "Free";
         let isMounted = true;
         
         fetchFeatureAction("usage", "credits_used, last_reset", 1)
@@ -153,19 +207,28 @@ export function useSubscription() {
 
             if (data && data.length > 0) {
               remoteCredits = data[0].credits_used || 0;
-              remoteReset = data[0].last_reset || today;
+              remoteReset = (data[0].last_reset || today).split("T")[0];
             }
 
-            // Reset if it's a new day
+            // Reset if it's genuinely a new day
             if (remoteReset !== today) {
               remoteCredits = 0;
               remoteReset = today;
-              upsertFeatureAction("usage", { credits_used: 0, last_reset: today }).catch(console.error);
+              upsertFeatureAction("usage", { credits_used: 0, last_reset: today }).catch(e => console.error("[usage] Reset failed:", e));
+              setState({ tier: dbTier, creditsUsed: 0, lastReset: today });
+            } else if (remoteCredits === 0) {
+              // Explicit database reset to 0
+              setState({ tier: dbTier, creditsUsed: 0, lastReset: today });
+            } else {
+              // Never let a stale read lower the displayed value within the same reset period:
+              // Merge DB and in-memory values using Math.max!
+              setState(prev => {
+                const mergedCredits = !isLoaded || prev.lastReset !== today
+                  ? remoteCredits
+                  : Math.max(prev.creditsUsed, remoteCredits);
+                return { tier: dbTier, creditsUsed: mergedCredits, lastReset: today };
+              });
             }
-
-            setState((prev) => {
-              return { tier: dbTier, creditsUsed: remoteCredits, lastReset: today };
-            });
             setIsLoaded(true);
           })
           .catch((e) => {
@@ -175,11 +238,17 @@ export function useSubscription() {
 
         return () => { isMounted = false; };
       } else {
-        setState((prev) => {
-          if (prev.tier !== "Guest") {
-            return { ...prev, tier: "Guest" };
-          }
-          return prev;
+        // Guest user: Guest tier gets 50,000 allowance
+        const guestData = getGuestUsage();
+        setState(prev => {
+          const mergedCredits = prev.lastReset === today
+            ? (guestData.creditsUsed === 0 ? 0 : Math.max(prev.creditsUsed, guestData.creditsUsed))
+            : guestData.creditsUsed;
+          return {
+            tier: "Guest",
+            creditsUsed: mergedCredits,
+            lastReset: today,
+          };
         });
         setIsLoaded(true);
       }
@@ -187,19 +256,15 @@ export function useSubscription() {
   }, [clerkLoaded, user?.id]);
 
   const safeCreditsUsed = state.creditsUsed && !isNaN(state.creditsUsed) ? state.creditsUsed : 0;
-  const dailyLimit = TIER_ALLOWANCES[state.tier];
+  // Guest mode = 50,000; Signed in mode = 100,000
+  const dailyLimit = TIER_ALLOWANCES[user ? "Free" : "Guest"];
   const creditsRemaining = Math.max(0, dailyLimit - safeCreditsUsed);
 
   // Pre-check for cost
   const canAfford = (wordCount: number, model: ModelType): boolean => {
     let costConfig = MODEL_COSTS[model] || { input: 1, output: 1 };
-    
-    // Roughly estimate tokens from word count (e.g. 1.3 tokens per word)
     const estimatedTokens = Math.ceil(wordCount * 1.3);
-    // Rough estimate just for the pre-check (actual usage is deducted post-generation)
     const estimatedCost = Math.ceil(estimatedTokens * costConfig.input);
-    
-    // As long as they have enough to cover the prompt, let them proceed (it will deduct into the negative if it overruns).
     return creditsRemaining >= estimatedCost;
   };
 
@@ -208,41 +273,72 @@ export function useSubscription() {
     
     const safeInput = inputTokens || 0;
     const safeOutput = outputTokens || 0;
-    // Costs are direct multipliers per token
     let cost = Math.ceil((safeInput * costConfig.input) + (safeOutput * costConfig.output));
     
-    // Non-chat features provide massive value/compute per request (e.g. grading, flashcard gen)
-    // Apply a 3.0x multiplier to reflect this service value (charge the product, not the cost)
+    // Non-chat features get a 2x multiplier
     if (feature !== "chat") {
-      cost = Math.ceil(cost * 3.0);
+      cost = Math.ceil(cost * 2.0);
     }
     
+    const today = new Date().toISOString().split("T")[0];
     const currentCredits = state.creditsUsed && !isNaN(state.creditsUsed) ? state.creditsUsed : 0;
-    const newCredits = currentCredits + cost;
+    const optimisticCredits = currentCredits + cost;
+
+    // Optimistic monotonic update in memory
+    setState((prev) => ({
+      ...prev,
+      creditsUsed: prev.lastReset === today ? Math.max(prev.creditsUsed, optimisticCredits) : optimisticCredits,
+      lastReset: today
+    }));
     
-    // Update Supabase directly so stats carry over to other devices/browsers
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("perenne_credits_updated", { detail: { creditsUsed: optimisticCredits } }));
+    }
+    
+    // Update Supabase for signed-in users with atomic increment
     if (user) {
-       upsertFeatureAction("usage", {
-         credits_used: newCredits,
-         last_reset: state.lastReset
-       }).catch(e => console.error("Failed to sync usage to supabase:", e));
+       incrementUsageAction(cost, state.lastReset || today)
+         .then(dbCredits => {
+           if (typeof dbCredits === "number") {
+             setState(prev => {
+               const highestCredits = Math.max(prev.creditsUsed, dbCredits);
+               return {
+                 ...prev,
+                 creditsUsed: highestCredits,
+                 lastReset: today
+               };
+             });
+             if (typeof window !== "undefined") {
+               window.dispatchEvent(new CustomEvent("perenne_credits_updated", { detail: { creditsUsed: dbCredits } }));
+             }
+           }
+         })
+         .catch(e => console.error("[useSubscription] Failed to sync usage atomic increment:", e));
        
-       // Also add to all-time XP in background
        fetch("/api/add-xp", {
          method: "POST",
          headers: { "Content-Type": "application/json" },
          body: JSON.stringify({ amount: cost })
        }).catch(e => console.error("Failed to add XP:", e));
+    } else {
+       // Persist in localStorage for guest users
+       saveGuestUsage(optimisticCredits, state.lastReset || today);
     }
+  };
 
-    setState((prev) => ({
-      ...prev,
-      creditsUsed: newCredits, // Use computed newCredits to avoid race conditions
-    }));
-    
-    // Dispatch event to update other components (like the sidebar usage bar)
+  const resetCredits = async () => {
+    const today = new Date().toISOString().split("T")[0];
+    setState(prev => ({ ...prev, creditsUsed: 0, lastReset: today }));
     if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("perenne_credits_updated", { detail: { creditsUsed: newCredits } }));
+      saveGuestUsage(0, today);
+      window.dispatchEvent(new CustomEvent("perenne_credits_updated", { detail: { creditsUsed: 0 } }));
+    }
+    if (user) {
+      try {
+        await upsertFeatureAction("usage", { credits_used: 0, last_reset: today });
+      } catch (e) {
+        console.error("[useSubscription] Failed to reset credits in DB:", e);
+      }
     }
   };
 
@@ -253,8 +349,8 @@ export function useSubscription() {
     }));
   };
 
+  // Always use the fixed model set — preferences are ignored (model is locked)
   const defaultModels = getTierModels(state.tier);
-  const { preferences } = useModelPreferences();
 
   return {
     tier: state.tier,
@@ -263,13 +359,15 @@ export function useSubscription() {
     dailyLimit,
     canAfford,
     deductCredits,
+    resetCredits,
     upgradeTo,
     isLoaded,
-    assistant: preferences.generation !== "default" ? preferences.generation : defaultModels.assistant,
-    generation: preferences.generation !== "default" ? preferences.generation : defaultModels.generation,
-    heavy: preferences.heavy !== "default" ? preferences.heavy : defaultModels.heavy,
-    judge: preferences.judge !== "default" ? preferences.judge : defaultModels.judge,
-    grading: preferences.grading !== "default" ? preferences.grading : defaultModels.judge,
+    // All features use Deepseek-V4-Flash; Study Assistant uses GPT 6 Luna (locked)
+    assistant: "GPT 6 Luna" as ModelType,
+    generation: "Deepseek-V4-Flash" as ModelType,
+    heavy: "Deepseek-V4-Flash" as ModelType,
+    judge: "Deepseek-V4-Flash" as ModelType,
+    grading: "Deepseek-V4-Flash" as ModelType,
     tierRank: TIER_RANK[state.tier] ?? 0,
   };
 }

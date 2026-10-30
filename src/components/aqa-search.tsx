@@ -9,11 +9,13 @@ export function AqaTextbookSearch() {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleSearch = async () => {
     if (!query.trim()) return;
     setLoading(true);
     setHasSearched(true);
+    setErrorMsg(null);
     try {
       const res = await fetch("/api/search-aqa", {
         method: "POST",
@@ -25,15 +27,18 @@ export function AqaTextbookSearch() {
         setResults(data.results);
       } else {
         setResults([]);
+        setErrorMsg(data.message || "Something went wrong. Please try again.");
         console.error(data.message);
       }
     } catch (e) {
       console.error(e);
       setResults([]);
+      setErrorMsg("Could not reach the server. Please check your connection.");
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="rounded-3xl border border-blue-500/30 bg-blue-500/5 p-8 relative overflow-hidden group">
@@ -87,6 +92,12 @@ export function AqaTextbookSearch() {
                     <p className="text-sm text-slate-200 leading-relaxed font-serif whitespace-pre-wrap">{r.content}</p>
                   </div>
                 ))}
+              </div>
+            ) : errorMsg ? (
+              <div className="p-8 text-center bg-red-500/10 rounded-2xl border border-red-500/20 flex flex-col items-center justify-center">
+                <AlertCircle className="w-10 h-10 text-red-400 mb-3" />
+                <p className="text-red-300 font-medium">{errorMsg}</p>
+                <p className="text-sm text-slate-500 mt-1">Please try again in a moment.</p>
               </div>
             ) : (
               <div className="p-8 text-center bg-white/5 rounded-2xl border border-white/10 flex flex-col items-center justify-center">

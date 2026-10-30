@@ -3,8 +3,8 @@ import { toast } from "sonner";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 
 
-import React, { useState, useEffect, memo } from "react";
-import { Brain, Loader2, ArrowLeft, CheckCircle2, Save, Sparkles, Sigma, PenTool, BookOpenCheck, Upload, ArrowRight, Target, Clock, AlertTriangle } from "lucide-react";
+import React, { useState, useEffect, useCallback, memo } from "react";
+import { Brain, Loader2, ArrowLeft, CheckCircle2, Save, Sparkles, Sigma, PenTool, BookOpenCheck, Upload, ArrowRight, Target, Clock, AlertTriangle, RotateCcw } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -37,6 +37,33 @@ export default function MathSolverPage() {
   const isAQA = questionType === "AQA Based Sim";
   const [aqaStatus, setAqaStatus] = useState<"checking" | "found" | "not_found" | null>(null);
 
+  const checkAqa = useCallback(async () => {
+    if (!isAQA || !topic.trim()) {
+      setAqaStatus(null);
+      return;
+    }
+
+    setAqaStatus("checking");
+
+    try {
+      const res = await fetch("/api/search-aqa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: topic, subject: "Maths" })
+      });
+      const data = await res.json();
+      if (data.status === "success" && data.results && data.results.length === 0) {
+        setAqaStatus("not_found");
+      } else if (data.status === "success" && data.results && data.results.length > 0) {
+        setAqaStatus("found");
+      } else {
+        setAqaStatus("not_found");
+      }
+    } catch (e) {
+      setAqaStatus("not_found");
+    }
+  }, [topic, isAQA]);
+
   useEffect(() => {
     if (!isAQA || !topic.trim()) {
       setAqaStatus(null);
@@ -45,26 +72,12 @@ export default function MathSolverPage() {
 
     setAqaStatus("checking");
 
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetch("/api/search-aqa", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query: topic, subject: "Maths" })
-        });
-        const data = await res.json();
-        if (data.status === "success" && data.results && data.results.length === 0) {
-          setAqaStatus("not_found");
-        } else {
-          setAqaStatus("found");
-        }
-      } catch (e) {
-        setAqaStatus(null);
-      }
+    const timer = setTimeout(() => {
+      checkAqa();
     }, 800);
 
     return () => clearTimeout(timer);
-  }, [topic, isAQA]);
+  }, [topic, isAQA, checkAqa]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -157,11 +170,11 @@ export default function MathSolverPage() {
   const [hasSaved, setHasSaved] = usePersistentState("math_saved", false);
 
   const saveToHistory = async (latestResults: any[] = results) => {
-    if (!user || questions.length === 0 || latestResults.length === 0) return;
+    if (!user || questions.length === 0 || latestResults.length === 0 || hasSaved) return;
     setIsSaving(true);
     try {
       const scorePct = Math.round((latestResults.reduce((acc, curr) => acc + curr.marks, 0) / (latestResults.reduce((acc, curr) => acc + (curr.max_marks || 10), 0) || 1)) * 100) || 0;
-      await insertMathsQuestionsAction(questions.map((q, i) => {
+      const res = await insertMathsQuestionsAction(questions.map((q, i) => {
         const maxMarks = latestResults[i].max_marks || 10;
         return {
           question: typeof q === "string" ? q : q.text,
@@ -178,9 +191,15 @@ export default function MathSolverPage() {
           }
         };
       }));
+      if (res && !res.ok) {
+        toast.error("Couldn't save maths questions to history.");
+        return;
+      }
       setHasSaved(true);
+      toast.success("Maths questions saved to your account history!");
     } catch (e) {
       console.error("Error saving math history:", e);
+      toast.error("Couldn't save maths questions to history.");
     } finally {
       setIsSaving(false);
     }
@@ -549,17 +568,49 @@ export default function MathSolverPage() {
             <label className="block text-sm font-semibold text-foreground mb-3 uppercase tracking-wider opacity-70">
               Math Topic
             </label>
-            <input
-              type="text"
-              className="w-full rounded-2xl border border-border bg-background/50 backdrop-blur-sm px-6 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-inner"
-              placeholder="e.g. Circle Theorems, Integration..."
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-            />
+            <div className="relative">
+              <input
+                type="text"
+                className="w-full rounded-2xl border border-border bg-background/50 backdrop-blur-sm px-6 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-inner pr-12"
+                placeholder="e.g. Circle Theorems, Integration..."
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+              />
+              {isAQA && year !== "KS3" && aqaStatus === "checking" && (
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
+                  <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                </div>
+              )}
+            </div>
+
+            {/* Subtle inline note under the spinner while loading */}
+            {isAQA && year !== "KS3" && aqaStatus === "checking" && (
+              <div className="mt-2.5 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-background border border-primary/20 text-xs text-muted-foreground shadow-xs animate-in fade-in">
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-primary shrink-0" />
+                <span>Maths has our biggest database, so this can take a little longer than other subjects.</span>
+              </div>
+            )}
+
+            {/* Existing "no topic found" message with subtext and Try again button */}
             {isAQA && year !== "KS3" && aqaStatus === "not_found" && (
-              <div className="bg-red-500/20 px-4 py-2 mt-3 rounded-lg text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-2 border border-red-500/20">
-                <Target className="w-4 h-4" />
-                Not in official AQA database
+              <div className="mt-3 rounded-xl border border-primary/20 bg-background p-3.5 space-y-2 shadow-xs animate-in fade-in">
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="bg-red-500/10 px-3 py-1.5 rounded-lg text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-2 border border-red-500/20">
+                    <Target className="w-3.5 h-3.5" />
+                    Not in official AQA database
+                  </div>
+                  <button
+                    type="button"
+                    onClick={checkAqa}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-primary hover:bg-primary/10 border border-primary/30 transition-colors cursor-pointer"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Try again</span>
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Not seeing your topic? Maths is our biggest database and can be slow, so wait a moment and try again, as it may still turn up.
+                </p>
               </div>
             )}
             {isAQA && year !== "KS3" && aqaStatus === "found" && (

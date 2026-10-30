@@ -1,13 +1,23 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// Define routes that should be protected
-// const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/assistant(.*)", "/flashcards(.*)", "/quiz(.*)", "/essay(.*)"]);
+// Define public routes that must always be accessible without authentication or redirect
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/terms",
+  "/privacy",
+  "/get-started",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/sitemap.xml",
+  "/robots.txt",
+]);
 
 export default clerkMiddleware(async (auth, req) => {
-  // Guest mode allowed: We no longer protect these routes at the middleware level.
-  // if (isProtectedRoute(req)) {
-  //   await auth.protect();
-  // }
+  // Public routes are always accessible without authentication
+  if (isPublicRoute(req)) {
+    return;
+  }
+  // Guest mode allowed: We do not protect routes at the middleware level so unauthenticated users can access the app
 });
 
 export const config = {

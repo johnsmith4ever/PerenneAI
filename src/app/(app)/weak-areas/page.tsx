@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Target, Brain, BookOpen, AlertTriangle, ArrowRight, Loader2, PlayCircle, Zap, CheckCircle2, PenLine } from "lucide-react";
+import { Target, Brain, BookOpen, AlertTriangle, ArrowRight, Loader2, PlayCircle, Zap, CheckCircle2, PenLine, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
@@ -40,6 +40,7 @@ export default function WeakAreasPage() {
   const [essayStats, setEssayStats] = useState<{ averageScore: number; commonIssues: string[]; commonImprovements: string[] } | null>(null);
   const [retestModal, setRetestModal] = useState<WeakArea | null>(null);
   const [activeTab, setActiveTab] = useState<string>("Overview");
+  const [betaBannerDismissed, setBetaBannerDismissed] = useState(false);
   const subjects = ["Overview", "Biology", "Chemistry", "Physics", "Geography", "Maths", "Essay Writing"];
 
   useEffect(() => {
@@ -64,7 +65,8 @@ export default function WeakAreasPage() {
 
         if (allQuestions.length > 0) {
           allQuestions.forEach(q => {
-            const topic = q.topic || q.solution?.topic || q.subject || "Maths Solver";
+            const rawTopic = q.data?.topic || q.topic || q.solution?.topic || q.subject || "Maths Solver";
+            const topic = typeof rawTopic === "string" ? rawTopic.trim() : "General";
             let qs = q.questions;
             if (!qs && q.data) {
               qs = Array.isArray(q.data) ? q.data : q.data.questions;
@@ -94,44 +96,46 @@ export default function WeakAreasPage() {
               parsedSubject = inferSubject(topic);
             }
 
-            const key = `${source}-${topic}`;
-            if (!topicMap.has(key)) {
-              topicMap.set(key, { topic, subject: parsedSubject, source, failedCount: 0, totalCount: 0, errorRate: 0, details: [] });
+            const normKey = `${source}-${topic.toLowerCase()}`;
+            if (!topicMap.has(normKey)) {
+              topicMap.set(normKey, { topic, subject: parsedSubject, source, failedCount: 0, totalCount: 0, errorRate: 0, details: [] });
             }
             
-            const area = topicMap.get(key)!;
+            const area = topicMap.get(normKey)!;
             
             if (source === "Maths Solver") {
               if (q.solution) {
-                // New maths_questions row structure
-                const quizErrorRate = 100 - (q.solution.score_pct || 0);
-                area.failedCount += quizErrorRate;
+                // New maths_questions row structure: each row is 1 question
                 area.totalCount += 1;
-                
                 const grading = q.solution.grading || {};
                 const max = grading.marks_available || 1;
                 const awarded = grading.marks_awarded ?? (grading.correct ? max : 0);
                 const lost = Math.max(0, max - awarded);
+                const isIncorrect = grading.correct === false || lost > 0 || (typeof q.solution.score_pct === "number" && q.solution.score_pct < 50);
                 
-                if (lost > 0) {
+                if (isIncorrect) {
+                  area.failedCount += 1;
                   area.details.push({ question: q.question || "Maths Question", feedback: grading.feedback || "Lost marks on this question." });
                 }
               } else {
                 // Legacy quizzes row structure
-                const quizErrorRate = 100 - (q.score || 0);
-                area.failedCount += quizErrorRate;
-                area.totalCount += 1;
-                
-                qs?.forEach((qq: any) => {
-                  const grading = qq.grading || {};
-                  const max = grading.marks_available || 1;
-                  const awarded = grading.marks_awarded ?? (grading.correct ? max : 0);
-                  const lost = Math.max(0, max - awarded);
-                  
-                  if (lost > 0) {
-                    area.details.push({ question: qq.question, feedback: grading.feedback || "Lost marks on this question." });
-                  }
-                });
+                const quizQs = qs || [];
+                if (quizQs.length > 0) {
+                  quizQs.forEach((qq: any) => {
+                    const grading = qq.grading || {};
+                    const max = grading.marks_available || 1;
+                    const awarded = grading.marks_awarded ?? (grading.correct ? max : 0);
+                    const lost = Math.max(0, max - awarded);
+                    area.totalCount += 1;
+                    if (lost > 0 || grading.correct === false) {
+                      area.failedCount += 1;
+                      area.details.push({ question: qq.question, feedback: grading.feedback || "Lost marks on this question." });
+                    }
+                  });
+                } else {
+                  area.totalCount += 1;
+                  if ((q.score || 0) < 50) area.failedCount += 1;
+                }
               }
             } else {
               qs?.forEach((qq: any) => {
@@ -147,15 +151,11 @@ export default function WeakAreasPage() {
           });
         }
 
-
-
         const calculated = Array.from(topicMap.values())
           .filter(a => a.totalCount > 0)
           .map(a => ({ 
             ...a, 
-            errorRate: a.source === "Maths Solver" 
-              ? Math.round(a.failedCount / a.totalCount) 
-              : Math.round((a.failedCount / a.totalCount) * 100) 
+            errorRate: Math.round((a.failedCount / a.totalCount) * 100) 
           }))
           .sort((a, b) => b.errorRate - a.errorRate);
 
@@ -238,10 +238,19 @@ export default function WeakAreasPage() {
         </div>
         <h1 className="page-title font-serif m-0">Weak Areas</h1>
         <p className="text-sm text-muted-foreground mt-2 max-w-2xl">
-          Review the topics and questions you've struggled with across Exam Sim, Flashcards, and Maths Solver. 
+          Review the topics and questions you've struggled with across Quiz, Exam Sim, Maths Solver, and Essays. 
           Focus your revision here to improve your grades.
         </p>
       </div>
+
+      {!betaBannerDismissed && (
+        <div className="flex items-center justify-between gap-3 mb-6 px-4 py-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 text-sm">
+          <span>⚡ <strong>Beta:</strong> Saving is still being improved — some data may not sync yet.</span>
+          <button onClick={() => setBetaBannerDismissed(true)} className="shrink-0 opacity-60 hover:opacity-100 transition-opacity" aria-label="Dismiss">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {!user ? (
         <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-6 animate-in fade-in">
@@ -315,16 +324,22 @@ export default function WeakAreasPage() {
                   ? weakAreas 
                   : weakAreas.filter(a => a.subject === activeTab);
                 
+                // If the subject has zero attempts at all
                 if (filteredAreas.length === 0) {
                   return (
                     <div className="p-12 border-2 border-dashed border-border rounded-3xl bg-card/50 text-center">
-                      <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
-                      <h2 className="text-xl font-bold font-serif mb-2">You're doing great!</h2>
-                      <p className="text-muted-foreground">We couldn't find any significant weak areas for {activeTab}.</p>
+                      <BookOpen className="w-16 h-16 text-muted-foreground/40 mx-auto mb-4" />
+                      <h2 className="text-xl font-bold font-serif mb-2">No attempts yet</h2>
+                      <p className="text-muted-foreground">Try a quiz or exam sim to see your weak areas here.</p>
                     </div>
                   );
                 }
-                
+
+                // Minimum attempts: topics need at least 3 graded questions to be ranked as a weak area
+                const qualifiedAreas = filteredAreas.filter(a => a.totalCount >= 3 || a.source === "Essay Marking");
+                const pendingAreas = filteredAreas.filter(a => a.totalCount < 3 && a.source !== "Essay Marking");
+                const weakRankedAreas = qualifiedAreas.filter(a => a.errorRate > 0);
+
                 return (
                   <div className="space-y-12">
                     {activeTab === "Overview" && (
@@ -334,7 +349,8 @@ export default function WeakAreasPage() {
                           <ResponsiveContainer width="100%" height="100%">
                             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={
                               subjects.filter(sub => sub !== "Overview").map(sub => {
-                                const subAreas = weakAreas.filter(a => a.subject === sub);
+                                // Exclude topics with < 3 questions from radar chart
+                                const subAreas = weakAreas.filter(a => a.subject === sub && (a.totalCount >= 3 || a.source === "Essay Marking"));
                                 const avgError = subAreas.length > 0 
                                   ? subAreas.reduce((acc, a) => acc + a.errorRate, 0) / subAreas.length 
                                   : 0;
@@ -356,80 +372,118 @@ export default function WeakAreasPage() {
                         <p className="text-xs text-muted-foreground mt-4 text-center">Topics further out from the center indicate a higher error percentage.</p>
                       </div>
                     )}
-                    <div className="grid gap-6">
-                      {filteredAreas.map((area, i) => (
-                    <div key={i} className="p-6 md:p-8 rounded-3xl border border-border bg-card/50 hover:shadow-xl transition-all relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-red-500/5 to-transparent rounded-full -mr-32 -mt-32 pointer-events-none"></div>
-                    
-                    <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
-                      <div className="flex-1 space-y-4">
-                        <div className="flex items-center gap-3">
-                          <span className="px-3 py-1 rounded-full bg-background border border-border text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                            {area.source === "Exam Sim" ? <Brain className="w-3 h-3" /> : <Target className="w-3 h-3" />}
-                            {area.source}
-                          </span>
-                          <span className="text-sm font-semibold text-red-500">
-                            {area.errorRate}% Error Rate
-                          </span>
-                        </div>
-                        <h3 className="text-2xl font-bold font-serif text-foreground capitalize">
-                          {area.topic.replace("Maths: ", "")}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {area.source === "Maths Solver"
-                            ? `Your average error rate is ${area.errorRate}% across ${area.totalCount} attempt${area.totalCount === 1 ? '' : 's'}.`
-                            : area.source === "Essay Marking"
-                            ? `Based on ${area.totalCount} graded essay${area.totalCount === 1 ? '' : 's'}.`
-                            : `You got ${area.failedCount} out of ${area.totalCount} questions wrong in this topic.`
-                          }
-                        </p>
-                      </div>
 
-                      <div className="flex-shrink-0 w-full md:w-auto">
-                        {area.source === "Maths Solver" ? (
-                          <Link href={`/math-solver?topic=${encodeURIComponent(area.topic.replace("Maths: ", ""))}`}>
-                            <Button className="w-full md:w-auto gap-2 rounded-xl" size="lg">
-                              <PlayCircle className="w-5 h-5" /> Re-test Weak Points
-                            </Button>
-                          </Link>
-                        ) : (
-                          <Button className="w-full md:w-auto gap-2 rounded-xl" size="lg" onClick={() => setRetestModal(area)}>
-                            <PlayCircle className="w-5 h-5" /> Re-test Weak Points
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-
-                    {area.details.length > 0 && (
-                      <div className="mt-8 pt-6 border-t border-border/50">
-                        <h4 className="text-sm font-bold uppercase tracking-wider text-foreground mb-4">Specific Mistakes:</h4>
-                        <ul className="space-y-3">
-                          {area.details.slice(0, 3).map((d, idx) => (
-                            <li key={idx} className="p-4 rounded-xl bg-background border border-border/50 text-sm">
-                              <MemoizedQuestionText text={d.question} id={`weak-area-q-${i}-${idx}`} className="font-semibold text-foreground" />
-                              {d.feedback && (
-                                <span className="block mt-1 text-muted-foreground opacity-80">{d.feedback}</span>
-                              )}
-                            </li>
-                          ))}
-                          {area.details.length > 3 && (
-                            <li className="text-xs font-bold text-muted-foreground uppercase tracking-wider text-center pt-2">
-                              + {area.details.length - 3} more mistakes
-                            </li>
-                          )}
-                        </ul>
+                    {weakRankedAreas.length === 0 && qualifiedAreas.length > 0 && (
+                      <div className="p-12 border-2 border-dashed border-border rounded-3xl bg-card/50 text-center">
+                        <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+                        <h2 className="text-xl font-bold font-serif mb-2">You're doing great!</h2>
+                        <p className="text-muted-foreground">We couldn't find any significant weak areas for {activeTab}.</p>
                       </div>
                     )}
+
+                    {weakRankedAreas.length > 0 && (
+                      <div className="grid gap-6">
+                        {weakRankedAreas.map((area, i) => (
+                      <div key={i} className="p-6 md:p-8 rounded-3xl border border-border bg-card/50 hover:shadow-xl transition-all relative overflow-hidden group">
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-red-500/5 to-transparent rounded-full -mr-32 -mt-32 pointer-events-none"></div>
+                      
+                      <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+                        <div className="flex-1 space-y-4">
+                          <div className="flex items-center gap-3">
+                            <span className="px-3 py-1 rounded-full bg-background border border-border text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                              {area.source === "Exam Sim" ? <Brain className="w-3 h-3" /> : <Target className="w-3 h-3" />}
+                              {area.source}
+                            </span>
+                            <span className="text-sm font-semibold text-red-500">
+                              {area.errorRate}% Error Rate
+                            </span>
+                          </div>
+                          <h3 className="text-2xl font-bold font-serif text-foreground capitalize">
+                            {area.topic.replace("Maths: ", "")}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {area.source === "Maths Solver"
+                              ? `Your average error rate is ${area.errorRate}% across ${area.totalCount} question${area.totalCount === 1 ? '' : 's'}.`
+                              : area.source === "Essay Marking"
+                              ? `Based on ${area.totalCount} graded essay${area.totalCount === 1 ? '' : 's'}.`
+                              : `You got ${area.failedCount} out of ${area.totalCount} questions wrong in this topic.`
+                            }
+                          </p>
+                        </div>
+
+                        <div className="flex-shrink-0 w-full md:w-auto">
+                          {area.source === "Maths Solver" ? (
+                            <Link href={`/math-solver?topic=${encodeURIComponent(area.topic.replace("Maths: ", ""))}`}>
+                              <Button className="w-full md:w-auto gap-2 rounded-xl" size="lg">
+                                <PlayCircle className="w-5 h-5" /> Re-test Weak Points
+                              </Button>
+                            </Link>
+                          ) : (
+                            <Button className="w-full md:w-auto gap-2 rounded-xl" size="lg" onClick={() => setRetestModal(area)}>
+                              <PlayCircle className="w-5 h-5" /> Re-test Weak Points
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+
+                      {area.details.length > 0 && (
+                        <div className="mt-8 pt-6 border-t border-border/50">
+                          <h4 className="text-sm font-bold uppercase tracking-wider text-foreground mb-4">Specific Mistakes:</h4>
+                          <ul className="space-y-3">
+                            {area.details.slice(0, 3).map((d, idx) => (
+                              <li key={idx} className="p-4 rounded-xl bg-background border border-border/50 text-sm">
+                                <MemoizedQuestionText text={d.question} id={`weak-area-q-${i}-${idx}`} className="font-semibold text-foreground" />
+                                {d.feedback && (
+                                  <span className="block mt-1 text-muted-foreground opacity-80">{d.feedback}</span>
+                                )}
+                              </li>
+                            ))}
+                            {area.details.length > 3 && (
+                              <li className="text-xs font-bold text-muted-foreground uppercase tracking-wider text-center pt-2">
+                                + {area.details.length - 3} more mistakes
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                    ))}
                   </div>
-                  ))}
-                </div>
+                )}
+
+                {/* Topics with fewer than 3 questions: show in muted style */}
+                {pendingAreas.length > 0 && (
+                  <div className="space-y-4 pt-6 border-t border-border/40">
+                    <div>
+                      <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                        Not enough data yet ({pendingAreas.length})
+                      </h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Topics need at least 3 graded questions before being ranked as a weak area.
+                      </p>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {pendingAreas.map((area, idx) => (
+                        <div key={idx} className="p-4 rounded-2xl border border-border/40 bg-card/30 opacity-75 flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{area.source}</span>
+                            <p className="font-semibold text-sm text-foreground capitalize mt-0.5">{area.topic.replace("Maths: ", "")}</p>
+                          </div>
+                          <span className="text-xs font-semibold bg-muted px-2.5 py-1 rounded-full text-muted-foreground">
+                            {area.totalCount}/3 questions
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })()}
+            </div>
+          )}
         </div>
       )}
-    </div>
-  )}
 
   {/* Re-test Modal */}
       {retestModal && (

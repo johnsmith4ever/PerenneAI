@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
   const { error } = await supabaseAdmin
     .from("usage")
-    .upsert({ user_id: targetUserId, credits_used: 0, last_reset: today.toISOString() }, { onConflict: "user_id" });
+    .upsert({ user_id: targetUserId, credits_used: 0, last_reset: today.toISOString().split("T")[0] }, { onConflict: "user_id" });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 

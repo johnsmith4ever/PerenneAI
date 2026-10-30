@@ -10,7 +10,7 @@ export async function generateClaudeText(options: {
   
   let apiMessages = [];
   
-  if (options.messages) {
+  if (options.messages && options.messages.length > 0) {
     // Anthropic API requires messages to strictly be 'user' or 'assistant'.
     apiMessages = options.messages.filter(m => m.role === "user" || m.role === "assistant");
   } else if (options.prompt) {
@@ -21,8 +21,12 @@ export async function generateClaudeText(options: {
     model: options.modelName,
     max_tokens: options.maxOutputTokens || 4096,
     messages: apiMessages,
-    temperature: options.temperature ?? 0.7,
   };
+
+  // claude-haiku-5-5 deprecates temperature and throws 400 if provided
+  if (options.temperature !== undefined && !options.modelName.includes("haiku-5")) {
+    payload.temperature = options.temperature;
+  }
 
   if (options.system) {
     payload.system = options.system;
@@ -44,7 +48,7 @@ export async function generateClaudeText(options: {
   }
 
   const data = await res.json();
-  const text = data.content?.[0]?.text || "";
+  const text = data.content?.filter((c: any) => c.type === "text").map((c: any) => c.text).join("") || data.content?.[0]?.text || "";
   
   return {
     text,

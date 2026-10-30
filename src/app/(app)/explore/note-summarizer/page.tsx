@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { BookOpen, Sparkles, Loader2, ArrowLeft, Brain, Zap, Target, Lock, Mail, Save, CheckCircle2, RotateCcw } from "lucide-react";
 import { useUpgradeModal } from "@/components/upgrade-modal";
 import { Button } from "@/components/ui/button";
@@ -92,16 +93,22 @@ export default function NoteSummarizerPage() {
     if (!result) return;
     setIsSaving(true);
     try {
-      await insertExploreHistoryAdminAction({
+      const res = await insertExploreHistoryAdminAction({
         user_id: user.id,
         topic: saveName || "Note Summary",
         type: "note_summary_saved",
         data: result,
       });
-      setHasSaved(true);
-      setTimeout(() => setHasSaved(false), 3000);
+      if (res) {
+        setHasSaved(true);
+        toast.success("Note summary saved to history!");
+        setTimeout(() => setHasSaved(false), 3000);
+      } else {
+        toast.error("Couldn't save note summary to history.");
+      }
     } catch (e) {
       console.error("Error saving note summary:", e);
+      toast.error("Couldn't save note summary to history.");
     } finally {
       setIsSaving(false);
       setIsPromptingName(false);
